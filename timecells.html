@@ -1,0 +1,623 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Time Cells</title>
+<meta name="description" content="A live 3D model of how the medial temporal lobe could keep a compressed timeline of the past: Laplace cells in entorhinal cortex, time cells in hippocampus.">
+
+<style>
+  :root{
+    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
+    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
+    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --rose:#C98BB8;
+    --ev-a:#E0A458; --ev-b:#A083E0; --ev-c:#62C7B2; --ev-d:#D98AB9;
+    --cloud:#8C88A8; --wire:#3A3F58;
+    --bar:54px; --barbg:rgba(10,12,18,.9);
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --bg:#F4F0E8; --panel:#EBE5D9; --panel-2:#E3DCCD; --rule:#D3C9B6;
+      --ink:#221C14; --ink-2:#4A4133; --muted:#7A6E5B;
+      --amber:#9A5F1E; --violet:#6B4BA3; --teal:#23806F; --rose:#9B4F82;
+      --ev-a:#B26A12; --ev-b:#6A45B8; --ev-c:#1E8A74; --ev-d:#B0457F;
+      --cloud:#8A7F6B; --wire:#C9BFAA; --barbg:rgba(244,240,232,.9);
+    }
+  }
+  :root[data-theme="light"]{
+    --bg:#F4F0E8; --panel:#EBE5D9; --panel-2:#E3DCCD; --rule:#D3C9B6;
+    --ink:#221C14; --ink-2:#4A4133; --muted:#7A6E5B;
+    --amber:#9A5F1E; --violet:#6B4BA3; --teal:#23806F; --rose:#9B4F82;
+    --ev-a:#B26A12; --ev-b:#6A45B8; --ev-c:#1E8A74; --ev-d:#B0457F;
+    --cloud:#8A7F6B; --wire:#C9BFAA; --barbg:rgba(244,240,232,.9);
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:400 15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+  .serif{font-family:Georgia,"Iowan Old Style",serif}
+  a{color:var(--violet)} a:hover{color:var(--amber)}
+
+  .bar{position:sticky;top:0;height:var(--bar);z-index:20;display:flex;align-items:center;
+    gap:20px;padding:0 18px;background:var(--barbg);backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--rule)}
+  .brand{font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
+  .brand b{font-weight:400;color:var(--amber)}
+  .tabs{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;
+    padding:9px 14px;color:var(--muted);border:1px solid transparent;border-radius:2px;
+    text-decoration:none;white-space:nowrap}
+  .tab:hover{color:var(--ink-2)}
+  .tab[aria-current="true"]{color:var(--ink);border-color:var(--rule);background:var(--panel-2)}
+
+  /* ---------- stage ---------- */
+  .stage{position:relative;height:min(76vh,720px);min-height:480px;border-bottom:1px solid var(--rule)}
+  #scene{position:absolute;inset:0;width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+  #scene.dragging{cursor:grabbing}
+  .mast{position:absolute;top:clamp(18px,3vh,34px);left:clamp(16px,3vw,34px);max-width:min(30ch,32vw);
+    pointer-events:none;z-index:2}
+  .eyebrow{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--amber);margin:0 0 10px}
+  .mast h1{font-size:clamp(24px,3.2vw,40px);line-height:1.04;margin:0;font-weight:400;
+    letter-spacing:-.02em;text-wrap:balance}
+  .mast h1 em{font-style:italic;color:var(--violet)}
+  .clock{position:absolute;top:clamp(18px,3vh,34px);right:clamp(16px,3vw,34px);z-index:2;
+    text-align:right;pointer-events:none}
+  .clock b{display:block;font-size:26px;font-weight:400;letter-spacing:-.02em;color:var(--ink)}
+  .clock span{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+
+  .pick{position:absolute;right:clamp(16px,3vw,34px);bottom:96px;z-index:3;width:min(290px,calc(100% - 32px));
+    background:color-mix(in srgb,var(--panel-2) 94%,transparent);border:1px solid var(--rule);
+    border-radius:3px;padding:16px 18px;backdrop-filter:blur(10px);display:none}
+  .pick.on{display:block}
+  .pick .k{font-size:9.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);margin:0 0 6px}
+  .pick h3{font-size:17px;font-weight:400;margin:0 0 6px;line-height:1.25}
+  .pick p{margin:0;font-size:13px;color:var(--ink-2);line-height:1.5}
+
+  .controls{position:absolute;left:0;right:0;bottom:0;z-index:3;display:flex;flex-wrap:wrap;gap:8px;
+    align-items:center;padding:14px clamp(12px,3vw,30px);
+    background:linear-gradient(to top,var(--bg) 35%,transparent)}
+  .btn{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;
+    padding:10px 13px;background:var(--panel);color:var(--ink-2);border:1px solid var(--rule);
+    border-radius:2px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;white-space:nowrap}
+  .btn:hover{color:var(--ink);border-color:var(--muted)}
+  .btn:focus-visible,.tab:focus-visible,input:focus-visible,select:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  .btn .sw{width:9px;height:9px;border-radius:50%}
+  .btn[aria-pressed="true"]{color:var(--bg);background:var(--ink-2);border-color:var(--ink-2)}
+  .grp{display:flex;gap:6px;flex-wrap:wrap}
+  .sep{flex:1}
+  .ctl{display:inline-flex;align-items:center;gap:8px;font:400 10.5px/1 ui-monospace,Menlo,monospace;
+    letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .ctl input[type=range]{width:92px;accent-color:var(--amber)}
+  .ctl select{font:inherit;background:var(--panel);color:var(--ink-2);border:1px solid var(--rule);
+    border-radius:2px;padding:7px 6px}
+
+  /* ---------- readouts ---------- */
+  .readouts{max-width:1120px;margin:0 auto;padding:clamp(30px,5vw,54px) 22px 10px;
+    display:grid;grid-template-columns:1.35fr 1fr;gap:22px}
+  .card{background:var(--panel);border:1px solid var(--rule);border-radius:3px;padding:18px 18px 14px;min-width:0}
+  .card-hd{display:flex;align-items:baseline;gap:12px;margin:0 0 12px;flex-wrap:wrap}
+  .card-hd h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    margin:0;font-weight:400}
+  .card-hd .seg{margin-left:auto;display:flex;gap:4px}
+  .card canvas{display:block;width:100%}
+  #raster{height:230px}
+  #past{height:230px}
+  .cap{font-size:12.5px;color:var(--muted);margin:10px 0 0;line-height:1.5}
+
+  main{max-width:760px;margin:0 auto;padding:clamp(40px,6vw,70px) 22px 80px}
+  .sec{margin:0 0 50px}
+  .sec > h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 18px;font-weight:400;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+  .sec p{color:var(--ink-2);margin:0 0 16px}
+  .sec p strong{color:var(--ink);font-weight:600}
+  .eq{font-family:Georgia,serif;font-size:18px;color:var(--ink);background:var(--panel);
+    border:1px solid var(--rule);border-radius:3px;padding:14px 18px;margin:0 0 16px;overflow-x:auto}
+  .eq small{display:block;font-family:ui-monospace,Menlo,monospace;font-size:10.5px;
+    letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+  .pull{border-left:2px solid var(--amber);padding:4px 0 4px 20px;margin:26px 0;font-size:18px;
+    line-height:1.5;color:var(--ink)}
+  .prog{list-style:none;padding:0;margin:0;border-top:1px solid var(--rule)}
+  .prog li{display:grid;grid-template-columns:110px 1fr;gap:14px;padding:13px 0;border-bottom:1px solid var(--rule);
+    font-size:14px;color:var(--ink-2)}
+  .prog li b{font:400 10.5px/1.6 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+  .refs{padding-left:18px;margin:0;color:var(--muted);font-size:13px}
+  .refs li{margin:0 0 8px}
+  .refs em{color:var(--ink-2)}
+  footer{border-top:1px solid var(--rule);padding:30px 22px 60px;text-align:center;color:var(--muted);font-size:12px}
+
+  @media (max-width:900px){
+    .readouts{grid-template-columns:1fr}
+  }
+  @media (max-width:640px){
+    .stage{height:auto;min-height:0}
+    #scene{position:relative;height:62vh;min-height:380px}
+    .mast{max-width:22ch}
+    .clock b{font-size:20px}
+    .controls{position:static;background:var(--bg);border-top:1px solid var(--rule)}
+    .sep{display:none}
+    .pick{position:static;width:auto;margin:0 12px 12px}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html" aria-current="true">Time</a>
+    <a class="tab" href="references.html">Sources</a>
+  </nav>
+</div>
+
+<section class="stage" aria-label="3D model of entorhinal Laplace cells and hippocampal time cells">
+  <canvas id="scene" role="img" aria-label="Rotatable 3D rendering of the model. Drag to rotate, click a cell to inspect it."></canvas>
+  <div class="mast">
+    <p class="eyebrow mono">Model &middot; Medial temporal lobe</p>
+    <h1 class="serif">How a brain could keep a <em>compressed</em> timeline of the past</h1>
+  </div>
+  <div class="clock mono" aria-live="off"><b id="clock">0.0 s</b><span>model time</span></div>
+
+  <div class="pick" id="pick" role="status" aria-live="polite">
+    <p class="k mono" id="pick-k"></p>
+    <h3 class="serif" id="pick-h"></h3>
+    <p id="pick-p"></p>
+  </div>
+
+  <div class="controls">
+    <div class="grp" aria-label="Present an event">
+      <button class="btn" data-ev="0"><span class="sw"></span>Event A</button>
+      <button class="btn" data-ev="1"><span class="sw"></span>Event B</button>
+      <button class="btn" data-ev="2"><span class="sw"></span>Event C</button>
+      <button class="btn" data-ev="3"><span class="sw"></span>Event D</button>
+    </div>
+    <button class="btn" id="seq">Play a sequence</button>
+    <span class="sep"></span>
+    <label class="ctl">k <input type="range" id="k" min="2" max="16" step="1" value="4"><span id="kv">4</span></label>
+    <label class="ctl">speed
+      <select id="speed"><option value="1">1&times;</option><option value="3" selected>3&times;</option><option value="10">10&times;</option></select>
+    </label>
+    <button class="btn" id="pause" aria-pressed="false">Pause</button>
+    <button class="btn" id="view" aria-pressed="false">Brain view</button>
+    <button class="btn" id="reset">Reset</button>
+  </div>
+</section>
+
+<section class="readouts">
+  <div class="card">
+    <div class="card-hd">
+      <h2>Population activity, last 45 s</h2>
+      <div class="seg">
+        <button class="btn" id="m-tc" aria-pressed="true">Time cells</button>
+        <button class="btn" id="m-lp" aria-pressed="false">Laplace cells</button>
+      </div>
+    </div>
+    <canvas id="raster"></canvas>
+    <p class="cap" id="raster-cap">Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event a sweep of firing climbs the rows and slows down: that curve is the signature of a logarithmically compressed timeline.</p>
+  </div>
+  <div class="card">
+    <div class="card-hd"><h2>What the population says: when?</h2></div>
+    <canvas id="past"></canvas>
+    <p class="cap">Each bump is the whole time-cell population's estimate of when one event happened, on a log axis. The bumps slide left and slow down but keep the same width: recent past is sharp, distant past is blurry in seconds but equally sharp in ratio.</p>
+  </div>
+</section>
+
+<main>
+  <section class="sec">
+    <h2>What you are looking at</h2>
+    <p>The top sheet is a population of <strong>Laplace cells</strong>, the kind reported in lateral entorhinal cortex. Each one jumps when an event happens and then decays exponentially at its own rate. Left to right, they go from fast decay to slow decay. On their own they do not say when anything happened; together they hold the Laplace transform of the recent past.</p>
+    <p>The curved band below is a population of <strong>time cells</strong>, the kind reported in hippocampus. Each fires at a preferred delay after an event, and cells tuned to longer delays fire later and for longer. Each time cell reads only a few neighbouring Laplace cells (the thin wires), which is all the math needs. Four rows, one per event type, because many time cells respond to a particular stimulus.</p>
+    <p>Present a few events, then watch the raster and the timeline below. Push <span class="mono">k</span> up and every field gets sharper; the timeline stays log-compressed at every setting.</p>
+  </section>
+
+  <section class="sec">
+    <h2>The two equations</h2>
+    <div class="eq"><small>Laplace cells, one per decay rate s</small>dF<sub>s</sub>/dt = &minus;s&thinsp;F<sub>s</sub> + f(t)</div>
+    <div class="eq"><small>Time cells, Post's inverse at s = k / &tau;*</small>f&#771;(&tau;*) = ((&minus;1)<sup>k</sup> / k!) &middot; s<sup>k+1</sup> &middot; d<sup>k</sup>F / ds<sup>k</sup></div>
+    <p>After a single event &tau; seconds ago the time cell with preferred delay &tau;* responds as a gamma curve that peaks exactly at &tau;* and whose width grows in proportion to &tau;*. Every cell has the same coefficient of variation, 1/&radic;(k+1). With &tau;* spaced logarithmically, that is Weber&ndash;Fechner compression of the past: the same number of cells for 1 to 2 seconds ago as for 10 to 20.</p>
+    <div class="pull serif">The model predicts that judging which of two events came first depends on the ratio of their gap to their age, not on the gap in seconds.</div>
+    <p>That prediction is testable. In simulation, order-judgment accuracy curves for events 2, 8 and 32 seconds old sit far apart when plotted against the raw gap and fall onto one curve when plotted against gap divided by age.</p>
+  </section>
+
+  <section class="sec">
+    <h2>Where this sits in the research program</h2>
+    <ul class="prog">
+      <li><b>Project 3</b><span>This model. Python implementation with 10 passing checks (exact decay, peak at &tau;*, scale invariance, numerical inverse matches the analytic one within r &gt; 0.999, forward contiguity in recall). This page runs the same equations.</span></li>
+      <li><b>Project 1</b><span>Test the ratio prediction in human single neurons: medial temporal lobe recordings during movie clips with a temporal order test (DANDI 000207, Zheng et al. 2022).</span></li>
+      <li><b>Project 2</b><span>A time-pressure recall experiment. The same model, extended with context drift (TCM), is the null hypothesis: a 30 s limit that only truncates recall. Simulation shows naive order-error scores flag an effect that is not there; the pre-registered score does not.</span></li>
+    </ul>
+    <p style="margin-top:18px">Honest status: this is a model, not data. Parameters are illustrative. Nothing here has been fit to recordings yet.</p>
+  </section>
+
+  <section class="sec">
+    <h2>Sources</h2>
+    <ol class="refs">
+      <li>Shankar &amp; Howard (2012). A scale-invariant internal representation of time. <em>Neural Computation</em> 24(1).</li>
+      <li>Howard et al. (2014). A unified mathematical framework for coding time, space, and sequences in the hippocampal region. <em>J Neurosci</em> 34(13).</li>
+      <li>Howard &amp; Kahana (2002). A distributed representation of temporal context. <em>J Math Psychol</em> 46.</li>
+      <li>MacDonald et al. (2011). Hippocampal "time cells" bridge the gap in memory for discontiguous events. <em>Neuron</em> 71.</li>
+      <li>Tsao et al. (2018). Integrating time from experience in the lateral entorhinal cortex. <em>Nature</em> 561.</li>
+      <li>Bright et al. (2020). A temporal record of the past with a spectrum of time constants in the monkey entorhinal cortex. <em>PNAS</em> 117.</li>
+      <li>Cao et al. (2022). Internally generated time in the rodent hippocampus is logarithmically compressed. <em>eLife</em> 11.</li>
+      <li>Umbach et al. (2020). Time cells in the human hippocampus and entorhinal cortex support episodic memory. <em>PNAS</em> 117.</li>
+      <li>Zheng et al. (2022). Neurons detect cognitive boundaries to structure episodic memories in humans. <em>Nature Neuroscience</em> 25.</li>
+    </ol>
+  </section>
+</main>
+
+<footer>Neuroscope &middot; Time, Memory, and Neural Causality &middot; Project 3 model, illustrative parameters</footer>
+
+<script>
+(function(){
+  'use strict';
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ---------------- model ----------------
+  var NT = 36, TMIN = 0.4, TMAX = 40, NCH = 4, K = 4;
+  var TS = [];
+  for (var i = 0; i < NT; i++) TS.push(TMIN * Math.pow(TMAX / TMIN, i / (NT - 1)));
+  var events = [];            // {ch, t0}
+  var T = 0, playing = true, speed = 3, queue = [];
+
+  // time cell, peak-normalized: x = age / tau*, f = x^k exp(k (1 - x)), peak 1 at age = tau*
+  function tcAct(age, ts){ if (age < 0) return 0; var x = age / ts; return Math.pow(x, K) * Math.exp(K * (1 - x)); }
+  // Laplace cell with rate s = k / tau*: exp(-s age)
+  function lpAct(age, ts){ return age < 0 ? 0 : Math.exp(-K * age / ts); }
+  function activity(kind, ch, idx, t){
+    var a = 0, ts = TS[idx], f = kind === 'tc' ? tcAct : lpAct;
+    for (var e = 0; e < events.length; e++) if (events[e].ch === ch) a += f(t - events[e].t0, ts);
+    return a > 1 ? 1 : a;
+  }
+  function present(ch){ events.push({ch: ch, t0: T}); pruneEvents(); }
+  function pruneEvents(){ var keep = TMAX * 6; events = events.filter(function(e){ return T - e.t0 < keep; }); }
+
+  // ---------------- colors ----------------
+  var css = {};
+  function readColors(){
+    var s = getComputedStyle(document.documentElement);
+    ['--bg','--panel','--rule','--ink','--ink-2','--muted','--amber','--cloud','--wire','--ev-a','--ev-b','--ev-c','--ev-d']
+      .forEach(function(k){ css[k] = s.getPropertyValue(k).trim(); });
+    css.ev = [css['--ev-a'], css['--ev-b'], css['--ev-c'], css['--ev-d']].map(hex);
+    css.bgRGB = hex(css['--panel']);
+    document.querySelectorAll('[data-ev]').forEach(function(b){
+      b.querySelector('.sw').style.background = rgb(css.ev[+b.dataset.ev]);
+    });
+  }
+  function hex(h){ h = h.replace('#',''); if (h.length === 3) h = h.replace(/./g,'$&$&');
+    var n = parseInt(h, 16); return [n >> 16 & 255, n >> 8 & 255, n & 255]; }
+  function rgb(c, a){ return a == null ? 'rgb(' + c.join(',') + ')' : 'rgba(' + c.join(',') + ',' + a + ')'; }
+  readColors();
+  if (window.matchMedia) matchMedia('(prefers-color-scheme: dark)').addEventListener('change', readColors);
+
+  // ---------------- geometry ----------------
+  var seed = 7;
+  function rnd(){ seed = (seed * 1664525 + 1013904223) >>> 0; return seed / 4294967296; }
+  function gauss(){ return Math.sqrt(-2 * Math.log(rnd() + 1e-9)) * Math.cos(2 * Math.PI * rnd()); }
+
+  // brain point cloud: two hemispheres + cerebellum + temporal poles
+  var brain = [];
+  function shell(cx, cy, cz, rx, ry, rz, n, clipX){
+    for (var j = 0; j < n; j++){
+      var u = rnd() * 2 - 1, th = rnd() * Math.PI * 2, r = Math.sqrt(1 - u * u);
+      var x = r * Math.cos(th), y = u, z = r * Math.sin(th);
+      if (clipX && x * clipX < -0.55) continue;           // flatten the medial wall
+      var j2 = 1 + gauss() * 0.02;
+      brain.push([cx + x * rx * j2, cy + y * ry * j2, cz + z * rz * j2]);
+    }
+  }
+  shell(-0.5, 0.12, 0, 0.56, 0.62, 1.0, 900, -1);
+  shell( 0.5, 0.12, 0, 0.56, 0.62, 1.0, 900, 1);
+  shell(-0.55, -0.34, 0.28, 0.42, 0.28, 0.5, 260);
+  shell( 0.55, -0.34, 0.28, 0.42, 0.28, 0.5, 260);
+  shell(0, -0.55, -0.78, 0.5, 0.24, 0.3, 240);
+  var MTL = [-0.46, -0.3, 0.18];
+
+  // circuit: Laplace sheet (entorhinal) above, time-cell arc (hippocampus) below
+  var cells = [];   // {kind, ch, idx, p:[x,y,z]}
+  for (var ch = 0; ch < NCH; ch++){
+    for (var ix = 0; ix < NT; ix++){
+      var u = ix / (NT - 1), off = (ch - 1.5) * 0.11;
+      cells.push({kind: 'lp', ch: ch, idx: ix,
+        p: [-1.15 + 2.3 * u, 0.62 + 0.05 * Math.sin(Math.PI * u), -0.25 + off + 0.18 * Math.sin(Math.PI * u)]});
+      cells.push({kind: 'tc', ch: ch, idx: ix,
+        p: [-1.15 + 2.3 * u, -0.42 + 0.28 * Math.pow(2 * u - 1, 2) + off * 0.25, 0.32 * Math.sin(Math.PI * u) + off]});
+    }
+  }
+  var lpIndex = {};
+  cells.forEach(function(c){ if (c.kind === 'lp') lpIndex[c.ch + ':' + c.idx] = c; });
+  var wires = [];
+  cells.forEach(function(c){
+    if (c.kind !== 'tc') return;
+    for (var d = -1; d <= 1; d++){ var l = lpIndex[c.ch + ':' + (c.idx + d)]; if (l) wires.push([c, l]); }
+  });
+
+  // ---------------- camera ----------------
+  var C = document.getElementById('scene'), X = C.getContext('2d'), DPR = 1, W = 0, H = 0;
+  var yaw = -0.5, pitch = 0.32, drag = null, baseYaw = -0.5, phase = 0, lastInteract = -1e9;
+  var zoom = reduce ? 1 : 0, zoomTarget = 1;
+  function size(){
+    DPR = Math.min(2, window.devicePixelRatio || 1);
+    var r = C.getBoundingClientRect(); W = r.width; H = r.height;
+    C.width = Math.round(W * DPR); C.height = Math.round(H * DPR);
+    X.setTransform(DPR, 0, 0, DPR, 0, 0);
+  }
+  function lerp(a, b, t){ return a + (b - a) * t; }
+  function ease(t){ return t < 0.5 ? 2 * t * t : 1 - Math.pow(-2 * t + 2, 2) / 2; }
+  function world(c, z){                 // circuit coords -> world, depending on zoom
+    var s = lerp(0.2, 1, z);
+    return [lerp(MTL[0], 0, z) + c[0] * s, lerp(MTL[1], 0, z) + c[1] * s, lerp(MTL[2], 0, z) + c[2] * s];
+  }
+  function brainWorld(b, z){ var m = lerp(1, 4.2, z);
+    return [(b[0] - MTL[0] * z) * m, (b[1] - MTL[1] * z) * m, (b[2] - MTL[2] * z) * m]; }
+  var Dcam = 3.4;
+  function proj(p){
+    var cy = Math.cos(yaw), sy = Math.sin(yaw), cp = Math.cos(pitch), sp = Math.sin(pitch);
+    var x = p[0] * cy + p[2] * sy, z = -p[0] * sy + p[2] * cy;
+    var y = p[1] * cp - z * sp; z = p[1] * sp + z * cp;
+    var den = Dcam + z; if (den < 0.25) return null;
+    var wide = W > 760, S = Math.min(wide ? W * 0.74 : W, H * 1.3) * (wide ? 0.34 : 0.36) * Dcam / den;
+    return [W * (wide ? 0.58 : 0.5) + x * S, H * (wide ? 0.5 : 0.46) - y * S, den, S];
+  }
+
+  // ---------------- scene render ----------------
+  var projected = [];
+  function draw(){
+    X.clearRect(0, 0, W, H);
+    var z = ease(zoom);
+    // brain cloud
+    var cloudA = Math.pow(1 - z, 1.6);
+    if (cloudA > 0.01){
+      X.fillStyle = css['--cloud'];
+      for (var b = 0; b < brain.length; b++){
+        var q = proj(brainWorld(brain[b], z)); if (!q) continue;
+        X.globalAlpha = cloudA * Math.max(0.14, Math.min(0.7, 1.9 / q[2] - 0.2));
+        X.fillRect(q[0], q[1], 1.8, 1.8);
+      }
+      X.globalAlpha = 1;
+      var m = proj(world([0, 0, 0], z));
+      if (m && z < 0.5){
+        X.strokeStyle = css['--amber']; X.globalAlpha = (1 - z * 2) * 0.9; X.lineWidth = 1;
+        X.beginPath(); X.arc(m[0], m[1], 26, 0, Math.PI * 2); X.stroke();
+        X.font = '10.5px ui-monospace,Menlo,monospace'; X.fillStyle = css['--amber'];
+        X.textAlign = 'center'; X.fillText('MEDIAL TEMPORAL LOBE', m[0], m[1] + 46); X.textAlign = 'left';
+        X.globalAlpha = 1;
+      }
+    }
+    // cells
+    projected = [];
+    for (var i = 0; i < cells.length; i++){
+      var c = cells[i], q = proj(world(c.p, z)); if (!q) continue;
+      var a = activity(c.kind, c.ch, c.idx, T);
+      projected.push({c: c, x: q[0], y: q[1], d: q[2], s: q[3], a: a});
+    }
+    // wires under cells
+    if (z > 0.35){
+      var byCell = new Map(projected.map(function(o){ return [o.c, o]; }));
+      X.lineWidth = 1;
+      for (var w = 0; w < wires.length; w++){
+        var A = byCell.get(wires[w][0]), B = byCell.get(wires[w][1]); if (!A || !B) continue;
+        var act = Math.max(A.a, B.a * 0.6);
+        X.strokeStyle = act > 0.04 ? rgb(css.ev[A.c.ch], (0.05 + act * 0.4) * z) : css['--wire'];
+        X.globalAlpha = act > 0.04 ? 1 : 0.05 * z;
+        X.beginPath(); X.moveTo(A.x, A.y); X.lineTo(B.x, B.y); X.stroke();
+      }
+      X.globalAlpha = 1;
+    }
+    projected.sort(function(p, q){ return q.d - p.d; });
+    for (var j = 0; j < projected.length; j++){
+      var o = projected[j], col = css.ev[o.c.ch];
+      var r = Math.max(1.2, o.s * (o.c.kind === 'tc' ? 0.019 : 0.015)) * (1 + o.a * 0.7);
+      if (o.a > 0.25){
+        X.fillStyle = rgb(col, 0.13 * o.a);
+        X.beginPath(); X.arc(o.x, o.y, r * 2.3, 0, Math.PI * 2); X.fill();
+      }
+      X.fillStyle = o.a > 0.02 ? rgb(col, 0.25 + 0.75 * o.a) : rgb(hex(css['--muted']), 0.35);
+      X.beginPath(); X.arc(o.x, o.y, r, 0, Math.PI * 2); X.fill();
+      if (selected === o.c){
+        X.strokeStyle = css['--ink']; X.lineWidth = 1.5;
+        X.beginPath(); X.arc(o.x, o.y, r + 4, 0, Math.PI * 2); X.stroke();
+      }
+    }
+    // labels
+    if (z > 0.6){
+      X.globalAlpha = (z - 0.6) / 0.4;
+      X.font = '10px ui-monospace,Menlo,monospace'; X.fillStyle = css['--muted'];
+      label([-1.2, 0.86, -0.25], 'ENTORHINAL · LAPLACE CELLS', 'left');
+      label([-1.3, 0.58, -0.3], 'fast decay', 'right');
+      label([1.3, 0.58, -0.3], 'slow decay', 'left');
+      label([-1.2, -0.02, 0.1], 'HIPPOCAMPUS · TIME CELLS', 'left');
+      label([-1.3, -0.18, 0.0], 'τ* 0.4 s', 'right');
+      label([1.3, -0.18, 0.0], 'τ* 40 s', 'left');
+      X.globalAlpha = 1;
+    }
+  }
+  function label(p, t, align){
+    var q = proj(world(p, ease(zoom))); if (!q) return;
+    X.textAlign = align; X.fillText(t, q[0], q[1]); X.textAlign = 'left';
+  }
+
+  // ---------------- raster + timeline ----------------
+  var R = document.getElementById('raster'), RX = R.getContext('2d');
+  var Pc = document.getElementById('past'), PX = Pc.getContext('2d');
+  var mode = 'tc', WIN = 45, COLS = 240;
+  var off = document.createElement('canvas'); off.width = COLS; off.height = NT;
+  var OX = off.getContext('2d'), img = OX.createImageData(COLS, NT);
+  function fit(cv, ctx){
+    var r = cv.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
+    ctx.setTransform(d, 0, 0, d, 0, 0); return [r.width, r.height];
+  }
+  var RS = [0, 0], PS = [0, 0];
+  function sizeAll(){ size(); RS = fit(R, RX); PS = fit(Pc, PX); }
+
+  function drawRaster(){
+    var w = RS[0], h = RS[1], padL = 34, padB = 20, iw = w - padL, ih = h - padB;
+    var f = mode === 'tc' ? tcAct : lpAct, bg = css.bgRGB, d = img.data;
+    for (var col = 0; col < COLS; col++){
+      var tc = T - WIN + WIN * col / (COLS - 1);
+      for (var row = 0; row < NT; row++){
+        var sum = 0, best = 0, c = bg;
+        for (var e = 0; e < events.length; e++){
+          var a = f(tc - events[e].t0, TS[row]); if (a < 0.003) continue;
+          sum += a; if (a > best){ best = a; c = css.ev[events[e].ch]; }
+        }
+        var A = Math.min(1, sum), k = ((NT - 1 - row) * COLS + col) * 4;
+        d[k] = bg[0] + (c[0] - bg[0]) * A; d[k + 1] = bg[1] + (c[1] - bg[1]) * A;
+        d[k + 2] = bg[2] + (c[2] - bg[2]) * A; d[k + 3] = 255;
+      }
+    }
+    OX.putImageData(img, 0, 0);
+    RX.clearRect(0, 0, w, h);
+    RX.imageSmoothingEnabled = true;
+    RX.drawImage(off, padL, 0, iw, ih);
+    RX.font = '10px ui-monospace,Menlo,monospace'; RX.fillStyle = css['--muted'];
+    RX.textAlign = 'right';
+    [[0, TMIN], [Math.round((NT - 1) / 2), TS[Math.round((NT - 1) / 2)]], [NT - 1, TMAX]].forEach(function(t){
+      RX.fillText((t[1] < 1 ? t[1].toFixed(1) : Math.round(t[1])) + 's', padL - 6, ih - (t[0] + 0.5) / NT * ih + 3);
+    });
+    RX.textAlign = 'center';
+    for (var s = 0; s <= WIN; s += 15) RX.fillText(s === WIN ? 'now' : '-' + (WIN - s) + 's', padL + s / WIN * iw, h - 5);
+    for (var e = 0; e < events.length; e++){
+      var x = padL + (events[e].t0 - (T - WIN)) / WIN * iw; if (x < padL) continue;
+      RX.fillStyle = rgb(css.ev[events[e].ch]); RX.fillRect(x - 1, ih + 1, 2, 5);
+    }
+    RX.textAlign = 'left';
+  }
+
+  function drawPast(){
+    var w = PS[0], h = PS[1], padB = 22, padT = 10, iw = w - 20, ih = h - padB - padT;
+    var lo = Math.log(TMIN), hi = Math.log(TMAX);
+    function xOf(tau){ return 10 + (1 - (Math.log(tau) - lo) / (hi - lo)) * iw; }
+    PX.clearRect(0, 0, w, h);
+    PX.strokeStyle = css['--rule']; PX.lineWidth = 1;
+    PX.beginPath(); PX.moveTo(10, padT + ih + 0.5); PX.lineTo(10 + iw, padT + ih + 0.5); PX.stroke();
+    PX.font = '10px ui-monospace,Menlo,monospace'; PX.fillStyle = css['--muted']; PX.textAlign = 'center';
+    [0.5, 1, 2, 5, 10, 20, 40].forEach(function(t){
+      var x = xOf(t); PX.fillRect(x, padT + ih, 1, 4); PX.fillText(t + 's', x, h - 6);
+    });
+    PX.textAlign = 'right'; PX.fillText('now', 10 + iw, padT + 10); PX.textAlign = 'left';
+    PX.fillText('past', 10, padT + 10);
+    var recent = events.slice(-8);
+    for (var e = 0; e < recent.length; e++){
+      var age = T - recent[e].t0; if (age <= 0.02) continue;
+      var col = css.ev[recent[e].ch], peak = -1, px = 0;
+      PX.beginPath(); PX.moveTo(xOf(TS[0]), padT + ih);
+      for (var i = 0; i < NT; i++){
+        var v = tcAct(age, TS[i]); var y = padT + ih - v * ih * 0.82;
+        PX.lineTo(xOf(TS[i]), y); if (v > peak){ peak = v; px = xOf(TS[i]); }
+      }
+      PX.lineTo(xOf(TS[NT - 1]), padT + ih); PX.closePath();
+      PX.fillStyle = rgb(col, 0.22); PX.fill();
+      PX.strokeStyle = rgb(col); PX.lineWidth = 1.4; PX.stroke();
+      if (peak > 0.2){ PX.fillStyle = rgb(col); PX.textAlign = 'center';
+        PX.fillText('ABCD'[recent[e].ch], px, padT + ih - peak * ih * 0.82 - 6); PX.textAlign = 'left'; }
+    }
+  }
+
+  // ---------------- interaction ----------------
+  var selected = null, pick = document.getElementById('pick');
+  function showPick(c){
+    selected = c;
+    if (!c){ pick.classList.remove('on'); return; }
+    var ts = TS[c.idx], ev = 'ABCD'[c.ch];
+    if (c.kind === 'tc'){
+      document.getElementById('pick-k').textContent = 'Hippocampus · time cell';
+      document.getElementById('pick-h').textContent = 'Fires about ' + fmt(ts) + ' after event ' + ev;
+      document.getElementById('pick-p').textContent = 'Field width about ±' + fmt(ts / Math.sqrt(K + 1)) +
+        ' (it grows with the delay). Reads the ' + fmt(ts) + ' region of the Laplace sheet.';
+    } else {
+      document.getElementById('pick-k').textContent = 'Entorhinal · Laplace cell';
+      document.getElementById('pick-h').textContent = 'Decays with time constant ' + fmt(ts / K);
+      document.getElementById('pick-p').textContent = 'Jumps when event ' + ev +
+        ' happens, then fades exponentially (rate s = ' + (K / ts).toFixed(2) + ' per second). No peak of its own; time is in the pattern across cells.';
+    }
+    pick.classList.add('on');
+  }
+  function fmt(s){ return s < 1 ? s.toFixed(2) + ' s' : s < 10 ? s.toFixed(1) + ' s' : Math.round(s) + ' s'; }
+
+  C.addEventListener('pointerdown', function(e){
+    drag = {x: e.clientX, y: e.clientY, yaw: yaw, pitch: pitch, moved: false};
+    C.setPointerCapture(e.pointerId); C.classList.add('dragging');
+  });
+  C.addEventListener('pointermove', function(e){
+    if (!drag) return;
+    var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+    if (Math.abs(dx) + Math.abs(dy) > 4) drag.moved = true;
+    yaw = drag.yaw + dx * 0.008; baseYaw = yaw - 0.42 * Math.sin(phase); pitch = Math.max(-1.2, Math.min(1.2, drag.pitch + dy * 0.006));
+    lastInteract = performance.now();
+  });
+  C.addEventListener('pointerup', function(e){
+    C.classList.remove('dragging');
+    if (drag && !drag.moved){
+      var r = C.getBoundingClientRect(), mx = e.clientX - r.left, my = e.clientY - r.top, best = null, bd = 196;
+      projected.forEach(function(o){ var d = (o.x - mx) * (o.x - mx) + (o.y - my) * (o.y - my); if (d < bd){ bd = d; best = o.c; } });
+      showPick(best);
+    }
+    drag = null;
+  });
+
+  document.querySelectorAll('[data-ev]').forEach(function(b){
+    b.addEventListener('click', function(){ present(+b.dataset.ev); });
+  });
+  window.addEventListener('keydown', function(e){
+    if (e.target.closest && e.target.closest('input,select,textarea')) return;
+    if (e.key >= '1' && e.key <= '4') present(+e.key - 1);
+  });
+  document.getElementById('seq').addEventListener('click', function(){
+    [[0, 0], [1, 1.5], [2, 4], [3, 9], [0, 16]].forEach(function(s){ queue.push({ch: s[0], at: T + s[1]}); });
+    if (!playing) togglePause();
+  });
+  var pauseBtn = document.getElementById('pause');
+  function togglePause(){ playing = !playing; pauseBtn.setAttribute('aria-pressed', String(!playing));
+    pauseBtn.textContent = playing ? 'Pause' : 'Play'; }
+  pauseBtn.addEventListener('click', togglePause);
+  document.getElementById('speed').addEventListener('change', function(e){ speed = +e.target.value; });
+  var kIn = document.getElementById('k');
+  kIn.addEventListener('input', function(){ K = +kIn.value; document.getElementById('kv').textContent = K; if (selected) showPick(selected); });
+  var viewBtn = document.getElementById('view');
+  viewBtn.addEventListener('click', function(){
+    zoomTarget = zoomTarget === 1 ? 0 : 1;
+    viewBtn.setAttribute('aria-pressed', String(zoomTarget === 0));
+    viewBtn.textContent = zoomTarget === 0 ? 'Circuit view' : 'Brain view';
+    if (reduce) zoom = zoomTarget;
+  });
+  document.getElementById('reset').addEventListener('click', function(){ events = []; queue = []; T = 0; showPick(null); });
+  function setMode(m){ mode = m;
+    document.getElementById('m-tc').setAttribute('aria-pressed', String(m === 'tc'));
+    document.getElementById('m-lp').setAttribute('aria-pressed', String(m === 'lp'));
+    document.getElementById('raster-cap').textContent = m === 'tc'
+      ? 'Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event a sweep of firing climbs the rows and slows down: that curve is the signature of a logarithmically compressed timeline.'
+      : 'Same rows, Laplace layer instead. Every cell lights at once and fades at its own rate, fast ones at the bottom. No single cell knows when the event happened; the time cells above are computed from the pattern.';
+  }
+  document.getElementById('m-tc').addEventListener('click', function(){ setMode('tc'); });
+  document.getElementById('m-lp').addEventListener('click', function(){ setMode('lp'); });
+
+  // ---------------- loop ----------------
+  var clock = document.getElementById('clock'), last = performance.now(), start = last;
+  function loop(now){
+    var dt = Math.min(0.1, (now - last) / 1000); last = now;
+    if (playing){
+      T += dt * speed;
+      while (queue.length && queue[0].at <= T){ var q = queue.shift(); events.push({ch: q.ch, t0: q.at}); }
+      pruneEvents();
+    }
+    if (!reduce){
+      if (now - start > 900) zoom += (zoomTarget - zoom) * Math.min(1, dt * 1.6);
+      if (!drag && now - lastInteract > 2500){ phase += dt * 0.18; yaw = baseYaw + 0.42 * Math.sin(phase); }
+    }
+    clock.textContent = T.toFixed(1) + ' s';
+    draw(); drawRaster(); drawPast();
+    requestAnimationFrame(loop);
+  }
+  window.addEventListener('resize', sizeAll);
+  sizeAll();
+  // start with a short sequence so the page is alive on arrival
+  [[0, 0.3], [1, 2], [2, 5]].forEach(function(s){ queue.push({ch: s[0], at: s[1]}); });
+  requestAnimationFrame(loop);
+})();
+</script>
+</html>

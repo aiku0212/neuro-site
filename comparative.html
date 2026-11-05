@@ -1,0 +1,422 @@
+<title>Comparative Neuropsychiatry</title>
+
+<style>
+  :root{
+    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
+    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
+    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --rose:#C98BB8;
+    --bar:54px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:400 15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums}
+  .serif{font-family:Georgia,"Iowan Old Style",serif}
+  a{color:var(--violet)} a:hover{color:var(--amber)}
+
+  .bar{position:sticky;top:0;height:var(--bar);z-index:20;display:flex;
+    align-items:center;gap:20px;padding:0 18px;background:rgba(10,12,18,.9);
+    backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+  .brand{font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
+  .brand b{font-weight:400;color:var(--amber)}
+  .tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+  .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;
+    text-transform:uppercase;padding:9px 14px;color:var(--muted);
+    border:1px solid transparent;border-radius:2px;text-decoration:none}
+  .tab:hover{color:var(--ink-2)}
+  .tab[aria-current="true"]{color:var(--ink);border-color:var(--rule);
+    background:var(--panel-2)}
+
+  main{max-width:940px;margin:0 auto;padding:clamp(40px,6vw,72px) 22px 90px}
+  .eyebrow{font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--amber);margin:0 0 14px}
+  h1{font-size:clamp(28px,4.6vw,44px);line-height:1.06;margin:0 0 16px;font-weight:400;
+    letter-spacing:-.02em;text-wrap:balance;max-width:20ch}
+  h1 em{font-style:italic;color:var(--violet)}
+  .lede{font-size:17px;color:var(--ink-2);max-width:64ch;margin:0 0 12px}
+  .lede strong{color:var(--ink);font-weight:400}
+
+  .counts{display:flex;gap:10px;flex-wrap:wrap;margin:26px 0 42px}
+  .counts div{background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+    padding:11px 15px}
+  .counts b{display:block;font-size:23px;font-weight:400;color:var(--amber);
+    letter-spacing:-.02em}
+  .counts span{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--muted)}
+
+  .sec{margin:0 0 54px}
+  .sec > h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 6px;font-weight:400;padding-bottom:10px;border-bottom:1px solid var(--rule)}
+  .gnote{font-size:13.5px;color:var(--muted);margin:0 0 22px;max-width:66ch}
+  .sec p{color:var(--ink-2);margin:0 0 16px;max-width:68ch}
+  .sec p strong{color:var(--ink);font-weight:600}
+
+  .pull{border-left:2px solid var(--amber);padding:4px 0 4px 20px;margin:26px 0;
+    font-size:18px;line-height:1.5;color:var(--ink);max-width:60ch}
+
+  table{width:100%;border-collapse:collapse;font-size:14px;margin:8px 0 6px}
+  th{text-align:left;font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+    color:var(--muted);font-weight:400;padding:0 12px 9px 0;border-bottom:1px solid var(--rule)}
+  td{padding:11px 12px 11px 0;border-bottom:1px solid var(--rule);color:var(--ink-2);
+    vertical-align:top}
+  td b{font-weight:400;color:var(--ink)}
+  .scroller{overflow-x:auto}
+  .rx{color:var(--teal)}
+
+  .tagline{display:inline-block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 7px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);
+    vertical-align:middle;white-space:nowrap}
+  .tagline.key{color:var(--amber);border-color:#4A3A22}
+  .tagline.verify{color:var(--rose);border-color:#4A2F3E}
+  .tagline.open{color:var(--teal);border-color:#22463E}
+
+  /* ---- observability collapse ---- */
+  .scope{border:1px solid var(--rule);border-radius:3px;background:var(--panel);
+    padding:20px 18px 14px;margin:6px 0 18px}
+  .scope-tag{font-size:10px;letter-spacing:.18em;text-transform:uppercase;
+    color:var(--muted);font-family:ui-monospace,Menlo,monospace;margin:0 0 12px}
+  #collapse{display:block;width:100%;height:auto}
+  .axis{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;fill:var(--muted);
+    font-family:ui-monospace,Menlo,monospace}
+  .term{font-size:12px;fill:#AFACC2;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+  .pct{font-size:11px;fill:#736F8C;font-family:ui-monospace,Menlo,monospace}
+  .sink-t{font-size:15px;fill:#E9E7F0;font-family:Georgia,serif}
+  .sink-p{font-size:11px;fill:#D9A05B;font-family:ui-monospace,Menlo,monospace}
+
+  /* ---- bridge cards ---- */
+  .bridges{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 0}
+  .card{background:var(--panel);border:1px solid var(--rule);border-radius:3px;
+    padding:20px 18px;display:flex;flex-direction:column}
+  .card .k{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--teal);margin:0 0 10px;font-family:ui-monospace,Menlo,monospace}
+  .card h3{font-size:17px;line-height:1.25;margin:0 0 10px;font-weight:400;
+    letter-spacing:-.01em}
+  .card p{font-size:13.5px;color:var(--ink-2);margin:0 0 12px}
+  .card .link{margin-top:auto;padding-top:12px;border-top:1px solid var(--rule);
+    font-size:11.5px;color:var(--muted)}
+  .card .link b{color:var(--violet);font-weight:400}
+  @media (max-width:820px){.bridges{grid-template-columns:1fr}}
+
+  /* ---- register ---- */
+  .reg{display:grid;grid-template-columns:26px 1fr auto;gap:14px;align-items:baseline;
+    padding:14px 0;border-top:1px solid var(--rule)}
+  .reg .n{color:var(--muted);font-size:11px;font-family:ui-monospace,Menlo,monospace}
+  .reg .t{margin:0 0 4px;font-size:15px;line-height:1.4;color:var(--ink)}
+  .reg .m{margin:0;font-size:12.5px;color:var(--muted);max-width:62ch}
+  @media (max-width:640px){
+    .reg{grid-template-columns:22px 1fr;gap:10px}
+    .reg .s{grid-column:2;margin-top:6px}
+  }
+
+  .caveat{background:var(--panel);border:1px solid var(--rule);
+    border-left:2px solid var(--rose);border-radius:2px;padding:18px 20px;margin:34px 0 0}
+  .caveat h3{margin:0 0 9px;font-size:15px;font-weight:400;color:var(--ink)}
+  .caveat p{margin:0 0 9px;font-size:13.5px;color:var(--ink-2);max-width:70ch}
+  .caveat p:last-child{margin:0}
+
+  footer{border-top:1px solid var(--rule);padding:30px 22px 60px;text-align:center;
+    color:var(--muted);font-size:12px}
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="app.html">Analyze</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html" aria-current="true">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="references.html">Sources</a>
+  </nav>
+</div>
+
+<main>
+
+  <p class="eyebrow mono">Comparative Neuropsychiatry &middot; Direction Note</p>
+  <h1 class="serif">The receptor is conserved.<br>The patient <em>cannot answer</em>.</h1>
+  <p class="lede">Everything else on this site measures plasticity in one species — the
+    one that can describe what a drug feels like. <strong>Dogs are prescribed the same
+    molecules, acting on the same receptors, and cannot describe anything.</strong> That
+    gap is not a limitation of veterinary medicine. It is the central unsolved problem
+    in animal neuroscience, and it is measurable.</p>
+
+  <div class="counts mono">
+    <div><b>1,357,337</b><span>Vet adverse-event reports</span></div>
+    <div><b>20,692,690</b><span>Human FAERS reports</span></div>
+    <div><b>6 / 40</b><span>Terms that map across</span></div>
+    <div><b>6.17&times;</b><span>Canine lethargy vs human</span></div>
+  </div>
+
+  <!-- ============ 1. SHARED PHARMACOLOGY ============ -->
+  <div class="sec">
+    <h2 class="mono">Shared pharmacology</h2>
+    <p class="gnote">The Synapse Bench on the Evidence page models fluoxetine binding
+      TrkB weakly, and ketamine disinhibiting the local network. Both of those drugs are
+      given to dogs. So are most of the others.</p>
+
+    <div class="scroller">
+      <table>
+        <thead><tr><th>Molecule</th><th>Human use</th><th>Canine use</th><th>Site coverage</th></tr></thead>
+        <tbody>
+          <tr>
+            <td><b>Fluoxetine</b></td>
+            <td>Depression, OCD</td>
+            <td class="rx">Separation anxiety &mdash; FDA-approved for dogs</td>
+            <td>SSRI state, Synapse Bench</td>
+          </tr>
+          <tr>
+            <td><b>Trazodone</b></td>
+            <td>Insomnia, anxiety, depression</td>
+            <td class="rx">Situational anxiety, post-op confinement</td>
+            <td>Not yet modelled</td>
+          </tr>
+          <tr>
+            <td><b>Gabapentin</b></td>
+            <td>Seizures, neuropathic pain</td>
+            <td class="rx">Anxiety, pain &mdash; the 8,575-report cohort</td>
+            <td>Not yet modelled</td>
+          </tr>
+          <tr>
+            <td><b>Ketamine</b></td>
+            <td>Depression, anaesthesia</td>
+            <td class="rx">Anaesthesia; analgesia</td>
+            <td>Ketamine state, Synapse Bench</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="gnote" style="margin-top:14px">Indications are approximate and partly
+      off-label; each row needs a label check before it is cited. The point of the table
+      is the overlap, not the detail.</p>
+  </div>
+
+  <!-- ============ 2. THE COLLAPSE ============ -->
+  <div class="sec">
+    <h2 class="mono">The observability collapse</h2>
+    <p class="gnote">Measured, not argued. Gabapentin reaction profiles, canine versus
+      human, drawn from the two FDA spontaneous-reporting systems.</p>
+
+    <div class="scope">
+      <p class="scope-tag">Human self-report &rarr; owner observation &middot; gabapentin</p>
+      <svg id="collapse" viewBox="0 0 720 320" role="img"
+           aria-label="Six human self-reported symptoms converging into the single canine term lethargy">
+
+        <text class="axis" x="8" y="18">What a human reports</text>
+        <text class="axis" x="560" y="18">What an owner sees</text>
+
+        <!-- converging paths -->
+        <g fill="none" stroke="#9B7BD6" stroke-linecap="round">
+          <path d="M232,52 C360,52 420,150 520,150" stroke-width="8.3" opacity=".42"/>
+          <path d="M232,96 C360,96 420,150 520,150" stroke-width="3.5" opacity=".42"/>
+          <path d="M232,140 C360,140 430,150 520,150" stroke-width="3.1" opacity=".42"/>
+          <path d="M232,184 C360,184 430,150 520,150" stroke-width="2.5" opacity=".42"/>
+          <path d="M232,228 C360,228 420,150 520,150" stroke-width="2.3" opacity=".42"/>
+          <path d="M232,272 C360,272 420,150 520,150" stroke-width="1.4" opacity=".42"/>
+        </g>
+
+        <!-- human terms -->
+        <g>
+          <text class="term" x="8" y="48">Pain</text>          <text class="pct" x="150" y="48">16.67%</text>
+          <text class="term" x="8" y="92">Fatigue</text>       <text class="pct" x="150" y="92">6.97%</text>
+          <text class="term" x="8" y="136">Nausea</text>       <text class="pct" x="150" y="136">6.27%</text>
+          <text class="term" x="8" y="180">Headache</text>     <text class="pct" x="150" y="180">5.03%</text>
+          <text class="term" x="8" y="224">Dizziness</text>    <text class="pct" x="150" y="224">4.63%</text>
+          <text class="term" x="8" y="268">Anxiety</text>      <text class="pct" x="150" y="268">2.85%</text>
+        </g>
+        <g fill="#9B7BD6">
+          <circle cx="226" cy="44" r="4.5"/>  <circle cx="226" cy="88" r="4.5"/>
+          <circle cx="226" cy="132" r="4.5"/> <circle cx="226" cy="176" r="4.5"/>
+          <circle cx="226" cy="220" r="4.5"/> <circle cx="226" cy="264" r="4.5"/>
+        </g>
+
+        <!-- sink -->
+        <circle cx="530" cy="150" r="34" fill="#D9A05B" opacity=".13"/>
+        <circle cx="530" cy="150" r="9" fill="#D9A05B"/>
+        <text class="sink-t" x="574" y="146">Lethargy</text>
+        <text class="sink-p" x="574" y="166">16.76% dog &middot; 2.72% human</text>
+
+        <text class="axis" x="8" y="308">~25% of human reports are states requiring a patient who can speak</text>
+      </svg>
+    </div>
+
+    <p>The naive read is that dogs are six times more prone to gabapentin lethargy. That
+      read is wrong, and the reason is the whole problem. <strong>Roughly a quarter of
+      human gabapentin reports are internal states</strong> — pain, nausea, headache,
+      dizziness — that require a patient who can describe them. A dog experiencing the
+      same pharmacology produces one word in the record, because that is the only word
+      the observer has.</p>
+
+    <p class="pull serif">Canine "lethargy" is not a symptom. It is a compression
+      artifact — an entire subjective symptom space flattened into the one thing a human
+      can see from across the room.</p>
+
+    <p>This generalizes past pharmacovigilance. Every supervised model of an animal
+      internal state — pain, anxiety, distress, welfare — trains on labels that are a
+      human's inference about an animal that cannot be asked. There is no held-out
+      ground truth, because the patient cannot be interviewed. That is the wall this
+      direction exists to attack.</p>
+  </div>
+
+  <!-- ============ 3. BRIDGES ============ -->
+  <div class="sec">
+    <h2 class="mono">Three bridges into pet psychiatry</h2>
+    <p class="gnote">Each connects an existing section of this site to a companion-animal
+      phenotype with a public data source. Ordered by how directly the site already
+      covers the mechanism.</p>
+
+    <div class="bridges">
+      <div class="card">
+        <p class="k">Bridge 01 &middot; Critical periods</p>
+        <h3 class="serif">The socialization window</h3>
+        <p>The Evidence page argues critical periods are actively shut by molecular
+          brakes, and uses songbirds to show the closing schedule is tuned by species.
+          Dogs have the same structure with lifelong behavioural consequences: a puppy
+          socialization window that closes in the first months, after which fear
+          responses generalize and rarely fully reverse.</p>
+        <p class="link">Extends <b>&ldquo;Why closing matters&rdquo;</b> &middot;
+          perineuronal nets, Scott &amp; Fuller lineage</p>
+      </div>
+
+      <div class="card">
+        <p class="k">Bridge 02 &middot; Compulsion</p>
+        <h3 class="serif">Canine compulsive disorder</h3>
+        <p>Tail-chasing and acral lick dermatitis are treated as a naturally occurring
+          model of human OCD — same drug class responds, and breed concentration implies
+          genetic architecture rather than pure environment. A spontaneous animal model
+          in a shared household environment, which no rodent model gets.</p>
+        <p class="link">Extends <b>SSRI &middot; TrkB</b> state on the Synapse Bench</p>
+      </div>
+
+      <div class="card">
+        <p class="k">Bridge 03 &middot; Decline</p>
+        <h3 class="serif">Cognitive dysfunction</h3>
+        <p>Canine cognitive dysfunction syndrome involves amyloid pathology and presents
+          as disorientation, altered social interaction, and sleep-cycle disruption. Dogs
+          age roughly seven times faster and share our indoor exposures, so a
+          longitudinal cohort runs in a decade rather than a career.</p>
+        <p class="link">New territory &middot; Dog Aging Project is the public cohort</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 4. REGISTER ============ -->
+  <div class="sec">
+    <h2 class="mono">Open problem register</h2>
+    <p class="gnote">Every candidate retained. Nothing here is closed; status describes
+      how far the groundwork has gone, not whether the problem is solved.</p>
+
+    <div class="reg">
+      <span class="n">01</span>
+      <div>
+        <p class="t">VeDDRA &harr; MedDRA crosswalk</p>
+        <p class="m">No public mapping exists between the veterinary and human
+          adverse-event vocabularies. Lexical normalization plus 17 hand-written synonyms
+          currently matches 6 of ~40 terms. Ontology alignment; embeddings are suited to
+          it; the vet-only-drug negative control already exists in code.</p>
+      </div>
+      <span class="s"><span class="tagline key">Wedge</span></span>
+    </div>
+
+    <div class="reg">
+      <span class="n">02</span>
+      <div>
+        <p class="t">Non-verbal ground truth</p>
+        <p class="m">Inferring internal states in a patient that cannot self-report.
+          Underlies pain scales, welfare scoring, and every behavioural label in pet
+          psychiatry. The hardest of these and the one with the widest reach.</p>
+      </div>
+      <span class="s"><span class="tagline open">Thesis</span></span>
+    </div>
+
+    <div class="reg">
+      <span class="n">03</span>
+      <div>
+        <p class="t">Anthelmintic resistance as a reporting signal</p>
+        <p class="m">69k lack-of-efficacy reports for heartworm larvae, 63k for flea
+          preventives. Testable claim: failure reports cluster geographically and trend
+          in time. Needs a reporting-effort control analogous to the German Shepherd
+          negative control.</p>
+      </div>
+      <span class="s"><span class="tagline open">Open</span></span>
+    </div>
+
+    <div class="reg">
+      <span class="n">04</span>
+      <div>
+        <p class="t">Bayesian shrinkage for small cells</p>
+        <p class="m">EBGM/MGPS in place of raw PRR. Prerequisite for anything sliced by
+          region &times; year &times; breed, where cells fall to double digits.
+          Retroactively strengthens the MDR1 result.</p>
+      </div>
+      <span class="s"><span class="tagline open">Open</span></span>
+    </div>
+
+    <div class="reg">
+      <span class="n">05</span>
+      <div>
+        <p class="t">Breed entity resolution</p>
+        <p class="m">Owner-typed free text in an inverted taxonomy. 112k mixed-breed
+          reports are currently invisible to any breed-stratified analysis.</p>
+      </div>
+      <span class="s"><span class="tagline open">Open</span></span>
+    </div>
+
+    <div class="reg">
+      <span class="n">06</span>
+      <div>
+        <p class="t">Dose- and weight-adjusted exposure</p>
+        <p class="m">The database carries dose numerator, unit, and animal weight.
+          Breaks the count-only query model, so it needs new machinery before it needs
+          new statistics.</p>
+      </div>
+      <span class="s"><span class="tagline open">Deferred</span></span>
+    </div>
+
+    <div class="reg">
+      <span class="n">07</span>
+      <div>
+        <p class="t">Veterinary clinical NLP</p>
+        <p class="m">Vet records are unstructured with no consistently applied coding
+          standard. Far behind human clinical NLP. Largest gap on this list; also the
+          one most dependent on data access.</p>
+      </div>
+      <span class="s"><span class="tagline verify">Scope</span></span>
+    </div>
+
+    <div class="reg">
+      <span class="n">08</span>
+      <div>
+        <p class="t">Comparative neuropsychiatry</p>
+        <p class="m">This page. Critical-period closure, compulsive disorder, and
+          cognitive decline as three phenotypes where canine and human neuroscience are
+          measuring the same mechanism through different instruments.</p>
+      </div>
+      <span class="s"><span class="tagline key">New</span></span>
+    </div>
+  </div>
+
+  <div class="caveat">
+    <h3>Provenance</h3>
+    <p>The four counts at the top and the gabapentin figures are computed, reproducible
+      from openFDA count queries, and carry the limitations documented alongside the
+      analysis — spontaneous reports have no denominator, and disproportionality is not
+      risk.</p>
+    <p><strong>The bridge sections are not yet sourced to this site's standard.</strong>
+      Every other page here links each figure to a peer-reviewed source and includes the
+      nulls. The three bridges are directional claims written from background knowledge
+      and must be verified against current literature — and their specific numbers
+      supplied — before any of it is cited or presented. They are marked as a direction,
+      not as evidence.</p>
+  </div>
+
+</main>
+
+<footer class="mono">
+  Direction note &middot; August 2026<br>
+  Computed figures reproduce from openFDA. Bridge claims pending source verification.
+</footer>

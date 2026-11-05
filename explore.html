@@ -1,0 +1,395 @@
+<title>Cortex to Receptor</title>
+
+<style>
+  :root{
+    --ground:#08090E; --panel:#12151F; --ink:#EDEAF2; --ink-2:#B6B2C8;
+    --muted:#787490; --rule:#242838;
+    --violet:#9B7BD6; --amber:#D9A05B; --teal:#6FC2B0; --rose:#C98BB8; --sky:#7FA8D9;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--ground); color:var(--ink); overflow:hidden;
+    font:400 15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+  .serif{font-family:Georgia,"Iowan Old Style",serif}
+
+  #view{position:fixed; inset:0; width:100%; height:100%; display:block;
+    cursor:grab; touch-action:none}
+  #view.drag{cursor:grabbing}
+
+  /* scale rail */
+  .rail{position:fixed; left:clamp(16px,3vw,40px); top:50%;
+    transform:translateY(-50%); z-index:5; display:flex; gap:14px}
+  .track{position:relative; width:2px; height:min(60vh,420px); background:var(--rule)}
+  .fill{position:absolute; left:0; top:0; width:2px; background:var(--amber);
+    transition:height .18s ease}
+  .knob{position:absolute; left:-4px; width:10px; height:10px; border-radius:50%;
+    background:var(--amber); transition:top .18s ease; box-shadow:0 0 0 4px rgba(217,160,91,.16)}
+  .ticks{display:flex; flex-direction:column; justify-content:space-between;
+    height:min(60vh,420px)}
+  .tick{background:none; border:0; padding:0; text-align:left; cursor:pointer;
+    font-family:ui-monospace,SFMono-Regular,Menlo,monospace; font-size:10.5px;
+    letter-spacing:.14em; text-transform:uppercase; color:var(--muted);
+    transition:color .18s}
+  .tick:hover{color:var(--ink-2)}
+  .tick[aria-current="true"]{color:var(--ink)}
+  .tick small{display:block; font-size:9px; letter-spacing:.08em;
+    color:var(--muted); text-transform:none; opacity:.75}
+
+  /* caption */
+  .cap{position:fixed; right:clamp(16px,3vw,40px); top:50%;
+    transform:translateY(-50%); width:min(330px,calc(100vw - 120px)); z-index:5}
+  .cap .scalebar{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
+    color:var(--amber); margin:0 0 10px}
+  .cap h2{font-size:clamp(22px,3vw,30px); line-height:1.15; margin:0 0 12px;
+    font-weight:400; letter-spacing:-.015em; text-wrap:balance}
+  .cap p{margin:0 0 14px; font-size:14px; color:var(--ink-2)}
+  .cap .cite{font-size:11.5px; color:var(--muted); margin:0}
+  .cap .cite em{font-style:italic; color:var(--ink-2)}
+  .parts{list-style:none; padding:0; margin:0 0 16px; display:flex;
+    flex-wrap:wrap; gap:6px}
+  .parts li{display:flex; align-items:center; gap:6px; font-size:11px;
+    letter-spacing:.05em; color:var(--muted); border:1px solid var(--rule);
+    padding:4px 9px; border-radius:2px}
+  .parts i{width:7px; height:7px; border-radius:50%; display:block}
+
+  .brandmark{position:fixed; top:clamp(16px,3vw,32px); left:clamp(16px,3vw,40px);
+    z-index:5; font-size:10.5px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--muted)}
+  .howto{position:fixed; bottom:clamp(16px,3vw,30px); left:0; right:0;
+    text-align:center; font-size:10.5px; letter-spacing:.16em;
+    text-transform:uppercase; color:var(--muted); z-index:5; pointer-events:none}
+
+  @media (max-width:860px){
+    .cap{position:fixed; right:0; left:0; top:auto; bottom:64px; transform:none;
+      width:auto; padding:0 20px; background:linear-gradient(transparent,var(--ground) 22%)}
+    .cap h2{font-size:20px} .cap p{font-size:13px}
+    .rail{left:12px} .track,.ticks{height:44vh}
+    .tick small{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<canvas id="view"></canvas>
+
+<p class="brandmark mono">Cortex &rarr; Receptor</p>
+
+<div class="rail">
+  <div class="track"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
+  <div class="ticks" id="ticks"></div>
+</div>
+
+<aside class="cap">
+  <p class="scalebar mono" id="c-scale"></p>
+  <h2 class="serif" id="c-title"></h2>
+  <ul class="parts" id="c-parts"></ul>
+  <p id="c-body"></p>
+  <p class="cite" id="c-cite"></p>
+</aside>
+
+<p class="howto mono">Scroll or drag the rail to descend &middot; Drag the canvas to rotate</p>
+
+<script>
+(function(){
+var C=document.getElementById('view'), X=C.getContext('2d'), D=1;
+var COL={violet:'#9B7BD6', amber:'#D9A05B', teal:'#6FC2B0', rose:'#C98BB8',
+         sky:'#7FA8D9', pale:'#9E9ABA', green:'#8FD98F'};
+
+var LEVELS=[
+ {tag:'Whole brain', unit:'~140 mm', title:'Eighty-six billion neurons',
+  parts:[['Cerebrum','pale'],['Cerebellum','rose'],['Brainstem','sky']],
+  body:'Everything below happens inside this. The cortex alone holds roughly 16 billion neurons, each averaging thousands of synapses. Zoom in.',
+  cite:'Scale bar approximate'},
+ {tag:'Cortical network', unit:'~1 mm', title:'A column of the cortex',
+  parts:[['Pyramidal neurons','amber'],['Interneurons','teal'],['Axon bundles','pale']],
+  body:'Excitatory pyramidal cells wired through inhibitory interneurons. The parvalbumin interneurons here are the gate: wrap them in perineuronal nets and the whole column stops rewiring.',
+  cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013'},
+ {tag:'Single neuron', unit:'~100 &micro;m', title:'One cell, thousands of inputs',
+  parts:[['Dendrites','violet'],['Soma','amber'],['Axon','sky'],['Myelin','pale']],
+  body:'Dendrites branch to collect input, the soma integrates it, the axon carries the result away. The dendritic tree is where plasticity is written, and where it is lost in depression.',
+  cite:'Yang et al., <em>Cell Reports</em> 2014'},
+ {tag:'Dendritic spine', unit:'~1 &micro;m', title:'The unit that actually changes',
+  parts:[['Spine head','violet'],['Spine neck','rose'],['Shaft','pale']],
+  body:'Each bump is one synapse. A single dose of psilocybin raised spine size and density by about 10% within 24 hours in frontal cortex, and it was still there a month later.',
+  cite:'Shao et al., <em>Neuron</em> 2021'},
+ {tag:'Membrane', unit:'~10 nm', title:'Where the drug meets the cell',
+  parts:[['TrkB','amber'],['p75NTR','rose'],['5-HT2A','violet'],['NMDA','sky'],['Lipid bilayer','pale']],
+  body:'TrkB builds the synapse, p75NTR dismantles it. Psychedelics bind TrkB a thousand times more tightly than antidepressants, and cross the bilayer to reach 5-HT2A receptors on the inside, which serotonin cannot do.',
+  cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023'}
+];
+
+var z=0, zT=0, ry=0.5, rx=0.15, drag=false, px=0, py=0, t0=performance.now();
+var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+function size(){
+  D=Math.min(devicePixelRatio||1,2);
+  var r=C.getBoundingClientRect();
+  var w=Math.round(r.width)||C.clientWidth||innerWidth||1280;
+  var h=Math.round(r.height)||C.clientHeight||innerHeight||800;
+  var nw=Math.max(1,w*D), nh=Math.max(1,h*D);
+  if(C.width!==nw||C.height!==nh){C.width=nw; C.height=nh;}
+}
+addEventListener('resize',size); size();
+// the pane can be hidden at load, which reports a zero-width box; keep correcting
+if(window.ResizeObserver) new ResizeObserver(size).observe(C);
+addEventListener('visibilitychange',size);
+
+/* ---------- geometry builders ---------- */
+var BRAIN=[];
+(function(){
+  [-1,1].forEach(function(s){
+    for(var n=0;n<520;n++){
+      var u=Math.random()*6.283, v=Math.acos(Math.random()*2-1);
+      var sx=Math.sin(v)*Math.cos(u), sy=Math.cos(v), sz=Math.sin(v)*Math.sin(u);
+      var g=1+.06*Math.sin(sx*8+sz*3)*Math.cos(sy*9);
+      var x=sx*52*g,y=sy*44*g,zz=sz*66*g;
+      if(x*s<0) continue;
+      BRAIN.push({x:s*(6+Math.abs(x)*.92), y:y-6+(zz<0?zz*.14:0), z:zz, c:'pale'});
+    }
+  });
+  [-1,1].forEach(function(s){ for(var n=0;n<130;n++){
+    var u=Math.random()*6.283,v=Math.acos(Math.random()*2-1);
+    BRAIN.push({x:s*20+Math.sin(v)*Math.cos(u)*19, y:34+Math.cos(v)*14,
+                z:-52+Math.sin(v)*Math.sin(u)*15, c:'rose'});}});
+  for(var n=0;n<90;n++){var t=n/90,a=Math.random()*6.283,r=8-t*3.4;
+    BRAIN.push({x:Math.cos(a)*r, y:22+t*44, z:-18+Math.sin(a)*r*.8, c:'sky'});}
+  var sy=0; BRAIN.forEach(function(p){sy+=p.y;}); sy/=BRAIN.length;
+  BRAIN.forEach(function(p){p.y-=sy;});
+})();
+
+var NET=[];
+(function(){
+  for(var i=0;i<62;i++){
+    NET.push({x:(Math.random()*2-1)*95, y:(Math.random()*2-1)*70,
+      z:(Math.random()*2-1)*70, c: Math.random()<0.26?'teal':'amber',
+      r: Math.random()<0.26?3.2:4.6});
+  }
+  NET.links=[];
+  for(i=0;i<NET.length;i++){
+    for(var j=i+1;j<NET.length;j++){
+      var d=Math.hypot(NET[i].x-NET[j].x,NET[i].y-NET[j].y,NET[i].z-NET[j].z);
+      if(d<44) NET.links.push([i,j,Math.random()]);
+    }
+  }
+})();
+
+/* recursive dendritic tree */
+var TREE=[];
+(function build(x,y,z,ang,tilt,len,w,depth){
+  if(depth>6||len<3) return;
+  var ex=x+Math.cos(ang)*Math.cos(tilt)*len,
+      ey=y-Math.sin(ang)*len,
+      ez=z+Math.cos(ang)*Math.sin(tilt)*len;
+  TREE.push({x1:x,y1:y,z1:z,x2:ex,y2:ey,z2:ez,w:w,d:depth});
+  var k=depth<2?3:2;
+  for(var i=0;i<k;i++){
+    build(ex,ey,ez, ang+(i-(k-1)/2)*0.55+ (Math.random()-.5)*.28,
+          tilt+(Math.random()-.5)*1.1, len*(0.70+Math.random()*.12),
+          w*0.68, depth+1);
+  }
+})(0,26,0, Math.PI/2, 0, 30, 5.2, 0);
+
+/* dendrite segment with spines */
+var SPINES=[];
+(function(){
+  for(var i=0;i<26;i++){
+    var t=(i/25)*2-1, a=(i*2.399);
+    SPINES.push({t:t*86, a:a, len:11+Math.random()*9, head:5.5+Math.random()*3.4});
+  }
+})();
+
+/* ---------- projection ---------- */
+function proj(p,scale,cx,cy){
+  var cyr=Math.cos(ry),syr=Math.sin(ry),cxr=Math.cos(rx),sxr=Math.sin(rx);
+  var x=p.x*cyr-p.z*syr, zz=p.x*syr+p.z*cyr;
+  var y=p.y*cxr-zz*sxr; zz=p.y*sxr+zz*cxr;
+  return {X:cx+x*scale, Y:cy+y*scale, Z:zz};
+}
+function fade(center,width){var d=Math.abs(z-center); return Math.max(0,1-d/width);}
+
+/* ---------- level painters ---------- */
+function drawBrain(a,S,cx,cy){
+  var pts=BRAIN.map(function(p){var q=proj(p,S,cx,cy); q.c=p.c; return q;});
+  pts.sort(function(m,n){return m.Z-n.Z;});
+  for(var i=0;i<pts.length;i++){
+    var p=pts[i], f=(p.Z+90)/180;
+    X.globalAlpha=a*(0.18+f*0.7); X.fillStyle=COL[p.c];
+    X.beginPath(); X.arc(p.X,p.Y,D*(0.8+f*1.3),0,6.283); X.fill();
+  }
+}
+function drawNet(a,S,cx,cy){
+  var pts=NET.map(function(p){var q=proj(p,S,cx,cy); q.c=p.c; q.r=p.r; return q;});
+  for(var i=0;i<NET.links.length;i++){
+    var A=pts[NET.links[i][0]], B=pts[NET.links[i][1]];
+    X.globalAlpha=a*0.13; X.strokeStyle='#6E6A8C'; X.lineWidth=D*.7;
+    X.beginPath(); X.moveTo(A.X,A.Y); X.lineTo(B.X,B.Y); X.stroke();
+    if(!reduce){
+      var u=((performance.now()/1000*0.3+NET.links[i][2])%1);
+      X.globalAlpha=a*(0.55-Math.abs(u-.5))*.9; X.fillStyle=COL.amber;
+      X.beginPath(); X.arc(A.X+(B.X-A.X)*u, A.Y+(B.Y-A.Y)*u, D*1.1,0,6.283); X.fill();
+    }
+  }
+  pts.sort(function(m,n){return m.Z-n.Z;});
+  for(i=0;i<pts.length;i++){
+    var p=pts[i], f=(p.Z+80)/160;
+    X.globalAlpha=a*(0.3+f*0.7); X.fillStyle=COL[p.c];
+    X.beginPath(); X.arc(p.X,p.Y,D*p.r*(0.6+f*0.6),0,6.283); X.fill();
+  }
+}
+function drawNeuron(a,S,cx,cy){
+  // dendrites
+  for(var i=0;i<TREE.length;i++){
+    var s=TREE[i];
+    var A=proj({x:s.x1,y:s.y1,z:s.z1},S,cx,cy), B=proj({x:s.x2,y:s.y2,z:s.z2},S,cx,cy);
+    var f=(A.Z+60)/120;
+    X.globalAlpha=a*(0.28+f*0.62); X.strokeStyle=COL.violet;
+    X.lineWidth=Math.max(D*.6, D*s.w*S*0.055); X.lineCap='round';
+    X.beginPath(); X.moveTo(A.X,A.Y); X.lineTo(B.X,B.Y); X.stroke();
+  }
+  // soma
+  var so=proj({x:0,y:26,z:0},S,cx,cy);
+  X.globalAlpha=a; X.fillStyle=COL.amber;
+  X.beginPath();
+  for(var k=0;k<=22;k++){var an=k/22*6.283, rr=S*(9+Math.sin(an*3)*1.5);
+    var xx=so.X+Math.cos(an)*rr, yy=so.Y+Math.sin(an)*rr*0.92;
+    k?X.lineTo(xx,yy):X.moveTo(xx,yy);}
+  X.closePath(); X.fill();
+  // axon + myelin
+  X.globalAlpha=a*.85; X.strokeStyle=COL.sky; X.lineWidth=D*2.4;
+  var ax=proj({x:0,y:36,z:0},S,cx,cy), bx=proj({x:0,y:104,z:0},S,cx,cy);
+  X.beginPath(); X.moveTo(ax.X,ax.Y); X.lineTo(bx.X,bx.Y); X.stroke();
+  for(var m=0;m<6;m++){
+    var t=(m+.5)/6, mx=ax.X+(bx.X-ax.X)*t, my=ax.Y+(bx.Y-ax.Y)*t;
+    X.globalAlpha=a*.5; X.fillStyle=COL.pale;
+    X.beginPath(); X.ellipse(mx,my,S*2.6,S*1.5,0,0,6.283); X.fill();
+  }
+}
+function drawSpines(a,S,cx,cy){
+  // shaft
+  var A=proj({x:-95,y:0,z:0},S,cx,cy), B=proj({x:95,y:0,z:0},S,cx,cy);
+  X.globalAlpha=a*.9; X.strokeStyle=COL.pale; X.lineWidth=D*S*0.30; X.lineCap='round';
+  X.beginPath(); X.moveTo(A.X,A.Y); X.lineTo(B.X,B.Y); X.stroke();
+  for(var i=0;i<SPINES.length;i++){
+    var s=SPINES[i];
+    var base={x:s.t, y:0, z:0};
+    var dir={x:0, y:-Math.cos(s.a), z:Math.sin(s.a)};
+    var neck={x:base.x, y:dir.y*s.len, z:dir.z*s.len};
+    var P0=proj(base,S,cx,cy), P1=proj(neck,S,cx,cy);
+    X.globalAlpha=a*.8; X.strokeStyle=COL.rose; X.lineWidth=D*S*0.075;
+    X.beginPath(); X.moveTo(P0.X,P0.Y); X.lineTo(P1.X,P1.Y); X.stroke();
+    X.globalAlpha=a*.95; X.fillStyle=COL.violet;
+    X.beginPath(); X.arc(P1.X,P1.Y,S*s.head*0.35,0,6.283); X.fill();
+  }
+}
+function drawMembrane(a,S,cx,cy){
+  var w=C.width, top=C.height*0.44, gap=S*11;
+  // bilayer: two rows of phospholipid heads
+  X.globalAlpha=a*.55; X.fillStyle=COL.pale;
+  for(var row=0;row<2;row++){
+    var yy=top+row*gap;
+    for(var x2=-20; x2<w+20; x2+=S*5.2){
+      X.beginPath(); X.arc(x2, yy, S*2.0, 0, 6.283); X.fill();
+      X.globalAlpha=a*.2;
+      X.beginPath(); X.moveTo(x2,yy); X.lineTo(x2, yy+(row?-gap*.38:gap*.38));
+      X.lineWidth=D*.8; X.strokeStyle=COL.pale; X.stroke();
+      X.globalAlpha=a*.55;
+    }
+  }
+  // receptors
+  var R=[['amber','TrkB',0.20],['rose','p75NTR',0.40],['violet','5-HT2A',0.60],['sky','NMDA',0.80]];
+  for(var i=0;i<R.length;i++){
+    var rx2=w*R[i][2];
+    X.globalAlpha=a; X.fillStyle=COL[R[i][0]];
+    X.beginPath(); X.roundRect(rx2-S*3.2, top-S*5.5, S*6.4, gap+S*11, S*2); X.fill();
+    X.globalAlpha=a*.16;
+    X.beginPath(); X.arc(rx2, top+gap/2, S*13,0,6.283); X.fill();
+    X.globalAlpha=a*.9; X.fillStyle=COL.pale; X.font=(11*D)+'px ui-monospace,Menlo,monospace';
+    X.textAlign='center'; X.fillText(R[i][1], rx2, top+gap+S*22);
+  }
+  // ligands drifting in from above
+  if(!reduce){
+    var tt=performance.now()/1000;
+    for(var m=0;m<30;m++){
+      var ph=((m*0.163)+tt*0.16)%1;
+      var lx=(m*137.5)%w, ly=top-S*46+ph*S*40;
+      X.globalAlpha=a*(1-ph)*0.75; X.fillStyle= m%3===0?COL.violet:COL.amber;
+      X.beginPath(); X.arc(lx,ly,S*1.5,0,6.283); X.fill();
+    }
+  }
+}
+
+/* ---------- loop ---------- */
+function paint(){
+  size();
+  var w=C.width,h=C.height,cx=w/2,cy=h/2;
+  if(w<2||h<2) return false;
+  X.clearRect(0,0,w,h);
+  var base=Math.min(w,h);
+
+  // exponential zoom: each level grows as you approach and overshoots as you pass
+  // through it. Always positive, unlike a linear ramp, which flips sign and mirrors
+  // the geometry before it ever reaches zero.
+  function S(level,ref){ return Math.max(0.02, base/ref*Math.pow(2.7, z-level)); }
+
+  var a0=fade(0,1.05); if(a0>0) drawBrain(a0,    S(0,175), cx, cy);
+  var a1=fade(1,1.05); if(a1>0) drawNet(a1,      S(1,230), cx, cy);
+  var a2=fade(2,1.05); if(a2>0) drawNeuron(a2,   S(2,300), cx, cy);
+  var a3=fade(3,1.05); if(a3>0) drawSpines(a3,   S(3,260), cx, cy);
+  var a4=fade(4,1.05); if(a4>0) drawMembrane(a4, S(4,300), cx, cy);
+
+  X.globalAlpha=1;
+  return true;
+}
+function frame(){
+  z+=(zT-z)*0.09;
+  if(!drag&&!reduce) ry+=0.0018;
+  paint();
+  requestAnimationFrame(frame);
+}
+requestAnimationFrame(frame);
+// hidden documents suspend rAF; expose a manual paint for testing and for
+// panes that report a zero-size viewport until they become visible
+window.__paint=function(depth){ if(depth!=null){z=zT=depth;} return paint(); };
+
+/* ---------- controls ---------- */
+function setZ(v){
+  zT=Math.max(0,Math.min(LEVELS.length-1,v));
+  var i=Math.round(zT), L=LEVELS[i];
+  document.getElementById('c-scale').innerHTML=L.tag+' &middot; '+L.unit;
+  document.getElementById('c-title').textContent=L.title;
+  document.getElementById('c-body').textContent=L.body;
+  document.getElementById('c-cite').innerHTML=L.cite;
+  var ul=document.getElementById('c-parts'); ul.innerHTML='';
+  L.parts.forEach(function(p){
+    var li=document.createElement('li');
+    li.innerHTML='<i style="background:'+COL[p[1]]+'"></i>'+p[0];
+    ul.appendChild(li);
+  });
+  var pct=zT/(LEVELS.length-1)*100;
+  document.getElementById('fill').style.height=pct+'%';
+  document.getElementById('knob').style.top='calc('+pct+'% - 5px)';
+  document.querySelectorAll('.tick').forEach(function(b,k){
+    b.setAttribute('aria-current', k===i?'true':'false');});
+}
+
+var T=document.getElementById('ticks');
+LEVELS.forEach(function(L,i){
+  var b=document.createElement('button');
+  b.className='tick'; b.innerHTML=L.tag+'<small>'+L.unit+'</small>';
+  b.addEventListener('click',function(){setZ(i);});
+  T.appendChild(b);
+});
+
+addEventListener('wheel',function(e){e.preventDefault(); setZ(zT+e.deltaY*0.0022);},{passive:false});
+C.addEventListener('pointerdown',function(e){drag=true;px=e.clientX;py=e.clientY;
+  C.classList.add('drag'); C.setPointerCapture(e.pointerId);});
+C.addEventListener('pointermove',function(e){ if(!drag) return;
+  ry+=(e.clientX-px)*0.007; rx+=(e.clientY-py)*0.004;
+  rx=Math.max(-0.7,Math.min(0.7,rx)); px=e.clientX; py=e.clientY;});
+C.addEventListener('pointerup',function(){drag=false;C.classList.remove('drag');});
+addEventListener('keydown',function(e){
+  if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();setZ(Math.round(zT)+1);}
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();setZ(Math.round(zT)-1);}
+});
+setZ(0);
+})();
+</script>

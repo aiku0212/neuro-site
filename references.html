@@ -1,0 +1,310 @@
+<title>Sources</title>
+
+<style>
+  :root{
+    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
+    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
+    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --rose:#C98BB8;
+    --bar:54px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font:400 15px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums}
+  .serif{font-family:Georgia,"Iowan Old Style",serif}
+  a{color:var(--violet)} a:hover{color:var(--amber)}
+
+  .bar{position:sticky;top:0;height:var(--bar);z-index:20;display:flex;
+    align-items:center;gap:20px;padding:0 18px;background:rgba(10,12,18,.9);
+    backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+  .brand{font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
+  .brand b{font-weight:400;color:var(--amber)}
+  .tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+  .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;
+    text-transform:uppercase;padding:9px 14px;color:var(--muted);
+    border:1px solid transparent;border-radius:2px;text-decoration:none}
+  .tab:hover{color:var(--ink-2)}
+  .tab[aria-current="true"]{color:var(--ink);border-color:var(--rule);
+    background:var(--panel-2)}
+
+  main{max-width:940px;margin:0 auto;padding:clamp(40px,6vw,72px) 22px 90px}
+  h1{font-size:clamp(30px,5vw,46px);line-height:1.05;margin:0 0 14px;font-weight:400;
+    letter-spacing:-.02em}
+  .lede{font-size:17px;color:var(--ink-2);max-width:62ch;margin:0 0 12px}
+  .counts{display:flex;gap:10px;flex-wrap:wrap;margin:22px 0 34px}
+  .counts div{background:var(--panel);border:1px solid var(--rule);border-radius:2px;
+    padding:11px 15px}
+  .counts b{display:block;font-size:23px;font-weight:400;color:var(--amber);
+    letter-spacing:-.02em}
+  .counts span{font-size:9.5px;letter-spacing:.13em;text-transform:uppercase;
+    color:var(--muted)}
+
+  .filters{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 26px;position:sticky;
+    top:var(--bar);background:var(--bg);padding:12px 0;z-index:10;
+    border-bottom:1px solid var(--rule)}
+  .f{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.11em;
+    text-transform:uppercase;padding:8px 13px;background:none;color:var(--muted);
+    border:1px solid var(--rule);border-radius:2px;cursor:pointer}
+  .f:hover{color:var(--ink-2)}
+  .f[aria-pressed="true"]{background:var(--amber);color:#0A0C12;border-color:var(--amber)}
+
+  .grp{margin:0 0 34px}
+  .grp h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 4px;font-weight:400}
+  .grp .gnote{font-size:13px;color:var(--muted);margin:0 0 14px;max-width:64ch}
+
+  .ref{display:grid;grid-template-columns:34px 1fr auto;gap:14px;align-items:baseline;
+    padding:13px 0;border-top:1px solid var(--rule)}
+  .ref .n{color:var(--muted);font-size:11px}
+  .ref .t{margin:0 0 3px;font-size:15px;line-height:1.4;color:var(--ink)}
+  .ref .m{margin:0;font-size:12.5px;color:var(--muted)}
+  .ref .m em{font-style:italic;color:var(--ink-2)}
+  .ref .c{font-size:11px;color:var(--muted);white-space:nowrap;text-align:right}
+  .ref .c b{display:block;color:var(--teal);font-weight:400;font-size:14px}
+  .tagline{display:inline-block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
+    padding:2px 7px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);
+    margin-left:7px;vertical-align:middle}
+  .tagline.null{color:var(--rose);border-color:#4A2F3E}
+  .tagline.key{color:var(--amber);border-color:#4A3A22}
+
+  .caveat{background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--amber);
+    border-radius:2px;padding:18px 20px;margin:0 0 34px}
+  .caveat h3{margin:0 0 9px;font-size:15px;font-weight:400;color:var(--ink)}
+  .caveat p{margin:0 0 9px;font-size:13.5px;color:var(--ink-2)}
+  .caveat p:last-child{margin:0}
+
+  footer{border-top:1px solid var(--rule);padding:30px 22px 60px;text-align:center;
+    color:var(--muted);font-size:12px}
+  @media (max-width:640px){
+    .ref{grid-template-columns:26px 1fr;gap:10px}
+    .ref .c{grid-column:2;text-align:left;margin-top:4px}
+  }
+</style>
+
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="app.html">Analyze</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="references.html" aria-current="true">Sources</a>
+  </nav>
+</div>
+
+<main>
+  <h1 class="serif">Everything this site claims, and where it came from</h1>
+  <p class="lede">Retrieved from Consensus, PubMed and ClinicalTrials.gov. Null
+    results are listed alongside positive ones and marked, because a source that
+    found nothing is doing more work here than one that found something.</p>
+
+  <div class="counts">
+    <div><b class="mono" id="k-total">0</b><span>Sources</span></div>
+    <div><b class="mono" id="k-null">0</b><span>Null / negative</span></div>
+    <div><b class="mono" id="k-meta">0</b><span>Meta-analyses</span></div>
+    <div><b class="mono" id="k-span">0</b><span>Year span</span></div>
+  </div>
+
+  <div class="caveat">
+    <h3>Where the citations are weakest</h3>
+    <p>The pharmacology page describes stimulant, opioid, benzodiazepine and
+      cannabinoid mechanisms without primary citations. Those mechanisms are settled
+      and appear in every pharmacology textbook, but "textbook consensus" is not a
+      reference, and that section is the least defensible part of the site.</p>
+    <p>Fixing it means citing the original characterisation papers for each receptor
+      and transporter. That work has not been done yet, and until it is, treat the
+      psychedelic and plasticity sections as the rigorous ones.</p>
+  </div>
+
+  <div class="filters" id="filters"></div>
+  <div id="groups"></div>
+</main>
+
+<footer class="mono">
+  Compiled August 2026 &middot; citation counts as reported at retrieval<br>
+  Written from primary literature, not from lecture material.
+</footer>
+
+<script>
+(function(){
+var REFS=[
+ {g:'bdnf', t:'Effects of psychoplastogens on blood levels of BDNF in humans: a systematic review and meta-analysis',
+  a:'Calder et al.', y:2024, j:'Molecular Psychiatry', c:17, tag:'null', meta:1,
+  note:'29 studies, SMD 0.024, p = 0.64'},
+ {g:'bdnf', t:'Psychedelics promote plasticity by directly binding to BDNF receptor TrkB',
+  a:'Moliner et al.', y:2023, j:'Nature Neuroscience', tag:'key',
+  doi:'10.1038/s41593-023-01316-5'},
+ {g:'bdnf', t:'Rethinking the role of TRKB in the action of antidepressants and psychedelics',
+  a:'Brunello, Cannarozzo &amp; Castr&eacute;n', y:2024, j:'Trends in Neurosciences',
+  doi:'10.1016/j.tins.2024.08.011'},
+ {g:'bdnf', t:'Activation of p75NTR by proBDNF facilitates hippocampal long-term depression',
+  a:'Woo et al.', y:2005, j:'Nature Neuroscience', c:815, tag:'key'},
+ {g:'bdnf', t:'ProBDNF negatively regulates neuronal remodeling, synaptic transmission and synaptic plasticity in hippocampus',
+  a:'Yang et al.', y:2014, j:'Cell Reports', c:317},
+ {g:'bdnf', t:'BDNF as a biomarker for successful treatment of mood disorders: a systematic &amp; quantitative meta-analysis',
+  a:'Polyakova et al.', y:2015, j:'Journal of Affective Disorders', c:468, meta:1},
+ {g:'bdnf', t:'Peripheral BDNF as a biomarker in bipolar disorder: a meta-analysis of 52 studies',
+  a:'Fernandes et al.', y:2015, j:'BMC Medicine', c:274, meta:1},
+ {g:'bdnf', t:'BDNF as a biomarker for neuropathic pain: mechanisms and measurement challenges',
+  a:'Thakkar et al.', y:2023, j:'Brain and Behavior', c:59},
+
+ {g:'psy', t:'Psilocybin induces rapid and persistent growth of dendritic spines in frontal cortex in vivo',
+  a:'Shao et al.', y:2021, j:'Neuron', c:458, tag:'key'},
+ {g:'psy', t:"Psilocybin's lasting action requires pyramidal cell types and 5-HT2A receptors",
+  a:'Shao et al.', y:2025, j:'Nature', c:69},
+ {g:'psy', t:'Psychedelics promote neuroplasticity through activation of intracellular 5-HT2A receptors',
+  a:'Vargas et al.', y:2023, j:'Science', c:402, tag:'key'},
+ {g:'psy', t:'Psilocybin desynchronizes the human brain',
+  a:'Siegel et al.', y:2024, j:'Nature', c:213, tag:'key'},
+ {g:'psy', t:'Psilocin fosters neuroplasticity in iPSC-derived human cortical neurons',
+  a:'Schmidt et al.', y:2026, j:'eLife', c:9},
+ {g:'psy', t:'Psychedelics and neuroplasticity: a systematic review unraveling the biological underpinnings',
+  a:'de Vos et al.', y:2021, j:'Frontiers in Psychiatry', c:237, meta:1},
+ {g:'psy', t:'Psychedelics reopen the social reward learning critical period',
+  a:'Nardou et al.', y:2023, j:'Nature', c:281, tag:'key'},
+ {g:'psy', t:'The emerging neurobiology of psychedelics: critical periods, metaplasticity, and extracellular matrix remodeling',
+  a:'D&ouml;len et al.', y:2026, j:'Annual Review of Neuroscience', c:1},
+ {g:'psy', t:'Psychedelics and the extracellular matrix: rewiring neuroplasticity and metaplasticity',
+  a:'Zhang et al.', y:2026, j:'Biological Psychiatry', c:1},
+
+ {g:'cp', t:'Balancing plasticity/stability across brain development',
+  a:'Takesian &amp; Hensch', y:2013, j:'Progress in Brain Research', c:595, tag:'key'},
+ {g:'cp', t:'Critical periods of brain development',
+  a:'Cisneros-Franco et al.', y:2020, j:'Handbook of Clinical Neurology', c:23},
+ {g:'cp', t:'Neuronal and astrocyte determinants of critical periods of plasticity',
+  a:'Andrade-Talavera et al.', y:2023, j:'Trends in Neurosciences', c:30},
+ {g:'cp', t:'Removal of perineuronal nets unlocks juvenile plasticity through decreased inhibition and increased gamma activity',
+  a:'Lensj&oslash; et al.', y:2017, j:'Journal of Neuroscience', c:257},
+ {g:'cp', t:'Otx2 binding to perineuronal nets persistently regulates plasticity in the mature visual cortex',
+  a:'Beurdeley et al.', y:2012, j:'Journal of Neuroscience', c:387},
+ {g:'cp', t:'Perineuronal nets: plasticity, protection, and therapeutic potential',
+  a:'Reichelt et al.', y:2019, j:'Trends in Neurosciences', c:197},
+
+ {g:'bird', t:'Perineuronal nets and vocal plasticity in songbirds: closed-ended versus open-ended learning',
+  a:'Cornez et al.', y:2017, j:'Developmental Neurobiology', c:38, tag:'key'},
+ {g:'bird', t:'Maximized song learning of juvenile male zebra finches following BDNF expression in the HVC',
+  a:'Dittrich et al.', y:2013, j:'European Journal of Neuroscience', c:17, tag:'key'},
+ {g:'bird', t:'Developmental changes in BDNF protein in the song control nuclei of zebra finches',
+  a:'Tang et al.', y:2013, j:'Neuroscience', c:20},
+ {g:'bird', t:'Developmental song learning as a model to understand neural mechanisms that limit and promote the ability to learn',
+  a:'London', y:2017, j:'Behavioural Processes', c:23},
+ {g:'bird', t:'Seasonal regulation of singing-driven gene expression associated with song plasticity in the canary',
+  a:'Hayase et al.', y:2021, j:'Molecular Brain', c:2},
+ {g:'bird', t:'Song plasticity over time and vocal learning in clay-colored thrushes',
+  a:'Vargas-Castro et al.', y:2015, j:'Animal Cognition', c:9},
+
+ {g:'int', t:'Exercise training alters resting BDNF concentration in older adults: meta-analysis of RCTs',
+  a:'Gholami et al.', y:2024, j:'Experimental Gerontology', c:28, meta:1, tag:'key',
+  note:'35 RCTs, SMD 0.56'},
+ {g:'int', t:'Effects of physical exercise on plasma BDNF in neurodegenerative disorders',
+  a:'Ruiz-Gonz&aacute;lez et al.', y:2021, j:'Neuroscience &amp; Biobehavioral Reviews', c:127, meta:1},
+ {g:'int', t:'Exercise-induced increase in blood-based BDNF in people with multiple sclerosis',
+  a:'Shobeiri et al.', y:2022, j:'PLoS ONE', c:47, meta:1},
+ {g:'int', t:'Time-dependent comparison of serum BDNF following high-intensity interval and continuous exercise',
+  a:'Birinci et al.', y:2026, j:'Scientific Reports', c:1, tag:'key',
+  note:'Peak at 15 min, baseline by 60'},
+ {g:'int', t:'Exercise intensity and recovery on circulating brain-derived neurotrophic factor',
+  a:'Reycraft et al.', y:2019, j:'Medicine &amp; Science in Sports &amp; Exercise', c:76},
+ {g:'int', t:'Aerobic exercise increases BDNF in sub-acute stroke: a randomized controlled trial',
+  a:'Mackay et al.', y:2026, j:'Topics in Stroke Rehabilitation', c:3},
+ {g:'int', t:'Physical exercise performed four hours after learning improves memory retention',
+  a:'van Dongen et al.', y:2016, j:'Current Biology', c:122, tag:'key'},
+ {g:'int', t:'Temporal effects of acute walking exercise on learning and memory function',
+  a:'Sng et al.', y:2018, j:'American Journal of Health Promotion', c:103},
+ {g:'int', t:'Higher intensity exercise after encoding is more conducive to episodic memory retention',
+  a:'Makepeace et al.', y:2024, j:'PLOS ONE', c:5},
+ {g:'int', t:'Effects of meditation and mind-body exercise on BDNF: a literature review of human experimental studies',
+  a:'You et al.', y:2020, j:'Sports Medicine and Health Science', c:22, tag:'null',
+  note:'15 studies, 5 uncontrolled'},
+ {g:'int', t:'Increased BDNF, cortisol awakening response and altered inflammatory markers after a 3-month yoga and meditation retreat',
+  a:'Cahn et al.', y:2017, j:'Frontiers in Human Neuroscience', c:261, tag:'null',
+  note:'No control group; authors note exercise confound'},
+ {g:'int', t:'Effect of calorie restriction and intermittent fasting on BDNF and cognitive function: a systematic review',
+  a:'Alkurd et al.', y:2024, j:'Medicina', c:40, meta:1, tag:'null',
+  note:'5 up, 5 down, 6 no change'},
+ {g:'int', t:'The effect of dietary interventions on BDNF levels in adults: a systematic review of clinical trials',
+  a:'Mohamadinarab et al.', y:2026, j:'BMC Nutrition', c:5, meta:1},
+ {g:'int', t:'Effects of dietary weight loss on BDNF in individuals with overweight and obesity',
+  a:'Ashtary-Larky et al.', y:2026, j:'Nutrition Reviews', c:2, meta:1, tag:'null'},
+
+ {g:'gen', t:'BDNF Val66Met polymorphism modulates early TMS-EEG plasticity and rTMS efficacy after ischemic stroke',
+  a:'Lin', y:2026, j:'Neurological Sciences', c:1, tag:'key',
+  note:'Val/Val 0.22, Val/Met 0.12, Met/Met 0.07'},
+ {g:'gen', t:'BDNF gene polymorphisms predicting treatment response to CBT-based rehabilitation of depression',
+  a:'Schosser et al.', y:2022, j:'European Neuropsychopharmacology', c:11},
+ {g:'gen', t:'BDNF gene polymorphism predicts response to continuous theta burst stimulation in chronic stroke',
+  a:'Parchure et al.', y:2021, j:'Neuromodulation', c:14},
+ {g:'gen', t:'Assessing the mechanisms of brain plasticity by transcranial magnetic stimulation',
+  a:'Jannati et al.', y:2022, j:'Neuropsychopharmacology', c:233},
+ {g:'gen', t:'Real-time EEG-defined excitability states determine efficacy of TMS-induced plasticity in human motor cortex',
+  a:'Zrenner et al.', y:2017, j:'Brain Stimulation', c:411, tag:'key'},
+ {g:'gen', t:'Measuring brain stimulation induced changes in cortical properties using TMS-EEG',
+  a:'Chung et al.', y:2015, j:'Brain Stimulation', c:131}
+];
+
+var GROUPS=[
+ {id:'bdnf', name:'BDNF signalling and its measurement',
+  note:'The distinction the rest of the site depends on: signalling at TrkB versus concentration in blood.'},
+ {id:'psy', name:'Psychedelics and structural plasticity',
+  note:'Cellular, animal and human imaging evidence. The strongest-evidenced section here.'},
+ {id:'cp', name:'Critical periods and perineuronal nets',
+  note:'Why plasticity closes, and what it costs to reopen it.'},
+ {id:'bird', name:'Songbirds and comparative learning',
+  note:'Species that learn once versus species that learn for life, and the structural difference between them.'},
+ {id:'int', name:'Interventions: exercise, diet, meditation',
+  note:'Includes the nulls. Exercise survives pooling; fasting and meditation do not.'},
+ {id:'gen', name:'Genotype and stimulation-based measurement',
+  note:'Val66Met, and the TMS-EEG methods proposed as an alternative to blood biomarkers.'}
+];
+
+var filter='all';
+function render(){
+  var box=document.getElementById('groups'); box.innerHTML='';
+  var n=1;
+  GROUPS.forEach(function(g){
+    var items=REFS.filter(function(r){
+      if(r.g!==g.id) return false;
+      if(filter==='null') return r.tag==='null';
+      if(filter==='meta') return r.meta;
+      if(filter==='key') return r.tag==='key';
+      return true;});
+    if(!items.length) return;
+    var d=document.createElement('div'); d.className='grp';
+    var html='<h2>'+g.name+'</h2><p class="gnote">'+g.note+'</p>';
+    items.forEach(function(r){
+      var tag = r.tag==='null' ? '<span class="tagline null">null</span>'
+              : r.tag==='key'  ? '<span class="tagline key">load-bearing</span>' : '';
+      var meta = r.a+', <em>'+r.j+'</em>, '+r.y
+        + (r.doi? ' &middot; <a href="https://doi.org/'+r.doi+'">doi</a>':'')
+        + (r.note? ' &middot; '+r.note : '');
+      html+='<div class="ref"><span class="n mono">'+(n++)+'</span>'+
+        '<div><p class="t">'+r.t+tag+'</p><p class="m">'+meta+'</p></div>'+
+        '<span class="c mono">'+(r.c!=null?('<b>'+r.c+'</b>citations'):'')+'</span></div>';
+    });
+    d.innerHTML=html; box.appendChild(d);
+  });
+}
+var F=[['all','All'],['key','Load-bearing'],['null','Null results'],['meta','Meta-analyses']];
+var FW=document.getElementById('filters');
+F.forEach(function(f){
+  var b=document.createElement('button'); b.className='f'; b.textContent=f[1];
+  b.setAttribute('aria-pressed', f[0]==='all'?'true':'false');
+  b.addEventListener('click',function(){ filter=f[0]; render();
+    document.querySelectorAll('.f').forEach(function(x,i){
+      x.setAttribute('aria-pressed', F[i][0]===filter?'true':'false');});});
+  FW.appendChild(b);
+});
+
+var yrs=REFS.map(function(r){return r.y;});
+document.getElementById('k-total').textContent=REFS.length;
+document.getElementById('k-null').textContent=REFS.filter(function(r){return r.tag==='null';}).length;
+document.getElementById('k-meta').textContent=REFS.filter(function(r){return r.meta;}).length;
+document.getElementById('k-span').textContent=(Math.max.apply(null,yrs)-Math.min.apply(null,yrs));
+render();
+})();
+</script>

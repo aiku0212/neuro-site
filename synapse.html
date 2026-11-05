@@ -1,0 +1,584 @@
+<title>Dendritic Spines</title>
+
+<style>
+  :root{
+    --ground:#0C0E14; --ground-2:#141826; --ground-3:#1C2133;
+    --ink:#EDEAF2; --ink-2:#B6B2C8; --muted:#7B7794;
+    --violet:#9B7BD6; --violet-dim:#5E4A85;
+    --amber:#D9A05B; --amber-dim:#8A6535;
+    --rose:#E4737B; --sky:#6FA8DC;
+    --rule:#262B3D;
+    --shadow:0 24px 60px -20px rgba(0,0,0,.75);
+  }
+  @media (prefers-color-scheme: light){
+    :root:not([data-theme="dark"]){
+      --ground:#F2EDE3; --ground-2:#E8E1D3; --ground-3:#DED5C4;
+      --ink:#231D14; --ink-2:#4A4032; --muted:#786B58;
+      --violet:#6B4BA3; --violet-dim:#A794C6;
+      --amber:#9A5F1E; --amber-dim:#C7A472;
+      --rose:#B03A45; --sky:#2C5F91;
+      --rule:#D0C5B0;
+    }
+  }
+  :root[data-theme="light"]{
+    --ground:#F2EDE3; --ground-2:#E8E1D3; --ground-3:#DED5C4;
+    --ink:#231D14; --ink-2:#4A4032; --muted:#786B58;
+    --violet:#6B4BA3; --violet-dim:#A794C6;
+    --amber:#9A5F1E; --amber-dim:#C7A472;
+    --rose:#B03A45; --sky:#2C5F91; --rule:#D0C5B0;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0}
+  .wrap{background:var(--ground); color:var(--ink); min-height:100vh;
+    font:400 16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .serif{font-family:Georgia,"Iowan Old Style","Times New Roman",serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
+
+  .bar{display:flex; align-items:center; gap:22px; flex-wrap:wrap;
+    padding:14px 20px; border-bottom:1px solid var(--rule);
+    background:var(--ground-2); position:sticky; top:0; z-index:30}
+  .brand{font:600 15px/1 Georgia,serif}
+  .brand b{color:var(--amber); font-weight:600}
+  .tabs{display:flex; gap:16px; flex-wrap:wrap}
+  .tab{font-size:13px; color:var(--ink-2); text-decoration:none; padding:3px 0;
+    border-bottom:1.5px solid transparent}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-current]{color:var(--amber); border-bottom-color:var(--amber)}
+
+  .stage{position:relative; height:min(78vh,760px); min-height:520px;
+    border-bottom:1px solid var(--rule); background:var(--ground)}
+  #gl{width:100%; height:100%; display:block; cursor:grab; touch-action:none}
+  #gl.drag{cursor:grabbing}
+
+  .mast{position:absolute; top:26px; left:26px; right:26px; pointer-events:none; z-index:2}
+  .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase;
+    color:var(--amber); margin:0 0 10px}
+  h1{font-size:clamp(26px,4vw,44px); line-height:1.05; margin:0; font-weight:400;
+    max-width:17ch; text-shadow:0 2px 24px rgba(0,0,0,.5)}
+  h1 em{font-style:italic; color:var(--violet)}
+
+  .hud{position:absolute; left:26px; bottom:22px; display:flex; gap:26px;
+    flex-wrap:wrap; align-items:flex-end; z-index:2}
+  .scalebar{pointer-events:none}
+  .scalebar .line{height:2px; background:var(--ink-2); margin-bottom:5px}
+  .scalebar span{font-size:10px; letter-spacing:.1em; color:var(--muted)}
+  .hint{font-size:10px; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--muted); pointer-events:none}
+
+  .panel{position:absolute; top:22px; right:22px; width:264px; z-index:3;
+    background:color-mix(in srgb, var(--ground-2) 92%, transparent);
+    border:1px solid var(--rule); border-radius:10px; padding:15px;
+    box-shadow:var(--shadow); backdrop-filter:blur(8px)}
+  @media (max-width:820px){
+    .panel{position:static; width:auto; margin:14px 20px 0; backdrop-filter:none}
+    .mast{position:static; padding:26px 20px 0}
+    .hud{position:static; padding:14px 20px 0}
+    .stage{height:auto; min-height:0}
+    #gl{height:56vh}
+  }
+  .panel h3{font-size:10px; letter-spacing:.16em; text-transform:uppercase;
+    color:var(--amber); margin:0 0 10px; font-weight:600}
+  .classes{display:flex; flex-direction:column; gap:4px; margin-bottom:14px}
+  .cls{display:flex; align-items:center; gap:9px; padding:6px 8px; border-radius:6px;
+    cursor:pointer; border:1px solid transparent; background:none; width:100%;
+    font:inherit; font-size:12px; color:var(--ink-2); text-align:left}
+  .cls:hover{background:var(--ground-3)}
+  .cls[aria-pressed="true"]{border-color:var(--rule); background:var(--ground-3); color:var(--ink)}
+  .cls .dot{width:9px; height:9px; border-radius:50%; flex:none}
+  .cls .n{margin-left:auto; font-family:ui-monospace,monospace; font-size:11px; color:var(--muted)}
+
+  .ctl label{display:flex; justify-content:space-between; align-items:baseline;
+    font-size:12px; color:var(--ink-2); margin:12px 0 5px}
+  .ctl output{font-family:ui-monospace,monospace; font-size:11px; color:var(--amber)}
+  input[type=range]{width:100%; accent-color:var(--violet)}
+  input:focus-visible, button:focus-visible{outline:2px solid var(--violet); outline-offset:2px}
+
+  .inspect{border-top:1px solid var(--rule); margin-top:13px; padding-top:11px;
+    font-size:12px; min-height:92px}
+  .inspect b{display:block; font-size:13px; color:var(--ink); margin-bottom:5px}
+  .inspect .row{display:flex; justify-content:space-between; color:var(--ink-2);
+    font-family:ui-monospace,monospace; font-size:11px; padding:1.5px 0}
+  .inspect p{margin:7px 0 0; color:var(--ink-2); font-size:12px; line-height:1.5}
+
+  main{max-width:900px; margin:0 auto; padding:44px 20px 90px}
+  h2{font-size:24px; font-weight:400; margin:40px 0 8px}
+  p{color:var(--ink-2); max-width:66ch}
+  .facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(196px,1fr));
+    gap:16px; margin:24px 0}
+  .fact{border-left:2px solid var(--violet-dim); padding-left:13px}
+  .fact b{display:block; font-family:ui-monospace,monospace; font-size:19px;
+    color:var(--ink); margin-bottom:3px}
+  .fact span{font-size:13px; color:var(--ink-2)}
+  .cite{font-size:12px; color:var(--muted); margin-top:5px}
+  footer{border-top:1px solid var(--rule); margin-top:54px; padding:22px 0;
+    font-size:12px; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
+  footer a{color:var(--ink-2)}
+  .fallback{padding:40px 24px; color:var(--muted); font-size:14px}
+</style>
+
+<div class="wrap">
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html" aria-current="true">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="references.html">Sources</a>
+  </nav>
+</div>
+
+<section class="stage">
+  <canvas id="gl" aria-label="Rotatable 3D model of a dendrite segment covered in spines. Drag to rotate, scroll to zoom, click a spine to inspect it."></canvas>
+  <div class="mast">
+    <p class="eyebrow mono">Dendrite segment &middot; 20 microns</p>
+    <h1 class="serif">Memory has a <em>shape</em>, and this is it</h1>
+  </div>
+
+  <div class="panel">
+    <h3>Spine classes</h3>
+    <div class="classes" id="classes"></div>
+
+    <div class="ctl">
+      <label for="plast">Plasticity <output id="plastOut" class="mono">baseline</output></label>
+      <input id="plast" type="range" min="0" max="100" step="1" value="0"
+        aria-describedby="plastNote">
+    </div>
+
+    <div class="inspect" id="inspect">
+      <b>Click a spine</b>
+      <p id="plastNote">Thin spines grow into mushroom spines when a synapse is
+        strengthened. The slider runs that transition.</p>
+    </div>
+  </div>
+
+  <div class="hud">
+    <div class="scalebar"><div class="line" id="sbline" style="width:80px"></div>
+      <span class="mono" id="sbtext">2 &micro;m</span></div>
+    <span class="hint mono">Drag to rotate &middot; scroll to zoom &middot; click a spine</span>
+  </div>
+</section>
+
+<main>
+  <h2 class="serif">Why the shape is the whole story</h2>
+  <p>A spine is not decoration on a dendrite. It is a chemical compartment with a deliberately
+    narrow neck, and that neck is a resistor. It isolates whatever happens in the head from the rest
+    of the cell, so one synapse can change its own strength without dragging its neighbors with it.
+    Widen the neck and the compartment leaks. Grow the head and the synapse gets stronger, because
+    head volume tracks the number of AMPA receptors in the membrane above it almost linearly.</p>
+
+  <div class="facts">
+    <div class="fact"><b>0.5 to 2 &micro;m</b><span>Total spine length, base to top of head</span></div>
+    <div class="fact"><b>0.1 to 0.3 &micro;m</b><span>Neck diameter, the resistor</span></div>
+    <div class="fact"><b>1 to 3 per &micro;m</b><span>Density on a pyramidal apical dendrite</span></div>
+    <div class="fact"><b>~10,000</b><span>Spines on one cortical pyramidal cell</span></div>
+  </div>
+  <p class="cite">Dimensions from serial reconstruction of CA1 dendrites, Harris and Stevens,
+    <em>J. Neurosci.</em> 1989.</p>
+
+  <h2 class="serif">The four shapes are four life stages</h2>
+  <p>Classifying spines by shape sounds like taxonomy for its own sake until you watch them over
+    days. Thin spines appear and vanish within hours. Mushroom spines persist for months and carry
+    the large postsynaptic densities. The shape is a readout of how long a synapse has survived and
+    how much it currently matters, which is why a drug that shifts the population toward mushroom is
+    interesting and a drug that merely adds filopodia is not.</p>
+  <p class="cite">Stability by class, Holtmaat and Svoboda, <em>Nat. Rev. Neurosci.</em> 2009.
+    Psilocybin raising spine size and density about 10% within 24 hours, persisting a month,
+    Shao et al., <em>Neuron</em> 2021.</p>
+
+  <footer>
+    <a href="spike.html">Down a level: the membrane and the spike</a>
+    <a href="pharma.html">Down a level: the receptors in that membrane</a>
+    <a href="app.html">Up a level: the whole arbor</a>
+    <a href="references.html">Sources</a>
+  </footer>
+</main>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var host = document.getElementById("gl");
+  if (!window.THREE){
+    host.outerHTML = '<div class="fallback">The 3D library did not load, so the model is not '
+      + 'showing. Everything below still reads fine without it.</div>';
+    return;
+  }
+
+  // ---------------------------------------------------------------- biology
+  // Real measurements, micrometres. Harris & Stevens 1989, CA1 pyramidal.
+  // The previous 2D version drew every spine as a long stick with a ball on
+  // top, which is why it read wrong: necks were roughly four times too long
+  // relative to their heads, and all four classes looked identical.
+  var CLASSES = {
+    mushroom:  { label:"Mushroom", color:0x9B7BD6, share:0.45,
+                 head:[0.55,0.95], neck:[0.35,0.75], neckW:[0.12,0.20],
+                 psd:true,
+                 note:"Large head, constricted neck, big postsynaptic density. "
+                    + "Stable for months. These hold what you already learned." },
+    thin:      { label:"Thin", color:0x6FA8DC, share:0.35,
+                 head:[0.26,0.46], neck:[0.5,1.0], neckW:[0.09,0.14],
+                 psd:false,
+                 note:"Small head on a long narrow neck. Appears and disappears "
+                    + "within hours. This is the learning spine, and the one a "
+                    + "strengthened synapse grows out of." },
+    stubby:    { label:"Stubby", color:0xD9A05B, share:0.14,
+                 head:[0.35,0.55], neck:[0.0,0.12], neckW:[0.22,0.32],
+                 psd:true,
+                 note:"No real neck, so no chemical isolation. Common early in "
+                    + "development and after injury." },
+    filopodium:{ label:"Filopodium", color:0xE4737B, share:0.06,
+                 head:[0.09,0.14], neck:[1.6,3.0], neckW:[0.07,0.10],
+                 psd:false,
+                 note:"Long, headless, motile. Not a synapse yet. It is hunting "
+                    + "for an axon to touch." }
+  };
+  var ORDER = ["mushroom","thin","stubby","filopodium"];
+
+  var SHAFT_LEN = 20;        // micrometres of dendrite on screen
+  var SHAFT_R   = 0.55;      // shaft radius, micrometres
+  var DENSITY   = 1.6;       // spines per micrometre
+
+  function rnd(a, b){ return a + Math.random() * (b - a); }
+  function pickClass(){
+    var r = Math.random(), acc = 0;
+    for (var i = 0; i < ORDER.length; i++){
+      acc += CLASSES[ORDER[i]].share;
+      if (r <= acc) return ORDER[i];
+    }
+    return "thin";
+  }
+
+  // ---------------------------------------------------------------- scene
+  var scene = new THREE.Scene();
+  var camera = new THREE.PerspectiveCamera(38, 1, 0.1, 400);
+  var renderer = new THREE.WebGLRenderer({ canvas: host, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;
+  if ("outputColorSpace" in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
+
+  function themeDark(){
+    var t = document.documentElement.getAttribute("data-theme");
+    if (t) return t === "dark";
+    return !window.matchMedia || window.matchMedia("(prefers-color-scheme: dark)").matches;
+  }
+
+  var key = new THREE.DirectionalLight(0xffffff, 2.4);
+  key.position.set(6, 9, 7);
+  var rim = new THREE.DirectionalLight(0xA98BE8, 1.5);
+  rim.position.set(-8, 2, -6);
+  var fill = new THREE.HemisphereLight(0x8FA6D8, 0x241C33, 0.85);
+  scene.add(key, rim, fill);
+
+  var root = new THREE.Group();
+  scene.add(root);
+
+  // Dendrite shaft: a gently meandering tube, not a straight rod. Real
+  // dendrites wander and taper, and a perfectly straight cylinder is the
+  // second thing that made the old drawing read as a diagram.
+  var curvePts = [];
+  for (var i = 0; i <= 10; i++){
+    var t = i / 10;
+    curvePts.push(new THREE.Vector3(
+      (t - 0.5) * SHAFT_LEN,
+      Math.sin(t * 3.1) * 0.5 + Math.sin(t * 7.3) * 0.16,
+      Math.cos(t * 2.4) * 0.42));
+  }
+  var curve = new THREE.CatmullRomCurve3(curvePts);
+  var shaftGeo = new THREE.TubeGeometry(curve, 220, SHAFT_R, 26, false);
+  // taper: distal end is thinner
+  (function taper(){
+    var pos = shaftGeo.attributes.position, v = new THREE.Vector3();
+    for (var i = 0; i < pos.count; i++){
+      v.fromBufferAttribute(pos, i);
+      var u = (v.x + SHAFT_LEN / 2) / SHAFT_LEN;           // 0 at proximal
+      var k = 1 - 0.34 * u;
+      var c = curve.getPoint(Math.min(Math.max(u, 0), 1));
+      v.y = c.y + (v.y - c.y) * k;
+      v.z = c.z + (v.z - c.z) * k;
+      pos.setXYZ(i, v.x, v.y, v.z);
+    }
+    shaftGeo.computeVertexNormals();
+  })();
+
+  var membraneMat = new THREE.MeshStandardMaterial({
+    color: 0x6E5C91, roughness: 0.42, metalness: 0.0,
+    emissive: 0x201A33, emissiveIntensity: 0.6
+  });
+  var shaft = new THREE.Mesh(shaftGeo, membraneMat);
+  root.add(shaft);
+
+  // ---------------------------------------------------------------- spines
+  var spines = [];
+  var headGeo = new THREE.SphereGeometry(1, 28, 20);
+  var psdGeo = new THREE.SphereGeometry(1, 24, 12, 0, Math.PI * 2, 0, 0.62);
+
+  function buildSpine(spec){
+    var g = new THREE.Group();
+    var neckLen = rnd(spec.neck[0], spec.neck[1]);
+    var neckW = rnd(spec.neckW[0], spec.neckW[1]);
+    var headR = rnd(spec.head[0], spec.head[1]) / 2;
+
+    var mat = new THREE.MeshStandardMaterial({
+      color: spec.color, roughness: 0.34, metalness: 0.0,
+      emissive: spec.color, emissiveIntensity: 0.14
+    });
+
+    if (neckLen > 0.05){
+      // A real neck is narrowest in the middle and flares at both ends, so a
+      // lathe profile reads far better than a plain cylinder.
+      var prof = [];
+      for (var i = 0; i <= 12; i++){
+        var u = i / 12;
+        var w = neckW * (1 + 0.55 * Math.pow(Math.abs(u - 0.5) * 2, 2.2));
+        if (u < 0.12) w = neckW * (1 + 1.5 * (0.12 - u) / 0.12);  // flare into shaft
+        prof.push(new THREE.Vector2(w / 2, u * neckLen));
+      }
+      var neck = new THREE.Mesh(new THREE.LatheGeometry(prof, 18), mat);
+      g.add(neck);
+    }
+
+    var head = new THREE.Mesh(headGeo, mat);
+    head.scale.set(headR, headR * (spec.psd ? 0.92 : 1.0), headR);
+    head.position.y = neckLen + headR * 0.82;
+    g.add(head);
+
+    if (spec.psd){
+      var psdMat = new THREE.MeshStandardMaterial({
+        color: 0xF0E3C8, roughness: 0.2, metalness: 0.0,
+        emissive: 0xD9A05B, emissiveIntensity: 0.5
+      });
+      var psd = new THREE.Mesh(psdGeo, psdMat);
+      psd.scale.set(headR * 1.02, headR * 1.02, headR * 1.02);
+      psd.position.copy(head.position);
+      psd.rotation.z = rnd(-0.22, 0.22);
+      psd.rotation.x = rnd(-0.22, 0.22);
+      g.add(psd);
+      g.userData.psd = psd;
+    }
+
+    g.userData.headMesh = head;
+    g.userData.mat = mat;
+    g.userData.headR = headR;
+    g.userData.neckLen = neckLen;
+    g.userData.neckW = neckW;
+    return g;
+  }
+
+  function placeSpines(){
+    spines.forEach(function(s){ root.remove(s.group); });
+    spines = [];
+    var n = Math.round(SHAFT_LEN * DENSITY);
+    var used = [];
+    for (var i = 0; i < n; i++){
+      var u, tries = 0;
+      do {
+        u = Math.random() * 0.94 + 0.03;
+        tries++;
+      } while (tries < 24 && used.some(function(x){ return Math.abs(x - u) < 0.022; }));
+      used.push(u);
+
+      var name = pickClass();
+      var spec = CLASSES[name];
+      var g = buildSpine(spec);
+
+      var p = curve.getPoint(u);
+      var tan = curve.getTangent(u).normalize();
+      // Azimuth around the shaft: golden angle plus jitter, so they spiral
+      // without landing in a visible stripe.
+      var az = i * 2.39996 + rnd(-0.35, 0.35);
+      var radial = new THREE.Vector3(0, Math.cos(az), Math.sin(az));
+      radial.addScaledVector(tan, -radial.dot(tan)).normalize();
+
+      var taperK = 1 - 0.34 * u;
+      g.position.copy(p).addScaledVector(radial, SHAFT_R * taperK * 0.86);
+      g.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), radial);
+
+      g.userData.cls = name;
+      g.userData.u = u;
+      root.add(g);
+      spines.push({ group: g, cls: name, base: {
+        headR: g.userData.headR, neckLen: g.userData.neckLen, neckW: g.userData.neckW } });
+    }
+    renderCounts();
+  }
+
+  // ------------------------------------------------------------- plasticity
+  // Thin spines enlarging into mushroom spines is the structural correlate of
+  // LTP. The slider interpolates head size toward the mushroom range and
+  // shortens the neck, then reports what the population became.
+  var plast = 0;
+  function applyPlasticity(){
+    var converted = 0;
+    spines.forEach(function(s){
+      if (s.cls !== "thin" && s.cls !== "filopodium") return;
+      var target = CLASSES.mushroom;
+      var k = plast / 100;
+      if (s.cls === "filopodium") k *= 0.45;      // filopodia mostly retract instead
+      var head = s.group.userData.headMesh;
+      var grown = s.base.headR * (1 - k) + (target.head[0] / 2 + 0.06) * k;
+      head.scale.set(grown, grown, grown);
+      head.position.y = s.base.neckLen * (1 - 0.35 * k) + grown * 0.82;
+      if (k > 0.5 && s.cls === "thin") converted++;
+    });
+    var out = document.getElementById("plastOut");
+    if (plast === 0) out.textContent = "baseline";
+    else out.textContent = "+" + plast + "%, " + converted + " enlarged";
+    renderCounts();
+  }
+
+  // ---------------------------------------------------------------- counts
+  var hidden = {};
+  function renderCounts(){
+    var box = document.getElementById("classes");
+    var counts = {};
+    ORDER.forEach(function(k){ counts[k] = 0; });
+    spines.forEach(function(s){ counts[s.cls]++; });
+    box.innerHTML = "";
+    ORDER.forEach(function(k){
+      var c = CLASSES[k];
+      var b = document.createElement("button");
+      b.className = "cls";
+      b.type = "button";
+      b.setAttribute("aria-pressed", String(!hidden[k]));
+      b.innerHTML = '<span class="dot" style="background:#'
+        + c.color.toString(16).padStart(6, "0") + '"></span>'
+        + c.label + '<span class="n">' + counts[k] + '</span>';
+      b.addEventListener("click", function(){
+        hidden[k] = !hidden[k];
+        spines.forEach(function(s){ if (s.cls === k) s.group.visible = !hidden[k]; });
+        renderCounts();
+      });
+      box.appendChild(b);
+    });
+  }
+
+  // ---------------------------------------------------------------- inspect
+  var ray = new THREE.Raycaster(), ndc = new THREE.Vector2(), selected = null;
+  function select(g){
+    if (selected) selected.userData.mat.emissiveIntensity = 0.14;
+    selected = g;
+    var box = document.getElementById("inspect");
+    if (!g){
+      box.innerHTML = '<b>Click a spine</b><p>Thin spines grow into mushroom spines when a '
+        + 'synapse is strengthened. The slider runs that transition.</p>';
+      return;
+    }
+    g.userData.mat.emissiveIntensity = 0.85;
+    var c = CLASSES[g.userData.cls];
+    var hd = g.userData.headMesh.scale.x * 2;
+    box.innerHTML = '<b>' + c.label + '</b>'
+      + '<div class="row"><span>head diameter</span><span>' + hd.toFixed(2) + ' &micro;m</span></div>'
+      + '<div class="row"><span>neck length</span><span>' + g.userData.neckLen.toFixed(2) + ' &micro;m</span></div>'
+      + '<div class="row"><span>neck diameter</span><span>' + g.userData.neckW.toFixed(2) + ' &micro;m</span></div>'
+      + '<div class="row"><span>PSD</span><span>' + (c.psd ? "present" : "none") + '</span></div>'
+      + '<p>' + c.note + '</p>';
+  }
+
+  // ---------------------------------------------------------------- camera
+  var yaw = 0.5, pitch = 0.16, dist = 17, autoYaw = true, userZoom = false;
+
+  function fitDist(){
+    var r = host.getBoundingClientRect();
+    if (!r.width || !r.height) return dist;
+    var vFov = camera.fov * Math.PI / 180;
+    var hFov = 2 * Math.atan(Math.tan(vFov / 2) * (r.width / r.height));
+    // Fit the shaft with a little margin, but never retreat so far that the
+    // spines stop being readable. A tall narrow pane would otherwise push the
+    // camera back until the whole thing is a smudge.
+    var d = (SHAFT_LEN * 0.52) / Math.tan(hFov / 2) + 2;
+    return Math.max(9, Math.min(24, d));
+  }
+  function place(){
+    camera.position.set(
+      Math.sin(yaw) * Math.cos(pitch) * dist,
+      Math.sin(pitch) * dist,
+      Math.cos(yaw) * Math.cos(pitch) * dist);
+    camera.lookAt(0, 0, 0);
+  }
+
+  var dragging = false, lastX = 0, lastY = 0, moved = 0;
+  host.addEventListener("pointerdown", function(e){
+    dragging = true; moved = 0; lastX = e.clientX; lastY = e.clientY;
+    autoYaw = false; host.classList.add("drag"); host.setPointerCapture(e.pointerId);
+  });
+  host.addEventListener("pointermove", function(e){
+    if (!dragging) return;
+    var dx = e.clientX - lastX, dy = e.clientY - lastY;
+    moved += Math.abs(dx) + Math.abs(dy);
+    yaw -= dx * 0.006;
+    pitch = Math.max(-1.2, Math.min(1.2, pitch + dy * 0.005));
+    lastX = e.clientX; lastY = e.clientY;
+  });
+  function endDrag(e){
+    if (!dragging) return;
+    dragging = false; host.classList.remove("drag");
+    if (moved < 5 && e){
+      var r = host.getBoundingClientRect();
+      ndc.x = ((e.clientX - r.left) / r.width) * 2 - 1;
+      ndc.y = -((e.clientY - r.top) / r.height) * 2 + 1;
+      ray.setFromCamera(ndc, camera);
+      var hits = ray.intersectObjects(root.children, true);
+      var found = null;
+      for (var i = 0; i < hits.length; i++){
+        var o = hits[i].object;
+        while (o && o !== root){ if (o.userData && o.userData.cls){ found = o; break; } o = o.parent; }
+        if (found) break;
+      }
+      select(found);
+    }
+  }
+  host.addEventListener("pointerup", endDrag);
+  host.addEventListener("pointercancel", endDrag);
+  host.addEventListener("wheel", function(e){
+    e.preventDefault();
+    userZoom = true;
+    dist = Math.max(5, Math.min(48, dist + e.deltaY * 0.012));
+  }, { passive: false });
+
+  document.getElementById("plast").addEventListener("input", function(e){
+    plast = parseFloat(e.target.value);
+    applyPlasticity();
+  });
+
+  // ---------------------------------------------------------------- loop
+  function resize(){
+    var r = host.getBoundingClientRect();
+    if (!r.width || !r.height) return;
+    renderer.setSize(r.width, r.height, false);
+    camera.aspect = r.width / r.height;
+    camera.updateProjectionMatrix();
+    if (!userZoom) dist = fitDist();
+    // Scale bar: how many screen pixels is 2 micrometres at the shaft.
+    var px = (r.height / 2) / Math.tan((camera.fov / 2) * Math.PI / 180) / dist;
+    var w = Math.round(px * 2);
+    var el = document.getElementById("sbline");
+    el.style.width = Math.max(28, Math.min(180, w)) + "px";
+    document.getElementById("sbtext").innerHTML = "2 &micro;m";
+  }
+  window.addEventListener("resize", resize);
+
+  function tick(){
+    if (autoYaw) yaw += 0.0016;
+    place();
+    resize();
+    var dark = themeDark();
+    membraneMat.color.setHex(dark ? 0x6E5C91 : 0x8A78AD);
+    fill.intensity = dark ? 0.85 : 1.35;
+    renderer.render(scene, camera);
+    requestAnimationFrame(tick);
+  }
+
+  placeSpines();
+  select(null);
+  resize();
+  tick();
+  window.__spines = { spines: spines, CLASSES: CLASSES };
+})();
+</script>

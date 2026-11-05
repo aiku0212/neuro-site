@@ -1,0 +1,403 @@
+<title>Pharmacology Bench</title>
+
+<style>
+  :root{
+    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
+    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
+    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --sky:#7FA8D9;
+    --rose:#C98BB8; --green:#8FD98F; --bar:54px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);overflow:hidden;
+    font:400 14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums}
+  .serif{font-family:Georgia,"Iowan Old Style",serif}
+
+  .bar{position:fixed;inset:0 0 auto 0;height:var(--bar);z-index:20;display:flex;
+    align-items:center;gap:20px;padding:0 18px;background:rgba(10,12,18,.86);
+    backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+  .brand{font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
+  .brand b{font-weight:400;color:var(--amber)}
+  .tabs{display:flex;gap:4px;margin-left:auto}
+  .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;
+    text-transform:uppercase;padding:9px 15px;background:none;color:var(--muted);
+    border:1px solid transparent;border-radius:2px;cursor:pointer;text-decoration:none}
+  .tab:hover{color:var(--ink-2)}
+  .tab[aria-current="true"]{color:var(--ink);border-color:var(--rule);background:var(--panel-2)}
+
+  .wrap{position:fixed;inset:var(--bar) 0 0 0;display:grid;
+    grid-template-columns:210px 1fr 330px}
+
+  /* drug list */
+  .list{background:var(--panel);border-right:1px solid var(--rule);overflow-y:auto;
+    padding:14px 0 30px}
+  .list h3{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    margin:0 0 8px;padding:0 14px;font-weight:400}
+  .drug{display:block;width:100%;text-align:left;background:none;border:0;
+    padding:11px 14px;cursor:pointer;border-left:2px solid transparent;font:inherit}
+  .drug:hover{background:var(--panel-2)}
+  .drug[aria-pressed="true"]{background:var(--panel-2);border-left-color:var(--amber)}
+  .drug b{display:block;font-weight:400;font-size:13.5px;color:var(--ink-2)}
+  .drug[aria-pressed="true"] b{color:var(--ink)}
+  .drug span{display:block;font-size:10px;letter-spacing:.1em;color:var(--muted);
+    font-family:ui-monospace,Menlo,monospace;margin-top:2px}
+
+  /* stage */
+  .stage{position:relative;background:
+    radial-gradient(circle at 50% 42%,#12162400 0%,#05070B 76%),var(--bg)}
+  #syn{display:block;width:100%;height:100%}
+  .legend{position:absolute;left:16px;bottom:14px;display:flex;flex-wrap:wrap;gap:9px;
+    font-size:10px;letter-spacing:.08em;color:var(--muted);max-width:70%}
+  .legend i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;
+    vertical-align:middle}
+  .sched{position:absolute;right:16px;top:14px;font-size:10px;letter-spacing:.16em;
+    text-transform:uppercase;padding:6px 11px;border:1px solid var(--rule);
+    border-radius:2px;color:var(--amber);background:var(--panel)}
+
+  /* readout */
+  .side{background:var(--panel);border-left:1px solid var(--rule);overflow-y:auto;
+    padding:16px 16px 40px}
+  .side h1{font-size:21px;line-height:1.2;margin:0 0 4px;font-weight:400;
+    letter-spacing:-.015em}
+  .side .sub{font-size:11px;color:var(--muted);margin:0 0 16px;
+    font-family:ui-monospace,Menlo,monospace;letter-spacing:.06em}
+  .side h3{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
+    margin:20px 0 9px;padding-bottom:7px;border-bottom:1px solid var(--rule);font-weight:400}
+  .side p{margin:0 0 12px;font-size:13.5px;color:var(--ink-2)}
+  .kv{display:flex;justify-content:space-between;gap:10px;padding:7px 0;
+    border-bottom:1px solid var(--rule);font-size:12.5px}
+  .kv span{color:var(--muted);flex:none}
+  .kv b{font-weight:400;color:var(--ink);text-align:right}
+  .steps{list-style:none;padding:0;margin:0;counter-reset:s}
+  .steps li{counter-increment:s;position:relative;padding:0 0 12px 26px;
+    font-size:13px;color:var(--ink-2)}
+  .steps li:before{content:counter(s);position:absolute;left:0;top:1px;width:17px;
+    height:17px;border:1px solid var(--rule);border-radius:50%;font-size:9.5px;
+    display:grid;place-items:center;color:var(--amber);
+    font-family:ui-monospace,Menlo,monospace}
+  .cite{font-size:10.5px;color:var(--muted);line-height:1.5;margin:14px 0 0}
+  .cite em{font-style:italic;color:var(--ink-2)}
+
+  @media (max-width:1000px){
+    .wrap{grid-template-columns:1fr;grid-template-rows:auto 46vh 1fr}
+    .list{border-right:0;border-bottom:1px solid var(--rule);display:flex;
+      overflow-x:auto;padding:8px}
+    .list h3{display:none}
+    .drug{white-space:nowrap;border-left:0;border-bottom:2px solid transparent}
+    .drug[aria-pressed="true"]{border-left:0;border-bottom-color:var(--amber)}
+    .side{border-left:0;border-top:1px solid var(--rule)}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="app.html">Analyze</a>
+    <button class="tab" aria-current="true">Pharmacology</button>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+  </nav>
+</div>
+
+<div class="wrap">
+  <div class="list" id="list"><h3>Mechanism class</h3></div>
+
+  <div class="stage">
+    <canvas id="syn"></canvas>
+    <span class="sched mono" id="sched"></span>
+    <div class="legend mono" id="legend"></div>
+  </div>
+
+  <aside class="side">
+    <h1 class="serif" id="d-name"></h1>
+    <p class="sub" id="d-ex"></p>
+    <div class="kv"><span>Primary target</span><b id="d-target"></b></div>
+    <div class="kv"><span>Receptor type</span><b id="d-type"></b></div>
+    <div class="kv"><span>Action</span><b id="d-action"></b></div>
+    <div class="kv"><span>Net effect</span><b id="d-net"></b></div>
+    <h3>Mechanism</h3>
+    <ol class="steps" id="d-steps"></ol>
+    <h3>Why it matters</h3>
+    <p id="d-why"></p>
+    <p class="cite" id="d-cite"></p>
+  </aside>
+</div>
+
+<script>
+(function(){
+var C=document.getElementById('syn'), X=C.getContext('2d'), D=1;
+var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+var COL={da:'#8FD98F', glu:'#7FA8D9', gaba:'#C98BB8', ser:'#9B7BD6',
+         op:'#D9A05B', ecb:'#6FC2B0', ion:'#E8E4F2', block:'#E06A6A'};
+
+var DRUGS=[
+{id:'psy', name:'Classic psychedelics', ex:'Psilocybin, LSD, DMT, mescaline',
+ sched:'Schedule I', target:'5-HT2A + TrkB', type:'GPCR + receptor tyrosine kinase',
+ action:'Agonist / allosteric', net:'Structural plasticity',
+ nt:'ser', mode:'psy',
+ steps:['Crosses the membrane, being lipophilic, and reaches 5-HT2A receptors on the inside of the cell, which serotonin itself cannot reach.',
+        'Binds TrkB directly with roughly a thousand times the affinity of conventional antidepressants.',
+        'Potentiates signalling from the BDNF already present rather than raising how much BDNF exists.',
+        'Dendritic spine density rises about 10% within 24 hours and persists for weeks.'],
+ why:'The location of the receptor, not just its identity, decides the effect. This is why serotonin does not do what psilocin does even though both are 5-HT2A agonists.',
+ cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023 &middot; Shao et al., <em>Neuron</em> 2021'},
+
+{id:'dis', name:'Dissociatives', ex:'Ketamine, PCP, dextromethorphan',
+ sched:'Schedule III (ketamine)', target:'NMDA receptor', type:'Ionotropic glutamate',
+ action:'Open-channel blocker', net:'Disinhibition, then synaptogenesis',
+ nt:'glu', mode:'block',
+ steps:['Enters the open NMDA channel pore and physically plugs it.',
+        'Blocks NMDA receptors preferentially on fast-spiking inhibitory interneurons.',
+        'Those interneurons stop firing, releasing the brake on pyramidal cells.',
+        'The resulting glutamate surge drives AMPA receptors and mTOR signalling, growing new synapses within hours.'],
+ why:'A drug that blocks excitation produces net excitation, because it silences the inhibitors first. The antidepressant effect arrives in a day rather than a month.',
+ cite:'Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
+
+{id:'stim', name:'Stimulants', ex:'Cocaine, amphetamine, methylphenidate',
+ sched:'Schedule II', target:'DAT, NET, VMAT2', type:'Monoamine transporters',
+ action:'Reuptake block / reverse transport', net:'Dopamine accumulates in the cleft',
+ nt:'da', mode:'stim',
+ steps:['Cocaine and methylphenidate bind the dopamine transporter and block reuptake, so released dopamine lingers.',
+        'Amphetamine goes further: it is a transporter substrate and enters the terminal.',
+        'Inside, it disrupts vesicular storage via VMAT2 and drives the transporter to run backwards.',
+        'Dopamine pours out of the terminal without any action potential, which is why releasers differ from blockers.'],
+ why:'Blocker versus releaser is the distinction students most often miss. One needs the neuron to fire, the other does not.',
+ cite:'Standard pharmacology; mechanism is textbook consensus'},
+
+{id:'op', name:'Opioids', ex:'Morphine, heroin, fentanyl, oxycodone',
+ sched:'Schedule I&ndash;II', target:'&micro;-opioid receptor', type:'G&#8321;&#8320; -coupled GPCR',
+ action:'Agonist', net:'Hyperpolarisation + disinhibition',
+ nt:'op', mode:'op',
+ steps:['Activates &micro;-opioid receptors, which couple to inhibitory G proteins.',
+        'Presynaptically, calcium influx falls and neurotransmitter release drops.',
+        'Postsynaptically, GIRK potassium channels open and potassium leaves the cell.',
+        'The neuron hyperpolarises. In the VTA the receptors sit on GABA interneurons, so inhibiting them disinhibits dopamine neurons.'],
+ why:'The reward effect is indirect. Opioids inhibit the inhibitors of dopamine neurons rather than exciting them, the same disinhibition logic as ketamine on a different receptor.',
+ cite:'Standard pharmacology; mechanism is textbook consensus'},
+
+{id:'benzo', name:'Benzodiazepines', ex:'Diazepam, alprazolam, lorazepam',
+ sched:'Schedule IV', target:'GABA-A receptor', type:'Ionotropic chloride channel',
+ action:'Positive allosteric modulator', net:'Amplified inhibition',
+ nt:'gaba', mode:'benzo',
+ steps:['Binds a site between the &alpha; and &gamma; subunits, distinct from where GABA binds.',
+        'Alone it does nothing. It only works when GABA is already present.',
+        'Increases the frequency of channel opening. Barbiturates instead increase how long each opening lasts.',
+        'More chloride enters, the membrane hyperpolarises, and the neuron becomes harder to fire.'],
+ why:'The frequency versus duration distinction explains the safety gap: a modulator that needs endogenous GABA has a ceiling, while barbiturates can open channels directly and do not.',
+ cite:'Standard pharmacology; mechanism is textbook consensus'},
+
+{id:'cb', name:'Cannabinoids', ex:'THC, synthetic CB1 agonists',
+ sched:'Schedule I (federal)', target:'CB1 receptor', type:'G&#8321;&#8320; -coupled GPCR',
+ action:'Partial agonist', net:'Suppressed transmitter release',
+ nt:'ecb', mode:'cb',
+ steps:['Endocannabinoids are made on demand in the postsynaptic cell, not stored in vesicles.',
+        'They travel backwards across the cleft, from postsynaptic to presynaptic.',
+        'They activate CB1 receptors on the presynaptic terminal.',
+        'Calcium influx drops and transmitter release is suppressed. THC hijacks this system tonically instead of on demand.'],
+ why:'This is the clearest case of retrograde signalling in the brain. The direction of the arrow is the whole lesson, and it is the part students draw backwards on exams.',
+ cite:'Standard pharmacology; mechanism is textbook consensus'}
+];
+
+var cur=DRUGS[0], t0=performance.now();
+
+function size(){
+  D=Math.min(devicePixelRatio||1,2);
+  var r=C.getBoundingClientRect();
+  var w=Math.max(1,(Math.round(r.width)||C.clientWidth||760)*D);
+  var h=Math.max(1,(Math.round(r.height)||C.clientHeight||620)*D);
+  if(C.width!==w||C.height!==h){C.width=w;C.height=h;}
+}
+addEventListener('resize',size); size();
+if(window.ResizeObserver) new ResizeObserver(size).observe(C);
+
+function blob(cx,cy,rx,ry,fill,stroke){
+  X.fillStyle=fill; X.beginPath(); X.ellipse(cx,cy,rx,ry,0,0,6.283); X.fill();
+  if(stroke){X.strokeStyle=stroke;X.lineWidth=D;X.stroke();}
+}
+function chan(x,y,w,h,c,a){
+  X.globalAlpha=a; X.fillStyle=c;
+  X.beginPath(); X.roundRect(x-w/2,y-h/2,w,h,w*0.32); X.fill();
+}
+
+function paint(){
+  size();
+  var w=C.width,h=C.height; if(w<2||h<2) return false;
+  var S=Math.min(w,h)/620*D, tt=(performance.now()-t0)/1000;
+  X.clearRect(0,0,w,h);
+
+  var preY=h*0.22, cleftY=h*0.46, postY=h*0.58, cx=w/2;
+  var nt=COL[cur.nt];
+
+  /* presynaptic terminal */
+  X.globalAlpha=1;
+  blob(cx,preY,w*0.30,h*0.16,'#1E2334','#33395199');
+  X.fillStyle='#736F8C'; X.font=(10*D)+'px ui-monospace,Menlo,monospace';
+  X.textAlign='left'; X.fillText('PRESYNAPTIC', cx-w*0.30, preY-h*0.17);
+
+  /* postsynaptic */
+  blob(cx,postY+h*0.20,w*0.34,h*0.17,'#1E2334','#33395199');
+  X.fillStyle='#736F8C'; X.textAlign='left';
+  X.fillText('POSTSYNAPTIC', cx-w*0.34, postY+h*0.40);
+
+  /* vesicles */
+  var vesN = cur.mode==='op' ? 4 : 9;
+  for(var v=0;v<vesN;v++){
+    var vp=reduce?0.5:((v*0.31+tt*0.13)%1);
+    X.globalAlpha=.55;
+    blob(cx+Math.sin(v*2.3)*w*0.17, preY-h*0.05+vp*h*0.14, 5*S, 5*S, nt);
+  }
+
+  /* transporters on the presynaptic membrane (stimulants) */
+  if(cur.mode==='stim'){
+    [-1,1].forEach(function(s){
+      var tx=cx+s*w*0.17;
+      chan(tx, preY+h*0.145, 13*S, 26*S, COL.da, 1);
+      // blocked marker
+      X.globalAlpha=.9; X.strokeStyle=COL.block; X.lineWidth=2.4*D;
+      X.beginPath(); X.moveTo(tx-9*S,preY+h*0.145-9*S);
+      X.lineTo(tx+9*S,preY+h*0.145+9*S); X.stroke();
+    });
+    X.globalAlpha=.75; X.fillStyle=COL.block; X.textAlign='center';
+    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
+    X.fillText('reuptake blocked', cx, preY+h*0.20);
+  }
+
+  /* postsynaptic receptors */
+  var R=[];
+  if(cur.mode==='psy')   R=[['5-HT2A',COL.ser,.34],['TrkB',COL.op,.66]];
+  if(cur.mode==='block') R=[['NMDA',COL.glu,.34],['AMPA',COL.glu,.66]];
+  if(cur.mode==='stim')  R=[['D1',COL.da,.34],['D2',COL.da,.66]];
+  if(cur.mode==='op')    R=[['GIRK K+',COL.op,.34],['&micro;-opioid',COL.op,.66]];
+  if(cur.mode==='benzo') R=[['GABA-A',COL.gaba,.5]];
+  if(cur.mode==='cb')    R=[['CB1 (presyn.)',COL.ecb,.5]];
+
+  R.forEach(function(r){
+    var rx=w*r[2];
+    var yy = (cur.mode==='cb') ? preY+h*0.145 : postY;
+    chan(rx, yy, 15*S, 34*S, r[1], 1);
+    X.globalAlpha=.15; blob(rx,yy,26*S,26*S,r[1]);
+    X.globalAlpha=.85; X.fillStyle='#9E9ABA'; X.textAlign='center';
+    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
+    X.fillText(r[0], rx, yy+(cur.mode==='cb'? -26*S : 30*S));
+  });
+
+  /* channel blocked plug for dissociatives */
+  if(cur.mode==='block'){
+    X.globalAlpha=1; X.fillStyle=COL.block;
+    blob(w*0.34, postY-6*S, 6*S, 6*S, COL.block);
+    X.globalAlpha=.8; X.fillStyle=COL.block; X.textAlign='center';
+    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
+    X.fillText('pore blocked', w*0.34, postY-22*S);
+  }
+
+  /* ligand flux */
+  var N=30;
+  for(var m=0;m<N;m++){
+    var ph=reduce?0.5:((m*0.163+tt*0.20)%1);
+    var lx, ly, col=nt, al=.75;
+
+    if(cur.mode==='cb'){
+      // retrograde: postsynaptic -> presynaptic
+      lx=cx+Math.sin(m*3.1)*w*0.20;
+      ly=postY-ph*(postY-preY-h*0.14);
+      col=COL.ecb;
+    } else if(cur.mode==='stim' && m%2===0){
+      // efflux: pouring out of the terminal
+      lx=cx+Math.sin(m*3.1)*w*0.22;
+      ly=preY+h*0.145+ph*(cleftY-preY);
+      col=COL.da;
+    } else {
+      lx=cx+Math.sin(m*3.1)*w*0.20;
+      ly=preY+h*0.13+ph*(postY-preY-h*0.13);
+    }
+    X.globalAlpha=(1-Math.abs(ph-0.5)*1.2)*al;
+    X.fillStyle=col;
+    X.beginPath(); X.arc(lx,ly,3.6*S,0,6.283); X.fill();
+  }
+
+  /* ion flow for benzo / opioid */
+  if(cur.mode==='benzo'||cur.mode==='op'){
+    var lbl = cur.mode==='benzo' ? 'Cl&#8315; in' : 'K&#8314; out';
+    for(var i2=0;i2<12;i2++){
+      var p2=reduce?0.5:((i2*0.19+tt*0.34)%1);
+      var yy2 = cur.mode==='benzo' ? postY+p2*h*0.11 : postY+ (1-p2)*h*0.11;
+      X.globalAlpha=(1-p2)*.8; X.fillStyle=COL.ion;
+      X.beginPath(); X.arc(w*(cur.mode==='benzo'?0.5:0.34)+Math.sin(i2*2)*9*S,
+        yy2, 2.6*S,0,6.283); X.fill();
+    }
+    X.globalAlpha=.7; X.fillStyle=COL.ion; X.textAlign='center';
+    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
+    X.fillText(cur.mode==='benzo'?'Cl- in':'K+ out',
+      w*(cur.mode==='benzo'?0.5:0.34), postY+h*0.15);
+  }
+
+  /* retrograde arrow for cannabinoids */
+  if(cur.mode==='cb'){
+    X.globalAlpha=.75; X.strokeStyle=COL.ecb; X.lineWidth=2*D;
+    X.setLineDash([6*S,5*S]);
+    X.beginPath(); X.moveTo(cx+w*0.26, postY-10*S);
+    X.lineTo(cx+w*0.26, preY+h*0.17); X.stroke();
+    X.setLineDash([]);
+    X.beginPath();
+    X.moveTo(cx+w*0.26, preY+h*0.15);
+    X.lineTo(cx+w*0.26-5*S, preY+h*0.175);
+    X.lineTo(cx+w*0.26+5*S, preY+h*0.175);
+    X.closePath(); X.fillStyle=COL.ecb; X.fill();
+    X.globalAlpha=.8; X.textAlign='right';
+    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
+    X.fillText('retrograde', cx+w*0.245, (preY+postY)/2);
+  }
+
+  /* cleft hairlines */
+  X.globalAlpha=.35; X.strokeStyle='#3A4059'; X.lineWidth=D;
+  [cleftY-h*0.02, cleftY+h*0.06].forEach(function(y){
+    X.beginPath(); X.moveTo(0,y); X.lineTo(w,y); X.stroke();});
+
+  X.globalAlpha=1;
+  return true;
+}
+function loop(){paint();requestAnimationFrame(loop);}
+requestAnimationFrame(loop);
+window.__paint=function(id){ if(id){var d=DRUGS.filter(function(x){return x.id===id;})[0];
+  if(d) show(d);} return paint(); };
+
+function show(d){
+  cur=d; t0=performance.now();
+  document.getElementById('d-name').textContent=d.name;
+  document.getElementById('d-ex').textContent=d.ex;
+  document.getElementById('sched').innerHTML=d.sched;
+  document.getElementById('d-target').innerHTML=d.target;
+  document.getElementById('d-type').innerHTML=d.type;
+  document.getElementById('d-action').textContent=d.action;
+  document.getElementById('d-net').textContent=d.net;
+  document.getElementById('d-why').textContent=d.why;
+  document.getElementById('d-cite').innerHTML=d.cite;
+  var ol=document.getElementById('d-steps'); ol.innerHTML='';
+  d.steps.forEach(function(s){var li=document.createElement('li');
+    li.innerHTML=s; ol.appendChild(li);});
+  document.querySelectorAll('.drug').forEach(function(b){
+    b.setAttribute('aria-pressed', b.dataset.id===d.id?'true':'false');});
+  var lg=document.getElementById('legend'); lg.innerHTML='';
+  [['Transmitter',COL[d.nt]],['Ions',COL.ion],['Blocked',COL.block]]
+    .forEach(function(p){var s=document.createElement('span');
+      s.innerHTML='<i style="background:'+p[1]+'"></i>'+p[0]; lg.appendChild(s);});
+}
+
+var LW=document.getElementById('list');
+DRUGS.forEach(function(d){
+  var b=document.createElement('button');
+  b.className='drug'; b.dataset.id=d.id;
+  b.innerHTML='<b>'+d.name+'</b><span>'+d.sched+'</span>';
+  b.addEventListener('click',function(){show(d);});
+  LW.appendChild(b);
+});
+show(DRUGS[0]);
+})();
+</script>

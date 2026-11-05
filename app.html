@@ -1,0 +1,603 @@
+<title>Neuroscope</title>
+
+<style>
+  :root{
+    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
+    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
+    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --sky:#7FA8D9; --rose:#C98BB8;
+    --bar:54px;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0; background:var(--bg); color:var(--ink); overflow:hidden;
+    font:400 14px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+  .mono{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    font-variant-numeric:tabular-nums}
+  .serif{font-family:Georgia,"Iowan Old Style",serif}
+
+  /* ---- top bar ---- */
+  .bar{position:fixed; inset:0 0 auto 0; height:var(--bar); z-index:20;
+    display:flex; align-items:center; gap:20px; padding:0 18px;
+    background:rgba(10,12,18,.86); backdrop-filter:blur(14px);
+    border-bottom:1px solid var(--rule)}
+  .brand{font-size:11px; letter-spacing:.26em; text-transform:uppercase;
+    color:var(--ink); white-space:nowrap}
+  .brand b{font-weight:400; color:var(--amber)}
+  .tabs{display:flex; gap:4px; margin-left:auto}
+  .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace; letter-spacing:.14em;
+    text-transform:uppercase; padding:9px 15px; background:none; color:var(--muted);
+    border:1px solid transparent; border-radius:2px; cursor:pointer; text-decoration:none}
+  .tab:hover{color:var(--ink-2)}
+  .tab[aria-current="true"]{color:var(--ink); border-color:var(--rule);
+    background:var(--panel-2)}
+
+  /* ---- stage ---- */
+  .stage{position:fixed; inset:var(--bar) 0 0 0}
+  #gl{display:block; width:100%; height:100%; cursor:grab; touch-action:none}
+  #gl.drag{cursor:grabbing}
+
+  .overlay{position:absolute; inset:0; pointer-events:none}
+  .overlay > *{pointer-events:auto}
+
+  /* ---- explore rail ---- */
+  .rail{position:absolute; left:clamp(14px,2.5vw,34px); top:50%;
+    transform:translateY(-50%); display:flex; gap:13px}
+  .track{position:relative; width:2px; height:min(56vh,400px); background:var(--rule)}
+  .fill{position:absolute; left:0; top:0; width:2px; background:var(--amber);
+    transition:height .18s ease}
+  .knob{position:absolute; left:-4px; width:10px; height:10px; border-radius:50%;
+    background:var(--amber); transition:top .18s ease;
+    box-shadow:0 0 0 4px rgba(217,160,91,.16)}
+  .ticks{display:flex; flex-direction:column; justify-content:space-between;
+    height:min(56vh,400px)}
+  .tick{background:none;border:0;padding:0;text-align:left;cursor:pointer;
+    font-family:ui-monospace,Menlo,monospace; font-size:10.5px; letter-spacing:.13em;
+    text-transform:uppercase; color:var(--muted)}
+  .tick:hover{color:var(--ink-2)}
+  .tick[aria-current="true"]{color:var(--ink)}
+  .tick small{display:block;font-size:9px;letter-spacing:.06em;opacity:.7;
+    text-transform:none}
+
+  .cap{position:absolute; right:clamp(14px,2.5vw,34px); top:50%;
+    transform:translateY(-50%); width:min(320px,42vw)}
+  .cap .sb{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--amber); margin:0 0 9px}
+  .cap h2{font-size:clamp(20px,2.6vw,28px); line-height:1.15; margin:0 0 11px;
+    font-weight:400; letter-spacing:-.015em}
+  .cap p{margin:0 0 12px; font-size:13.5px; color:var(--ink-2)}
+  .cap .cite{font-size:11px;color:var(--muted);margin:0}
+  .cap .cite em{font-style:italic;color:var(--ink-2)}
+  .parts{list-style:none;padding:0;margin:0 0 13px;display:flex;flex-wrap:wrap;gap:5px}
+  .parts li{display:flex;align-items:center;gap:6px;font-size:10.5px;
+    color:var(--muted);border:1px solid var(--rule);padding:4px 8px;border-radius:2px}
+  .parts i{width:7px;height:7px;border-radius:50%;display:block}
+  .handoff{margin-top:14px; font:400 10.5px/1 ui-monospace,Menlo,monospace;
+    letter-spacing:.12em; text-transform:uppercase; padding:9px 14px;
+    background:var(--amber); color:#0A0C12; border:0; border-radius:2px;
+    cursor:pointer; display:none}
+  .handoff.on{display:inline-block}
+
+  /* ---- analyze panel ---- */
+  .side{position:absolute; right:0; top:0; bottom:0; width:326px;
+    background:var(--panel); border-left:1px solid var(--rule);
+    overflow-y:auto; padding:16px 16px 40px}
+  .side h3{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
+    color:var(--muted); margin:0 0 11px; padding-bottom:8px;
+    border-bottom:1px solid var(--rule); font-weight:400}
+  .side h3:not(:first-child){margin-top:22px}
+  .kv{display:flex;justify-content:space-between;align-items:baseline;
+    padding:6px 0;border-bottom:1px solid var(--rule);font-size:12.5px}
+  .kv span{color:var(--muted)}
+  .kv b{font-weight:400;color:var(--ink);font-size:13px}
+  .kv b u{text-decoration:none;color:var(--muted);font-size:10px;margin-left:3px}
+  .big{display:flex;gap:9px;margin:0 0 12px}
+  .big div{flex:1;background:var(--panel-2);border:1px solid var(--rule);
+    border-radius:2px;padding:10px 11px}
+  .big b{display:block;font-size:21px;font-weight:400;letter-spacing:-.02em;color:var(--amber)}
+  .big span{font-size:9px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+  #sholl{display:block;width:100%;height:120px;background:var(--panel-2);
+    border:1px solid var(--rule);border-radius:2px}
+  .cn{font-size:10.5px;color:var(--muted);margin:7px 0 0;line-height:1.5}
+  .pick{background:var(--panel-2);border:1px solid var(--rule);border-radius:2px;
+    padding:12px;margin-top:10px;min-height:66px}
+  .pick .none{color:var(--muted);font-size:12px;margin:0}
+  .pick .tag{font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--amber);margin:0 0 6px}
+
+  .tools{position:absolute; left:clamp(14px,2.5vw,34px); top:16px;
+    display:flex; gap:6px; flex-wrap:wrap}
+  .tool{font:400 10px/1 ui-monospace,Menlo,monospace;letter-spacing:.12em;
+    text-transform:uppercase;padding:8px 11px;background:var(--panel);
+    border:1px solid var(--rule);color:var(--muted);border-radius:2px;cursor:pointer}
+  .tool:hover{color:var(--ink-2)}
+  .tool[aria-pressed="true"]{background:var(--amber);color:#0A0C12;border-color:var(--amber)}
+
+  .scaleb{position:absolute;left:clamp(14px,2.5vw,34px);bottom:16px;
+    color:var(--muted);font-size:10px;letter-spacing:.11em}
+  .scaleb .b{height:2px;background:var(--muted);margin-bottom:5px}
+  .ramp{position:absolute;right:342px;bottom:16px;display:flex;align-items:center;
+    gap:7px;font-size:9.5px;letter-spacing:.1em;color:var(--muted)}
+  .ramp .r{display:flex} .ramp .r i{width:15px;height:7px;display:block}
+
+  .howto{position:absolute;bottom:14px;left:0;right:0;text-align:center;
+    font-size:10px;letter-spacing:.15em;text-transform:uppercase;
+    color:var(--muted);pointer-events:none}
+
+  /* mode gating */
+  body[data-mode="explore"] .analyze-only{display:none}
+  body[data-mode="analyze"] .explore-only{display:none}
+
+  @media (max-width:900px){
+    .cap{position:absolute;left:0;right:0;top:auto;bottom:54px;transform:none;
+      width:auto;padding:0 18px;
+      background:linear-gradient(transparent,rgba(10,12,18,.92) 26%)}
+    .side{width:100%;top:auto;height:46%;border-left:0;border-top:1px solid var(--rule)}
+    .ramp{display:none} .rail{left:10px}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs">
+    <button class="tab" id="t-explore" aria-current="true">Explore</button>
+    <button class="tab" id="t-analyze" aria-current="false">Analyze</button>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="timecells.html">Time</a>
+  </nav>
+</div>
+
+<div class="stage">
+  <canvas id="gl"></canvas>
+  <div class="overlay">
+
+    <!-- explore -->
+    <div class="rail explore-only">
+      <div class="track"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
+      <div class="ticks" id="ticks"></div>
+    </div>
+    <aside class="cap explore-only">
+      <p class="sb mono" id="c-scale"></p>
+      <h2 class="serif" id="c-title"></h2>
+      <ul class="parts" id="c-parts"></ul>
+      <p id="c-body"></p>
+      <p class="cite" id="c-cite"></p>
+      <button class="handoff" id="handoff">Measure this neuron &rarr;</button>
+    </aside>
+    <p class="howto explore-only mono">Scroll to descend &middot; drag to rotate</p>
+
+    <!-- analyze -->
+    <div class="tools analyze-only" id="tools"></div>
+    <div class="scaleb analyze-only mono"><div class="b" id="sbar"></div><span id="slab"></span></div>
+    <div class="ramp analyze-only mono">Branch order<span class="r" id="ramp"></span></div>
+    <aside class="side analyze-only">
+      <h3>Morphometrics</h3>
+      <div class="big">
+        <div><b class="mono" id="m-len">0</b><span>Length &micro;m</span></div>
+        <div><b class="mono" id="m-spines">0</b><span>Spines</span></div>
+      </div>
+      <div class="kv"><span>Segments</span><b class="mono" id="m-seg">0</b></div>
+      <div class="kv"><span>Branch points</span><b class="mono" id="m-bp">0</b></div>
+      <div class="kv"><span>Terminal tips</span><b class="mono" id="m-tip">0</b></div>
+      <div class="kv"><span>Max branch order</span><b class="mono" id="m-ord">0</b></div>
+      <div class="kv"><span>Mean segment</span><b class="mono" id="m-mean">0</b></div>
+      <div class="kv"><span>Radial extent</span><b class="mono" id="m-ext">0</b></div>
+      <div class="kv"><span>Spine density</span><b class="mono" id="m-dens">0</b></div>
+      <h3>Sholl analysis</h3>
+      <canvas id="sholl"></canvas>
+      <p class="cn">Intersections with shells every 10&nbsp;&micro;m from the soma. Peak marked.</p>
+      <h3>Selection</h3>
+      <div class="pick" id="pick"><p class="none">Click a filament or spine.</p></div>
+      <p class="cn" style="margin-top:18px">Same neuron as Explore level 3. Grown from a
+        seeded branching model, so every figure is computed from this arbor.</p>
+    </aside>
+
+  </div>
+</div>
+
+<script>
+(function(){
+var C=document.getElementById('gl'), X=C.getContext('2d'), D=1;
+var SH=document.getElementById('sholl'), SX=SH.getContext('2d');
+var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+var COL={violet:'#9B7BD6',amber:'#D9A05B',teal:'#6FC2B0',rose:'#C98BB8',
+         sky:'#7FA8D9',pale:'#9E9ABA',green:'#8FD98F'};
+var ORDER_COL=['#D9A05B','#E0B36F','#C98BB8','#9B7BD6','#7FA8D9','#6FC2B0','#8FD98F'];
+
+/* ================= geometry ================= */
+var seed=20260812;
+function rnd(){seed=(seed*1664525+1013904223)>>>0; return seed/4294967296;}
+
+var BRAIN=[];
+(function(){
+  var s2=seed;
+  [-1,1].forEach(function(s){
+    for(var n=0;n<520;n++){
+      var u=rnd()*6.283, v=Math.acos(rnd()*2-1);
+      var sx=Math.sin(v)*Math.cos(u), sy=Math.cos(v), sz=Math.sin(v)*Math.sin(u);
+      var g=1+.06*Math.sin(sx*8+sz*3)*Math.cos(sy*9);
+      var x=sx*52*g,y=sy*44*g,zz=sz*66*g;
+      if(x*s<0) continue;
+      BRAIN.push({x:s*(6+Math.abs(x)*.92), y:y-6+(zz<0?zz*.14:0), z:zz, c:'pale'});
+    }
+  });
+  [-1,1].forEach(function(s){for(var n=0;n<130;n++){
+    var u=rnd()*6.283,v=Math.acos(rnd()*2-1);
+    BRAIN.push({x:s*20+Math.sin(v)*Math.cos(u)*19,y:34+Math.cos(v)*14,
+      z:-52+Math.sin(v)*Math.sin(u)*15,c:'rose'});}});
+  for(var n=0;n<90;n++){var t=n/90,a=rnd()*6.283,r=8-t*3.4;
+    BRAIN.push({x:Math.cos(a)*r,y:22+t*44,z:-18+Math.sin(a)*r*.8,c:'sky'});}
+  var sy2=0; BRAIN.forEach(function(p){sy2+=p.y;}); sy2/=BRAIN.length;
+  BRAIN.forEach(function(p){p.y-=sy2;});
+  seed=s2;
+})();
+
+var NET=[], NLINK=[];
+(function(){
+  for(var i=0;i<62;i++) NET.push({x:(rnd()*2-1)*95,y:(rnd()*2-1)*70,z:(rnd()*2-1)*70,
+    c: rnd()<0.26?'teal':'amber', r: 4.2});
+  for(i=0;i<NET.length;i++) for(var j=i+1;j<NET.length;j++){
+    var d=Math.hypot(NET[i].x-NET[j].x,NET[i].y-NET[j].y,NET[i].z-NET[j].z);
+    if(d<44) NLINK.push([i,j,rnd()]);
+  }
+})();
+
+/* the neuron: shared by Explore level 3 and Analyze */
+var SEG=[],SPN=[],SOMA={x:0,y:26,z:0},SOMA_R=7.5,STATS={},SHOLL=[];
+function grow(){
+  SEG=[];SPN=[];
+  (function branch(x,y,z,ang,tilt,len,w,order,parent){
+    if(order>6||len<3.2) return;
+    var ex=x+Math.cos(ang)*Math.cos(tilt)*len,
+        ey=y-Math.sin(ang)*len, ez=z+Math.cos(ang)*Math.sin(tilt)*len;
+    var id=SEG.length;
+    SEG.push({x1:x,y1:y,z1:z,x2:ex,y2:ey,z2:ez,w:w,o:order,parent:parent,
+              len:Math.hypot(ex-x,ey-y,ez-z),kids:0});
+    if(parent>=0) SEG[parent].kids++;
+    if(order>=2){
+      var n=Math.max(0,Math.round(SEG[id].len*0.55));
+      for(var s=0;s<n;s++){var t=(s+0.5)/n;
+        SPN.push({seg:id,t:t,x:x+(ex-x)*t,y:y+(ey-y)*t,z:z+(ez-z)*t,
+          a:rnd()*6.283,len:1.6+rnd()*1.5,head:0.55+rnd()*0.5});}
+    }
+    var k=order<2?3:2;
+    for(var i=0;i<k;i++) branch(ex,ey,ez, ang+(i-(k-1)/2)*0.56+(rnd()-.5)*0.30,
+      tilt+(rnd()-.5)*1.15, len*(0.70+rnd()*0.13), w*0.68, order+1, id);
+  })(SOMA.x,SOMA.y,SOMA.z,Math.PI/2,0,30,5.0,0,-1);
+}
+function measure(){
+  var total=0,maxO=0,tips=0,bp=0,ext=0,shaft=0;
+  for(var i=0;i<SEG.length;i++){var s=SEG[i];
+    total+=s.len; if(s.o>maxO)maxO=s.o;
+    if(s.kids===0)tips++; if(s.kids>1)bp++; if(s.o>=2)shaft+=s.len;
+    var d=Math.hypot(s.x2-SOMA.x,s.y2-SOMA.y,s.z2-SOMA.z); if(d>ext)ext=d;}
+  STATS={len:total,seg:SEG.length,bp:bp,tips:tips,maxO:maxO,
+    mean:total/SEG.length,ext:ext,spines:SPN.length,
+    dens: shaft>0?SPN.length/shaft*10:0};
+  SHOLL=[];
+  for(var r=10;r<=Math.ceil(ext/10)*10;r+=10){var hits=0;
+    for(var j=0;j<SEG.length;j++){
+      var a=Math.hypot(SEG[j].x1-SOMA.x,SEG[j].y1-SOMA.y,SEG[j].z1-SOMA.z);
+      var b=Math.hypot(SEG[j].x2-SOMA.x,SEG[j].y2-SOMA.y,SEG[j].z2-SOMA.z);
+      if((a<r)!==(b<r))hits++;}
+    SHOLL.push({r:r,n:hits});}
+}
+grow(); measure();
+
+var SPINEBAR=[];
+(function(){for(var i=0;i<26;i++){SPINEBAR.push({t:((i/25)*2-1)*86,a:i*2.399,
+  len:11+rnd()*9,head:5.5+rnd()*3.4});}})();
+
+/* ================= view ================= */
+var mode='explore', z=0, zT=0, ry=0.55, rx=0.13;
+var drag=false,px=0,py=0,moved=0,sel=null;
+var tool={fil:true,spn:true,soma:true};
+
+function size(){
+  D=Math.min(devicePixelRatio||1,2);
+  var r=C.getBoundingClientRect();
+  var w=Math.max(1,(Math.round(r.width)||C.clientWidth||1100)*D);
+  var h=Math.max(1,(Math.round(r.height)||C.clientHeight||700)*D);
+  if(C.width!==w||C.height!==h){C.width=w;C.height=h;}
+}
+addEventListener('resize',size); size();
+if(window.ResizeObserver) new ResizeObserver(function(){size();drawSholl();}).observe(C);
+
+function proj(p,S,cx,cy,oy){
+  var cA=Math.cos(ry),sA=Math.sin(ry),cB=Math.cos(rx),sB=Math.sin(rx);
+  var yy=p.y-(oy||0);
+  var x=p.x*cA-p.z*sA, z2=p.x*sA+p.z*cA;
+  var y=yy*cB-z2*sB; z2=yy*sB+z2*cB;
+  return {X:cx+x*S,Y:cy+y*S,Z:z2};
+}
+function fade(c,w){return Math.max(0,1-Math.abs(z-c)/w);}
+
+/* ---------- explore levels ---------- */
+var LEVELS=[
+ {tag:'Whole brain',unit:'~140 mm',title:'Eighty-six billion neurons',
+  parts:[['Cerebrum','pale'],['Cerebellum','rose'],['Brainstem','sky']],
+  body:'Everything below happens inside this. The cortex alone holds roughly 16 billion neurons, each averaging thousands of synapses.',cite:'Scale approximate'},
+ {tag:'Cortical network',unit:'~1 mm',title:'A column of the cortex',
+  parts:[['Pyramidal cells','amber'],['Interneurons','teal'],['Axons','pale']],
+  body:'Excitatory pyramidal cells wired through inhibitory interneurons. Wrap the parvalbumin interneurons in perineuronal nets and the whole column stops rewiring.',
+  cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013'},
+ {tag:'Single neuron',unit:'~100 &micro;m',title:'One cell, thousands of inputs',
+  parts:[['Dendrites','violet'],['Soma','amber'],['Axon','sky']],
+  body:'Dendrites collect input, the soma integrates it, the axon carries the result away. This is the arbor you can measure in Analyze.',
+  cite:'Yang et al., <em>Cell Reports</em> 2014'},
+ {tag:'Dendritic spine',unit:'~1 &micro;m',title:'The unit that actually changes',
+  parts:[['Spine head','violet'],['Neck','rose'],['Shaft','pale']],
+  body:'Each bump is one synapse. A single dose of psilocybin raised spine size and density about 10% within 24 hours, still present a month later.',
+  cite:'Shao et al., <em>Neuron</em> 2021'},
+ {tag:'Membrane',unit:'~10 nm',title:'Where the drug meets the cell',
+  parts:[['TrkB','amber'],['p75NTR','rose'],['5-HT2A','violet'],['NMDA','sky']],
+  body:'TrkB builds the synapse, p75NTR dismantles it. Psychedelics bind TrkB a thousand times more tightly than antidepressants and cross the bilayer to reach 5-HT2A receptors inside, which serotonin cannot.',
+  cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023'}
+];
+
+function drawBrain(a,S,cx,cy){
+  var pts=BRAIN.map(function(p){var q=proj(p,S,cx,cy);q.c=p.c;return q;})
+               .sort(function(m,n){return m.Z-n.Z;});
+  for(var i=0;i<pts.length;i++){var p=pts[i],f=(p.Z+90)/180;
+    X.globalAlpha=a*(0.18+f*0.7);X.fillStyle=COL[p.c];
+    X.beginPath();X.arc(p.X,p.Y,D*(0.8+f*1.3),0,6.283);X.fill();}
+}
+function drawNet(a,S,cx,cy){
+  var pts=NET.map(function(p){var q=proj(p,S,cx,cy);q.c=p.c;q.r=p.r;return q;});
+  var tt=performance.now()/1000;
+  for(var i=0;i<NLINK.length;i++){
+    var A=pts[NLINK[i][0]],B=pts[NLINK[i][1]];
+    X.globalAlpha=a*0.13;X.strokeStyle='#6E6A8C';X.lineWidth=D*.7;
+    X.beginPath();X.moveTo(A.X,A.Y);X.lineTo(B.X,B.Y);X.stroke();
+    if(!reduce){var u=((tt*0.3+NLINK[i][2])%1);
+      X.globalAlpha=a*(0.55-Math.abs(u-.5))*.9;X.fillStyle=COL.amber;
+      X.beginPath();X.arc(A.X+(B.X-A.X)*u,A.Y+(B.Y-A.Y)*u,D*1.1,0,6.283);X.fill();}
+  }
+  pts.sort(function(m,n){return m.Z-n.Z;});
+  for(i=0;i<pts.length;i++){var p=pts[i],f=(p.Z+80)/160;
+    X.globalAlpha=a*(0.3+f*0.7);X.fillStyle=COL[p.c];
+    X.beginPath();X.arc(p.X,p.Y,D*p.r*(0.6+f*0.6),0,6.283);X.fill();}
+}
+function drawArbor(a,S,cx,cy,order){
+  var list=SEG.map(function(s,i){
+    var A=proj({x:s.x1,y:s.y1,z:s.z1},S,cx,cy,SOMA.y),
+        B=proj({x:s.x2,y:s.y2,z:s.z2},S,cx,cy,SOMA.y);
+    return {A:A,B:B,s:s,i:i,Z:(A.Z+B.Z)/2};}).sort(function(m,n){return m.Z-n.Z;});
+  for(var i=0;i<list.length;i++){
+    var it=list[i], f=(it.Z+STATS.ext)/(STATS.ext*2);
+    var on = sel&&sel.kind==='seg'&&sel.i===it.i;
+    X.globalAlpha=a*(on?1:(0.30+f*0.62));
+    X.strokeStyle=on?'#FFF':(order?ORDER_COL[Math.min(it.s.o,6)]:COL.violet);
+    X.lineWidth=Math.max(D*0.7,it.s.w*S*0.30*(on?1.7:1)); X.lineCap='round';
+    X.beginPath();X.moveTo(it.A.X,it.A.Y);X.lineTo(it.B.X,it.B.Y);X.stroke();
+  }
+  if(tool.soma||!order){
+    var so=proj(SOMA,S,cx,cy,SOMA.y);
+    X.globalAlpha=a*.95;X.fillStyle=COL.amber;X.beginPath();
+    for(var k=0;k<=24;k++){var an=k/24*6.283,rr=S*(SOMA_R+Math.sin(an*3)*1.1);
+      var xx=so.X+Math.cos(an)*rr,yy=so.Y+Math.sin(an)*rr*.9;
+      k?X.lineTo(xx,yy):X.moveTo(xx,yy);}
+    X.closePath();X.fill();
+  }
+}
+function drawSpineDots(a,S,cx,cy){
+  var sp=SPN.map(function(p,i){var q=proj(p,S,cx,cy,SOMA.y);q.p=p;q.i=i;return q;})
+            .sort(function(m,n){return m.Z-n.Z;});
+  for(var k=0;k<sp.length;k++){var q=sp[k],f=(q.Z+STATS.ext)/(STATS.ext*2);
+    var on=sel&&sel.kind==='spine'&&sel.i===q.i;
+    X.globalAlpha=a*(on?1:(0.35+f*0.6));X.fillStyle=on?'#FFF':'#B892E8';
+    X.beginPath();X.arc(q.X,q.Y,Math.max(D*0.8,q.p.head*S*(on?2.6:1.35)),0,6.283);X.fill();}
+}
+function drawShaft(a,S,cx,cy){
+  var A=proj({x:-95,y:0,z:0},S,cx,cy),B=proj({x:95,y:0,z:0},S,cx,cy);
+  X.globalAlpha=a*.9;X.strokeStyle=COL.pale;X.lineWidth=D*S*0.30;X.lineCap='round';
+  X.beginPath();X.moveTo(A.X,A.Y);X.lineTo(B.X,B.Y);X.stroke();
+  for(var i=0;i<SPINEBAR.length;i++){var s=SPINEBAR[i];
+    var P0=proj({x:s.t,y:0,z:0},S,cx,cy),
+        P1=proj({x:s.t,y:-Math.cos(s.a)*s.len,z:Math.sin(s.a)*s.len},S,cx,cy);
+    X.globalAlpha=a*.8;X.strokeStyle=COL.rose;X.lineWidth=D*S*0.075;
+    X.beginPath();X.moveTo(P0.X,P0.Y);X.lineTo(P1.X,P1.Y);X.stroke();
+    X.globalAlpha=a*.95;X.fillStyle=COL.violet;
+    X.beginPath();X.arc(P1.X,P1.Y,S*s.head*0.35,0,6.283);X.fill();}
+}
+function drawMembrane(a,S,cx,cy){
+  var w=C.width,top=C.height*0.44,gap=S*11;
+  X.globalAlpha=a*.55;X.fillStyle=COL.pale;
+  for(var row=0;row<2;row++){var yy=top+row*gap;
+    for(var x2=-20;x2<w+20;x2+=S*5.2){
+      X.beginPath();X.arc(x2,yy,S*2,0,6.283);X.fill();}}
+  var R=[['amber','TrkB',.2],['rose','p75NTR',.4],['violet','5-HT2A',.6],['sky','NMDA',.8]];
+  for(var i=0;i<R.length;i++){var rx2=w*R[i][2];
+    X.globalAlpha=a;X.fillStyle=COL[R[i][0]];
+    X.beginPath();X.roundRect(rx2-S*3.2,top-S*5.5,S*6.4,gap+S*11,S*2);X.fill();
+    X.globalAlpha=a*.16;X.beginPath();X.arc(rx2,top+gap/2,S*13,0,6.283);X.fill();
+    X.globalAlpha=a*.9;X.fillStyle=COL.pale;
+    X.font=(11*D)+'px ui-monospace,Menlo,monospace';X.textAlign='center';
+    X.fillText(R[i][1],rx2,top+gap+S*22);}
+  if(!reduce){var tt=performance.now()/1000;
+    for(var m=0;m<30;m++){var ph=((m*0.163)+tt*0.16)%1;
+      X.globalAlpha=a*(1-ph)*0.75;X.fillStyle=m%3===0?COL.violet:COL.amber;
+      X.beginPath();X.arc((m*137.5)%w,top-S*46+ph*S*40,S*1.5,0,6.283);X.fill();}}
+}
+
+/* ---------- paint ---------- */
+function paint(){
+  size();
+  var w=C.width,h=C.height; if(w<2||h<2) return false;
+  X.clearRect(0,0,w,h);
+
+  if(mode==='analyze'){
+    var cx=(w-(innerWidth>900?326*D:0))/2, cy=h*0.52;
+    var S=Math.min(w,h)/(STATS.ext*2.6);
+    if(tool.fil) drawArbor(1,S,cx,cy,true);
+    if(tool.spn) drawSpineDots(1,S,cx,cy);
+    document.getElementById('sbar').style.width=Math.round(20*S/D)+'px';
+    document.getElementById('slab').textContent='20 µm';
+    X.globalAlpha=1; return true;
+  }
+
+  var cx2=w/2, cy2=h/2, base=Math.min(w,h);
+  function SC(l,ref){return Math.max(0.02, base/ref*Math.pow(2.7,z-l));}
+  var a;
+  a=fade(0,1.05); if(a>0) drawBrain(a,SC(0,175),cx2,cy2);
+  a=fade(1,1.05); if(a>0) drawNet(a,SC(1,230),cx2,cy2);
+  a=fade(2,1.05); if(a>0) drawArbor(a,SC(2,300),cx2,cy2,false);
+  a=fade(3,1.05); if(a>0) drawShaft(a,SC(3,260),cx2,cy2);
+  a=fade(4,1.05); if(a>0) drawMembrane(a,SC(4,300),cx2,cy2);
+  X.globalAlpha=1; return true;
+}
+function loop(){
+  if(!drag&&!reduce) ry+= (mode==='analyze'?0.0022:0.0018);
+  if(mode==='explore') z+=(zT-z)*0.09;
+  paint(); requestAnimationFrame(loop);
+}
+requestAnimationFrame(loop);
+window.__paint=function(m,d){ if(m){setMode(m);} if(d!=null){z=zT=d;} return paint(); };
+
+/* ---------- sholl ---------- */
+function fmt(n,d){return n.toLocaleString(undefined,
+  {minimumFractionDigits:d||0,maximumFractionDigits:d||0});}
+function drawSholl(){
+  var r=SH.getBoundingClientRect();
+  var w=Math.max(240,Math.round(r.width)||294)*D,
+      h=Math.max(100,Math.round(r.height)||120)*D;
+  if(SH.width!==w||SH.height!==h){SH.width=w;SH.height=h;}
+  SX.clearRect(0,0,w,h); if(!SHOLL.length) return;
+  var pad=10*D,bw=(w-pad*2)/SHOLL.length,mx=0;
+  SHOLL.forEach(function(p){if(p.n>mx)mx=p.n;});
+  var peak=SHOLL.reduce(function(a,b){return b.n>a.n?b:a;},SHOLL[0]);
+  SX.strokeStyle='#232838';SX.lineWidth=D;
+  for(var g=0;g<=3;g++){var yy=pad+(h-pad*2)*g/3;
+    SX.beginPath();SX.moveTo(pad,yy);SX.lineTo(w-pad,yy);SX.stroke();}
+  SHOLL.forEach(function(p,i){var bh=(h-pad*2)*(p.n/mx);
+    SX.fillStyle=p===peak?'#D9A05B':'#3D4358';
+    SX.fillRect(pad+i*bw+bw*0.16,h-pad-bh,bw*0.68,bh);});
+  SX.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
+  SX.fillStyle='#736F8C';SX.textAlign='left';SX.fillText('0',pad,h-2*D);
+  SX.textAlign='right';SX.fillText(Math.round(STATS.ext)+' µm',w-pad,h-2*D);
+  SX.textAlign='center';SX.fillStyle='#D9A05B';
+  SX.fillText('peak '+peak.n+' @ '+peak.r+' µm',w/2,11*D);
+}
+function paintStats(){
+  document.getElementById('m-len').textContent=fmt(STATS.len);
+  document.getElementById('m-spines').textContent=fmt(STATS.spines);
+  document.getElementById('m-seg').textContent=fmt(STATS.seg);
+  document.getElementById('m-bp').textContent=fmt(STATS.bp);
+  document.getElementById('m-tip').textContent=fmt(STATS.tips);
+  document.getElementById('m-ord').textContent=STATS.maxO;
+  document.getElementById('m-mean').innerHTML=fmt(STATS.mean,1)+'<u>&micro;m</u>';
+  document.getElementById('m-ext').innerHTML=fmt(STATS.ext,1)+'<u>&micro;m</u>';
+  document.getElementById('m-dens').innerHTML=fmt(STATS.dens,1)+'<u>/10&micro;m</u>';
+}
+paintStats(); drawSholl();
+
+/* ---------- explore controls ---------- */
+function setZ(v){
+  zT=Math.max(0,Math.min(LEVELS.length-1,v));
+  var i=Math.round(zT),L=LEVELS[i];
+  document.getElementById('c-scale').innerHTML=L.tag+' &middot; '+L.unit;
+  document.getElementById('c-title').textContent=L.title;
+  document.getElementById('c-body').textContent=L.body;
+  document.getElementById('c-cite').innerHTML=L.cite;
+  var ul=document.getElementById('c-parts');ul.innerHTML='';
+  L.parts.forEach(function(p){var li=document.createElement('li');
+    li.innerHTML='<i style="background:'+COL[p[1]]+'"></i>'+p[0];ul.appendChild(li);});
+  var pct=zT/(LEVELS.length-1)*100;
+  document.getElementById('fill').style.height=pct+'%';
+  document.getElementById('knob').style.top='calc('+pct+'% - 5px)';
+  document.querySelectorAll('.tick').forEach(function(b,k){
+    b.setAttribute('aria-current',k===i?'true':'false');});
+  document.getElementById('handoff').classList.toggle('on', i===2);
+}
+var T=document.getElementById('ticks');
+LEVELS.forEach(function(L,i){var b=document.createElement('button');
+  b.className='tick';b.innerHTML=L.tag+'<small>'+L.unit+'</small>';
+  b.addEventListener('click',function(){setZ(i);});T.appendChild(b);});
+addEventListener('wheel',function(e){ if(mode!=='explore')return;
+  e.preventDefault(); setZ(zT+e.deltaY*0.0022);},{passive:false});
+
+/* ---------- analyze controls ---------- */
+var MB=[['fil','Filament'],['spn','Spines'],['soma','Soma'],['re','Regrow']];
+var MW=document.getElementById('tools');
+MB.forEach(function(m){var b=document.createElement('button');
+  b.className='tool';b.textContent=m[1];
+  if(m[0]!=='re') b.setAttribute('aria-pressed',tool[m[0]]?'true':'false');
+  b.addEventListener('click',function(){
+    if(m[0]==='re'){seed=(Date.now()>>>0);grow();measure();paintStats();
+      drawSholl();sel=null;showPick();return;}
+    tool[m[0]]=!tool[m[0]];b.setAttribute('aria-pressed',tool[m[0]]?'true':'false');});
+  MW.appendChild(b);});
+var RP=document.getElementById('ramp');
+ORDER_COL.forEach(function(c){var i=document.createElement('i');
+  i.style.background=c;RP.appendChild(i);});
+
+function showPick(){
+  var el=document.getElementById('pick');
+  if(!sel){el.innerHTML='<p class="none">Click a filament or spine.</p>';return;}
+  if(sel.kind==='seg'){var s=SEG[sel.i];
+    el.innerHTML='<p class="tag mono">Segment #'+sel.i+'</p>'+
+      '<div class="kv"><span>Branch order</span><b class="mono">'+s.o+'</b></div>'+
+      '<div class="kv"><span>Length</span><b class="mono">'+fmt(s.len,2)+'<u>&micro;m</u></b></div>'+
+      '<div class="kv"><span>Children</span><b class="mono">'+s.kids+'</b></div>'+
+      '<div class="kv"><span>Type</span><b class="mono">'+(s.kids?'internal':'terminal')+'</b></div>';
+  } else {var p=SPN[sel.i],ho=SEG[p.seg];
+    el.innerHTML='<p class="tag mono">Spine #'+sel.i+'</p>'+
+      '<div class="kv"><span>On segment</span><b class="mono">#'+p.seg+'</b></div>'+
+      '<div class="kv"><span>Host order</span><b class="mono">'+ho.o+'</b></div>'+
+      '<div class="kv"><span>Head radius</span><b class="mono">'+fmt(p.head,2)+'<u>&micro;m</u></b></div>'+
+      '<div class="kv"><span>Along shaft</span><b class="mono">'+fmt(p.t*100)+'<u>%</u></b></div>';}
+}
+function hit(ev){
+  var b=C.getBoundingClientRect();
+  var mx=(ev.clientX-b.left)*D,my=(ev.clientY-b.top)*D;
+  var w=C.width,h=C.height;
+  var cx=(w-(innerWidth>900?326*D:0))/2, cy=h*0.52, S=Math.min(w,h)/(STATS.ext*2.6);
+  var best=null,bd=14*D;
+  if(tool.spn) for(var i=0;i<SPN.length;i++){
+    var q=proj(SPN[i],S,cx,cy,SOMA.y),d=Math.hypot(q.X-mx,q.Y-my);
+    if(d<bd){bd=d;best={kind:'spine',i:i};}}
+  if(tool.fil) for(var j=0;j<SEG.length;j++){
+    var A=proj({x:SEG[j].x1,y:SEG[j].y1,z:SEG[j].z1},S,cx,cy,SOMA.y);
+    var B=proj({x:SEG[j].x2,y:SEG[j].y2,z:SEG[j].z2},S,cx,cy,SOMA.y);
+    var vx=B.X-A.X,vy=B.Y-A.Y,L2=vx*vx+vy*vy;
+    var t=L2?Math.max(0,Math.min(1,((mx-A.X)*vx+(my-A.Y)*vy)/L2)):0;
+    var d2=Math.hypot(A.X+vx*t-mx,A.Y+vy*t-my);
+    if(d2<bd){bd=d2;best={kind:'seg',i:j};}}
+  return best;
+}
+
+/* ---------- shared pointer ---------- */
+C.addEventListener('pointerdown',function(e){drag=true;moved=0;px=e.clientX;py=e.clientY;
+  C.classList.add('drag');C.setPointerCapture(e.pointerId);});
+C.addEventListener('pointermove',function(e){ if(!drag)return;
+  moved+=Math.abs(e.clientX-px)+Math.abs(e.clientY-py);
+  ry+=(e.clientX-px)*0.0075; rx+=(e.clientY-py)*0.0045;
+  rx=Math.max(-0.8,Math.min(0.8,rx));px=e.clientX;py=e.clientY;});
+C.addEventListener('pointerup',function(e){
+  C.classList.remove('drag');
+  if(drag&&moved<6&&mode==='analyze'){sel=hit(e);showPick();}
+  drag=false;});
+
+/* ---------- mode ---------- */
+function setMode(m){
+  mode=m; document.body.dataset.mode=m;
+  document.getElementById('t-explore').setAttribute('aria-current',m==='explore');
+  document.getElementById('t-analyze').setAttribute('aria-current',m==='analyze');
+  if(m==='analyze'){ rx=0.13; drawSholl(); }
+}
+document.getElementById('t-explore').addEventListener('click',function(){setMode('explore');});
+document.getElementById('t-analyze').addEventListener('click',function(){setMode('analyze');});
+document.getElementById('handoff').addEventListener('click',function(){setMode('analyze');});
+addEventListener('keydown',function(e){
+  if(mode!=='explore')return;
+  if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();setZ(Math.round(zT)+1);}
+  if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();setZ(Math.round(zT)-1);}
+});
+
+document.body.dataset.mode='explore';
+setZ(0);
+})();
+</script>
