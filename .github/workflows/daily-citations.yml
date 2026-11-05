@@ -1,0 +1,75 @@
+name: Daily citation check
+
+on:
+  schedule:
+    - cron: "17 10 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  issues: write
+  pages: write
+  id-token: write
+
+concurrency:
+  group: daily-citations
+  cancel-in-progress: false
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deploy.outputs.page_url }}
+    env:
+      GH_TOKEN: ${{ github.token }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Find the review issue
+        id: issue
+        run: |
+          # Only the bot's own issue counts, and only collaborators can edit its body.
+          number=$(gh issue list --author "app/github-actions" --label citation-review --state open \
+            --json number --jq '.[0].number // empty')
+          echo "number=$number" >> "$GITHUB_OUTPUT"
+
+      - name: Apply reviewed papers
+        if: steps.issue.outputs.number != ''
+        run: |
+          gh issue view "${{ steps.issue.outputs.number }}" --json body --jq .body > "$RUNNER_TEMP/issue.md"
+          python scripts/apply_review.py "$RUNNER_TEMP/issue.md"
+
+      - name: Check citations
+        run: python scripts/daily_check.py
+
+      - name: Build pages
+        run: python scripts/build_refs.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data references.html index.html
+          git diff --cached --quiet || git commit -m "Daily citation check"
+          git push
+
+      - name: Update the review issue
+        run: |
+          number="${{ steps.issue.outputs.number }}"
+          if [ -n "$number" ]; then
+            gh issue edit "$number" --body-file data/review_issue.md
+          else
+            gh label create citation-review --color D9A05B --force
+            gh issue create --title "Citation review queue" --label citation-review --body-file data/review_issue.md
+          fi
+
+      - uses: actions/configure-pages@v5
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+      - id: deploy
+        uses: actions/deploy-pages@v4

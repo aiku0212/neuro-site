@@ -233,7 +233,7 @@ var REFS=/*refs:start*/[
   "upd": [
    {
     "type": "correction",
-    "notice_doi": "10.1038/s41586-025-09671-y"
+    "url": "https://doi.org/10.1038/s41586-025-09671-y"
    }
   ]
  },
@@ -524,15 +524,15 @@ var REFS=/*refs:start*/[
   "c": 209,
   "tag": "null",
   "doi": "10.3389/fnhum.2017.00315",
-  "note": "No control group; authors note exercise confound",
+  "note": "No control group; authors note exercise confound; later corrections disclose funding by a co-author and Chopra Foundation ties",
   "upd": [
    {
     "type": "erratum",
-    "notice_doi": "10.3389/fnhum.2023.1278043"
+    "url": "https://doi.org/10.3389/fnhum.2023.1278043"
    },
    {
     "type": "corrigendum",
-    "notice_doi": "10.3389/fnhum.2022.868021"
+    "url": "https://doi.org/10.3389/fnhum.2022.868021"
    }
   ]
  },
@@ -591,7 +591,7 @@ var REFS=/*refs:start*/[
   "upd": [
    {
     "type": "erratum",
-    "notice_doi": "10.1016/j.euroneuro.2022.05.005"
+    "url": "https://doi.org/10.1016/j.euroneuro.2022.05.005"
    }
   ]
  },
@@ -666,11 +666,14 @@ function render(){
     items.forEach(function(r){
       var tag = r.tag==='null' ? '<span class="tagline null">null</span>'
               : r.tag==='key'  ? '<span class="tagline key">load-bearing</span>' : '';
+      if((r.upd||[]).some(function(u){return /retract|withdraw/i.test(u.type);})){
+        tag+='<span class="tagline null">retracted</span>';
+      }
       var meta = r.a+', <em>'+r.j+'</em>, '+r.y
         + (r.doi? ' &middot; <a href="https://doi.org/'+r.doi+'">doi</a>':'')
         + (r.note? ' &middot; '+r.note : '')
         + (r.upd||[]).map(function(u){
-            return ' &middot; <a href="https://doi.org/'+u.notice_doi+'">'+u.type+' published</a>';
+            return ' &middot; <a href="'+u.url+'">'+u.type+' published</a>';
           }).join('');
       html+='<div class="ref"><span class="n mono">'+(n++)+'</span>'+
         '<div><p class="t">'+r.t+tag+'</p><p class="m">'+meta+'</p></div>'+

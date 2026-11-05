@@ -1,0 +1,8 @@
+{
+  "bdnf": "(BDNF[tiab] OR \"brain-derived neurotrophic factor\"[tiab]) AND (TrkB[tiab] OR biomarker[tiab]) AND (meta-analysis[pt] OR systematic[sb])",
+  "psy": "(psychedelic*[tiab] OR psilocybin[tiab] OR psilocin[tiab] OR psychoplastogen*[tiab]) AND (neuroplasticity[tiab] OR plasticity[tiab] OR \"dendritic spine*\"[tiab])",
+  "cp": "(\"critical period*\"[tiab] OR \"perineuronal net*\"[tiab]) AND plasticity[tiab] AND (brain[tiab] OR cortex[tiab] OR neuron*[tiab])",
+  "bird": "(songbird*[tiab] OR \"zebra finch*\"[tiab] OR canar*[tiab]) AND (\"song learning\"[tiab] OR \"vocal learning\"[tiab] OR \"song plasticity\"[tiab])",
+  "int": "(BDNF[tiab] OR \"brain-derived neurotrophic factor\"[tiab]) AND (exercise[tiab] OR fasting[tiab] OR \"calorie restriction\"[tiab] OR meditation[tiab] OR yoga[tiab]) AND (meta-analysis[pt] OR randomized controlled trial[pt])",
+  "gen": "(Val66Met[tiab] AND plasticity[tiab]) OR (\"TMS-EEG\"[tiab] AND plasticity[tiab])"
+}
