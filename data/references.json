@@ -12,13 +12,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Effects of psychoplastogens on blood levels of BDNF in humans: a systematic review and meta-analysis",
     "site_year": 2024,
     "citations_at_compile": 17,
     "doi": "10.1038/s41380-024-02830-z",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2024
   },
@@ -34,7 +34,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, Non-U.S. Gov't"
@@ -45,8 +45,8 @@
     "pmid": "37280397",
     "site_title": "Psychedelics promote plasticity by directly binding to BDNF receptor TrkB",
     "site_year": 2023,
-    "citations": 508,
-    "citations_checked": "2026-11-05",
+    "citations": 509,
+    "citations_checked": "2026-11-06",
     "updates": [],
     "citations_at_compile": 508,
     "crossref_year": 2023
@@ -62,7 +62,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, Non-U.S. Gov't"
@@ -73,8 +73,8 @@
     "pmid": "39304417",
     "site_title": "Rethinking the role of TRKB in the action of antidepressants and psychedelics",
     "site_year": 2024,
-    "citations": 35,
-    "citations_checked": "2026-11-05",
+    "citations": 36,
+    "citations_checked": "2026-11-06",
     "updates": [],
     "citations_at_compile": 35,
     "crossref_year": 2024
@@ -91,7 +91,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, N.I.H., Extramural",
@@ -106,7 +106,7 @@
     "site_title": "Activation of p75NTR by proBDNF facilitates hippocampal long-term depression",
     "site_year": 2005,
     "citations_at_compile": 815,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2005
   },
@@ -121,7 +121,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, N.I.H., Extramural"
@@ -134,7 +134,7 @@
     "site_title": "ProBDNF negatively regulates neuronal remodeling, synaptic transmission and synaptic plasticity in hippocampus",
     "site_year": 2014,
     "citations_at_compile": 317,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2014
   },
@@ -149,7 +149,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Meta-Analysis",
@@ -164,7 +164,7 @@
     "site_title": "BDNF as a biomarker for successful treatment of mood disorders: a systematic & quantitative meta-analysis",
     "site_year": 2015,
     "citations_at_compile": 468,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2015
   },
@@ -179,13 +179,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Peripheral BDNF as a biomarker in bipolar disorder: a meta-analysis of 52 studies",
     "site_year": 2015,
     "citations_at_compile": 274,
     "doi": "10.1186/s12916-015-0529-7",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2015
   },
@@ -200,13 +200,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "BDNF as a biomarker for neuropathic pain: mechanisms and measurement challenges",
     "site_year": 2023,
     "citations_at_compile": 59,
     "doi": "10.1002/brb3.2903",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2023
   },
@@ -222,7 +222,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, N.I.H., Extramural",
@@ -236,7 +236,7 @@
     "site_year": 2021,
     "citations_at_compile": 458,
     "doi": "10.1016/j.neuron.2021.06.008",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2021
   },
@@ -251,7 +251,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "matched_journal": "Nature",
       "crossref_citations": 121
     },
@@ -259,7 +259,7 @@
     "site_title": "Psilocybin's lasting action requires pyramidal cell types and 5-HT2A receptors",
     "site_year": 2025,
     "citations_at_compile": 69,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [
       {
         "type": "correction",
@@ -274,13 +274,13 @@
     "authors": "Vargas et al.",
     "year": 2023,
     "journal": "Science",
-    "citations": 523,
+    "citations": 524,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article"
       ],
@@ -292,7 +292,7 @@
     "site_title": "Psychedelics promote neuroplasticity through activation of intracellular 5-HT2A receptors",
     "site_year": 2023,
     "citations_at_compile": 402,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2023
   },
@@ -308,7 +308,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, N.I.H., Intramural"
@@ -320,7 +320,7 @@
     "site_title": "Psilocybin desynchronizes the human brain",
     "site_year": 2024,
     "citations_at_compile": 213,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2024
   },
@@ -335,7 +335,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article"
       ],
@@ -346,7 +346,7 @@
     "site_title": "Psilocin fosters neuroplasticity in iPSC-derived human cortical neurons",
     "site_year": 2026,
     "citations_at_compile": 9,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2026
   },
@@ -357,11 +357,11 @@
     "year": 2021,
     "journal": "Frontiers in Psychiatry",
     "citations": 246,
-    "meta_analysis": true,
+    "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Systematic Review",
         "Journal Article"
@@ -374,7 +374,7 @@
     "site_title": "Psychedelics and neuroplasticity: a systematic review unraveling the biological underpinnings",
     "site_year": 2021,
     "citations_at_compile": 237,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2021
   },
@@ -390,7 +390,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, N.I.H., Extramural",
@@ -404,7 +404,7 @@
     "site_title": "Psychedelics reopen the social reward learning critical period",
     "site_year": 2023,
     "citations_at_compile": 281,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2023
   },
@@ -419,7 +419,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Review"
@@ -432,7 +432,7 @@
     "site_title": "The emerging neurobiology of psychedelics: critical periods, metaplasticity, and extracellular matrix remodeling",
     "site_year": 2026,
     "citations_at_compile": 1,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2026
   },
@@ -447,13 +447,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Psychedelics and the extracellular matrix: rewiring neuroplasticity and metaplasticity",
     "site_year": 2026,
     "citations_at_compile": 1,
     "doi": "10.1016/j.biopsych.2026.02.011",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2026
   },
@@ -469,7 +469,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, Non-U.S. Gov't",
@@ -483,7 +483,7 @@
     "site_title": "Balancing plasticity/stability across brain development",
     "site_year": 2013,
     "citations_at_compile": 595,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2013
   },
@@ -498,13 +498,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Critical periods of brain development",
     "site_year": 2020,
     "citations_at_compile": 23,
     "doi": "10.1016/b978-0-444-64150-2.00009-5",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2020
   },
@@ -514,12 +514,12 @@
     "authors": "Andrade-Talavera et al.",
     "year": 2023,
     "journal": "Trends in Neurosciences",
-    "citations": 37,
+    "citations": 38,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Review",
@@ -533,7 +533,7 @@
     "site_title": "Neuronal and astrocyte determinants of critical periods of plasticity",
     "site_year": 2023,
     "citations_at_compile": 30,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2023
   },
@@ -543,12 +543,12 @@
     "authors": "Lensjø et al.",
     "year": 2017,
     "journal": "Journal of Neuroscience",
-    "citations": 290,
+    "citations": 291,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, Non-U.S. Gov't"
@@ -561,7 +561,7 @@
     "site_title": "Removal of perineuronal nets unlocks juvenile plasticity through decreased inhibition and increased gamma activity",
     "site_year": 2017,
     "citations_at_compile": 257,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2016
   },
@@ -571,12 +571,12 @@
     "authors": "Beurdeley et al.",
     "year": 2012,
     "journal": "Journal of Neuroscience",
-    "citations": 406,
+    "citations": 407,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, N.I.H., Extramural",
@@ -590,7 +590,7 @@
     "site_title": "Otx2 binding to perineuronal nets persistently regulates plasticity in the mature visual cortex",
     "site_year": 2012,
     "citations_at_compile": 387,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2012
   },
@@ -605,7 +605,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, Non-U.S. Gov't",
@@ -619,7 +619,7 @@
     "site_title": "Perineuronal nets: plasticity, protection, and therapeutic potential",
     "site_year": 2019,
     "citations_at_compile": 197,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2019
   },
@@ -635,13 +635,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Perineuronal nets and vocal plasticity in songbirds: closed-ended versus open-ended learning",
     "site_year": 2017,
     "citations_at_compile": 38,
     "doi": "10.1002/dneu.22485",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2017
   },
@@ -657,7 +657,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article"
       ],
@@ -669,7 +669,7 @@
     "site_title": "Maximized song learning of juvenile male zebra finches following BDNF expression in the HVC",
     "site_year": 2013,
     "citations_at_compile": 17,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2013
   },
@@ -684,7 +684,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, N.I.H., Extramural"
@@ -697,7 +697,7 @@
     "site_title": "Developmental changes in BDNF protein in the song control nuclei of zebra finches",
     "site_year": 2013,
     "citations_at_compile": 20,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2013
   },
@@ -712,13 +712,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Developmental song learning as a model to understand neural mechanisms that limit and promote the ability to learn",
     "site_year": 2017,
     "citations_at_compile": 23,
     "doi": "10.1016/j.beproc.2017.11.008",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2019
   },
@@ -733,13 +733,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Seasonal regulation of singing-driven gene expression associated with song plasticity in the canary",
     "site_year": 2021,
     "citations_at_compile": 2,
     "doi": "10.1186/s13041-021-00869-5",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2021
   },
@@ -754,7 +754,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article"
       ],
@@ -766,7 +766,7 @@
     "site_title": "Song plasticity over time and vocal learning in clay-colored thrushes",
     "site_year": 2015,
     "citations_at_compile": 9,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2015
   },
@@ -779,17 +779,17 @@
     "citations": 33,
     "meta_analysis": true,
     "tag": "key",
-    "note": "35 RCTs, SMD 0.56",
+    "note": "35 RCTs in older adults, all exercise types, SMD 0.56",
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Exercise training alters resting BDNF concentration in older adults: meta-analysis of RCTs",
     "site_year": 2024,
     "citations_at_compile": 28,
     "doi": "10.1016/j.exger.2024.112658",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2025
   },
@@ -804,7 +804,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Effects of physical exercise on plasma BDNF in neurodegenerative disorders",
     "site_year": 2021,
@@ -812,7 +812,7 @@
     "updates": [],
     "doi": "10.1016/j.neubiorev.2021.05.025",
     "crossref_year": 2021,
-    "citations_checked": "2026-11-05"
+    "citations_checked": "2026-11-06"
   },
   {
     "group": "int",
@@ -825,13 +825,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Exercise-induced increase in blood-based BDNF in people with multiple sclerosis",
     "site_year": 2022,
     "citations_at_compile": 47,
     "doi": "10.1371/journal.pone.0264557",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2022
   },
@@ -843,18 +843,18 @@
     "journal": "Scientific Reports",
     "citations": 2,
     "tag": "key",
-    "note": "Peak at 15 min, baseline by 60",
+    "note": "12 young men; peak at 15 min, baseline by 60",
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Time-dependent comparison of serum BDNF following high-intensity interval and continuous exercise",
     "site_year": 2026,
     "citations_at_compile": 1,
     "doi": "10.1038/s41598-026-37728-z",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2026
   },
@@ -869,7 +869,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, Non-U.S. Gov't"
@@ -884,7 +884,7 @@
     "citations_at_compile": 76,
     "updates": [],
     "crossref_year": 2019,
-    "citations_checked": "2026-11-05"
+    "citations_checked": "2026-11-06"
   },
   {
     "group": "int",
@@ -897,13 +897,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Aerobic exercise increases BDNF in sub-acute stroke: a randomized controlled trial",
     "site_year": 2026,
     "citations_at_compile": 3,
     "doi": "10.1080/10749357.2026.2628540",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2026
   },
@@ -919,13 +919,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Physical exercise performed four hours after learning improves memory retention",
     "site_year": 2016,
     "citations_at_compile": 122,
     "doi": "10.1016/j.cub.2016.04.071",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2016
   },
@@ -940,7 +940,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article"
       ],
@@ -952,7 +952,7 @@
     "site_title": "Temporal effects of acute walking exercise on learning and memory function",
     "site_year": 2018,
     "citations_at_compile": 103,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2017
   },
@@ -967,13 +967,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Higher intensity exercise after encoding is more conducive to episodic memory retention",
     "site_year": 2024,
     "citations_at_compile": 5,
     "doi": "10.1371/journal.pone.0308373",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2024
   },
@@ -984,19 +984,19 @@
     "year": 2020,
     "journal": "Sports Medicine and Health Science",
     "citations": 25,
-    "tag": "null",
-    "note": "15 studies, 5 uncontrolled",
+    "tag": "mixed",
+    "note": "15 studies, 5 uncontrolled; limited evidence tends to show increases",
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Effects of meditation and mind-body exercise on BDNF: a literature review of human experimental studies",
     "site_year": 2020,
     "citations_at_compile": 22,
     "doi": "10.1016/j.smhs.2020.03.001",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2020
   },
@@ -1007,19 +1007,19 @@
     "year": 2017,
     "journal": "Frontiers in Human Neuroscience",
     "citations": 209,
-    "tag": "null",
+    "tag": "mixed",
     "note": "No control group; authors note exercise confound; later corrections disclose funding by a co-author and Chopra Foundation ties",
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Increased BDNF, cortisol awakening response and altered inflammatory markers after a 3-month yoga and meditation retreat",
     "site_year": 2017,
     "citations_at_compile": 261,
     "doi": "10.3389/fnhum.2017.00315",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [
       {
         "type": "erratum",
@@ -1039,19 +1039,19 @@
     "year": 2024,
     "journal": "Medicina",
     "citations": 54,
-    "meta_analysis": true,
-    "tag": "null",
+    "meta_analysis": false,
+    "tag": "mixed",
     "note": "5 up, 5 down, 6 no change",
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Effect of calorie restriction and intermittent fasting on BDNF and cognitive function: a systematic review",
     "site_year": 2024,
     "citations_at_compile": 40,
     "doi": "10.3390/medicina60010191",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2024
   },
@@ -1062,19 +1062,20 @@
     "year": 2026,
     "journal": "BMC Nutrition",
     "citations": 5,
-    "meta_analysis": true,
+    "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "The effect of dietary interventions on BDNF levels in adults: a systematic review of clinical trials",
     "site_year": 2026,
     "citations_at_compile": 5,
     "doi": "10.1186/s40795-025-01174-3",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
-    "crossref_year": 2026
+    "crossref_year": 2026,
+    "note": "Finds fasting generally raises BDNF, unlike Alkurd 2024"
   },
   {
     "group": "int",
@@ -1083,20 +1084,21 @@
     "year": 2026,
     "journal": "Nutrition Reviews",
     "citations": 2,
-    "meta_analysis": true,
-    "tag": "null",
+    "meta_analysis": false,
+    "tag": "mixed",
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "Effects of dietary weight loss on BDNF in individuals with overweight and obesity",
     "site_year": 2026,
     "citations_at_compile": 2,
     "doi": "10.1093/nutrit/nuaf308",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
-    "crossref_year": 2026
+    "crossref_year": 2026,
+    "note": "About half of studies show no effect; intermittent restriction more often shows increases"
   },
   {
     "group": "gen",
@@ -1106,18 +1108,18 @@
     "journal": "Neurological Sciences",
     "citations": 1,
     "tag": "key",
-    "note": "Val/Val 0.22, Val/Met 0.12, Met/Met 0.07",
+    "note": "Retrospective, 200 stroke patients; Val/Val 0.22, Val/Met 0.12, Met/Met 0.07",
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "BDNF Val66Met polymorphism modulates early TMS-EEG plasticity and rTMS efficacy after ischemic stroke",
     "site_year": 2026,
     "citations_at_compile": 1,
     "doi": "10.1007/s10072-026-08948-y",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2026
   },
@@ -1132,7 +1134,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "matched_journal": "European Neuropsychopharmacology",
       "crossref_citations": 15
     },
@@ -1140,7 +1142,7 @@
     "site_title": "BDNF gene polymorphisms predicting treatment response to CBT-based rehabilitation of depression",
     "site_year": 2022,
     "citations_at_compile": 11,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [
       {
         "type": "erratum",
@@ -1160,13 +1162,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05"
+      "checked": "2026-11-06"
     },
     "site_title": "BDNF gene polymorphism predicts response to continuous theta burst stimulation in chronic stroke",
     "site_year": 2021,
     "citations_at_compile": 14,
     "doi": "10.1111/ner.13495",
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2022
   },
@@ -1181,7 +1183,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "matched_journal": "Neuropsychopharmacology",
       "crossref_citations": 290
     },
@@ -1189,7 +1191,7 @@
     "site_title": "Assessing the mechanisms of brain plasticity by transcranial magnetic stimulation",
     "site_year": 2022,
     "citations_at_compile": 233,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2022
   },
@@ -1205,7 +1207,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, Non-U.S. Gov't"
@@ -1218,7 +1220,7 @@
     "site_title": "Real-time EEG-defined excitability states determine efficacy of TMS-induced plasticity in human motor cortex",
     "site_year": 2017,
     "citations_at_compile": 411,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2018
   },
@@ -1233,7 +1235,7 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-05",
+      "checked": "2026-11-06",
       "pubtypes": [
         "Journal Article",
         "Research Support, Non-U.S. Gov't",
@@ -1247,8 +1249,118 @@
     "site_title": "Measuring brain stimulation induced changes in cortical properties using TMS-EEG",
     "site_year": 2015,
     "citations_at_compile": 131,
-    "citations_checked": "2026-11-05",
+    "citations_checked": "2026-11-06",
     "updates": [],
     "crossref_year": 2015
+  },
+  {
+    "group": "bdnf",
+    "title": "Antidepressant drugs act by directly binding to TRKB neurotrophin receptors",
+    "authors": "Casarotto et al.",
+    "year": 2021,
+    "journal": "Cell",
+    "doi": "10.1016/j.cell.2021.01.034",
+    "meta_analysis": false,
+    "site_title": "Antidepressant drugs act by directly binding to TRKB neurotrophin receptors",
+    "site_year": 2021,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added in claim check"
+      ],
+      "checked": "2026-11-06"
+    },
+    "citations": 680,
+    "citations_checked": "2026-11-06"
+  },
+  {
+    "group": "found",
+    "title": "A quantitative description of membrane current and its application to conduction and excitation in nerve",
+    "authors": "Hodgkin & Huxley",
+    "year": 1952,
+    "journal": "The Journal of Physiology",
+    "doi": "10.1113/jphysiol.1952.sp004764",
+    "meta_analysis": false,
+    "site_title": "A quantitative description of membrane current and its application to conduction and excitation in nerve",
+    "site_year": 1952,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added in claim check"
+      ],
+      "checked": "2026-11-06"
+    },
+    "citations": 18474,
+    "citations_checked": "2026-11-06"
+  },
+  {
+    "group": "found",
+    "title": "Dendritic spines of CA 1 pyramidal cells in the rat hippocampus: serial electron microscopy with reference to their biophysical characteristics",
+    "authors": "Harris & Stevens",
+    "year": 1989,
+    "journal": "The Journal of Neuroscience",
+    "doi": "10.1523/jneurosci.09-08-02982.1989",
+    "meta_analysis": false,
+    "site_title": "Dendritic spines of CA 1 pyramidal cells in the rat hippocampus: serial electron microscopy with reference to their biophysical characteristics",
+    "site_year": 1989,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added in claim check"
+      ],
+      "checked": "2026-11-06"
+    },
+    "citations": 947,
+    "citations_checked": "2026-11-06"
+  },
+  {
+    "group": "found",
+    "title": "Experience-dependent structural synaptic plasticity in the mammalian brain",
+    "authors": "Holtmaat & Svoboda",
+    "year": 2009,
+    "journal": "Nature Reviews Neuroscience",
+    "doi": "10.1038/nrn2699",
+    "meta_analysis": false,
+    "site_title": "Experience-dependent structural synaptic plasticity in the mammalian brain",
+    "site_year": 2009,
+    "updates": [
+      {
+        "type": "erratum",
+        "notice_doi": "10.1038/nrn2721"
+      }
+    ],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added in claim check"
+      ],
+      "checked": "2026-11-06"
+    },
+    "citations": 1786,
+    "citations_checked": "2026-11-06"
+  },
+  {
+    "group": "found",
+    "title": "Neurons detect cognitive boundaries to structure episodic memories in humans",
+    "authors": "Zheng et al.",
+    "year": 2022,
+    "journal": "Nature Neuroscience",
+    "doi": "10.1038/s41593-022-01020-w",
+    "meta_analysis": false,
+    "site_title": "Neurons detect cognitive boundaries to structure episodic memories in humans",
+    "site_year": 2022,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added in claim check"
+      ],
+      "checked": "2026-11-06"
+    },
+    "citations": 129,
+    "citations_checked": "2026-11-06"
   }
 ]

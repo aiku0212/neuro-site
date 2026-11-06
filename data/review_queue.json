@@ -44,6 +44,15 @@
       "authors": "Yao et al.",
       "journal": "Neuroscience bulletin",
       "year": 2026
+    },
+    {
+      "pmid": "42988203",
+      "doi": "10.1016/j.neuroscience.2026.11.005",
+      "group": "cp",
+      "title": "Quantitative anatomy of the human striatum suggests limited synaptic plasticity and higher structural stability in the intermediate putamen than in the nucleus accumbens.",
+      "authors": "Díaz-Feliz et al.",
+      "journal": "Neuroscience",
+      "year": 2026
     }
   ],
   "seen": [
@@ -51,6 +60,7 @@
     "42964905",
     "42957826",
     "42957634",
-    "42975863"
+    "42975863",
+    "42988203"
   ]
 }

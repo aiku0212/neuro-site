@@ -105,7 +105,7 @@
 
   <div class="counts">
     <div><b class="mono" id="k-total">0</b><span>Sources</span></div>
-    <div><b class="mono" id="k-null">0</b><span>Null / negative</span></div>
+    <div><b class="mono" id="k-null">0</b><span>Null / mixed</span></div>
     <div><b class="mono" id="k-meta">0</b><span>Meta-analyses</span></div>
     <div><b class="mono" id="k-span">0</b><span>Year span</span></div>
   </div>
@@ -117,8 +117,10 @@
       and appear in every pharmacology textbook, but "textbook consensus" is not a
       reference, and that section is the least defensible part of the site.</p>
     <p>Fixing it means citing the original characterisation papers for each receptor
-      and transporter. That work has not been done yet, and until it is, treat the
-      psychedelic and plasticity sections as the rigorous ones.</p>
+      and transporter. That work has not been done yet, and until it is, treat the psychedelic and plasticity sections as the rigorous ones.</p>
+    <p>Even there, the mechanism is disputed: Moliner et al. report psychedelic plasticity
+      independent of 5-HT2A, while Vargas et al. and Shao et al. 2025 find 5-HT2A necessary.
+      Most of the cellular evidence comes from mice and cell models, not people.</p>
   </div>
 
   <div class="filters" id="filters"></div>
@@ -126,7 +128,7 @@
 </main>
 
 <footer class="mono">
-  Compiled August 2026 &middot; DOIs and citation counts from Crossref, checked <!--checked:start-->2026-11-05<!--checked:end--><br>
+  Compiled August 2026 &middot; DOIs and citation counts from Crossref, checked <!--checked:start-->2026-11-06<!--checked:end--><br>
   Written from primary literature, not from lecture material.
 </footer>
 
@@ -151,7 +153,7 @@ var REFS=/*refs:start*/[
   "a": "Moliner et al.",
   "y": 2023,
   "j": "Nature Neuroscience",
-  "c": 508,
+  "c": 509,
   "tag": "key",
   "doi": "10.1038/s41593-023-01316-5"
  },
@@ -161,7 +163,7 @@ var REFS=/*refs:start*/[
   "a": "Brunello, Cannarozzo &amp; Castr\u00e9n",
   "y": 2024,
   "j": "Trends in Neurosciences",
-  "c": 35,
+  "c": 36,
   "doi": "10.1016/j.tins.2024.08.011"
  },
  {
@@ -243,7 +245,7 @@ var REFS=/*refs:start*/[
   "a": "Vargas et al.",
   "y": 2023,
   "j": "Science",
-  "c": 523,
+  "c": 524,
   "tag": "key",
   "doi": "10.1126/science.adf0435"
  },
@@ -273,8 +275,7 @@ var REFS=/*refs:start*/[
   "y": 2021,
   "j": "Frontiers in Psychiatry",
   "c": 246,
-  "doi": "10.3389/fpsyt.2021.724606",
-  "meta": 1
+  "doi": "10.3389/fpsyt.2021.724606"
  },
  {
   "g": "psy",
@@ -329,7 +330,7 @@ var REFS=/*refs:start*/[
   "a": "Andrade-Talavera et al.",
   "y": 2023,
   "j": "Trends in Neurosciences",
-  "c": 37,
+  "c": 38,
   "doi": "10.1016/j.tins.2023.04.005"
  },
  {
@@ -338,7 +339,7 @@ var REFS=/*refs:start*/[
   "a": "Lensj\u00f8 et al.",
   "y": 2017,
   "j": "Journal of Neuroscience",
-  "c": 290,
+  "c": 291,
   "doi": "10.1523/jneurosci.2504-16.2016"
  },
  {
@@ -347,7 +348,7 @@ var REFS=/*refs:start*/[
   "a": "Beurdeley et al.",
   "y": 2012,
   "j": "Journal of Neuroscience",
-  "c": 406,
+  "c": 407,
   "doi": "10.1523/jneurosci.0394-12.2012"
  },
  {
@@ -425,7 +426,7 @@ var REFS=/*refs:start*/[
   "tag": "key",
   "doi": "10.1016/j.exger.2024.112658",
   "meta": 1,
-  "note": "35 RCTs, SMD 0.56"
+  "note": "35 RCTs in older adults, all exercise types, SMD 0.56"
  },
  {
   "g": "int",
@@ -456,7 +457,7 @@ var REFS=/*refs:start*/[
   "c": 2,
   "tag": "key",
   "doi": "10.1038/s41598-026-37728-z",
-  "note": "Peak at 15 min, baseline by 60"
+  "note": "12 young men; peak at 15 min, baseline by 60"
  },
  {
   "g": "int",
@@ -511,9 +512,9 @@ var REFS=/*refs:start*/[
   "y": 2020,
   "j": "Sports Medicine and Health Science",
   "c": 25,
-  "tag": "null",
+  "tag": "mixed",
   "doi": "10.1016/j.smhs.2020.03.001",
-  "note": "15 studies, 5 uncontrolled"
+  "note": "15 studies, 5 uncontrolled; limited evidence tends to show increases"
  },
  {
   "g": "int",
@@ -522,7 +523,7 @@ var REFS=/*refs:start*/[
   "y": 2017,
   "j": "Frontiers in Human Neuroscience",
   "c": 209,
-  "tag": "null",
+  "tag": "mixed",
   "doi": "10.3389/fnhum.2017.00315",
   "note": "No control group; authors note exercise confound; later corrections disclose funding by a co-author and Chopra Foundation ties",
   "upd": [
@@ -543,9 +544,8 @@ var REFS=/*refs:start*/[
   "y": 2024,
   "j": "Medicina",
   "c": 54,
-  "tag": "null",
+  "tag": "mixed",
   "doi": "10.3390/medicina60010191",
-  "meta": 1,
   "note": "5 up, 5 down, 6 no change"
  },
  {
@@ -556,7 +556,7 @@ var REFS=/*refs:start*/[
   "j": "BMC Nutrition",
   "c": 5,
   "doi": "10.1186/s40795-025-01174-3",
-  "meta": 1
+  "note": "Finds fasting generally raises BDNF, unlike Alkurd 2024"
  },
  {
   "g": "int",
@@ -565,9 +565,9 @@ var REFS=/*refs:start*/[
   "y": 2026,
   "j": "Nutrition Reviews",
   "c": 2,
-  "tag": "null",
+  "tag": "mixed",
   "doi": "10.1093/nutrit/nuaf308",
-  "meta": 1
+  "note": "About half of studies show no effect; intermittent restriction more often shows increases"
  },
  {
   "g": "gen",
@@ -578,7 +578,7 @@ var REFS=/*refs:start*/[
   "c": 1,
   "tag": "key",
   "doi": "10.1007/s10072-026-08948-y",
-  "note": "Val/Val 0.22, Val/Met 0.12, Met/Met 0.07"
+  "note": "Retrospective, 200 stroke patients; Val/Val 0.22, Val/Met 0.12, Met/Met 0.07"
  },
  {
   "g": "gen",
@@ -631,6 +631,57 @@ var REFS=/*refs:start*/[
   "j": "Brain Stimulation",
   "c": 134,
   "doi": "10.1016/j.brs.2015.07.029"
+ },
+ {
+  "g": "bdnf",
+  "t": "Antidepressant drugs act by directly binding to TRKB neurotrophin receptors",
+  "a": "Casarotto et al.",
+  "y": 2021,
+  "j": "Cell",
+  "c": 680,
+  "doi": "10.1016/j.cell.2021.01.034"
+ },
+ {
+  "g": "found",
+  "t": "A quantitative description of membrane current and its application to conduction and excitation in nerve",
+  "a": "Hodgkin &amp; Huxley",
+  "y": 1952,
+  "j": "The Journal of Physiology",
+  "c": 18474,
+  "doi": "10.1113/jphysiol.1952.sp004764"
+ },
+ {
+  "g": "found",
+  "t": "Dendritic spines of CA 1 pyramidal cells in the rat hippocampus: serial electron microscopy with reference to their biophysical characteristics",
+  "a": "Harris &amp; Stevens",
+  "y": 1989,
+  "j": "The Journal of Neuroscience",
+  "c": 947,
+  "doi": "10.1523/jneurosci.09-08-02982.1989"
+ },
+ {
+  "g": "found",
+  "t": "Experience-dependent structural synaptic plasticity in the mammalian brain",
+  "a": "Holtmaat &amp; Svoboda",
+  "y": 2009,
+  "j": "Nature Reviews Neuroscience",
+  "c": 1786,
+  "doi": "10.1038/nrn2699",
+  "upd": [
+   {
+    "type": "erratum",
+    "url": "https://doi.org/10.1038/nrn2721"
+   }
+  ]
+ },
+ {
+  "g": "found",
+  "t": "Neurons detect cognitive boundaries to structure episodic memories in humans",
+  "a": "Zheng et al.",
+  "y": 2022,
+  "j": "Nature Neuroscience",
+  "c": 129,
+  "doi": "10.1038/s41593-022-01020-w"
  }
 ]/*refs:end*/;
 
@@ -644,9 +695,11 @@ var GROUPS=[
  {id:'bird', name:'Songbirds and comparative learning',
   note:'Species that learn once versus species that learn for life, and the structural difference between them.'},
  {id:'int', name:'Interventions: exercise, diet, meditation',
-  note:'Includes the nulls. Exercise survives pooling; fasting and meditation do not.'},
+  note:'Exercise has pooled randomized evidence. Evidence for fasting and meditation is mixed or weak, and these reviews did not pool it.'},
  {id:'gen', name:'Genotype and stimulation-based measurement',
-  note:'Val66Met, and the TMS-EEG methods proposed as an alternative to blood biomarkers.'}
+  note:'Val66Met, and the TMS-EEG methods proposed as an alternative to blood biomarkers.'},
+ {id:'found', name:'Foundations and methods',
+  note:'Older primary sources behind the membrane, spine and time-cell pages.'}
 ];
 
 var filter='all';
@@ -656,7 +709,7 @@ function render(){
   GROUPS.forEach(function(g){
     var items=REFS.filter(function(r){
       if(r.g!==g.id) return false;
-      if(filter==='null') return r.tag==='null';
+      if(filter==='null') return r.tag==='null'||r.tag==='mixed';
       if(filter==='meta') return r.meta;
       if(filter==='key') return r.tag==='key';
       return true;});
@@ -665,6 +718,7 @@ function render(){
     var html='<h2>'+g.name+'</h2><p class="gnote">'+g.note+'</p>';
     items.forEach(function(r){
       var tag = r.tag==='null' ? '<span class="tagline null">null</span>'
+              : r.tag==='mixed' ? '<span class="tagline null">mixed or weak</span>'
               : r.tag==='key'  ? '<span class="tagline key">load-bearing</span>' : '';
       if((r.upd||[]).some(function(u){return /retract|withdraw/i.test(u.type);})){
         tag+='<span class="tagline null">retracted</span>';
@@ -682,7 +736,7 @@ function render(){
     d.innerHTML=html; box.appendChild(d);
   });
 }
-var F=[['all','All'],['key','Load-bearing'],['null','Null results'],['meta','Meta-analyses']];
+var F=[['all','All'],['key','Load-bearing'],['null','Null and mixed'],['meta','Meta-analyses']];
 var FW=document.getElementById('filters');
 F.forEach(function(f){
   var b=document.createElement('button'); b.className='f'; b.textContent=f[1];
@@ -695,7 +749,7 @@ F.forEach(function(f){
 
 var yrs=REFS.map(function(r){return r.y;});
 document.getElementById('k-total').textContent=REFS.length;
-document.getElementById('k-null').textContent=REFS.filter(function(r){return r.tag==='null';}).length;
+document.getElementById('k-null').textContent=REFS.filter(function(r){return r.tag==='null'||r.tag==='mixed';}).length;
 document.getElementById('k-meta').textContent=REFS.filter(function(r){return r.meta;}).length;
 document.getElementById('k-span').textContent=(Math.max.apply(null,yrs)-Math.min.apply(null,yrs));
 render();

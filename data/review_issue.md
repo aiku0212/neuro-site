@@ -1,6 +1,10 @@
-Last run: 2026-11-05
+Last run: 2026-11-06
 
-## New papers to review (5)
+## New notices: review any claims that rely on these
+
+- **erratum**: Experience-dependent structural synaptic plasticity in the mammalian brain (https://doi.org/10.1038/nrn2699) ([notice](https://doi.org/10.1038/nrn2721))
+
+## New papers to review (6)
 Tick one box per paper. The next daily run applies it.
 
 **Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.**  
@@ -27,4 +31,9 @@ McConnell et al., Translational psychiatry, 2026 · group `psy` · https://doi.o
 Yao et al., Neuroscience bulletin, 2026 · group `cp` · https://doi.org/10.1007/s12264-026-01740-0
 - [ ] Approve <!-- review:42975863:approve -->
 - [ ] Dismiss <!-- review:42975863:dismiss -->
+
+**Quantitative anatomy of the human striatum suggests limited synaptic plasticity and higher structural stability in the intermediate putamen than in the nucleus accumbens.**  
+Díaz-Feliz et al., Neuroscience, 2026 · group `cp` · https://doi.org/10.1016/j.neuroscience.2026.11.005
+- [ ] Approve <!-- review:42988203:approve -->
+- [ ] Dismiss <!-- review:42988203:dismiss -->
 

@@ -241,50 +241,43 @@
   </section>
 
   <main>
-    <p class="lede serif">Every intervention sold as a way to grow your brain was
-      tested. <strong>One of them survived.</strong> The rest are null results,
-      coin flips, or studies without a control group — and the difference between
-      them is not obvious from the outside.</p>
+    <p class="lede serif">Blood BDNF is the measure most often used to sell these
+      interventions. <strong>Exercise has the strongest evidence for moving it.</strong>
+      Yoga and meditation trend upward in small or uncontrolled studies, fasting results
+      conflict, and psychedelics leave it unchanged. This is a result about one blood
+      marker, not about whether each intervention changes the brain.</p>
 
     <div class="sec">
-      <h3 class="mono">What actually moves the needle</h3>
+      <h3 class="mono">What moves blood BDNF</h3>
       <div class="scroller">
         <table class="ledger">
           <thead><tr><th>Intervention</th><th>Evidence</th><th>Result</th></tr></thead>
           <tbody>
-            <tr><td class="yes">Exercise, high intensity</td><td>35 RCTs, meta-analysed</td><td class="yes">SMD 0.56</td></tr>
-            <tr><td>Yoga &amp; meditation</td><td>15 studies, 5 uncontrolled</td><td class="no">Confounded</td></tr>
+            <tr><td class="yes">Exercise training, older adults</td><td>35 RCTs, meta-analysed</td><td class="yes">SMD 0.56</td></tr>
+            <tr><td>Yoga &amp; meditation</td><td>15 studies, 5 uncontrolled</td><td class="no">Tends up, weak designs</td></tr>
             <tr><td>Fasting &amp; calorie restriction</td><td>16 studies</td><td class="no">5 up / 5 down / 6 null</td></tr>
             <tr><td>Psychedelics (blood BDNF)</td><td>29 studies, meta-analysed</td><td class="no">SMD 0.02</td></tr>
           </tbody>
         </table>
       </div>
-      <p>Only physical exertion survives pooling. And within exercise, intensity is
-        everything: high-intensity intervals beat moderate and low, which do not
-        differ from each other at all.</p>
+      <p>Exercise is the only one of these with pooled randomized evidence of a rise. Intensity seems to matter: in a 12-person crossover study, high-intensity intervals raised serum BDNF more than moderate or low intensity, which did not differ from each other.</p>
     </div>
 
     <div class="sec">
       <h3 class="mono">The distinction almost everyone misses</h3>
       <p>BDNF <strong>signaling</strong> and BDNF <strong>concentration</strong> are
-        different quantities in different compartments. Psychedelics bind the TrkB
-        receptor a thousand times more tightly than any antidepressant and amplify
-        the BDNF you already have. They do not raise the amount circulating in your
-        blood, and there is no reason they should.</p>
+        different quantities in different compartments. In cell and mouse studies, LSD and psilocin bound the TrkB receptor about a thousand times more tightly than the antidepressants tested and enhanced signalling from existing BDNF. In people, they do not raise the amount circulating in blood.</p>
       <p class="pull serif">A drug can transform how a receptor behaves without
         changing how much protein floats past it.</p>
-      <p>This is why a meta-analysis of 29 studies found nothing, while the cellular
-        and imaging literature keeps finding everything. Two instruments, two
-        compartments, one confusion that props up an entire supplement market.</p>
+      <p>That may be why a meta-analysis of 29 studies found no change while cellular studies find large effects. Its authors raise a second explanation: the animal findings may not fully carry over to humans. The current data cannot separate the two. </p>
     </div>
 
     <div class="sec">
       <h3 class="mono">Why closing matters</h3>
       <p>Critical periods do not fade. They are <strong>actively shut</strong> by
-        molecular brakes the brain spends energy maintaining — perineuronal nets
+        molecular brakes — perineuronal nets
         that wrap inhibitory interneurons and lock the circuit down.</p>
-      <p>That closure is what lets anything consolidate. A permanently open window
-        means nothing sticks. Songbirds prove the point better than any lab mouse:
+      <p>That closure helps stabilize what the circuit has learned. Songbirds show the range:
         zebra finches close hard and their song crystallizes; starlings stay open and
         learn new songs every year. Both strategies survived evolution. Neither is
         the upgrade.</p>
@@ -295,7 +288,7 @@
 
   <footer class="mono">
     Compiled from Consensus, PubMed &amp; ClinicalTrials.gov &middot; August 2026<br>
-    Every figure links to a peer-reviewed source. Nulls included.
+    Figures are sourced on the Sources page. Nulls included.
   </footer>
 </div>
 
@@ -305,19 +298,19 @@
 
   var REG=[
     {id:'pfc',   name:'Prefrontal Cortex', hue:'#9B7BD6',
-     title:'A single dose, ten percent more synapses',
+     title:'A single dose, ten percent more spines',
      stat:'10%', statlabel:'spine density, within 24 hours',
-     body:'One dose of psilocybin increased dendritic spine size and density in frontal cortex within a day. The change was still there a month later, alongside elevated excitatory transmission.',
+     body:'One dose of psilocybin increased dendritic spine size and density in mouse frontal cortex within a day. The change was still there a month later, alongside elevated excitatory transmission.',
      cite:'Shao et al., <em>Neuron</em> 2021 \u00B7 628 citations'},
     {id:'dmn',   name:'Default Mode Network', hue:'#B892E8',
      title:'Psilocybin desynchronizes the brain',
      stat:'3\u00D7', statlabel:'vs. methylphenidate control',
-     body:'Eighteen MRI scans per person, tracked before, during and three weeks after. Network distinctions dissolved. The decoupling between anterior hippocampus and the default mode network persisted for weeks.',
+     body:'About eighteen MRI scans per person, tracked before, during and three weeks after. Network distinctions dissolved. The decoupling between anterior hippocampus and the default mode network persisted for weeks.',
      cite:'Siegel et al., <em>Nature</em> 2024 \u00B7 303 citations'},
     {id:'hip',   name:'Hippocampus', hue:'#D9A05B',
      title:'Exercise four hours later, not right after',
-     stat:'4 h', statlabel:'optimal delay after encoding',
-     body:'Three groups learned the same associations. Exercising four hours afterward improved retention. Exercising immediately did nothing. Serum BDNF is back to baseline by then, so whatever drives this, it is not the biomarker.',
+     stat:'4 h', statlabel:'better than exercising right away',
+     body:'Three groups learned the same associations. Exercising four hours afterward improved retention. Exercising immediately did not. Only those two timings were tested.',
      cite:'van Dongen et al., <em>Current Biology</em> 2016 \u00B7 111 citations'},
     {id:'vis',   name:'Visual Cortex', hue:'#7FA8D9',
      title:'The brain pays to stop learning',
@@ -332,7 +325,7 @@
     {id:'trkb',  name:'TrkB Receptor', hue:'#E8B87A',
      title:'A thousand times tighter',
      stat:'1000\u00D7', statlabel:'affinity vs. other antidepressants',
-     body:'LSD and psilocin bind TrkB directly, at a site overlapping where antidepressants bind. The plasticity effects depend on that binding and on promoting endogenous BDNF — not on making more of it.',
+     body:'In cell and mouse studies, LSD and psilocin bind TrkB directly, at a site overlapping where antidepressants bind. The plasticity effects depend on that binding and on promoting endogenous BDNF — not on making more of it.',
      cite:'Moliner et al., <em>Nature Neuroscience</em> 2023'},
     {id:'mol',   name:'Molecular Layer', hue:'#C98BB8',
      title:'The same gene, opposite directions',
@@ -342,17 +335,17 @@
     {id:'mot',   name:'Motor Cortex', hue:'#8FD98F',
      title:'One letter of DNA, triple the plasticity',
      stat:'3\u00D7', statlabel:'spread across Val66Met genotypes',
-     body:'Measured directly with TMS-EEG in 200 patients: Val/Val 0.22, Val/Met 0.12, Met/Met 0.07. Clinical recovery tracked genotype. Almost no intervention study controls for this.',
+     body:'Measured with TMS-EEG in a retrospective study of 200 stroke patients: Val/Val 0.22, Val/Met 0.12, Met/Met 0.07. Clinical recovery tracked genotype. This is one study and has not been replicated in the sources here.',
      cite:'Lin, <em>Neurological Sciences</em> 2026'},
     {id:'cbl',   name:'Cerebellum', hue:'#D98F8F',
      title:'The window is sixty minutes wide',
      stat:'15 min', statlabel:'peak, baseline by 60',
-     body:'High-intensity intervals raised serum BDNF far above moderate and low intensity, which did not differ from each other. The rise peaked at fifteen minutes and was gone within the hour.',
+     body:'In 12 young men, high-intensity intervals raised serum BDNF above moderate and low intensity, which did not differ from each other. The rise peaked at fifteen minutes and was gone within the hour.',
      cite:'Birinci et al., <em>Scientific Reports</em> 2026'},
     {id:'stem',  name:'Brainstem &amp; Blood', hue:'#8A8FA8',
      title:'The measurement that fails',
      stat:'0.02', statlabel:'effect size, 29 pooled studies',
-     body:'Ketamine, LSD, psilocybin, ayahuasca, DMT, MDMA. No change in peripheral BDNF. And better-controlled studies reported smaller effects — the signature of a literature built on noise.',
+     body:'Ketamine, LSD, psilocybin, ayahuasca, DMT, MDMA. No change in peripheral BDNF. Better-controlled studies reported smaller effects — the signature of a literature built on noise.',
      cite:'Calder et al., <em>Molecular Psychiatry</em> 2024'}
   ];
 
@@ -562,23 +555,23 @@
         cite:'Woo et al., <em>Nat. Neurosci.</em> 2005 &middot; Yang et al., <em>Cell Reports</em> 2014'},
       psi:{label:'Psilocybin', spine:1.38, title:'Straight to the receptor',
         rec:[['trkb','TrkB',1],['ht2a','5-HT2A (intracellular)',1],['ht2a','5-HT2A (surface)',.55],['p75','p75NTR',.3],['pnn','Perineuronal net',.25]],
-        body:'Psilocin binds TrkB directly with a thousand times the affinity of any antidepressant, and it is lipophilic enough to cross the membrane and reach intracellular 5-HT2A receptors that serotonin itself cannot get to. Spine density rises about 10% within 24 hours and holds for a month. Circulating BDNF does not change, and there is no reason it should: the drug amplifies the BDNF already present.',
+        body:'In cell and mouse studies, psilocin binds TrkB with about a thousand times the affinity of the antidepressants tested, and it is lipophilic enough to cross the membrane and reach intracellular 5-HT2A receptors that serotonin itself cannot get to. Mouse spine density rises about 10% within 24 hours and holds for a month. Circulating BDNF does not change in people. The sources disagree on the route: Moliner reports effects independent of 5-HT2A, while Vargas and Shao 2025 find 5-HT2A necessary.',
         cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023 &middot; Shao et al., <em>Neuron</em> 2021'},
       ssri:{label:'SSRI', spine:1.1, title:'The same door, a weaker key',
         rec:[['trkb','TrkB',.55],['ht2a','5-HT2A (surface)',.3],['p75','p75NTR',.35],['pnn','Perineuronal net',.5]],
-        body:'Fluoxetine binds the same TrkB site, just far more weakly. Signaling only shifts after the drug accumulates over weeks, which is the mechanistic reason the clinical response is slow rather than immediate.',
+        body:'Fluoxetine binds a partly overlapping TrkB site, far more weakly. Signaling only shifts after the drug accumulates over weeks, which may explain why the clinical response is slow rather than immediate.',
         cite:'Casarotto et al., <em>Cell</em> 2021 &middot; Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
       ket:{label:'Ketamine', spine:1.3, title:'Disinhibition, then a burst',
         rec:[['nmda','NMDA (blocked)',1],['glu','Glutamate surge',.9],['trkb','TrkB',.8],['pnn','Perineuronal net',.35]],
-        body:'Ketamine blocks NMDA receptors on inhibitory interneurons, releasing the brake on the local network. The glutamate burst that follows drives mTOR signaling and rapid spine growth within hours, which is why the antidepressant effect arrives in a day rather than a month.',
+        body:'In one leading model, ketamine blocks NMDA receptors on inhibitory interneurons, releasing the brake on the local network. The glutamate burst that follows drives mTOR signaling and rapid spine growth within hours, which is why the antidepressant effect arrives in a day rather than a month.',
         cite:'Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
       ex:{label:'Exercise', spine:1.18, title:'Sixty minutes, then gone',
         rec:[['bdnf','Circulating BDNF',1],['trkb','TrkB',.75],['p75','p75NTR',.3],['pnn','Perineuronal net',.5]],
-        body:'High-intensity intervals raise serum BDNF well above moderate and low intensity, which do not differ from each other. It peaks at fifteen minutes and is back to baseline within the hour. This is the one intervention that reliably moves the blood measure, though exercise also activates platelets, which is where most serum BDNF comes from.',
+        body:'High-intensity intervals raise serum BDNF well above moderate and low intensity, which do not differ from each other. It peaks at fifteen minutes and is back to baseline within the hour. Of the interventions here, it has the strongest pooled evidence for moving the blood measure, though exercise also activates platelets, which is where most serum BDNF comes from.',
         cite:'Birinci et al., <em>Scientific Reports</em> 2026 &middot; Gholami et al., <em>Exp. Gerontology</em> 2024'},
       dep:{label:'Depression', spine:.62, title:'Signalling withdrawn',
         rec:[['trkb','TrkB',.18],['p75','p75NTR',.85],['bdnf','Circulating BDNF',.25],['pnn','Perineuronal net',.85]],
-        body:'Reduced BDNF signaling and measurable spine loss in prefrontal cortex. Peripheral BDNF is lower during acute episodes and recovers with successful treatment in responders but not non-responders, making this one of the few places the blood measure actually behaves like a biomarker.',
+        body:'Reduced BDNF signaling and measurable spine loss in prefrontal cortex. Serum BDNF is lower during acute episodes and recovers with successful treatment in responders but not non-responders, making this one of the few places the blood measure actually behaves like a biomarker.',
         cite:'Polyakova et al., <em>J. Affective Disorders</em> 2015'}
     };
 

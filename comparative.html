@@ -142,12 +142,11 @@
   <p class="lede">Everything else on this site measures plasticity in one species — the
     one that can describe what a drug feels like. <strong>Dogs are prescribed the same
     molecules, acting on the same receptors, and cannot describe anything.</strong> That
-    gap is not a limitation of veterinary medicine. It is the central unsolved problem
-    in animal neuroscience, and it is measurable.</p>
+    gap is not a limitation of veterinary medicine. It is a central open problem in animal neuroscience, and parts of it are measurable.</p>
 
   <div class="counts mono">
-    <div><b>1,357,337</b><span>Vet adverse-event reports</span></div>
-    <div><b>20,692,690</b><span>Human FAERS reports</span></div>
+    <div><b>1,378,854</b><span>Vet adverse-event reports</span></div>
+    <div><b>21,054,159</b><span>Human FAERS reports</span></div>
     <div><b>6 / 40</b><span>Terms that map across</span></div>
     <div><b>6.17&times;</b><span>Canine lethargy vs human</span></div>
   </div>
@@ -178,7 +177,7 @@
           <tr>
             <td><b>Gabapentin</b></td>
             <td>Seizures, neuropathic pain</td>
-            <td class="rx">Anxiety, pain &mdash; the 8,575-report cohort</td>
+            <td class="rx">Anxiety, pain &mdash; the 9,028-report cohort</td>
             <td>Not yet modelled</td>
           </tr>
           <tr>
@@ -198,7 +197,7 @@
   <!-- ============ 2. THE COLLAPSE ============ -->
   <div class="sec">
     <h2 class="mono">The observability collapse</h2>
-    <p class="gnote">Measured, not argued. Gabapentin reaction profiles, canine versus
+    <p class="gnote">The percentages are measured; the reading below them is a hypothesis. openFDA, November 2026. Gabapentin reaction profiles, canine versus
       human, drawn from the two FDA spontaneous-reporting systems.</p>
 
     <div class="scope">
@@ -221,12 +220,12 @@
 
         <!-- human terms -->
         <g>
-          <text class="term" x="8" y="48">Pain</text>          <text class="pct" x="150" y="48">16.67%</text>
-          <text class="term" x="8" y="92">Fatigue</text>       <text class="pct" x="150" y="92">6.97%</text>
-          <text class="term" x="8" y="136">Nausea</text>       <text class="pct" x="150" y="136">6.27%</text>
-          <text class="term" x="8" y="180">Headache</text>     <text class="pct" x="150" y="180">5.03%</text>
-          <text class="term" x="8" y="224">Dizziness</text>    <text class="pct" x="150" y="224">4.63%</text>
-          <text class="term" x="8" y="268">Anxiety</text>      <text class="pct" x="150" y="268">2.85%</text>
+          <text class="term" x="8" y="48">Pain</text>          <text class="pct" x="150" y="48">5.82%</text>
+          <text class="term" x="8" y="92">Fatigue</text>       <text class="pct" x="150" y="92">6.91%</text>
+          <text class="term" x="8" y="136">Nausea</text>       <text class="pct" x="150" y="136">6.28%</text>
+          <text class="term" x="8" y="180">Headache</text>     <text class="pct" x="150" y="180">4.94%</text>
+          <text class="term" x="8" y="224">Dizziness</text>    <text class="pct" x="150" y="224">4.54%</text>
+          <text class="term" x="8" y="268">Anxiety</text>      <text class="pct" x="150" y="268">2.74%</text>
         </g>
         <g fill="#9B7BD6">
           <circle cx="226" cy="44" r="4.5"/>  <circle cx="226" cy="88" r="4.5"/>
@@ -238,21 +237,15 @@
         <circle cx="530" cy="150" r="34" fill="#D9A05B" opacity=".13"/>
         <circle cx="530" cy="150" r="9" fill="#D9A05B"/>
         <text class="sink-t" x="574" y="146">Lethargy</text>
-        <text class="sink-p" x="574" y="166">16.76% dog &middot; 2.72% human</text>
+        <text class="sink-p" x="574" y="166">16.76% dog &middot; 2.71% human</text>
 
-        <text class="axis" x="8" y="308">~25% of human reports are states requiring a patient who can speak</text>
+        <text class="axis" x="8" y="308">21% of human reports list at least one of these six symptoms</text>
       </svg>
     </div>
 
-    <p>The naive read is that dogs are six times more prone to gabapentin lethargy. That
-      read is wrong, and the reason is the whole problem. <strong>Roughly a quarter of
-      human gabapentin reports are internal states</strong> — pain, nausea, headache,
-      dizziness — that require a patient who can describe them. A dog experiencing the
-      same pharmacology produces one word in the record, because that is the only word
-      the observer has.</p>
+    <p>The naive read is that dogs are six times more prone to gabapentin lethargy. That read is probably wrong, and the reason is the whole problem. <strong>About a fifth of human gabapentin reports list an internal state</strong> — pain, fatigue, nausea, headache, dizziness or anxiety — that is hard to see from outside. Owners can record some of it: pain appears in 5.33% of dog reports. A dog experiencing the same pharmacology may produce one word in the record, because that may be the only word the observer has. Different patient populations and reasons for prescribing also contribute.</p>
 
-    <p class="pull serif">Canine "lethargy" is not a symptom. It is a compression
-      artifact — an entire subjective symptom space flattened into the one thing a human
+    <p class="pull serif">Canine "lethargy" may not be one symptom. It may be a compression artifact — an entire subjective symptom space flattened into the one thing a human
       can see from across the room.</p>
 
     <p>This generalizes past pharmacovigilance. Every supervised model of an animal
