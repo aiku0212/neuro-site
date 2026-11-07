@@ -166,9 +166,9 @@ var DRUGS=[
  steps:['Enters the open NMDA channel pore and physically plugs it.',
         'In one leading model, blocks NMDA receptors preferentially on fast-spiking inhibitory interneurons.',
         'Those interneurons stop firing, releasing the brake on pyramidal cells.',
-        'The resulting glutamate surge drives AMPA receptors and mTOR signalling, growing new synapses within hours.'],
- why:'A drug that blocks excitation produces net excitation, because it silences the inhibitors first. The antidepressant effect arrives in a day rather than a month.',
- cite:'Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
+        'In rats, the resulting glutamate signalling drives AMPA receptors and mTOR, adding new synapses within hours. Other mechanisms are proposed.'],
+ why:'A drug that blocks excitation produces net excitation, because it silences the inhibitors first. In a small trial, the antidepressant effect began within about two hours of one infusion, against weeks for standard antidepressants.',
+ cite:'Homayoun &amp; Moghaddam, <em>J. Neurosci.</em> 2007 &middot; Li et al., <em>Science</em> 2010 &middot; Zanos et al., <em>Nature</em> 2016 &middot; Zarate et al., <em>Arch. Gen. Psychiatry</em> 2006'},
 
 {id:'stim', name:'Stimulants', ex:'Cocaine, amphetamine, methylphenidate',
  sched:'Schedule II', target:'DAT, NET, VMAT2', type:'Monoamine transporters',
@@ -179,7 +179,7 @@ var DRUGS=[
         'Inside, it disrupts vesicular storage via VMAT2 and drives the transporter to run backwards.',
         'Dopamine pours out of the terminal without any action potential, which is why releasers differ from blockers.'],
  why:'Blocker versus releaser is the distinction students most often miss. One needs the neuron to fire, the other does not.',
- cite:'Standard pharmacology; mechanism is textbook consensus'},
+ cite:'Ritz et al., <em>Science</em> 1987 &middot; Sulzer et al., <em>Prog. Neurobiol.</em> 2005'},
 
 {id:'op', name:'Opioids', ex:'Morphine, heroin, fentanyl, oxycodone',
  sched:'Schedule I&ndash;II', target:'&micro;-opioid receptor', type:'G&#8321;&#8320; -coupled GPCR',
@@ -190,7 +190,7 @@ var DRUGS=[
         'Postsynaptically, GIRK potassium channels open and potassium leaves the cell.',
         'The neuron hyperpolarises. In the VTA the receptors sit on GABA interneurons, so inhibiting them disinhibits dopamine neurons.'],
  why:'The reward effect is indirect. Opioids inhibit the inhibitors of dopamine neurons rather than exciting them, the same disinhibition logic as ketamine on a different receptor.',
- cite:'Standard pharmacology; mechanism is textbook consensus'},
+ cite:'Johnson &amp; North, <em>J. Neurosci.</em> 1992 (rat midbrain slices)'},
 
 {id:'benzo', name:'Benzodiazepines', ex:'Diazepam, alprazolam, lorazepam',
  sched:'Schedule IV', target:'GABA-A receptor', type:'Ionotropic chloride channel',
@@ -201,7 +201,7 @@ var DRUGS=[
         'Increases the frequency of channel opening. Barbiturates instead increase how long each opening lasts.',
         'More chloride enters, the membrane hyperpolarises, and the neuron becomes harder to fire.'],
  why:'The frequency versus duration distinction explains the safety gap: a modulator that needs endogenous GABA has a ceiling, while barbiturates can open channels directly and do not.',
- cite:'Standard pharmacology; mechanism is textbook consensus'},
+ cite:'Study &amp; Barker, <em>PNAS</em> 1981'},
 
 {id:'cb', name:'Cannabinoids', ex:'THC, synthetic CB1 agonists',
  sched:'Schedule I (federal)', target:'CB1 receptor', type:'G&#8321;&#8320; -coupled GPCR',
@@ -212,7 +212,7 @@ var DRUGS=[
         'They activate CB1 receptors on the presynaptic terminal.',
         'Calcium influx drops and transmitter release is suppressed. THC hijacks this system tonically instead of on demand.'],
  why:'This is the clearest case of retrograde signalling in the brain. The direction of the arrow is the whole lesson, and it is the part students draw backwards on exams.',
- cite:'Standard pharmacology; mechanism is textbook consensus'}
+ cite:'Wilson &amp; Nicoll, <em>Nature</em> 2001'}
 ];
 
 var cur=DRUGS[0], t0=performance.now();

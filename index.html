@@ -226,7 +226,7 @@
 
     <div class="masthead">
       <p class="eyebrow mono">Neuroplasticity &middot; Evidence Review</p>
-      <h1 class="serif">The brain pays<br>to stop <em>learning</em></h1>
+      <h1 class="serif">The brain works<br>to stop <em>learning</em></h1>
       <p class="dek">Ten findings on how plasticity opens, what writes into it,
         and why closing the window is a feature. Spin the brain. Pick a region.</p>
     </div>
@@ -346,7 +346,7 @@
      body:'Three groups learned the same associations. Exercising four hours afterward improved retention. Exercising immediately did not. Only those two timings were tested.',
      cite:'van Dongen et al., <em>Current Biology</em> 2016 \u00B7 111 citations'},
     {id:'vis',   name:'Visual Cortex', hue:'#7FA8D9',
-     title:'The brain pays to stop learning',
+     title:'The brain works to stop learning',
      stat:'n/a', statlabel:'plasticity is actively dampened',
      body:'Critical periods are not lost through decay. Molecular brakes shut them, reversibly limiting excessive rewiring. The transition to a fixed state is what allows complex functions to consolidate.',
      cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013 \u00B7 604 citations'},
@@ -596,16 +596,16 @@
         cite:'Casarotto et al., <em>Cell</em> 2021 &middot; Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
       ket:{label:'Ketamine', spine:1.3, title:'Disinhibition, then a burst',
         rec:[['nmda','NMDA (blocked)',1],['glu','Glutamate surge',.9],['trkb','TrkB',.8],['pnn','Perineuronal net',.35]],
-        body:'In one leading model, ketamine blocks NMDA receptors on inhibitory interneurons, releasing the brake on the local network. The glutamate burst that follows drives mTOR signaling and rapid spine growth within hours, which is why the antidepressant effect arrives in a day rather than a month.',
-        cite:'Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
+        body:'In one leading model, built mostly on rat studies, ketamine blocks NMDA receptors that drive inhibitory interneurons, releasing the brake on pyramidal cells. The signalling that follows activates mTOR and adds new spine synapses in prefrontal cortex within hours. Other mechanisms are proposed, including a metabolite that acts without blocking NMDA receptors. In a small trial, depression improved within about two hours of one infusion, against weeks for standard antidepressants.',
+        cite:'Homayoun &amp; Moghaddam, <em>J. Neurosci.</em> 2007 &middot; Li et al., <em>Science</em> 2010 &middot; Zanos et al., <em>Nature</em> 2016 &middot; Zarate et al., <em>Arch. Gen. Psychiatry</em> 2006'},
       ex:{label:'Exercise', spine:1.18, title:'Sixty minutes, then gone',
         rec:[['bdnf','Circulating BDNF',1],['trkb','TrkB',.75],['p75','p75NTR',.3],['pnn','Perineuronal net',.5]],
-        body:'High-intensity intervals raise serum BDNF well above moderate and low intensity, which do not differ from each other. It peaks at fifteen minutes and is back to baseline within the hour. Of the interventions here, it has the strongest pooled evidence for moving the blood measure, though exercise also activates platelets, which is where most serum BDNF comes from.',
-        cite:'Birinci et al., <em>Scientific Reports</em> 2026 &middot; Gholami et al., <em>Exp. Gerontology</em> 2024'},
+        body:'High-intensity intervals raise serum BDNF well above moderate and low intensity, which do not differ from each other. It peaks at fifteen minutes and is back to baseline within the hour. Of the interventions here, it has the strongest pooled evidence for moving the blood measure, though serum is a noisy readout: platelets store BDNF and release it when activated, so serum BDNF is not a direct measure of the brain.',
+        cite:'Birinci et al., <em>Scientific Reports</em> 2026 &middot; Gholami et al., <em>Exp. Gerontology</em> 2024 &middot; Fujimura et al., <em>Thromb. Haemost.</em> 2002'},
       dep:{label:'Depression', spine:.62, title:'Signalling withdrawn',
         rec:[['trkb','TrkB',.18],['p75','p75NTR',.85],['bdnf','Circulating BDNF',.25],['pnn','Perineuronal net',.85]],
-        body:'Reduced BDNF signaling and measurable spine loss in prefrontal cortex. Serum BDNF is lower during acute episodes and recovers with successful treatment in responders but not non-responders, making this one of the few places the blood measure actually behaves like a biomarker.',
-        cite:'Polyakova et al., <em>J. Affective Disorders</em> 2015'}
+        body:'Postmortem prefrontal cortex from people with major depression has fewer synapses, and in rats the same molecular change removes dendritic spines. Serum BDNF is lower during acute episodes and recovers with successful treatment in responders but not non-responders, making this one of the few places the blood measure actually behaves like a biomarker.',
+        cite:'Kang et al., <em>Nat. Med.</em> 2012 &middot; Polyakova et al., <em>J. Affective Disorders</em> 2015'}
     };
 
     var cur='base', tgt=1, spine=1, t0=performance.now();
