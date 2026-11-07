@@ -23,6 +23,7 @@ Checked 2026-11-06 against each paper's abstract, and full text where noted. Unc
 | Comparative | "Roughly a quarter" of reports are internal states | 21.4% list at least one of the six terms. The old figure added overlapping percentages | Live openFDA query |
 | Comparative | Lethargy "is" a compression artifact, "measured, not argued" | The percentages are measured; this reading is a hypothesis | VetSignal README |
 | Comparative | 6.17&times; "canine lethargy vs human," human 2.71% | The 2.71% is SOMNOLENCE, relabeled by VetSignal's synonym map. Human LETHARGY is 0.59%; either term is 3.21%, which gives 5.22&times; | Live openFDA query, 2026-11-06 |
+| Comparative | "6 / 40 terms map across" | 13 of the top 40 dog terms have a human match once all human terms are searched | VetSignal `crossspecies.py`, 2026-11-07 |
 | Comparative | Report and cohort totals | Updated to current openFDA totals | Live openFDA query |
 | Sources | Null tags on You, Cahn, Alkurd and Ashtary-Larky | Their results are mixed or weak, not null | Abstracts |
 | Sources | Meta-analysis label on five narrative or systematic reviews | No pooled effect is reported in their abstracts | Abstracts |
@@ -48,5 +49,4 @@ Calder (29 studies, SMD 0.024, p = 0.64), Moliner (1,000-fold), Shao 2021 (about
 - The headline "The brain pays to stop learning": sources support active closure, but not an energy cost.
 - "Every supervised model of an animal internal state" has "no held-out ground truth" (Comparative): this is an uncited generalization.
 - Brain-region placement on the Evidence page: for example, a serum BDNF study sits on the cerebellum.
-- VetSignal's README still has the 16.67% pain figure, the "quarter" claim and 6.17&times;. Its comparison (`src/crossspecies.py`) maps somnolence to lethargy but keeps only the top 40 terms, so human LETHARGY is dropped.
 - Whether to publish the open problem register on the Comparative page. It reads as an internal research plan.
