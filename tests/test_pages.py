@@ -20,7 +20,7 @@ class PublicPages(unittest.TestCase):
         workflow = (ROOT / ".github" / "workflows" / "daily-citations.yml").read_text(encoding="utf8")
         listed = re.search(r"for page in ([^;]+);", workflow).group(1).split()
         self.assertEqual(sorted(listed), sorted(PUBLIC))
-        self.assertIn("path: _site", workflow)
+        self.assertIn("--directory _site", workflow)
 
     def test_pages_declare_encoding_language_and_viewport(self):
         for name in PUBLIC + NOT_PUBLISHED:
@@ -64,7 +64,7 @@ class PublicPages(unittest.TestCase):
                 self.assertRegex(use, r"@[0-9a-f]{40}$")
         self.assertIn("if: failure()", workflow)
         # Composite wrappers can call unpinned actions internally; GitHub then blocks the run.
-        self.assertNotIn("upload-pages-artifact", workflow)
+        self.assertNotIn("uses: actions/upload-pages-artifact", workflow)
 
     def test_external_scripts_have_integrity(self):
         for name in PUBLIC:
