@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>About Neuroscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="What Neuroscope is, what it is not, and how far its claims have been checked.">
+
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --panel-2:#eceff3; --rule:#dde2e8;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --amber:#b24e33; --violet:#6a54a6; --rose:#a2477e;
+    --bar:54px;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.65 system-ui,-apple-system,"Segoe UI",sans-serif}
+  a{color:var(--violet)} a:hover{color:var(--amber)}
+  .mono{font-family:ui-monospace,Menlo,monospace}
+  .serif{font-family:Georgia,"Iowan Old Style",serif}
+  .bar{position:sticky;top:0;height:var(--bar);z-index:20;display:flex;align-items:center;gap:20px;
+    padding:0 18px;background:rgba(10,12,18,.9);backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+  .brand{flex:none;font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
+  .brand b{font-weight:400;color:var(--amber)}
+  .tabs{display:flex;gap:4px;margin-left:auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .tab{flex:none;font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;
+    padding:9px 15px;color:var(--muted);border:1px solid transparent;border-radius:2px;
+    text-decoration:none;white-space:nowrap}
+  .tab:hover{color:var(--ink-2)}
+  .tab[aria-current="true"]{color:var(--ink);border-color:var(--rule);background:var(--panel-2)}
+  main{max-width:720px;margin:0 auto;padding:56px 22px 70px}
+  h1{font-size:clamp(32px,6vw,46px);line-height:1.1;font-weight:400;margin:0 0 18px}
+  .lede{font-size:18px;color:var(--ink-2);margin:0 0 36px}
+  h2{font-size:20px;font-weight:400;margin:38px 0 10px}
+  p,li{color:var(--ink-2)}
+  p{margin:0 0 12px}
+  ul{margin:0 0 12px;padding-left:20px}
+  strong{color:var(--ink);font-weight:500}
+  .caveat{background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--rose);
+    border-radius:2px;padding:18px 20px}
+  .caveat h2{margin-top:0}
+  footer{border-top:1px solid var(--rule);padding:30px 22px 60px;text-align:center;color:var(--muted);font-size:12px}
+</style>
+<link rel="stylesheet" href="assets/atlas.css">
+
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html" aria-current="true">About</a>
+  </nav>
+</div>
+
+<main>
+  <h1 class="serif">About this site</h1>
+  <p class="lede">Neuroscope is an independent educational project on neuroplasticity and on how the same drugs act across species. It is not a clinical resource.</p>
+
+  <div class="caveat">
+    <h2 class="serif">Not medical or veterinary advice</h2>
+    <p>Nothing here is a diagnosis, a treatment recommendation or dosing guidance. Do not start, stop or change a medication, for yourself or an animal, because of something you read here. Talk to a physician, pharmacist or veterinarian.</p>
+    <p>Do not give a pet a medication prescribed for a person unless a veterinarian tells you to.</p>
+    <p>Some drugs described here are controlled or illegal. Explaining a mechanism does not mean a drug is safe, legal or effective.</p>
+    <p>In an emergency, call your local emergency number. For an animal, call a veterinarian or an animal poison control service.</p>
+  </div>
+
+  <h2 class="serif">How far the claims have been checked</h2>
+  <p>Each source's DOI was confirmed with Crossref. The figures on the Evidence and Comparative pages were then compared with their sources, and errors were corrected. That check has limits:</p>
+  <ul>
+    <li>Most papers were compared by abstract, not full text.</li>
+    <li>The Spike and Time pages, spine dimensions on the Spines page, and most mechanisms on the Pharmacology page have not been checked this way.</li>
+    <li>A few statements still need a primary source, including parts of the ketamine model.</li>
+    <li>The three bridge sections on the Comparative page are hypotheses, not sourced findings.</li>
+    <li>No outside clinician or veterinarian has reviewed this site yet.</li>
+  </ul>
+
+  <h2 class="serif">What the adverse-event data can show</h2>
+  <p>The Comparative page uses public FDA adverse-event reports through openFDA. These are spontaneous reports. They cannot show that a drug caused an event, and they have no denominator, so they cannot give the rate at which an event happens. Reporting also varies by drug, species and time, so a higher share of reports is not a higher risk.</p>
+  <p>This site is not affiliated with or endorsed by the FDA.</p>
+
+  <h2 class="serif">What the interactive models are</h2>
+  <p>The neuron, spine, spike, synapse and time-cell views are teaching models with chosen parameters. The neuron is generated by a branching program, not traced from a scan. Numbers computed from these models describe the model, not a measured brain.</p>
+
+  <h2 class="serif">Who writes it</h2>
+  <p>Neuroscope is written and maintained by Aiku.</p>
+
+  <h2 class="serif">Corrections</h2>
+  <p>If you find an error, please <a href="https://github.com/aiku0212/neuro-site/issues/new">open an issue on GitHub</a>
+    with the page and the source that disagrees. Corrections are recorded in the project's
+    <a href="https://github.com/aiku0212/neuro-site/blob/main/docs/claim-check.md">claim-check log</a>.</p>
+
+  <h2 class="serif">License</h2>
+  <p>Text and original figures are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>:
+    you may reuse them with credit. The code is under the
+    <a href="https://github.com/aiku0212/neuro-site/blob/main/LICENSE">MIT License</a>. Cited papers belong to their
+    publishers. three.js (MIT) and the Source Serif 4 and Figtree fonts (SIL Open Font License) keep their own licenses.</p>
+
+  <h2 class="serif">Citation counts</h2>
+  <p>Counts on the <a href="references.html">Sources page</a> come from Crossref, and the page shows when they were last checked. Other databases report different counts for the same paper.</p>
+</main>
+
+<footer class="mono">Educational only. Not medical or veterinary advice.</footer>

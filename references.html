@@ -1,10 +1,19 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sources</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="Every source behind Neuroscope, with DOIs, citation counts and correction notices.">
 
 <style>
   :root{
-    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
-    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
-    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --rose:#C98BB8;
+    --bg:#f6f7f9; --panel:#ffffff; --panel-2:#eceff3; --rule:#dde2e8;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --amber:#b24e33; --violet:#6a54a6; --teal:#2b8273; --rose:#a2477e;
     --bar:54px;
   }
   *{box-sizing:border-box}
@@ -20,7 +29,9 @@
     backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
   .brand{font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
   .brand b{font-weight:400;color:var(--amber)}
-  .tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+  .tabs{display:flex;gap:4px;margin-left:auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .tab{flex:none;white-space:nowrap}
+  .brand{flex:none}
   .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;
     text-transform:uppercase;padding:9px 14px;color:var(--muted);
     border:1px solid transparent;border-radius:2px;text-decoration:none}
@@ -47,7 +58,7 @@
     text-transform:uppercase;padding:8px 13px;background:none;color:var(--muted);
     border:1px solid var(--rule);border-radius:2px;cursor:pointer}
   .f:hover{color:var(--ink-2)}
-  .f[aria-pressed="true"]{background:var(--amber);color:#0A0C12;border-color:var(--amber)}
+  .f[aria-pressed="true"]{background:var(--amber);color:#ffffff;border-color:var(--amber)}
 
   .grp{margin:0 0 34px}
   .grp h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
@@ -65,8 +76,8 @@
   .tagline{display:inline-block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
     padding:2px 7px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);
     margin-left:7px;vertical-align:middle}
-  .tagline.null{color:var(--rose);border-color:#4A2F3E}
-  .tagline.key{color:var(--amber);border-color:#4A3A22}
+  .tagline.null{color:var(--rose);border-color:#f3e1ec}
+  .tagline.key{color:var(--amber);border-color:#f6e3dc}
 
   .caveat{background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--amber);
     border-radius:2px;padding:18px 20px;margin:0 0 34px}
@@ -81,19 +92,21 @@
     .ref .c{grid-column:2;text-align:left;margin-top:4px}
   }
 </style>
+<link rel="stylesheet" href="assets/atlas.css">
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
-  <nav class="tabs">
+  <nav class="tabs" aria-label="Site">
     <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
     <a class="tab" href="spike.html">Spike</a>
     <a class="tab" href="synapse.html">Spines</a>
-    <a class="tab" href="app.html">Analyze</a>
     <a class="tab" href="pharma.html">Pharmacology</a>
     <a class="tab" href="index.html">Evidence</a>
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
     <a class="tab" href="references.html" aria-current="true">Sources</a>
+    <a class="tab" href="about.html">About</a>
   </nav>
 </div>
 
@@ -105,20 +118,21 @@
 
   <div class="counts">
     <div><b class="mono" id="k-total">0</b><span>Sources</span></div>
-    <div><b class="mono" id="k-null">0</b><span>Null / negative</span></div>
+    <div><b class="mono" id="k-null">0</b><span>Null / mixed</span></div>
     <div><b class="mono" id="k-meta">0</b><span>Meta-analyses</span></div>
     <div><b class="mono" id="k-span">0</b><span>Year span</span></div>
   </div>
 
   <div class="caveat">
     <h3>Where the citations are weakest</h3>
-    <p>The pharmacology page describes stimulant, opioid, benzodiazepine and
-      cannabinoid mechanisms without primary citations. Those mechanisms are settled
-      and appear in every pharmacology textbook, but "textbook consensus" is not a
-      reference, and that section is the least defensible part of the site.</p>
-    <p>Fixing it means citing the original characterisation papers for each receptor
-      and transporter. That work has not been done yet, and until it is, treat the
-      psychedelic and plasticity sections as the rigorous ones.</p>
+    <p>Each drug class on the pharmacology page now cites a primary paper or review.
+      Most of those papers are rat, mouse or cell studies, and each card was compared
+      with its source's abstract, not the full text.</p>
+    <p>Several statements are models, not settled facts. Ketamine's antidepressant
+      mechanism is contested, and the site shows the leading model alongside a competing one.</p>
+    <p>Even there, the mechanism is disputed: Moliner et al. report psychedelic plasticity
+      independent of 5-HT2A, while Vargas et al. and Shao et al. 2025 find 5-HT2A necessary.
+      Most of the cellular evidence comes from mice and cell models, not people.</p>
   </div>
 
   <div class="filters" id="filters"></div>
@@ -126,126 +140,683 @@
 </main>
 
 <footer class="mono">
-  Compiled August 2026 &middot; citation counts as reported at retrieval<br>
-  Written from primary literature, not from lecture material.
+  Compiled August 2026 &middot; DOIs and citation counts from Crossref, checked <!--checked:start-->2026-11-07<!--checked:end--><br>
+  Written from the published literature.<br>
+  Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a>
 </footer>
 
 <script>
 (function(){
-var REFS=[
- {g:'bdnf', t:'Effects of psychoplastogens on blood levels of BDNF in humans: a systematic review and meta-analysis',
-  a:'Calder et al.', y:2024, j:'Molecular Psychiatry', c:17, tag:'null', meta:1,
-  note:'29 studies, SMD 0.024, p = 0.64'},
- {g:'bdnf', t:'Psychedelics promote plasticity by directly binding to BDNF receptor TrkB',
-  a:'Moliner et al.', y:2023, j:'Nature Neuroscience', tag:'key',
-  doi:'10.1038/s41593-023-01316-5'},
- {g:'bdnf', t:'Rethinking the role of TRKB in the action of antidepressants and psychedelics',
-  a:'Brunello, Cannarozzo &amp; Castr&eacute;n', y:2024, j:'Trends in Neurosciences',
-  doi:'10.1016/j.tins.2024.08.011'},
- {g:'bdnf', t:'Activation of p75NTR by proBDNF facilitates hippocampal long-term depression',
-  a:'Woo et al.', y:2005, j:'Nature Neuroscience', c:815, tag:'key'},
- {g:'bdnf', t:'ProBDNF negatively regulates neuronal remodeling, synaptic transmission and synaptic plasticity in hippocampus',
-  a:'Yang et al.', y:2014, j:'Cell Reports', c:317},
- {g:'bdnf', t:'BDNF as a biomarker for successful treatment of mood disorders: a systematic &amp; quantitative meta-analysis',
-  a:'Polyakova et al.', y:2015, j:'Journal of Affective Disorders', c:468, meta:1},
- {g:'bdnf', t:'Peripheral BDNF as a biomarker in bipolar disorder: a meta-analysis of 52 studies',
-  a:'Fernandes et al.', y:2015, j:'BMC Medicine', c:274, meta:1},
- {g:'bdnf', t:'BDNF as a biomarker for neuropathic pain: mechanisms and measurement challenges',
-  a:'Thakkar et al.', y:2023, j:'Brain and Behavior', c:59},
-
- {g:'psy', t:'Psilocybin induces rapid and persistent growth of dendritic spines in frontal cortex in vivo',
-  a:'Shao et al.', y:2021, j:'Neuron', c:458, tag:'key'},
- {g:'psy', t:"Psilocybin's lasting action requires pyramidal cell types and 5-HT2A receptors",
-  a:'Shao et al.', y:2025, j:'Nature', c:69},
- {g:'psy', t:'Psychedelics promote neuroplasticity through activation of intracellular 5-HT2A receptors',
-  a:'Vargas et al.', y:2023, j:'Science', c:402, tag:'key'},
- {g:'psy', t:'Psilocybin desynchronizes the human brain',
-  a:'Siegel et al.', y:2024, j:'Nature', c:213, tag:'key'},
- {g:'psy', t:'Psilocin fosters neuroplasticity in iPSC-derived human cortical neurons',
-  a:'Schmidt et al.', y:2026, j:'eLife', c:9},
- {g:'psy', t:'Psychedelics and neuroplasticity: a systematic review unraveling the biological underpinnings',
-  a:'de Vos et al.', y:2021, j:'Frontiers in Psychiatry', c:237, meta:1},
- {g:'psy', t:'Psychedelics reopen the social reward learning critical period',
-  a:'Nardou et al.', y:2023, j:'Nature', c:281, tag:'key'},
- {g:'psy', t:'The emerging neurobiology of psychedelics: critical periods, metaplasticity, and extracellular matrix remodeling',
-  a:'D&ouml;len et al.', y:2026, j:'Annual Review of Neuroscience', c:1},
- {g:'psy', t:'Psychedelics and the extracellular matrix: rewiring neuroplasticity and metaplasticity',
-  a:'Zhang et al.', y:2026, j:'Biological Psychiatry', c:1},
-
- {g:'cp', t:'Balancing plasticity/stability across brain development',
-  a:'Takesian &amp; Hensch', y:2013, j:'Progress in Brain Research', c:595, tag:'key'},
- {g:'cp', t:'Critical periods of brain development',
-  a:'Cisneros-Franco et al.', y:2020, j:'Handbook of Clinical Neurology', c:23},
- {g:'cp', t:'Neuronal and astrocyte determinants of critical periods of plasticity',
-  a:'Andrade-Talavera et al.', y:2023, j:'Trends in Neurosciences', c:30},
- {g:'cp', t:'Removal of perineuronal nets unlocks juvenile plasticity through decreased inhibition and increased gamma activity',
-  a:'Lensj&oslash; et al.', y:2017, j:'Journal of Neuroscience', c:257},
- {g:'cp', t:'Otx2 binding to perineuronal nets persistently regulates plasticity in the mature visual cortex',
-  a:'Beurdeley et al.', y:2012, j:'Journal of Neuroscience', c:387},
- {g:'cp', t:'Perineuronal nets: plasticity, protection, and therapeutic potential',
-  a:'Reichelt et al.', y:2019, j:'Trends in Neurosciences', c:197},
-
- {g:'bird', t:'Perineuronal nets and vocal plasticity in songbirds: closed-ended versus open-ended learning',
-  a:'Cornez et al.', y:2017, j:'Developmental Neurobiology', c:38, tag:'key'},
- {g:'bird', t:'Maximized song learning of juvenile male zebra finches following BDNF expression in the HVC',
-  a:'Dittrich et al.', y:2013, j:'European Journal of Neuroscience', c:17, tag:'key'},
- {g:'bird', t:'Developmental changes in BDNF protein in the song control nuclei of zebra finches',
-  a:'Tang et al.', y:2013, j:'Neuroscience', c:20},
- {g:'bird', t:'Developmental song learning as a model to understand neural mechanisms that limit and promote the ability to learn',
-  a:'London', y:2017, j:'Behavioural Processes', c:23},
- {g:'bird', t:'Seasonal regulation of singing-driven gene expression associated with song plasticity in the canary',
-  a:'Hayase et al.', y:2021, j:'Molecular Brain', c:2},
- {g:'bird', t:'Song plasticity over time and vocal learning in clay-colored thrushes',
-  a:'Vargas-Castro et al.', y:2015, j:'Animal Cognition', c:9},
-
- {g:'int', t:'Exercise training alters resting BDNF concentration in older adults: meta-analysis of RCTs',
-  a:'Gholami et al.', y:2024, j:'Experimental Gerontology', c:28, meta:1, tag:'key',
-  note:'35 RCTs, SMD 0.56'},
- {g:'int', t:'Effects of physical exercise on plasma BDNF in neurodegenerative disorders',
-  a:'Ruiz-Gonz&aacute;lez et al.', y:2021, j:'Neuroscience &amp; Biobehavioral Reviews', c:127, meta:1},
- {g:'int', t:'Exercise-induced increase in blood-based BDNF in people with multiple sclerosis',
-  a:'Shobeiri et al.', y:2022, j:'PLoS ONE', c:47, meta:1},
- {g:'int', t:'Time-dependent comparison of serum BDNF following high-intensity interval and continuous exercise',
-  a:'Birinci et al.', y:2026, j:'Scientific Reports', c:1, tag:'key',
-  note:'Peak at 15 min, baseline by 60'},
- {g:'int', t:'Exercise intensity and recovery on circulating brain-derived neurotrophic factor',
-  a:'Reycraft et al.', y:2019, j:'Medicine &amp; Science in Sports &amp; Exercise', c:76},
- {g:'int', t:'Aerobic exercise increases BDNF in sub-acute stroke: a randomized controlled trial',
-  a:'Mackay et al.', y:2026, j:'Topics in Stroke Rehabilitation', c:3},
- {g:'int', t:'Physical exercise performed four hours after learning improves memory retention',
-  a:'van Dongen et al.', y:2016, j:'Current Biology', c:122, tag:'key'},
- {g:'int', t:'Temporal effects of acute walking exercise on learning and memory function',
-  a:'Sng et al.', y:2018, j:'American Journal of Health Promotion', c:103},
- {g:'int', t:'Higher intensity exercise after encoding is more conducive to episodic memory retention',
-  a:'Makepeace et al.', y:2024, j:'PLOS ONE', c:5},
- {g:'int', t:'Effects of meditation and mind-body exercise on BDNF: a literature review of human experimental studies',
-  a:'You et al.', y:2020, j:'Sports Medicine and Health Science', c:22, tag:'null',
-  note:'15 studies, 5 uncontrolled'},
- {g:'int', t:'Increased BDNF, cortisol awakening response and altered inflammatory markers after a 3-month yoga and meditation retreat',
-  a:'Cahn et al.', y:2017, j:'Frontiers in Human Neuroscience', c:261, tag:'null',
-  note:'No control group; authors note exercise confound'},
- {g:'int', t:'Effect of calorie restriction and intermittent fasting on BDNF and cognitive function: a systematic review',
-  a:'Alkurd et al.', y:2024, j:'Medicina', c:40, meta:1, tag:'null',
-  note:'5 up, 5 down, 6 no change'},
- {g:'int', t:'The effect of dietary interventions on BDNF levels in adults: a systematic review of clinical trials',
-  a:'Mohamadinarab et al.', y:2026, j:'BMC Nutrition', c:5, meta:1},
- {g:'int', t:'Effects of dietary weight loss on BDNF in individuals with overweight and obesity',
-  a:'Ashtary-Larky et al.', y:2026, j:'Nutrition Reviews', c:2, meta:1, tag:'null'},
-
- {g:'gen', t:'BDNF Val66Met polymorphism modulates early TMS-EEG plasticity and rTMS efficacy after ischemic stroke',
-  a:'Lin', y:2026, j:'Neurological Sciences', c:1, tag:'key',
-  note:'Val/Val 0.22, Val/Met 0.12, Met/Met 0.07'},
- {g:'gen', t:'BDNF gene polymorphisms predicting treatment response to CBT-based rehabilitation of depression',
-  a:'Schosser et al.', y:2022, j:'European Neuropsychopharmacology', c:11},
- {g:'gen', t:'BDNF gene polymorphism predicts response to continuous theta burst stimulation in chronic stroke',
-  a:'Parchure et al.', y:2021, j:'Neuromodulation', c:14},
- {g:'gen', t:'Assessing the mechanisms of brain plasticity by transcranial magnetic stimulation',
-  a:'Jannati et al.', y:2022, j:'Neuropsychopharmacology', c:233},
- {g:'gen', t:'Real-time EEG-defined excitability states determine efficacy of TMS-induced plasticity in human motor cortex',
-  a:'Zrenner et al.', y:2017, j:'Brain Stimulation', c:411, tag:'key'},
- {g:'gen', t:'Measuring brain stimulation induced changes in cortical properties using TMS-EEG',
-  a:'Chung et al.', y:2015, j:'Brain Stimulation', c:131}
-];
+var REFS=/*refs:start*/[
+ {
+  "g": "bdnf",
+  "t": "Effects of psychoplastogens on blood levels of brain-derived neurotrophic factor (BDNF) in humans: a systematic review and meta-analysis",
+  "a": "Calder et al.",
+  "y": 2024,
+  "j": "Molecular Psychiatry",
+  "c": 19,
+  "tag": "null",
+  "doi": "10.1038/s41380-024-02830-z",
+  "meta": 1,
+  "note": "29 studies, SMD 0.024, p = 0.64"
+ },
+ {
+  "g": "bdnf",
+  "t": "Psychedelics promote plasticity by directly binding to BDNF receptor TrkB",
+  "a": "Moliner et al.",
+  "y": 2023,
+  "j": "Nature Neuroscience",
+  "c": 509,
+  "tag": "key",
+  "doi": "10.1038/s41593-023-01316-5"
+ },
+ {
+  "g": "bdnf",
+  "t": "Rethinking the role of TRKB in the action of antidepressants and psychedelics",
+  "a": "Brunello, Cannarozzo &amp; Castr\u00e9n",
+  "y": 2024,
+  "j": "Trends in Neurosciences",
+  "c": 36,
+  "doi": "10.1016/j.tins.2024.08.011"
+ },
+ {
+  "g": "bdnf",
+  "t": "Activation of p75NTR by proBDNF facilitates hippocampal long-term depression",
+  "a": "Woo et al.",
+  "y": 2005,
+  "j": "Nature Neuroscience",
+  "c": 730,
+  "tag": "key",
+  "doi": "10.1038/nn1510"
+ },
+ {
+  "g": "bdnf",
+  "t": "proBDNF Negatively Regulates Neuronal Remodeling, Synaptic Transmission, and Synaptic Plasticity in Hippocampus",
+  "a": "Yang et al.",
+  "y": 2014,
+  "j": "Cell Reports",
+  "c": 315,
+  "doi": "10.1016/j.celrep.2014.03.040"
+ },
+ {
+  "g": "bdnf",
+  "t": "BDNF as a biomarker for successful treatment of mood disorders: A systematic &amp; quantitative meta-analysis",
+  "a": "Polyakova et al.",
+  "y": 2015,
+  "j": "Journal of Affective Disorders",
+  "c": 459,
+  "doi": "10.1016/j.jad.2014.11.044",
+  "meta": 1
+ },
+ {
+  "g": "bdnf",
+  "t": "Peripheral brain-derived neurotrophic factor (BDNF) as a biomarker in bipolar disorder: a meta-analysis of 52 studies",
+  "a": "Fernandes et al.",
+  "y": 2015,
+  "j": "BMC Medicine",
+  "c": 260,
+  "doi": "10.1186/s12916-015-0529-7",
+  "meta": 1
+ },
+ {
+  "g": "bdnf",
+  "t": "BDNF as a biomarker for neuropathic pain: Consideration of mechanisms of action and associated measurement challenges",
+  "a": "Thakkar et al.",
+  "y": 2023,
+  "j": "Brain and Behavior",
+  "c": 70,
+  "doi": "10.1002/brb3.2903"
+ },
+ {
+  "g": "psy",
+  "t": "Psilocybin induces rapid and persistent growth of dendritic spines in frontal cortex in vivo",
+  "a": "Shao et al.",
+  "y": 2021,
+  "j": "Neuron",
+  "c": 628,
+  "tag": "key",
+  "doi": "10.1016/j.neuron.2021.06.008"
+ },
+ {
+  "g": "psy",
+  "t": "Psilocybin\u2019s lasting action requires pyramidal cell types and 5-HT2A receptors",
+  "a": "Shao et al.",
+  "y": 2025,
+  "j": "Nature",
+  "c": 121,
+  "doi": "10.1038/s41586-025-08813-6",
+  "upd": [
+   {
+    "type": "correction",
+    "url": "https://doi.org/10.1038/s41586-025-09671-y"
+   }
+  ]
+ },
+ {
+  "g": "psy",
+  "t": "Psychedelics promote neuroplasticity through the activation of intracellular 5-HT2A receptors",
+  "a": "Vargas et al.",
+  "y": 2023,
+  "j": "Science",
+  "c": 524,
+  "tag": "key",
+  "doi": "10.1126/science.adf0435"
+ },
+ {
+  "g": "psy",
+  "t": "Psilocybin desynchronizes the human brain",
+  "a": "Siegel et al.",
+  "y": 2024,
+  "j": "Nature",
+  "c": 303,
+  "tag": "key",
+  "doi": "10.1038/s41586-024-07624-5"
+ },
+ {
+  "g": "psy",
+  "t": "Psilocin fosters neuroplasticity in iPSC-derived human cortical neurons",
+  "a": "Schmidt et al.",
+  "y": 2026,
+  "j": "eLife",
+  "c": 3,
+  "doi": "10.7554/elife.104006"
+ },
+ {
+  "g": "psy",
+  "t": "Psychedelics and Neuroplasticity: A Systematic Review Unraveling the Biological Underpinnings of Psychedelics",
+  "a": "de Vos et al.",
+  "y": 2021,
+  "j": "Frontiers in Psychiatry",
+  "c": 246,
+  "doi": "10.3389/fpsyt.2021.724606"
+ },
+ {
+  "g": "psy",
+  "t": "Psychedelics reopen the social reward learning critical period",
+  "a": "Nardou et al.",
+  "y": 2023,
+  "j": "Nature",
+  "c": 356,
+  "tag": "key",
+  "doi": "10.1038/s41586-023-06204-3"
+ },
+ {
+  "g": "psy",
+  "t": "The Emerging Neurobiology of Psychedelics: Critical Periods, Metaplasticity, and Extracellular Matrix Remodeling",
+  "a": "D\u00f6len et al.",
+  "y": 2026,
+  "j": "Annual Review of Neuroscience",
+  "c": 1,
+  "doi": "10.1146/annurev-neuro-112723-045129"
+ },
+ {
+  "g": "psy",
+  "t": "Psychedelics and the Extracellular Matrix: Rewiring Neuroplasticity and Metaplasticity for Next-Generation Psychiatric Therapies",
+  "a": "Zhang et al.",
+  "y": 2026,
+  "j": "Biological Psychiatry",
+  "c": 2,
+  "doi": "10.1016/j.biopsych.2026.02.011"
+ },
+ {
+  "g": "cp",
+  "t": "Balancing Plasticity/Stability Across Brain Development",
+  "a": "Takesian &amp; Hensch",
+  "y": 2013,
+  "j": "Progress in Brain Research",
+  "c": 604,
+  "tag": "key",
+  "doi": "10.1016/b978-0-444-63327-9.00001-1"
+ },
+ {
+  "g": "cp",
+  "t": "Critical periods of brain development",
+  "a": "Cisneros-Franco et al.",
+  "y": 2020,
+  "j": "Handbook of Clinical Neurology",
+  "c": 61,
+  "doi": "10.1016/b978-0-444-64150-2.00009-5"
+ },
+ {
+  "g": "cp",
+  "t": "Neuronal and astrocyte determinants of critical periods of plasticity",
+  "a": "Andrade-Talavera et al.",
+  "y": 2023,
+  "j": "Trends in Neurosciences",
+  "c": 38,
+  "doi": "10.1016/j.tins.2023.04.005"
+ },
+ {
+  "g": "cp",
+  "t": "Removal of Perineuronal Nets Unlocks Juvenile Plasticity Through Network Mechanisms of Decreased Inhibition and Increased Gamma Activity",
+  "a": "Lensj\u00f8 et al.",
+  "y": 2017,
+  "j": "Journal of Neuroscience",
+  "c": 291,
+  "doi": "10.1523/jneurosci.2504-16.2016"
+ },
+ {
+  "g": "cp",
+  "t": "Otx2 Binding to Perineuronal Nets Persistently Regulates Plasticity in the Mature Visual Cortex",
+  "a": "Beurdeley et al.",
+  "y": 2012,
+  "j": "Journal of Neuroscience",
+  "c": 407,
+  "doi": "10.1523/jneurosci.0394-12.2012"
+ },
+ {
+  "g": "cp",
+  "t": "Perineuronal Nets: Plasticity, Protection, and Therapeutic Potential",
+  "a": "Reichelt et al.",
+  "y": 2019,
+  "j": "Trends in Neurosciences",
+  "c": 238,
+  "doi": "10.1016/j.tins.2019.04.003"
+ },
+ {
+  "g": "bird",
+  "t": "Perineuronal nets and vocal plasticity in songbirds: A proposed mechanism to explain the difference between closed\u2010ended and open\u2010ended learning",
+  "a": "Cornez et al.",
+  "y": 2017,
+  "j": "Developmental Neurobiology",
+  "c": 39,
+  "tag": "key",
+  "doi": "10.1002/dneu.22485"
+ },
+ {
+  "g": "bird",
+  "t": "Maximized song learning of juvenile male zebra finches following BDNF expression in the HVC",
+  "a": "Dittrich et al.",
+  "y": 2013,
+  "j": "European Journal of Neuroscience",
+  "c": 15,
+  "tag": "key",
+  "doi": "10.1111/ejn.12329"
+ },
+ {
+  "g": "bird",
+  "t": "Developmental changes in BDNF protein in the song control nuclei of zebra finches",
+  "a": "Tang et al.",
+  "y": 2013,
+  "j": "Neuroscience",
+  "c": 16,
+  "doi": "10.1016/j.neuroscience.2013.07.062"
+ },
+ {
+  "g": "bird",
+  "t": "Developmental song learning as a model to understand neural mechanisms that limit and promote the ability to learn",
+  "a": "London",
+  "y": 2017,
+  "j": "Behavioural Processes",
+  "c": 19,
+  "doi": "10.1016/j.beproc.2017.11.008"
+ },
+ {
+  "g": "bird",
+  "t": "Seasonal regulation of singing-driven gene expression associated with song plasticity in the canary, an open-ended vocal learner",
+  "a": "Hayase et al.",
+  "y": 2021,
+  "j": "Molecular Brain",
+  "c": 4,
+  "doi": "10.1186/s13041-021-00869-5"
+ },
+ {
+  "g": "bird",
+  "t": "Song plasticity over time and vocal learning in clay-colored thrushes",
+  "a": "Vargas-Castro et al.",
+  "y": 2015,
+  "j": "Animal Cognition",
+  "c": 10,
+  "doi": "10.1007/s10071-015-0883-z"
+ },
+ {
+  "g": "int",
+  "t": "Exercise training alters resting brain-derived neurotrophic factor concentration in older adults: A systematic review with meta-analysis of randomized-controlled trials",
+  "a": "Gholami et al.",
+  "y": 2024,
+  "j": "Experimental Gerontology",
+  "c": 33,
+  "tag": "key",
+  "doi": "10.1016/j.exger.2024.112658",
+  "meta": 1,
+  "note": "35 RCTs in older adults, all exercise types, SMD 0.56"
+ },
+ {
+  "g": "int",
+  "t": "Effects of physical exercise on plasma brain-derived neurotrophic factor in neurodegenerative disorders: A systematic review and meta-analysis of randomized controlled trials",
+  "a": "Ruiz-Gonz\u00e1lez et al.",
+  "y": 2021,
+  "j": "Neuroscience &amp; Biobehavioral Reviews",
+  "c": 138,
+  "doi": "10.1016/j.neubiorev.2021.05.025",
+  "meta": 1
+ },
+ {
+  "g": "int",
+  "t": "Exercise-induced increase in blood-based brain-derived neurotrophic factor (BDNF) in people with multiple sclerosis: A systematic review and meta-analysis of exercise intervention trials",
+  "a": "Shobeiri et al.",
+  "y": 2022,
+  "j": "PLoS ONE",
+  "c": 51,
+  "doi": "10.1371/journal.pone.0264557",
+  "meta": 1
+ },
+ {
+  "g": "int",
+  "t": "Time-dependent comparison of serum BDNF responses following high-intensity interval exercise and moderate- and low-intensity continuous exercise in healthy young men",
+  "a": "Birinci et al.",
+  "y": 2026,
+  "j": "Scientific Reports",
+  "c": 2,
+  "tag": "key",
+  "doi": "10.1038/s41598-026-37728-z",
+  "note": "12 young men; peak at 15 min, baseline by 60"
+ },
+ {
+  "g": "int",
+  "t": "Exercise Intensity and Recovery on Circulating Brain-derived Neurotrophic Factor",
+  "a": "Reycraft et al.",
+  "y": 2019,
+  "j": "Medicine &amp; Science in Sports &amp; Exercise",
+  "c": 98,
+  "doi": "10.1249/mss.0000000000002242"
+ },
+ {
+  "g": "int",
+  "t": "Aerobic exercise increases brain-derived neurotrophic factor (BDNF) in sub-acute stroke: a randomized controlled trial",
+  "a": "Mackay et al.",
+  "y": 2026,
+  "j": "Topics in Stroke Rehabilitation",
+  "c": 8,
+  "doi": "10.1080/10749357.2026.2628540"
+ },
+ {
+  "g": "int",
+  "t": "Physical Exercise Performed Four Hours after Learning Improves Memory Retention and Increases Hippocampal Pattern Similarity during Retrieval",
+  "a": "van Dongen et al.",
+  "y": 2016,
+  "j": "Current Biology",
+  "c": 111,
+  "tag": "key",
+  "doi": "10.1016/j.cub.2016.04.071"
+ },
+ {
+  "g": "int",
+  "t": "Temporal Effects of Acute Walking Exercise on Learning and Memory Function",
+  "a": "Sng et al.",
+  "y": 2018,
+  "j": "American Journal of Health Promotion",
+  "c": 91,
+  "doi": "10.1177/0890117117749476"
+ },
+ {
+  "g": "int",
+  "t": "Higher intensity exercise after encoding is more conducive to episodic memory retention than lower intensity exercise: A field study in endurance runners",
+  "a": "Makepeace et al.",
+  "y": 2024,
+  "j": "PLOS ONE",
+  "c": 5,
+  "doi": "10.1371/journal.pone.0308373"
+ },
+ {
+  "g": "int",
+  "t": "Effects of meditation and mind-body exercise on brain-derived neurotrophic factor: A literature review of human experimental studies",
+  "a": "You et al.",
+  "y": 2020,
+  "j": "Sports Medicine and Health Science",
+  "c": 25,
+  "tag": "mixed",
+  "doi": "10.1016/j.smhs.2020.03.001",
+  "note": "15 studies, 5 uncontrolled; limited evidence tends to show increases"
+ },
+ {
+  "g": "int",
+  "t": "Yoga, Meditation and Mind-Body Health: Increased BDNF, Cortisol Awakening Response, and Altered Inflammatory Marker Expression after a 3-Month Yoga and Meditation Retreat",
+  "a": "Cahn et al.",
+  "y": 2017,
+  "j": "Frontiers in Human Neuroscience",
+  "c": 209,
+  "tag": "mixed",
+  "doi": "10.3389/fnhum.2017.00315",
+  "note": "No control group; authors note exercise confound; later corrections disclose funding by a co-author and Chopra Foundation ties",
+  "upd": [
+   {
+    "type": "erratum",
+    "url": "https://doi.org/10.3389/fnhum.2023.1278043"
+   },
+   {
+    "type": "corrigendum",
+    "url": "https://doi.org/10.3389/fnhum.2022.868021"
+   }
+  ]
+ },
+ {
+  "g": "int",
+  "t": "Effect of Calorie Restriction and Intermittent Fasting Regimens on Brain-Derived Neurotrophic Factor Levels and Cognitive Function in Humans: A Systematic Review",
+  "a": "Alkurd et al.",
+  "y": 2024,
+  "j": "Medicina",
+  "c": 54,
+  "tag": "mixed",
+  "doi": "10.3390/medicina60010191",
+  "note": "5 up, 5 down, 6 no change"
+ },
+ {
+  "g": "int",
+  "t": "The effect of dietary interventions on brain-derived neurotrophic factor (BDNF) levels in adults: a systematic review of clinical trials",
+  "a": "Mohamadinarab et al.",
+  "y": 2026,
+  "j": "BMC Nutrition",
+  "c": 5,
+  "doi": "10.1186/s40795-025-01174-3",
+  "note": "Finds fasting generally raises BDNF, unlike Alkurd 2024"
+ },
+ {
+  "g": "int",
+  "t": "Effects of Dietary Weight Loss on Brain-Derived Neurotrophic Factor in Individuals With Overweight and Obesity: A Systematic Review",
+  "a": "Ashtary-Larky et al.",
+  "y": 2026,
+  "j": "Nutrition Reviews",
+  "c": 2,
+  "tag": "mixed",
+  "doi": "10.1093/nutrit/nuaf308",
+  "note": "About half of studies show no effect; intermittent restriction more often shows increases"
+ },
+ {
+  "g": "gen",
+  "t": "BDNF Val66Met polymorphism modulates early TMS\u2013EEG plasticity and rTMS efficacy in patients with anterior circulation ischemic stroke",
+  "a": "Lin",
+  "y": 2026,
+  "j": "Neurological Sciences",
+  "c": 1,
+  "tag": "key",
+  "doi": "10.1007/s10072-026-08948-y",
+  "note": "Retrospective, 200 stroke patients; Val/Val 0.22, Val/Met 0.12, Met/Met 0.07"
+ },
+ {
+  "g": "gen",
+  "t": "BDNF gene polymorphisms predicting treatment response to CBT-based rehabilitation of depression",
+  "a": "Schosser et al.",
+  "y": 2022,
+  "j": "European Neuropsychopharmacology",
+  "c": 15,
+  "doi": "10.1016/j.euroneuro.2022.03.005",
+  "upd": [
+   {
+    "type": "erratum",
+    "url": "https://doi.org/10.1016/j.euroneuro.2022.05.005"
+   }
+  ]
+ },
+ {
+  "g": "gen",
+  "t": "Brain-Derived Neurotrophic Factor Gene Polymorphism Predicts Response to Continuous Theta Burst Stimulation in Chronic Stroke Patients",
+  "a": "Parchure et al.",
+  "y": 2021,
+  "j": "Neuromodulation",
+  "c": 18,
+  "doi": "10.1111/ner.13495"
+ },
+ {
+  "g": "gen",
+  "t": "Assessing the mechanisms of brain plasticity by transcranial magnetic stimulation",
+  "a": "Jannati et al.",
+  "y": 2022,
+  "j": "Neuropsychopharmacology",
+  "c": 290,
+  "doi": "10.1038/s41386-022-01453-8"
+ },
+ {
+  "g": "gen",
+  "t": "Real-time EEG-defined excitability states determine efficacy of TMS-induced plasticity in human motor cortex",
+  "a": "Zrenner et al.",
+  "y": 2017,
+  "j": "Brain Stimulation",
+  "c": 508,
+  "tag": "key",
+  "doi": "10.1016/j.brs.2017.11.016"
+ },
+ {
+  "g": "gen",
+  "t": "Measuring Brain Stimulation Induced Changes in Cortical Properties Using TMS-EEG",
+  "a": "Chung et al.",
+  "y": 2015,
+  "j": "Brain Stimulation",
+  "c": 134,
+  "doi": "10.1016/j.brs.2015.07.029"
+ },
+ {
+  "g": "bdnf",
+  "t": "Antidepressant drugs act by directly binding to TRKB neurotrophin receptors",
+  "a": "Casarotto et al.",
+  "y": 2021,
+  "j": "Cell",
+  "c": 680,
+  "doi": "10.1016/j.cell.2021.01.034"
+ },
+ {
+  "g": "found",
+  "t": "A quantitative description of membrane current and its application to conduction and excitation in nerve",
+  "a": "Hodgkin &amp; Huxley",
+  "y": 1952,
+  "j": "The Journal of Physiology",
+  "c": 18474,
+  "doi": "10.1113/jphysiol.1952.sp004764"
+ },
+ {
+  "g": "found",
+  "t": "Dendritic spines of CA 1 pyramidal cells in the rat hippocampus: serial electron microscopy with reference to their biophysical characteristics",
+  "a": "Harris &amp; Stevens",
+  "y": 1989,
+  "j": "The Journal of Neuroscience",
+  "c": 947,
+  "doi": "10.1523/jneurosci.09-08-02982.1989"
+ },
+ {
+  "g": "found",
+  "t": "Experience-dependent structural synaptic plasticity in the mammalian brain",
+  "a": "Holtmaat &amp; Svoboda",
+  "y": 2009,
+  "j": "Nature Reviews Neuroscience",
+  "c": 1786,
+  "doi": "10.1038/nrn2699",
+  "upd": [
+   {
+    "type": "erratum",
+    "url": "https://doi.org/10.1038/nrn2721"
+   }
+  ]
+ },
+ {
+  "g": "found",
+  "t": "Neurons detect cognitive boundaries to structure episodic memories in humans",
+  "a": "Zheng et al.",
+  "y": 2022,
+  "j": "Nature Neuroscience",
+  "c": 129,
+  "doi": "10.1038/s41593-022-01020-w"
+ },
+ {
+  "g": "psy",
+  "t": "NMDA Receptor Hypofunction Produces Opposite Effects on Prefrontal Cortex Interneurons and Pyramidal Neurons",
+  "a": "Homayoun &amp; Moghaddam",
+  "y": 2007,
+  "j": "The Journal of Neuroscience",
+  "c": 1155,
+  "doi": "10.1523/JNEUROSCI.2213-07.2007",
+  "note": "Awake rats: NMDA block lowers putative interneuron firing, then raises pyramidal firing"
+ },
+ {
+  "g": "psy",
+  "t": "mTOR-Dependent Synapse Formation Underlies the Rapid Antidepressant Effects of NMDA Antagonists",
+  "a": "Li et al.",
+  "y": 2010,
+  "j": "Science",
+  "c": 2669,
+  "doi": "10.1126/science.1190287",
+  "note": "Rats: ketamine activates mTOR and adds prefrontal spine synapses; blocking mTOR blocks the effect"
+ },
+ {
+  "g": "psy",
+  "t": "A Randomized Trial of an N-methyl-D-aspartate Antagonist in Treatment-Resistant Major Depression",
+  "a": "Zarate et al.",
+  "y": 2006,
+  "j": "Archives of General Psychiatry",
+  "c": 3166,
+  "doi": "10.1001/archpsyc.63.8.856",
+  "note": "18 patients, crossover: improvement within 110 minutes, significant for a week"
+ },
+ {
+  "g": "psy",
+  "t": "NMDAR inhibition-independent antidepressant actions of ketamine metabolites",
+  "a": "Zanos et al.",
+  "y": 2016,
+  "j": "Nature",
+  "c": 1523,
+  "doi": "10.1038/nature17998",
+  "note": "Mice: a ketamine metabolite has antidepressant-like effects without NMDA block; a competing mechanism"
+ },
+ {
+  "g": "bdnf",
+  "t": "Brain-derived Neurotrophic Factor Is Stored in Human Platelets and Released by Agonist Stimulation",
+  "a": "Fujimura et al.",
+  "y": 2002,
+  "j": "Thrombosis and Haemostasis",
+  "c": 667,
+  "doi": "10.1055/s-0037-1613072",
+  "note": "Platelets store BDNF and release it on activation; plasma levels are low"
+ },
+ {
+  "g": "found",
+  "t": "Decreased expression of synapse-related genes and loss of synapses in major depressive disorder",
+  "a": "Kang et al.",
+  "y": 2012,
+  "j": "Nature Medicine",
+  "c": 773,
+  "doi": "10.1038/nm.2886",
+  "note": "Human postmortem dorsolateral prefrontal cortex: fewer synapses in major depression"
+ },
+ {
+  "g": "found",
+  "t": "Opioids excite dopamine neurons by hyperpolarization of local interneurons",
+  "a": "Johnson &amp; North",
+  "y": 1992,
+  "j": "The Journal of Neuroscience",
+  "c": 1383,
+  "doi": "10.1523/JNEUROSCI.12-02-00483.1992",
+  "note": "Rat midbrain slices: mu-opioid agonists inhibit GABA interneurons, disinhibiting dopamine neurons"
+ },
+ {
+  "g": "found",
+  "t": "Quantitative Translation of Dog-to-Human Aging by Conserved Remodeling of the DNA Methylome",
+  "a": "Wang et al.",
+  "y": 2020,
+  "j": "Cell Systems",
+  "c": 116,
+  "doi": "10.1016/j.cels.2020.06.006",
+  "note": "104 Labrador Retrievers: the dog-to-human age relationship is non-linear"
+ },
+ {
+  "g": "found",
+  "t": "Cocaine Receptors on Dopamine Transporters Are Related to Self-Administration of Cocaine",
+  "a": "Ritz et al.",
+  "y": 1987,
+  "j": "Science",
+  "c": 1803,
+  "doi": "10.1126/science.2820058",
+  "note": "Rat striatum: cocaine's potency at the dopamine transporter tracks its self-administration"
+ },
+ {
+  "g": "found",
+  "t": "Mechanisms of neurotransmitter release by amphetamines: A review",
+  "a": "Sulzer et al.",
+  "y": 2005,
+  "j": "Progress in Neurobiology",
+  "c": 1042,
+  "doi": "10.1016/j.pneurobio.2005.04.003",
+  "note": "Review: amphetamine as transporter substrate, vesicle disruption and reverse transport"
+ },
+ {
+  "g": "found",
+  "t": "Diazepam and (--)-pentobarbital: fluctuation analysis reveals different mechanisms for potentiation of gamma-aminobutyric acid responses in cultured central neurons.",
+  "a": "Study &amp; Barker",
+  "y": 1981,
+  "j": "Proceedings of the National Academy of Sciences",
+  "c": 362,
+  "doi": "10.1073/pnas.78.11.7180",
+  "note": "Cultured mouse neurons: diazepam raises opening frequency, pentobarbital raises open time"
+ },
+ {
+  "g": "found",
+  "t": "Endogenous cannabinoids mediate retrograde signalling at hippocampal synapses",
+  "a": "Wilson &amp; Nicoll",
+  "y": 2001,
+  "j": "Nature",
+  "c": 1371,
+  "doi": "10.1038/35069076",
+  "note": "Rat hippocampus: endocannabinoids mediate retrograde suppression of inhibition via CB1"
+ }
+]/*refs:end*/;
 
 var GROUPS=[
  {id:'bdnf', name:'BDNF signalling and its measurement',
@@ -257,9 +828,11 @@ var GROUPS=[
  {id:'bird', name:'Songbirds and comparative learning',
   note:'Species that learn once versus species that learn for life, and the structural difference between them.'},
  {id:'int', name:'Interventions: exercise, diet, meditation',
-  note:'Includes the nulls. Exercise survives pooling; fasting and meditation do not.'},
+  note:'Exercise has pooled randomized evidence. Evidence for fasting and meditation is mixed or weak, and these reviews did not pool it.'},
  {id:'gen', name:'Genotype and stimulation-based measurement',
-  note:'Val66Met, and the TMS-EEG methods proposed as an alternative to blood biomarkers.'}
+  note:'Val66Met, and the TMS-EEG methods proposed as an alternative to blood biomarkers.'},
+ {id:'found', name:'Foundations and methods',
+  note:'Older primary sources behind the membrane, spine and time-cell pages.'}
 ];
 
 var filter='all';
@@ -269,7 +842,7 @@ function render(){
   GROUPS.forEach(function(g){
     var items=REFS.filter(function(r){
       if(r.g!==g.id) return false;
-      if(filter==='null') return r.tag==='null';
+      if(filter==='null') return r.tag==='null'||r.tag==='mixed';
       if(filter==='meta') return r.meta;
       if(filter==='key') return r.tag==='key';
       return true;});
@@ -278,10 +851,17 @@ function render(){
     var html='<h2>'+g.name+'</h2><p class="gnote">'+g.note+'</p>';
     items.forEach(function(r){
       var tag = r.tag==='null' ? '<span class="tagline null">null</span>'
+              : r.tag==='mixed' ? '<span class="tagline null">mixed or weak</span>'
               : r.tag==='key'  ? '<span class="tagline key">load-bearing</span>' : '';
+      if((r.upd||[]).some(function(u){return /retract|withdraw/i.test(u.type);})){
+        tag+='<span class="tagline null">retracted</span>';
+      }
       var meta = r.a+', <em>'+r.j+'</em>, '+r.y
         + (r.doi? ' &middot; <a href="https://doi.org/'+r.doi+'">doi</a>':'')
-        + (r.note? ' &middot; '+r.note : '');
+        + (r.note? ' &middot; '+r.note : '')
+        + (r.upd||[]).map(function(u){
+            return ' &middot; <a href="'+u.url+'">'+u.type+' published</a>';
+          }).join('');
       html+='<div class="ref"><span class="n mono">'+(n++)+'</span>'+
         '<div><p class="t">'+r.t+tag+'</p><p class="m">'+meta+'</p></div>'+
         '<span class="c mono">'+(r.c!=null?('<b>'+r.c+'</b>citations'):'')+'</span></div>';
@@ -289,7 +869,7 @@ function render(){
     d.innerHTML=html; box.appendChild(d);
   });
 }
-var F=[['all','All'],['key','Load-bearing'],['null','Null results'],['meta','Meta-analyses']];
+var F=[['all','All'],['key','Load-bearing'],['null','Null and mixed'],['meta','Meta-analyses']];
 var FW=document.getElementById('filters');
 F.forEach(function(f){
   var b=document.createElement('button'); b.className='f'; b.textContent=f[1];
@@ -302,7 +882,7 @@ F.forEach(function(f){
 
 var yrs=REFS.map(function(r){return r.y;});
 document.getElementById('k-total').textContent=REFS.length;
-document.getElementById('k-null').textContent=REFS.filter(function(r){return r.tag==='null';}).length;
+document.getElementById('k-null').textContent=REFS.filter(function(r){return r.tag==='null'||r.tag==='mixed';}).length;
 document.getElementById('k-meta').textContent=REFS.filter(function(r){return r.meta;}).length;
 document.getElementById('k-span').textContent=(Math.max.apply(null,yrs)-Math.min.apply(null,yrs));
 render();

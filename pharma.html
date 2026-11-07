@@ -1,11 +1,20 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pharmacology Bench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="How major drug classes act at the synapse, shown as interactive mechanism models.">
 
 <style>
   :root{
-    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
-    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
-    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --sky:#7FA8D9;
-    --rose:#C98BB8; --green:#8FD98F; --bar:54px;
+    --bg:#f6f7f9; --panel:#ffffff; --panel-2:#eceff3; --rule:#dde2e8;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --amber:#b24e33; --violet:#6a54a6; --teal:#2b8273; --sky:#2f6fa8;
+    --rose:#a2477e; --green:#3d8a4a; --bar:54px;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -20,7 +29,9 @@
     backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
   .brand{font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
   .brand b{font-weight:400;color:var(--amber)}
-  .tabs{display:flex;gap:4px;margin-left:auto}
+  .tabs{display:flex;gap:4px;margin-left:auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .tab{flex:none;white-space:nowrap}
+  .brand{flex:none}
   .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;
     text-transform:uppercase;padding:9px 15px;background:none;color:var(--muted);
     border:1px solid transparent;border-radius:2px;cursor:pointer;text-decoration:none}
@@ -46,7 +57,7 @@
 
   /* stage */
   .stage{position:relative;background:
-    radial-gradient(circle at 50% 42%,#12162400 0%,#05070B 76%),var(--bg)}
+    radial-gradient(circle at 50% 42%,#12162400 0%,#eceff3 76%),var(--bg)}
   #syn{display:block;width:100%;height:100%}
   .legend{position:absolute;left:16px;bottom:14px;display:flex;flex-wrap:wrap;gap:9px;
     font-size:10px;letter-spacing:.08em;color:var(--muted);max-width:70%}
@@ -91,18 +102,21 @@
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+<link rel="stylesheet" href="assets/atlas.css">
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
-  <nav class="tabs">
+  <nav class="tabs" aria-label="Site">
     <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
     <a class="tab" href="spike.html">Spike</a>
     <a class="tab" href="synapse.html">Spines</a>
-    <a class="tab" href="app.html">Analyze</a>
-    <button class="tab" aria-current="true">Pharmacology</button>
+    <a class="tab" href="pharma.html" aria-current="true">Pharmacology</a>
     <a class="tab" href="index.html">Evidence</a>
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
   </nav>
 </div>
 
@@ -116,6 +130,8 @@
   </div>
 
   <aside class="side">
+    <p class="fig-note" style="margin:0 0 10px"><span class="fig-kind" data-kind="schematic">Schematic</span></p>
+    <p class="cite" style="margin:0 0 16px;padding:10px 12px;border:1px solid var(--rule);border-left:2px solid var(--rose)">Explains mechanisms only. Not medical advice, not dosing guidance, and not a suggestion that any drug is safe or legal to use. Several mechanisms here are not yet cited to primary sources. <a href="about.html" style="color:inherit">About and limits</a></p>
     <h1 class="serif" id="d-name"></h1>
     <p class="sub" id="d-ex"></p>
     <div class="kv"><span>Primary target</span><b id="d-target"></b></div>
@@ -134,8 +150,8 @@
 (function(){
 var C=document.getElementById('syn'), X=C.getContext('2d'), D=1;
 var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-var COL={da:'#8FD98F', glu:'#7FA8D9', gaba:'#C98BB8', ser:'#9B7BD6',
-         op:'#D9A05B', ecb:'#6FC2B0', ion:'#E8E4F2', block:'#E06A6A'};
+var COL={da:'#3d8a4a', glu:'#2f6fa8', gaba:'#a2477e', ser:'#6a54a6',
+         op:'#b24e33', ecb:'#2b8273', ion:'#5f6d7b', block:'#c0414b'};
 
 var DRUGS=[
 {id:'psy', name:'Classic psychedelics', ex:'Psilocybin, LSD, DMT, mescaline',
@@ -143,9 +159,9 @@ var DRUGS=[
  action:'Agonist / allosteric', net:'Structural plasticity',
  nt:'ser', mode:'psy',
  steps:['Crosses the membrane, being lipophilic, and reaches 5-HT2A receptors on the inside of the cell, which serotonin itself cannot reach.',
-        'Binds TrkB directly with roughly a thousand times the affinity of conventional antidepressants.',
+        'In cell and mouse studies, binds TrkB directly with roughly a thousand times the affinity of conventional antidepressants.',
         'Potentiates signalling from the BDNF already present rather than raising how much BDNF exists.',
-        'Dendritic spine density rises about 10% within 24 hours and persists for weeks.'],
+        'In mice, dendritic spine density rises about 10% within 24 hours and persists for weeks.'],
  why:'The location of the receptor, not just its identity, decides the effect. This is why serotonin does not do what psilocin does even though both are 5-HT2A agonists.',
  cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023 &middot; Shao et al., <em>Neuron</em> 2021'},
 
@@ -154,11 +170,11 @@ var DRUGS=[
  action:'Open-channel blocker', net:'Disinhibition, then synaptogenesis',
  nt:'glu', mode:'block',
  steps:['Enters the open NMDA channel pore and physically plugs it.',
-        'Blocks NMDA receptors preferentially on fast-spiking inhibitory interneurons.',
+        'In one leading model, blocks NMDA receptors preferentially on fast-spiking inhibitory interneurons.',
         'Those interneurons stop firing, releasing the brake on pyramidal cells.',
-        'The resulting glutamate surge drives AMPA receptors and mTOR signalling, growing new synapses within hours.'],
- why:'A drug that blocks excitation produces net excitation, because it silences the inhibitors first. The antidepressant effect arrives in a day rather than a month.',
- cite:'Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
+        'In rats, the resulting glutamate signalling drives AMPA receptors and mTOR, adding new synapses within hours. Other mechanisms are proposed.'],
+ why:'A drug that blocks excitation produces net excitation, because it silences the inhibitors first. In a small trial, the antidepressant effect began within about two hours of one infusion, against weeks for standard antidepressants.',
+ cite:'Homayoun &amp; Moghaddam, <em>J. Neurosci.</em> 2007 &middot; Li et al., <em>Science</em> 2010 &middot; Zanos et al., <em>Nature</em> 2016 &middot; Zarate et al., <em>Arch. Gen. Psychiatry</em> 2006'},
 
 {id:'stim', name:'Stimulants', ex:'Cocaine, amphetamine, methylphenidate',
  sched:'Schedule II', target:'DAT, NET, VMAT2', type:'Monoamine transporters',
@@ -169,7 +185,7 @@ var DRUGS=[
         'Inside, it disrupts vesicular storage via VMAT2 and drives the transporter to run backwards.',
         'Dopamine pours out of the terminal without any action potential, which is why releasers differ from blockers.'],
  why:'Blocker versus releaser is the distinction students most often miss. One needs the neuron to fire, the other does not.',
- cite:'Standard pharmacology; mechanism is textbook consensus'},
+ cite:'Ritz et al., <em>Science</em> 1987 &middot; Sulzer et al., <em>Prog. Neurobiol.</em> 2005'},
 
 {id:'op', name:'Opioids', ex:'Morphine, heroin, fentanyl, oxycodone',
  sched:'Schedule I&ndash;II', target:'&micro;-opioid receptor', type:'G&#8321;&#8320; -coupled GPCR',
@@ -180,7 +196,7 @@ var DRUGS=[
         'Postsynaptically, GIRK potassium channels open and potassium leaves the cell.',
         'The neuron hyperpolarises. In the VTA the receptors sit on GABA interneurons, so inhibiting them disinhibits dopamine neurons.'],
  why:'The reward effect is indirect. Opioids inhibit the inhibitors of dopamine neurons rather than exciting them, the same disinhibition logic as ketamine on a different receptor.',
- cite:'Standard pharmacology; mechanism is textbook consensus'},
+ cite:'Johnson &amp; North, <em>J. Neurosci.</em> 1992 (rat midbrain slices)'},
 
 {id:'benzo', name:'Benzodiazepines', ex:'Diazepam, alprazolam, lorazepam',
  sched:'Schedule IV', target:'GABA-A receptor', type:'Ionotropic chloride channel',
@@ -191,7 +207,7 @@ var DRUGS=[
         'Increases the frequency of channel opening. Barbiturates instead increase how long each opening lasts.',
         'More chloride enters, the membrane hyperpolarises, and the neuron becomes harder to fire.'],
  why:'The frequency versus duration distinction explains the safety gap: a modulator that needs endogenous GABA has a ceiling, while barbiturates can open channels directly and do not.',
- cite:'Standard pharmacology; mechanism is textbook consensus'},
+ cite:'Study &amp; Barker, <em>PNAS</em> 1981'},
 
 {id:'cb', name:'Cannabinoids', ex:'THC, synthetic CB1 agonists',
  sched:'Schedule I (federal)', target:'CB1 receptor', type:'G&#8321;&#8320; -coupled GPCR',
@@ -202,7 +218,7 @@ var DRUGS=[
         'They activate CB1 receptors on the presynaptic terminal.',
         'Calcium influx drops and transmitter release is suppressed. THC hijacks this system tonically instead of on demand.'],
  why:'This is the clearest case of retrograde signalling in the brain. The direction of the arrow is the whole lesson, and it is the part students draw backwards on exams.',
- cite:'Standard pharmacology; mechanism is textbook consensus'}
+ cite:'Wilson &amp; Nicoll, <em>Nature</em> 2001'}
 ];
 
 var cur=DRUGS[0], t0=performance.now();
@@ -237,13 +253,13 @@ function paint(){
 
   /* presynaptic terminal */
   X.globalAlpha=1;
-  blob(cx,preY,w*0.30,h*0.16,'#1E2334','#33395199');
-  X.fillStyle='#736F8C'; X.font=(10*D)+'px ui-monospace,Menlo,monospace';
+  blob(cx,preY,w*0.30,h*0.16,'#e4e9ef','#33395199');
+  X.fillStyle='#9aa6b2'; X.font=(10*D)+'px ui-monospace,Menlo,monospace';
   X.textAlign='left'; X.fillText('PRESYNAPTIC', cx-w*0.30, preY-h*0.17);
 
   /* postsynaptic */
-  blob(cx,postY+h*0.20,w*0.34,h*0.17,'#1E2334','#33395199');
-  X.fillStyle='#736F8C'; X.textAlign='left';
+  blob(cx,postY+h*0.20,w*0.34,h*0.17,'#e4e9ef','#33395199');
+  X.fillStyle='#9aa6b2'; X.textAlign='left';
   X.fillText('POSTSYNAPTIC', cx-w*0.34, postY+h*0.40);
 
   /* vesicles */
@@ -283,7 +299,7 @@ function paint(){
     var yy = (cur.mode==='cb') ? preY+h*0.145 : postY;
     chan(rx, yy, 15*S, 34*S, r[1], 1);
     X.globalAlpha=.15; blob(rx,yy,26*S,26*S,r[1]);
-    X.globalAlpha=.85; X.fillStyle='#9E9ABA'; X.textAlign='center';
+    X.globalAlpha=.85; X.fillStyle='#7b8794'; X.textAlign='center';
     X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
     X.fillText(r[0], rx, yy+(cur.mode==='cb'? -26*S : 30*S));
   });
@@ -356,7 +372,7 @@ function paint(){
   }
 
   /* cleft hairlines */
-  X.globalAlpha=.35; X.strokeStyle='#3A4059'; X.lineWidth=D;
+  X.globalAlpha=.35; X.strokeStyle='#9aa6b2'; X.lineWidth=D;
   [cleftY-h*0.02, cleftY+h*0.06].forEach(function(y){
     X.beginPath(); X.moveTo(0,y); X.lineTo(w,y); X.stroke();});
 

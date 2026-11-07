@@ -1,0 +1,66 @@
+{
+  "pending": [
+    {
+      "pmid": "42974518",
+      "doi": "10.25259/sni_962_2026",
+      "group": "psy",
+      "title": "Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.",
+      "authors": "Garcia-Bitar et al.",
+      "journal": "Surgical neurology international",
+      "year": 2026
+    },
+    {
+      "pmid": "42964905",
+      "doi": "10.65801/pcp.3512",
+      "group": "psy",
+      "title": "Therapeutic Potential of Classical Psychedelics and Non-Hallucinogenic Psychoplastogens in Psychiatric Disorders.",
+      "authors": "Hashimoto et al.",
+      "journal": "Psychiatry and clinical psychopharmacology",
+      "year": 2026
+    },
+    {
+      "pmid": "42957826",
+      "doi": "10.1038/s41380-026-03939-z",
+      "group": "psy",
+      "title": "Evolutionary neuropharmacology of serotonergic psychedelics: a cross-species perspective on mechanisms, consciousness, and therapeutic potential.",
+      "authors": "Zhai et al.",
+      "journal": "Molecular psychiatry",
+      "year": 2026
+    },
+    {
+      "pmid": "42957634",
+      "doi": "10.1038/s41398-026-04349-z",
+      "group": "psy",
+      "title": "Cross-species mapping of acute psychedelic-responsive genes links HTR2A cortical expression, cell-type enrichment, and human cortical expression modules.",
+      "authors": "McConnell et al.",
+      "journal": "Translational psychiatry",
+      "year": 2026
+    },
+    {
+      "pmid": "42975863",
+      "doi": "10.1007/s12264-026-01740-0",
+      "group": "cp",
+      "title": "Systematic Microcircuit Reconfigurations Underlie Early Experience-induced Visual Cortical Plasticity.",
+      "authors": "Yao et al.",
+      "journal": "Neuroscience bulletin",
+      "year": 2026
+    },
+    {
+      "pmid": "42988203",
+      "doi": "10.1016/j.neuroscience.2026.11.005",
+      "group": "cp",
+      "title": "Quantitative anatomy of the human striatum suggests limited synaptic plasticity and higher structural stability in the intermediate putamen than in the nucleus accumbens.",
+      "authors": "Díaz-Feliz et al.",
+      "journal": "Neuroscience",
+      "year": 2026
+    }
+  ],
+  "seen": [
+    "42974518",
+    "42964905",
+    "42957826",
+    "42957634",
+    "42975863",
+    "42988203"
+  ]
+}

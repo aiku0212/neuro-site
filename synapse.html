@@ -1,31 +1,23 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dendritic Spines</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="An interactive 3D model of dendritic spines and how they change.">
 
 <style>
   :root{
-    --ground:#0C0E14; --ground-2:#141826; --ground-3:#1C2133;
-    --ink:#EDEAF2; --ink-2:#B6B2C8; --muted:#7B7794;
-    --violet:#9B7BD6; --violet-dim:#5E4A85;
-    --amber:#D9A05B; --amber-dim:#8A6535;
-    --rose:#E4737B; --sky:#6FA8DC;
-    --rule:#262B3D;
-    --shadow:0 24px 60px -20px rgba(0,0,0,.75);
-  }
-  @media (prefers-color-scheme: light){
-    :root:not([data-theme="dark"]){
-      --ground:#F2EDE3; --ground-2:#E8E1D3; --ground-3:#DED5C4;
-      --ink:#231D14; --ink-2:#4A4032; --muted:#786B58;
-      --violet:#6B4BA3; --violet-dim:#A794C6;
-      --amber:#9A5F1E; --amber-dim:#C7A472;
-      --rose:#B03A45; --sky:#2C5F91;
-      --rule:#D0C5B0;
-    }
-  }
-  :root[data-theme="light"]{
-    --ground:#F2EDE3; --ground-2:#E8E1D3; --ground-3:#DED5C4;
-    --ink:#231D14; --ink-2:#4A4032; --muted:#786B58;
-    --violet:#6B4BA3; --violet-dim:#A794C6;
-    --amber:#9A5F1E; --amber-dim:#C7A472;
-    --rose:#B03A45; --sky:#2C5F91; --rule:#D0C5B0;
+    --ground:#f6f7f9; --ground-2:#ffffff; --ground-3:#eceff3;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --violet:#6a54a6; --violet-dim:#cbc1e6;
+    --amber:#b24e33; --amber-dim:#e9c2b3;
+    --rose:#a2477e; --sky:#2f6fa8;
+    --rule:#dde2e8;
+    --shadow:0 18px 40px -22px rgba(31,42,53,.22);
   }
 
   *{box-sizing:border-box}
@@ -55,7 +47,7 @@
   .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase;
     color:var(--amber); margin:0 0 10px}
   h1{font-size:clamp(26px,4vw,44px); line-height:1.05; margin:0; font-weight:400;
-    max-width:17ch; text-shadow:0 2px 24px rgba(0,0,0,.5)}
+    max-width:17ch; text-shadow:0 2px 24px rgba(31,42,53,.18)}
   h1 em{font-style:italic; color:var(--violet)}
 
   .hud{position:absolute; left:26px; bottom:22px; display:flex; gap:26px;
@@ -111,17 +103,20 @@
     color:var(--ink); margin-bottom:3px}
   .fact span{font-size:13px; color:var(--ink-2)}
   .cite{font-size:12px; color:var(--muted); margin-top:5px}
+  @media (max-width:640px){.bar{position:static}}
   footer{border-top:1px solid var(--rule); margin-top:54px; padding:22px 0;
     font-size:12px; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
   footer a{color:var(--ink-2)}
   .fallback{padding:40px 24px; color:var(--muted); font-size:14px}
 </style>
+<link rel="stylesheet" href="assets/atlas.css">
 
 <div class="wrap">
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
   <nav class="tabs" aria-label="Site">
     <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
     <a class="tab" href="spike.html">Spike</a>
     <a class="tab" href="synapse.html" aria-current="true">Spines</a>
     <a class="tab" href="pharma.html">Pharmacology</a>
@@ -129,6 +124,7 @@
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
     <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
   </nav>
 </div>
 
@@ -137,6 +133,8 @@
   <div class="mast">
     <p class="eyebrow mono">Dendrite segment &middot; 20 microns</p>
     <h1 class="serif">Memory has a <em>shape</em>, and this is it</h1>
+    <p class="fig-note"><span class="fig-kind" data-kind="illustrative">Illustrative model</span>
+      The four spine classes are drawn to typical proportions, not traced from one cell.</p>
   </div>
 
   <div class="panel">
@@ -187,7 +185,7 @@
     how much it currently matters, which is why a drug that shifts the population toward mushroom is
     interesting and a drug that merely adds filopodia is not.</p>
   <p class="cite">Stability by class, Holtmaat and Svoboda, <em>Nat. Rev. Neurosci.</em> 2009.
-    Psilocybin raising spine size and density about 10% within 24 hours, persisting a month,
+    Psilocybin raising mouse spine size and density about 10% within 24 hours, persisting a month,
     Shao et al., <em>Neuron</em> 2021.</p>
 
   <footer>
@@ -195,11 +193,13 @@
     <a href="pharma.html">Down a level: the receptors in that membrane</a>
     <a href="app.html">Up a level: the whole arbor</a>
     <a href="references.html">Sources</a>
+    <span>Educational model. Not medical or veterinary advice.</span>
+    <a href="about.html">About and limits</a>
   </footer>
 </main>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js" integrity="sha512-vnmn/Qqn6aG0POAc9mIGzjq0IybrvxJXYDafNvp9JSnDGxeF3pbkSqLvf+YGd5ku63pT7sa/jxHn7/d0mU8+tA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
 (function(){
   "use strict";
@@ -216,23 +216,23 @@
   // top, which is why it read wrong: necks were roughly four times too long
   // relative to their heads, and all four classes looked identical.
   var CLASSES = {
-    mushroom:  { label:"Mushroom", color:0x9B7BD6, share:0.45,
+    mushroom:  { label:"Mushroom", color:0x7a63b8, share:0.45,
                  head:[0.55,0.95], neck:[0.35,0.75], neckW:[0.12,0.20],
                  psd:true,
                  note:"Large head, constricted neck, big postsynaptic density. "
                     + "Stable for months. These hold what you already learned." },
-    thin:      { label:"Thin", color:0x6FA8DC, share:0.35,
+    thin:      { label:"Thin", color:0x3f7fbf, share:0.35,
                  head:[0.26,0.46], neck:[0.5,1.0], neckW:[0.09,0.14],
                  psd:false,
                  note:"Small head on a long narrow neck. Appears and disappears "
                     + "within hours. This is the learning spine, and the one a "
                     + "strengthened synapse grows out of." },
-    stubby:    { label:"Stubby", color:0xD9A05B, share:0.14,
+    stubby:    { label:"Stubby", color:0xc0573a, share:0.14,
                  head:[0.35,0.55], neck:[0.0,0.12], neckW:[0.22,0.32],
                  psd:true,
                  note:"No real neck, so no chemical isolation. Common early in "
                     + "development and after injury." },
-    filopodium:{ label:"Filopodium", color:0xE4737B, share:0.06,
+    filopodium:{ label:"Filopodium", color:0xc0414b, share:0.06,
                  head:[0.09,0.14], neck:[1.6,3.0], neckW:[0.07,0.10],
                  psd:false,
                  note:"Long, headless, motile. Not a synapse yet. It is hunting "
@@ -263,17 +263,13 @@
   renderer.toneMappingExposure = 1.15;
   if ("outputColorSpace" in renderer) renderer.outputColorSpace = THREE.SRGBColorSpace;
 
-  function themeDark(){
-    var t = document.documentElement.getAttribute("data-theme");
-    if (t) return t === "dark";
-    return !window.matchMedia || window.matchMedia("(prefers-color-scheme: dark)").matches;
-  }
+  function themeDark(){ return false; }  // Atlas is a single light theme
 
   var key = new THREE.DirectionalLight(0xffffff, 2.4);
   key.position.set(6, 9, 7);
   var rim = new THREE.DirectionalLight(0xA98BE8, 1.5);
   rim.position.set(-8, 2, -6);
-  var fill = new THREE.HemisphereLight(0x8FA6D8, 0x241C33, 0.85);
+  var fill = new THREE.HemisphereLight(0xdfe6ef, 0x9aa6b2, 1.0);
   scene.add(key, rim, fill);
 
   var root = new THREE.Group();
@@ -352,7 +348,7 @@
     if (spec.psd){
       var psdMat = new THREE.MeshStandardMaterial({
         color: 0xF0E3C8, roughness: 0.2, metalness: 0.0,
-        emissive: 0xD9A05B, emissiveIntensity: 0.5
+        emissive: 0xc0573a, emissiveIntensity: 0.5
       });
       var psd = new THREE.Mesh(psdGeo, psdMat);
       psd.scale.set(headR * 1.02, headR * 1.02, headR * 1.02);
