@@ -54,6 +54,22 @@ class PublicPages(unittest.TestCase):
                 self.assertNotRegex(page, r"--(bg|ground):#(0|F2EDE3|F4F0E8)")
                 self.assertNotIn("prefers-color-scheme: light", page)
 
+    def test_workflow_is_least_privilege_and_pinned(self):
+        workflow = (ROOT / ".github" / "workflows" / "daily-citations.yml").read_text(encoding="utf8")
+        top = workflow.split("jobs:")[0]
+        self.assertIn("contents: read", top)
+        self.assertNotIn("pages: write", top)
+        for use in re.findall(r"uses: (\S+)", workflow):
+            with self.subTest(action=use):
+                self.assertRegex(use, r"@[0-9a-f]{40}$")
+        self.assertIn("if: failure()", workflow)
+
+    def test_external_scripts_have_integrity(self):
+        for name in PUBLIC:
+            for tag in re.findall(r"<script[^>]+src=\"https?://[^>]+>", read(name)):
+                with self.subTest(page=name):
+                    self.assertIn("integrity=", tag)
+
     def test_workflow_publishes_the_stylesheet(self):
         workflow = (ROOT / ".github" / "workflows" / "daily-citations.yml").read_text(encoding="utf8")
         self.assertIn("cp -R assets _site/", workflow)
