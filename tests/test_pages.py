@@ -63,6 +63,8 @@ class PublicPages(unittest.TestCase):
             with self.subTest(action=use):
                 self.assertRegex(use, r"@[0-9a-f]{40}$")
         self.assertIn("if: failure()", workflow)
+        # Composite wrappers can call unpinned actions internally; GitHub then blocks the run.
+        self.assertNotIn("upload-pages-artifact", workflow)
 
     def test_external_scripts_have_integrity(self):
         for name in PUBLIC:

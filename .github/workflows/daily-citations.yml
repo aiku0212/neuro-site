@@ -84,9 +84,19 @@ jobs:
           cp -R assets _site/
           test -f _site/assets/atlas.css
 
-      - uses: actions/upload-pages-artifact@56afc609e74202658d3ffba0e8f6dda462b719fa  # v3
+      - name: Package the site for Pages
+        # Same archive actions/upload-pages-artifact makes; done here so every
+        # action, including nested ones, is pinned to a commit.
+        run: |
+          tar --dereference --hard-dereference --directory _site \
+            -cvf "$RUNNER_TEMP/artifact.tar" --exclude=.git --exclude=.github .
+
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02  # v4
         with:
-          path: _site
+          name: github-pages
+          path: ${{ runner.temp }}/artifact.tar
+          retention-days: 1
+          if-no-files-found: error
 
       - name: Report a failure
         if: failure()
