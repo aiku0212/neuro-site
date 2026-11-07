@@ -3,13 +3,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Comparative Neuropsychiatry</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
 <meta name="description" content="The same psychiatric drugs are given to people and dogs, but a dog cannot describe a symptom. What FDA adverse-event data can and cannot show.">
 
 <style>
   :root{
-    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
-    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
-    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --rose:#C98BB8;
+    --bg:#f6f7f9; --panel:#ffffff; --panel-2:#eceff3; --rule:#dde2e8;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --amber:#b24e33; --violet:#6a54a6; --teal:#2b8273; --rose:#a2477e;
     --bar:54px;
   }
   *{box-sizing:border-box}
@@ -74,9 +78,9 @@
   .tagline{display:inline-block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
     padding:2px 7px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);
     vertical-align:middle;white-space:nowrap}
-  .tagline.key{color:var(--amber);border-color:#4A3A22}
-  .tagline.verify{color:var(--rose);border-color:#4A2F3E}
-  .tagline.open{color:var(--teal);border-color:#22463E}
+  .tagline.key{color:var(--amber);border-color:#f6e3dc}
+  .tagline.verify{color:var(--rose);border-color:#f3e1ec}
+  .tagline.open{color:var(--teal);border-color:#dff0eb}
 
   /* ---- observability collapse ---- */
   .scope{border:1px solid var(--rule);border-radius:3px;background:var(--panel);
@@ -86,10 +90,10 @@
   #collapse{display:block;width:100%;height:auto}
   .axis{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;fill:var(--muted);
     font-family:ui-monospace,Menlo,monospace}
-  .term{font-size:12px;fill:#AFACC2;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
-  .pct{font-size:11px;fill:#736F8C;font-family:ui-monospace,Menlo,monospace}
-  .sink-t{font-size:15px;fill:#E9E7F0;font-family:Georgia,serif}
-  .sink-p{font-size:11px;fill:#D9A05B;font-family:ui-monospace,Menlo,monospace}
+  .term{font-size:12px;fill:#3f4c59;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
+  .pct{font-size:11px;fill:#5f6d7b;font-family:ui-monospace,Menlo,monospace}
+  .sink-t{font-size:15px;fill:#1f2a35;font-family:Georgia,serif}
+  .sink-p{font-size:11px;fill:#b24e33;font-family:ui-monospace,Menlo,monospace}
 
   /* ---- bridge cards ---- */
   .bridges{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:6px 0 0}
@@ -126,6 +130,7 @@
     color:var(--muted);font-size:12px}
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<link rel="stylesheet" href="assets/atlas.css">
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
@@ -215,6 +220,8 @@
 
     <div class="scope">
       <p class="scope-tag">Human self-report &rarr; owner observation &middot; gabapentin</p>
+      <p class="fig-note"><span class="fig-kind" data-kind="measured">Measured</span>
+        Percentages are openFDA report counts. The converging lines show the hypothesis, not data.</p>
       <svg id="collapse" viewBox="0 0 720 320" role="img"
            aria-label="Six human self-reported symptoms converging into the single canine term lethargy">
 
@@ -222,7 +229,7 @@
         <text class="axis" x="560" y="18">What an owner sees</text>
 
         <!-- converging paths -->
-        <g fill="none" stroke="#9B7BD6" stroke-linecap="round">
+        <g fill="none" stroke="#6a54a6" stroke-linecap="round">
           <path d="M232,52 C360,52 420,150 520,150" stroke-width="8.3" opacity=".42"/>
           <path d="M232,96 C360,96 420,150 520,150" stroke-width="3.5" opacity=".42"/>
           <path d="M232,140 C360,140 430,150 520,150" stroke-width="3.1" opacity=".42"/>
@@ -240,15 +247,15 @@
           <text class="term" x="8" y="224">Dizziness</text>    <text class="pct" x="150" y="224">4.54%</text>
           <text class="term" x="8" y="268">Anxiety</text>      <text class="pct" x="150" y="268">2.74%</text>
         </g>
-        <g fill="#9B7BD6">
+        <g fill="#6a54a6">
           <circle cx="226" cy="44" r="4.5"/>  <circle cx="226" cy="88" r="4.5"/>
           <circle cx="226" cy="132" r="4.5"/> <circle cx="226" cy="176" r="4.5"/>
           <circle cx="226" cy="220" r="4.5"/> <circle cx="226" cy="264" r="4.5"/>
         </g>
 
         <!-- sink -->
-        <circle cx="530" cy="150" r="34" fill="#D9A05B" opacity=".13"/>
-        <circle cx="530" cy="150" r="9" fill="#D9A05B"/>
+        <circle cx="530" cy="150" r="34" fill="#b24e33" opacity=".13"/>
+        <circle cx="530" cy="150" r="9" fill="#b24e33"/>
         <text class="sink-t" x="574" y="146">Lethargy</text>
         <text class="sink-p" x="574" y="166">16.76% dog &middot; 3.21% human</text>
 

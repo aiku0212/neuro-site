@@ -73,6 +73,8 @@ jobs:
           for page in index app spike synapse pharma comparative timecells references about; do
             cp "$page.html" _site/
           done
+          cp -R assets _site/
+          test -f _site/assets/atlas.css
 
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3

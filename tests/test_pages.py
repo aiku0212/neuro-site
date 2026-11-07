@@ -44,6 +44,25 @@ class PublicPages(unittest.TestCase):
             with self.subTest(page=name):
                 self.assertEqual(sorted(set(links) - set(PUBLIC)), [])
 
+    def test_pages_use_the_atlas_design_system(self):
+        self.assertTrue((ROOT / "assets" / "atlas.css").exists())
+        for name in PUBLIC:
+            page = read(name)
+            with self.subTest(page=name):
+                self.assertIn('href="assets/atlas.css"', page)
+                # Only the Atlas palette: no leftover dark or cream page backgrounds.
+                self.assertNotRegex(page, r"--(bg|ground):#(0|F2EDE3|F4F0E8)")
+                self.assertNotIn("prefers-color-scheme: light", page)
+
+    def test_workflow_publishes_the_stylesheet(self):
+        workflow = (ROOT / ".github" / "workflows" / "daily-citations.yml").read_text(encoding="utf8")
+        self.assertIn("cp -R assets _site/", workflow)
+
+    def test_visuals_say_what_they_are(self):
+        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells"]:
+            with self.subTest(page=name):
+                self.assertRegex(read(name), r'class="fig-kind" data-kind="(schematic|simulation|illustrative|measured)"')
+
     def test_pages_state_they_are_not_advice(self):
         for name in PUBLIC:
             with self.subTest(page=name):

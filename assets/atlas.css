@@ -1,0 +1,97 @@
+/* Neuroscope design system: "Atlas".
+   Loaded after each page's own <style>, so these rules win where they overlap.
+   Pages keep their own color variable names (--ground, --bg, --amber, ...) with
+   Atlas values; this file adds shared tokens and components. */
+
+:root{
+  --f-head:"Source Serif 4", Georgia, "Times New Roman", serif;
+  --f-body:"Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-code:ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --atlas-bg:#f6f7f9;  --stage:#eceff3;  --card:#ffffff;  --edge:#dde2e8;
+  --atlas-ink:#1f2a35; --atlas-muted:#5f6d7b;
+  --accent:#2d6a8f;    --accent-ink:#235673; --chip:#e6eef5;
+  --path:#c0573a;
+
+  /* Brain lobes, from the Atlas prototype ("on" shades, legible on light grey) */
+  --lobe-frontal:#dd9178;  --lobe-parietal:#86acd6;  --lobe-temporal:#a0c585;
+  --lobe-occipital:#d9b964; --lobe-cerebellum:#b398d0; --lobe-brainstem:#9fa9b5;
+  --lobe-deep:#d892a6;
+
+  --radius:14px; --radius-sm:8px;
+  color-scheme:light;
+}
+
+html,body{background:var(--atlas-bg); color:var(--atlas-ink)}
+body,.wrap{font-family:var(--f-body); -webkit-font-smoothing:antialiased}
+.serif,h1,h2{font-family:var(--f-head)}
+.serif{font-weight:600; letter-spacing:-.01em}
+h1.serif,.masthead h1{font-weight:600}
+h1 em,h2 em{font-style:italic; font-weight:400}
+.mono{font-family:var(--f-body); font-variant-numeric:tabular-nums}
+code,pre,kbd,.eq,.eq *{font-family:var(--f-code)}
+a{color:var(--accent)}
+a:hover{color:var(--accent-ink)}
+:focus-visible{outline:2px solid var(--accent); outline-offset:2px}
+
+/* ---- site bar ---- */
+.bar{height:var(--bar,56px); display:flex; align-items:center; flex-wrap:nowrap; gap:18px;
+  padding:0 max(16px,env(safe-area-inset-left,0px)); background:rgba(255,255,255,.94);
+  backdrop-filter:saturate(1.3) blur(10px); -webkit-backdrop-filter:saturate(1.3) blur(10px);
+  border-bottom:1px solid var(--edge); z-index:20}
+.bar .brand{flex:none; font:600 19px/1 var(--f-head); letter-spacing:-.01em;
+  text-transform:none; color:var(--atlas-ink); white-space:nowrap}
+.bar .brand b{color:inherit; font-weight:inherit}
+.bar .tabs{display:flex; flex-wrap:nowrap; gap:2px; margin-left:auto; min-width:0;
+  overflow-x:auto; scrollbar-width:none}
+.bar .tabs::-webkit-scrollbar{display:none}
+.bar .tab{flex:none; font:500 13.5px/1 var(--f-body); letter-spacing:0; text-transform:none;
+  padding:8px 11px; border:0; border-radius:var(--radius-sm); background:none;
+  color:var(--atlas-muted); text-decoration:none; white-space:nowrap; cursor:pointer}
+.bar .tab:hover{color:var(--atlas-ink); background:var(--chip)}
+.bar .tab[aria-current="true"]{color:var(--accent); background:var(--chip); border:0}
+
+/* ---- labels and type ---- */
+.eyebrow,.region,.scope-tag,.k,.kicker{font-family:var(--f-body); font-weight:600;
+  letter-spacing:.08em; color:var(--accent)}
+footer{font-family:var(--f-body); color:var(--atlas-muted)}
+
+/* ---- surfaces ---- */
+.caveat,.card,.readout,.note,.scope,.side,.panel,.figure{border-radius:var(--radius)}
+.caveat{border-left-width:3px}
+
+/* ---- figure kind: what a visual is ---- */
+.fig-kind{display:inline-flex; align-items:center; gap:6px; vertical-align:middle;
+  font:600 11px/1 var(--f-body); letter-spacing:.06em; text-transform:uppercase;
+  border-radius:99px; padding:5px 9px; color:var(--accent); background:var(--chip);
+  white-space:nowrap}
+.fig-kind::before{content:""; width:6px; height:6px; border-radius:50%; background:currentColor}
+.fig-kind[data-kind="measured"]{color:#2b6a3f; background:#e2f0e6}
+.fig-kind[data-kind="simulation"]{color:#5a47a0; background:#ebe7f6}
+.fig-kind[data-kind="illustrative"]{color:#4d5a67; background:#e9edf1}
+.fig-note{font-size:12.5px; color:var(--atlas-muted); margin:6px 0 0}
+
+/* ---- evidence chip: what kind of study ---- */
+.ev{display:inline-block; font:600 11.5px/1.2 var(--f-body); letter-spacing:.02em;
+  padding:4px 9px; border-radius:99px; background:var(--chip); color:var(--accent-ink)}
+
+/* ---- static explanatory figures ---- */
+.figure{background:var(--card); border:1px solid var(--edge); padding:18px 18px 14px; margin:24px 0}
+.figure svg{display:block; width:100%; height:auto}
+.figure figcaption{font-size:13px; color:var(--atlas-muted); margin-top:10px; line-height:1.5}
+.figure .fig-head{display:flex; flex-wrap:wrap; align-items:center; gap:8px 12px; margin:0 0 10px}
+.figure .fig-head h4{margin:0; font:600 16px/1.3 var(--f-head); color:var(--atlas-ink)}
+.figure text{font-family:var(--f-body)}
+
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+
+/* ---- buttons and controls: one style across pages ---- */
+.btn,button.sw,button.f,.handoff,.tool,.drug-btn{font:500 13px/1.2 var(--f-body); letter-spacing:0;
+  text-transform:none; padding:7px 12px; border-radius:var(--radius-sm); border:1px solid var(--edge);
+  background:#fff; color:var(--atlas-ink); cursor:pointer}
+.btn:hover,button.sw:hover,button.f:hover,.handoff:hover,.tool:hover{border-color:#b9c3ce; color:var(--atlas-ink)}
+.btn[aria-pressed="true"],button.sw[aria-pressed="true"],button.f[aria-pressed="true"],
+.tool[aria-pressed="true"],.tool.on{background:var(--accent); border-color:var(--accent); color:#fff}
+.ctl,.ctl label,.ctl select{font-family:var(--f-body); letter-spacing:0; text-transform:none}
+input[type=range]{accent-color:var(--accent)}
+.parts li{border-radius:99px}
