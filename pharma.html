@@ -3,14 +3,18 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pharmacology Bench</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
 <meta name="description" content="How major drug classes act at the synapse, shown as interactive mechanism models.">
 
 <style>
   :root{
-    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
-    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
-    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --sky:#7FA8D9;
-    --rose:#C98BB8; --green:#8FD98F; --bar:54px;
+    --bg:#f6f7f9; --panel:#ffffff; --panel-2:#eceff3; --rule:#dde2e8;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --amber:#b24e33; --violet:#6a54a6; --teal:#2b8273; --sky:#2f6fa8;
+    --rose:#a2477e; --green:#3d8a4a; --bar:54px;
   }
   *{box-sizing:border-box}
   html,body{height:100%}
@@ -53,7 +57,7 @@
 
   /* stage */
   .stage{position:relative;background:
-    radial-gradient(circle at 50% 42%,#12162400 0%,#05070B 76%),var(--bg)}
+    radial-gradient(circle at 50% 42%,#12162400 0%,#eceff3 76%),var(--bg)}
   #syn{display:block;width:100%;height:100%}
   .legend{position:absolute;left:16px;bottom:14px;display:flex;flex-wrap:wrap;gap:9px;
     font-size:10px;letter-spacing:.08em;color:var(--muted);max-width:70%}
@@ -98,6 +102,7 @@
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+<link rel="stylesheet" href="assets/atlas.css">
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
@@ -125,6 +130,7 @@
   </div>
 
   <aside class="side">
+    <p class="fig-note" style="margin:0 0 10px"><span class="fig-kind" data-kind="schematic">Schematic</span></p>
     <p class="cite" style="margin:0 0 16px;padding:10px 12px;border:1px solid var(--rule);border-left:2px solid var(--rose)">Explains mechanisms only. Not medical advice, not dosing guidance, and not a suggestion that any drug is safe or legal to use. Several mechanisms here are not yet cited to primary sources. <a href="about.html" style="color:inherit">About and limits</a></p>
     <h1 class="serif" id="d-name"></h1>
     <p class="sub" id="d-ex"></p>
@@ -144,8 +150,8 @@
 (function(){
 var C=document.getElementById('syn'), X=C.getContext('2d'), D=1;
 var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-var COL={da:'#8FD98F', glu:'#7FA8D9', gaba:'#C98BB8', ser:'#9B7BD6',
-         op:'#D9A05B', ecb:'#6FC2B0', ion:'#E8E4F2', block:'#E06A6A'};
+var COL={da:'#3d8a4a', glu:'#2f6fa8', gaba:'#a2477e', ser:'#6a54a6',
+         op:'#b24e33', ecb:'#2b8273', ion:'#5f6d7b', block:'#c0414b'};
 
 var DRUGS=[
 {id:'psy', name:'Classic psychedelics', ex:'Psilocybin, LSD, DMT, mescaline',
@@ -247,13 +253,13 @@ function paint(){
 
   /* presynaptic terminal */
   X.globalAlpha=1;
-  blob(cx,preY,w*0.30,h*0.16,'#1E2334','#33395199');
-  X.fillStyle='#736F8C'; X.font=(10*D)+'px ui-monospace,Menlo,monospace';
+  blob(cx,preY,w*0.30,h*0.16,'#e4e9ef','#33395199');
+  X.fillStyle='#9aa6b2'; X.font=(10*D)+'px ui-monospace,Menlo,monospace';
   X.textAlign='left'; X.fillText('PRESYNAPTIC', cx-w*0.30, preY-h*0.17);
 
   /* postsynaptic */
-  blob(cx,postY+h*0.20,w*0.34,h*0.17,'#1E2334','#33395199');
-  X.fillStyle='#736F8C'; X.textAlign='left';
+  blob(cx,postY+h*0.20,w*0.34,h*0.17,'#e4e9ef','#33395199');
+  X.fillStyle='#9aa6b2'; X.textAlign='left';
   X.fillText('POSTSYNAPTIC', cx-w*0.34, postY+h*0.40);
 
   /* vesicles */
@@ -293,7 +299,7 @@ function paint(){
     var yy = (cur.mode==='cb') ? preY+h*0.145 : postY;
     chan(rx, yy, 15*S, 34*S, r[1], 1);
     X.globalAlpha=.15; blob(rx,yy,26*S,26*S,r[1]);
-    X.globalAlpha=.85; X.fillStyle='#9E9ABA'; X.textAlign='center';
+    X.globalAlpha=.85; X.fillStyle='#7b8794'; X.textAlign='center';
     X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
     X.fillText(r[0], rx, yy+(cur.mode==='cb'? -26*S : 30*S));
   });
@@ -366,7 +372,7 @@ function paint(){
   }
 
   /* cleft hairlines */
-  X.globalAlpha=.35; X.strokeStyle='#3A4059'; X.lineWidth=D;
+  X.globalAlpha=.35; X.strokeStyle='#9aa6b2'; X.lineWidth=D;
   [cleftY-h*0.02, cleftY+h*0.06].forEach(function(y){
     X.beginPath(); X.moveTo(0,y); X.lineTo(w,y); X.stroke();});
 

@@ -3,13 +3,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sources</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
 <meta name="description" content="Every source behind Neuroscope, with DOIs, citation counts and correction notices.">
 
 <style>
   :root{
-    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
-    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
-    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --rose:#C98BB8;
+    --bg:#f6f7f9; --panel:#ffffff; --panel-2:#eceff3; --rule:#dde2e8;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --amber:#b24e33; --violet:#6a54a6; --teal:#2b8273; --rose:#a2477e;
     --bar:54px;
   }
   *{box-sizing:border-box}
@@ -54,7 +58,7 @@
     text-transform:uppercase;padding:8px 13px;background:none;color:var(--muted);
     border:1px solid var(--rule);border-radius:2px;cursor:pointer}
   .f:hover{color:var(--ink-2)}
-  .f[aria-pressed="true"]{background:var(--amber);color:#0A0C12;border-color:var(--amber)}
+  .f[aria-pressed="true"]{background:var(--amber);color:#ffffff;border-color:var(--amber)}
 
   .grp{margin:0 0 34px}
   .grp h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
@@ -72,8 +76,8 @@
   .tagline{display:inline-block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
     padding:2px 7px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);
     margin-left:7px;vertical-align:middle}
-  .tagline.null{color:var(--rose);border-color:#4A2F3E}
-  .tagline.key{color:var(--amber);border-color:#4A3A22}
+  .tagline.null{color:var(--rose);border-color:#f3e1ec}
+  .tagline.key{color:var(--amber);border-color:#f6e3dc}
 
   .caveat{background:var(--panel);border:1px solid var(--rule);border-left:2px solid var(--amber);
     border-radius:2px;padding:18px 20px;margin:0 0 34px}
@@ -88,6 +92,7 @@
     .ref .c{grid-column:2;text-align:left;margin-top:4px}
   }
 </style>
+<link rel="stylesheet" href="assets/atlas.css">
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>

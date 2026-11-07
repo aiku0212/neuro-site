@@ -3,42 +3,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Plastic Brain</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
 <meta name="description" content="An evidence review of neuroplasticity: what the studies measured, including the null results.">
 
 <style>
   :root{
-    --ground:#0C0E14; --ground-2:#141826; --ground-3:#1C2133;
-    --ink:#EDEAF2; --ink-2:#B6B2C8; --muted:#7B7794;
-    --violet:#9B7BD6; --violet-dim:#5E4A85;
-    --amber:#D9A05B; --amber-dim:#8A6535;
-    --rule:#262B3D;
-    --shadow:0 24px 60px -20px rgba(0,0,0,.75);
-  }
-  @media (prefers-color-scheme: light){
-    :root{
-      --ground:#F2EDE3; --ground-2:#E8E1D3; --ground-3:#DED5C4;
-      --ink:#231D14; --ink-2:#4A4032; --muted:#786B58;
-      --violet:#6B4BA3; --violet-dim:#A794C6;
-      --amber:#9A5F1E; --amber-dim:#C7A472;
-      --rule:#D0C5B0;
-      --shadow:0 24px 60px -24px rgba(80,60,30,.28);
-    }
-  }
-  :root[data-theme="light"]{
-    --ground:#F2EDE3; --ground-2:#E8E1D3; --ground-3:#DED5C4;
-    --ink:#231D14; --ink-2:#4A4032; --muted:#786B58;
-    --violet:#6B4BA3; --violet-dim:#A794C6;
-    --amber:#9A5F1E; --amber-dim:#C7A472;
-    --rule:#D0C5B0;
-    --shadow:0 24px 60px -24px rgba(80,60,30,.28);
-  }
-  :root[data-theme="dark"]{
-    --ground:#0C0E14; --ground-2:#141826; --ground-3:#1C2133;
-    --ink:#EDEAF2; --ink-2:#B6B2C8; --muted:#7B7794;
-    --violet:#9B7BD6; --violet-dim:#5E4A85;
-    --amber:#D9A05B; --amber-dim:#8A6535;
-    --rule:#262B3D;
-    --shadow:0 24px 60px -20px rgba(0,0,0,.75);
+    --ground:#f6f7f9; --ground-2:#ffffff; --ground-3:#eceff3;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --violet:#6a54a6; --violet-dim:#cbc1e6;
+    --amber:#b24e33; --amber-dim:#e9c2b3;
+    --rule:#dde2e8;
+    --shadow:0 18px 40px -22px rgba(31,42,53,.22);
   }
 
   *{box-sizing:border-box}
@@ -68,16 +46,28 @@
   .dek{max-width:46ch; margin:14px auto 0; color:var(--ink-2); font-size:14.5px}
 
   .hint{position:absolute; bottom:18px; left:0; right:0; text-align:center;
-    font-size:11px; letter-spacing:.14em; text-transform:uppercase;
-    color:var(--muted); pointer-events:none; z-index:2}
+    font-size:12.5px; color:var(--muted); pointer-events:none; z-index:2;
+    display:flex; justify-content:center; align-items:center; gap:10px}
 
   .legend{position:absolute; left:clamp(14px,3vw,32px); bottom:clamp(14px,3vw,32px);
     display:flex; flex-direction:column; gap:7px; z-index:2}
-  .lg{display:flex; align-items:center; gap:9px; font-size:11.5px;
-    letter-spacing:.06em; color:var(--muted); background:none; border:0;
+  .lg{display:flex; align-items:center; gap:9px; font-size:13px;
+    letter-spacing:0; color:var(--ink-2); background:none; border:0;
     padding:2px 0; cursor:pointer; text-align:left; font-family:inherit}
   .lg:hover,.lg:focus-visible{color:var(--ink)}
-  .lg .dot{width:8px; height:8px; border-radius:50%; flex:none}
+  .lg .dot{width:9px; height:9px; border-radius:50%; flex:none; border:1.5px solid var(--muted)}
+  .lg.located .dot{background:#c0573a; border-color:#c0573a}
+  .lg[aria-pressed="true"]{color:var(--ink); font-weight:600}
+  .lg-h{margin:8px 0 2px; font-size:11px; font-weight:600; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--muted)}
+  .lg-h:first-child{margin-top:0}
+  .lobes{position:absolute; right:clamp(14px,3vw,32px); bottom:clamp(14px,3vw,32px);
+    display:flex; flex-wrap:wrap; justify-content:flex-end; gap:6px 12px; max-width:340px;
+    font-size:12px; color:var(--muted); z-index:2; pointer-events:none}
+  .lobes span{display:inline-flex; align-items:center; gap:6px}
+  .lobes i{width:10px; height:10px; border-radius:50%; flex:none}
+  .where{display:flex; flex-wrap:wrap; align-items:center; gap:6px 10px; margin:0 0 12px;
+    font-size:13px; color:var(--muted)}
 
   /* ---------- readout ---------- */
   .readout{position:absolute; right:clamp(14px,3vw,32px); top:50%;
@@ -120,6 +110,13 @@
   .pull{border-left:2px solid var(--amber); padding:4px 0 4px 22px; margin:28px 0;
     font-size:19px; line-height:1.5; color:var(--ink)}
 
+  .fig-pair{display:grid; grid-template-columns:1fr 1fr; gap:18px}
+  .fig-panel{background:var(--ground); border-radius:10px; padding:12px 14px 14px}
+  .fig-panel h5{margin:8px 0 4px; font-size:14.5px; font-weight:600; color:var(--ink)}
+  .fig-panel p{margin:0; font-size:14px; color:var(--ink-2)}
+  .fig-keys{margin:12px 0 0; padding-left:22px; font-size:14px; color:var(--ink-2); display:grid; gap:4px}
+  .fig-keys li::marker{font-weight:600; color:var(--ink)}
+  @media (max-width:640px){ .fig-pair{grid-template-columns:1fr} }
   .ledger{width:100%; border-collapse:collapse; font-size:14px; margin:22px 0}
   .ledger th{text-align:left; font-size:10.5px; letter-spacing:.14em;
     text-transform:uppercase; color:var(--muted); font-weight:400;
@@ -198,10 +195,14 @@
     .readout:not(.on){display:none}
     .legend{position:static; flex-direction:row; flex-wrap:wrap; gap:12px;
       justify-content:center; padding:16px 20px}
+    .lg-h{flex-basis:100%; text-align:center}
+    .lobes{position:static; justify-content:center; max-width:none; padding:0 20px 16px}
+    .hint{position:static; padding:0 20px 12px; flex-wrap:wrap}
     .stage{height:auto; min-height:0}
     #brain{height:58vh}
   }
 </style>
+<link rel="stylesheet" href="assets/atlas.css">
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
@@ -228,7 +229,8 @@
       <p class="eyebrow mono">Neuroplasticity &middot; Evidence Review</p>
       <h1 class="serif">The brain works<br>to stop <em>learning</em></h1>
       <p class="dek">Ten findings on how plasticity opens, what writes into it,
-        and why closing the window is a feature. Spin the brain. Pick a region.</p>
+        and why closing the window is a feature. Colors show the lobes. Pick a
+        finding to see where it was measured.</p>
     </div>
 
     <div class="legend" id="legend"></div>
@@ -236,13 +238,24 @@
     <div class="readout" id="readout" role="dialog" aria-live="polite">
       <button class="shut" id="shut" aria-label="Close">&times;</button>
       <p class="region mono" id="r-region"></p>
+      <p class="where"><span class="ev" id="r-ev"></span><span id="r-where"></span></p>
       <h2 class="serif" id="r-title"></h2>
       <div class="stat"><b id="r-stat"></b><span id="r-statlabel"></span></div>
       <p id="r-body"></p>
       <p class="cite" id="r-cite"></p>
     </div>
 
-    <p class="hint mono">Drag to rotate &middot; Click a lit region</p>
+    <div class="lobes" aria-label="Lobe colors">
+      <span><i style="background:var(--lobe-frontal)"></i>Frontal</span>
+      <span><i style="background:var(--lobe-parietal)"></i>Parietal</span>
+      <span><i style="background:var(--lobe-temporal)"></i>Temporal</span>
+      <span><i style="background:var(--lobe-occipital)"></i>Occipital</span>
+      <span><i style="background:var(--lobe-deep)"></i>Deep structures</span>
+      <span><i style="background:var(--lobe-cerebellum)"></i>Cerebellum</span>
+      <span><i style="background:var(--lobe-brainstem)"></i>Brainstem</span>
+    </div>
+    <p class="hint"><span class="fig-kind" data-kind="illustrative">Illustrative model, not a scan</span>
+      Drag to rotate</p>
   </section>
 
   <section class="bench">
@@ -253,6 +266,8 @@
         <p>Interventions are usually described by how they feel. Here they are
           described by what they touch. Switch between them and watch the receptors,
           the cleft, and the spine.</p>
+        <p class="fig-note"><span class="fig-kind" data-kind="schematic">Schematic</span>
+          Receptor levels and spine size are drawn to show direction, not measured amounts.</p>
       </div>
 
       <div class="switches" id="switches" role="group" aria-label="Intervention"></div>
@@ -301,6 +316,49 @@
         different quantities in different compartments. In cell and mouse studies, LSD and psilocin bound the TrkB receptor about a thousand times more tightly than the antidepressants tested and enhanced signalling from existing BDNF. In people, they do not raise the amount circulating in blood.</p>
       <p class="pull serif">A drug can transform how a receptor behaves without
         changing how much protein floats past it.</p>
+      <figure class="figure" aria-labelledby="fig-bdnf-h">
+        <div class="fig-head"><h4 id="fig-bdnf-h">Where BDNF is measured</h4>
+          <span class="fig-kind" data-kind="schematic">Schematic, not to scale</span></div>
+        <div class="fig-pair">
+          <div class="fig-panel">
+            <svg viewBox="0 0 300 180" role="img" aria-label="A synapse: BDNF in the cleft binds TrkB receptors on the dendritic spine.">
+              <path d="M60 0H240V38Q240 70 208 74H92Q60 70 60 38Z" fill="#e4e9ef" stroke="#b9c3ce"/>
+              <g fill="none" stroke="#b9c3ce"><circle cx="112" cy="30" r="8"/><circle cx="140" cy="46" r="8"/><circle cx="168" cy="26" r="8"/><circle cx="192" cy="46" r="8"/></g>
+              <g fill="#c98a2b"><circle cx="112" cy="30" r="2.4"/><circle cx="140" cy="46" r="2.4"/><circle cx="168" cy="26" r="2.4"/><circle cx="192" cy="46" r="2.4"/>
+                <circle cx="118" cy="90" r="3.4"/><circle cx="146" cy="96" r="3.4"/><circle cx="174" cy="86" r="3.4"/><circle cx="196" cy="98" r="3.4"/></g>
+              <path d="M138 180V160Q90 158 90 134Q90 112 150 112Q210 112 210 134Q210 158 162 160V180Z" fill="#e4e9ef" stroke="#b9c3ce"/>
+              <g fill="#c0573a"><rect x="114" y="104" width="8" height="14" rx="2"/><rect x="142" y="102" width="8" height="14" rx="2"/><rect x="170" y="104" width="8" height="14" rx="2"/></g>
+              <text x="214" y="93" font-size="13" fill="#7a5418">BDNF</text>
+              <text x="222" y="128" font-size="13" fill="#9a3f28">TrkB</text>
+            </svg>
+            <h5>In the brain: signalling</h5>
+            <p>BDNF acts by binding TrkB receptors at synapses. In cell and mouse studies,
+              psychedelics change this binding without raising BDNF levels.</p>
+          </div>
+          <div class="fig-panel">
+            <svg viewBox="0 0 300 180" role="img" aria-label="Blood: platelets store BDNF; when a sample clots into serum they release it.">
+              <rect x="14" y="44" width="160" height="92" rx="46" fill="#f8e7e1" stroke="#e3b5a8"/>
+              <g fill="#fff" stroke="#c0573a"><ellipse cx="58" cy="76" rx="15" ry="8"/><ellipse cx="104" cy="104" rx="15" ry="8"/><ellipse cx="136" cy="70" rx="15" ry="8"/></g>
+              <g fill="#c98a2b"><circle cx="53" cy="76" r="2"/><circle cx="60" cy="74" r="2"/><circle cx="65" cy="78" r="2"/>
+                <circle cx="99" cy="104" r="2"/><circle cx="106" cy="102" r="2"/><circle cx="111" cy="106" r="2"/>
+                <circle cx="131" cy="70" r="2"/><circle cx="138" cy="68" r="2"/><circle cx="143" cy="72" r="2"/>
+                <circle cx="40" cy="108" r="2.6"/><circle cx="150" cy="112" r="2.6"/></g>
+              <path d="M184 90H214" stroke="#5f6d7b" stroke-width="2"/><path d="M214 84L224 90L214 96Z" fill="#5f6d7b"/>
+              <text x="182" y="80" font-size="12" fill="#5f6d7b">clots</text>
+              <path d="M240 72V144Q240 162 256 162Q272 162 272 144V72Z" fill="#fbefd9"/>
+              <path d="M238 24V144Q238 164 256 164Q274 164 274 144V24" fill="none" stroke="#9aa6b2" stroke-width="2"/>
+              <g fill="#c98a2b"><circle cx="248" cy="88" r="2.6"/><circle cx="262" cy="96" r="2.6"/><circle cx="252" cy="110" r="2.6"/><circle cx="265" cy="118" r="2.6"/>
+                <circle cx="247" cy="130" r="2.6"/><circle cx="260" cy="140" r="2.6"/><circle cx="254" cy="152" r="2.6"/><circle cx="266" cy="80" r="2.6"/></g>
+              <text x="236" y="16" font-size="13" fill="#3f4c59">Serum</text>
+            </svg>
+            <h5>In a blood sample: concentration</h5>
+            <p>Plasma carries little BDNF. Platelets store it and release it when activated,
+              as happens when a sample clots into serum. Most human studies measure serum.</p>
+          </div>
+        </div>
+        <figcaption>A change in serum BDNF is not a direct measure of signalling in the brain.
+          Sources: Moliner et al. 2023; Fujimura et al. 2002; Calder et al. 2024.</figcaption>
+      </figure>
       <p>That may be why a meta-analysis of 29 studies found no change while cellular studies find large effects. Its authors raise a second explanation: the animal findings may not fully carry over to humans. The current data cannot separate the two. </p>
     </div>
 
@@ -309,6 +367,33 @@
       <p>Critical periods do not fade. They are <strong>actively shut</strong> by
         molecular brakes — perineuronal nets
         that wrap inhibitory interneurons and lock the circuit down.</p>
+      <figure class="figure" aria-labelledby="fig-cp-h">
+        <div class="fig-head"><h4 id="fig-cp-h">How a learning window closes</h4>
+          <span class="fig-kind" data-kind="schematic">Schematic, no measured values</span></div>
+        <svg viewBox="0 0 640 230" role="img" aria-label="Capacity for experience-driven rewiring rises early in life, falls as molecular brakes form, and stays lower but above zero in adulthood. In animal studies, removing brakes can partly reopen it.">
+          <rect x="120" y="20" width="170" height="170" fill="#e6eef5"/>
+          <text x="205" y="40" font-size="13" text-anchor="middle" fill="#235673">critical period</text>
+          <path d="M40 190H620" stroke="#9aa6b2"/><path d="M40 190V20" stroke="#9aa6b2"/>
+          <text x="620" y="212" font-size="13" text-anchor="end" fill="#5f6d7b">Age</text>
+          <text x="48" y="16" font-size="13" fill="#5f6d7b">Capacity to rewire from experience</text>
+          <path d="M40 176C90 172 110 70 160 60C210 52 250 120 300 150C350 170 400 162 620 162" fill="none" stroke="#2d6a8f" stroke-width="3"/>
+          <path d="M440 162C462 162 470 132 490 132C510 132 518 162 540 162" fill="none" stroke="#c0573a" stroke-width="2.5" stroke-dasharray="6 5"/>
+          <g font-size="13" font-weight="600" fill="#fff">
+            <circle cx="112" cy="104" r="11" fill="#1f2a35"/><text x="112" y="109" text-anchor="middle">1</text>
+            <circle cx="258" cy="104" r="11" fill="#1f2a35"/><text x="258" y="109" text-anchor="middle">2</text>
+            <circle cx="380" cy="146" r="11" fill="#1f2a35"/><text x="380" y="151" text-anchor="middle">3</text>
+            <circle cx="490" cy="112" r="11" fill="#c0573a"/><text x="490" y="117" text-anchor="middle">4</text>
+          </g>
+        </svg>
+        <ol class="fig-keys">
+          <li>The window opens as inhibitory circuits mature.</li>
+          <li>Molecular brakes form, including perineuronal nets around inhibitory neurons, and actively close it.</li>
+          <li>Adult plasticity is lower, not zero.</li>
+          <li>In animal studies, removing a brake can partly reopen the window.</li>
+        </ol>
+        <figcaption>The curve's shape is conceptual and its timing differs by species and brain area.
+          Sources: Takesian &amp; Hensch 2013; Cornez et al. 2017.</figcaption>
+      </figure>
       <p>That closure helps stabilize what the circuit has learned. Songbirds show the range:
         zebra finches close hard and their song crystallizes; starlings stay open and
         learn new songs every year. Both strategies survived evolution. Neither is
@@ -329,56 +414,68 @@
 (function(){
   var C=document.getElementById('brain'), X=C.getContext('2d'), DPR=1;
 
+  // Ten findings. `loc` is true only where a study measured a specific brain
+  // region; the rest are cellular or blood measures and are not placed on the brain.
   var REG=[
-    {id:'pfc',   name:'Prefrontal Cortex', hue:'#9B7BD6',
+    {id:'pfc', loc:true, name:'Prefrontal cortex', ev:'Mouse study',
+     where:'Frontal cortex, in mice. The human region shown is the closest equivalent.',
      title:'A single dose, ten percent more spines',
      stat:'10%', statlabel:'spine density, within 24 hours',
      body:'One dose of psilocybin increased dendritic spine size and density in mouse frontal cortex within a day. The change was still there a month later, alongside elevated excitatory transmission.',
-     cite:'Shao et al., <em>Neuron</em> 2021 \u00B7 628 citations'},
-    {id:'dmn',   name:'Default Mode Network', hue:'#B892E8',
+     cite:'Shao et al., <em>Neuron</em> 2021'},
+    {id:'dmn', loc:true, name:'Default mode network', ev:'Human imaging, small sample',
+     where:'A network of medial frontal, medial parietal and lateral parietal cortex. Highlight is approximate.',
      title:'Psilocybin desynchronizes the brain',
-     stat:'3\u00D7', statlabel:'vs. methylphenidate control',
+     stat:'3×', statlabel:'vs. methylphenidate control',
      body:'About eighteen MRI scans per person, tracked before, during and three weeks after. Network distinctions dissolved. The decoupling between anterior hippocampus and the default mode network persisted for weeks.',
-     cite:'Siegel et al., <em>Nature</em> 2024 \u00B7 303 citations'},
-    {id:'hip',   name:'Hippocampus', hue:'#D9A05B',
+     cite:'Siegel et al., <em>Nature</em> 2024'},
+    {id:'hip', loc:true, name:'Hippocampus', ev:'Human randomized trial',
+     where:'Hippocampus, deep in the temporal lobe.',
      title:'Exercise four hours later, not right after',
      stat:'4 h', statlabel:'better than exercising right away',
      body:'Three groups learned the same associations. Exercising four hours afterward improved retention. Exercising immediately did not. Only those two timings were tested.',
-     cite:'van Dongen et al., <em>Current Biology</em> 2016 \u00B7 111 citations'},
-    {id:'vis',   name:'Visual Cortex', hue:'#7FA8D9',
+     cite:'van Dongen et al., <em>Current Biology</em> 2016'},
+    {id:'vis', loc:true, name:'Visual cortex', ev:'Review, mostly animal studies',
+     where:'Visual cortex, the classic model for critical periods.',
      title:'The brain works to stop learning',
      stat:'n/a', statlabel:'plasticity is actively dampened',
      body:'Critical periods are not lost through decay. Molecular brakes shut them, reversibly limiting excessive rewiring. The transition to a fixed state is what allows complex functions to consolidate.',
-     cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013 \u00B7 604 citations'},
-    {id:'pnn',   name:'Parvalbumin Interneurons', hue:'#6FC2B0',
+     cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013'},
+    {id:'mot', loc:true, name:'Motor cortex', ev:'Retrospective human study',
+     where:'Motor cortex, measured with TMS-EEG. Highlight is approximate.',
+     title:'One letter of DNA, triple the plasticity',
+     stat:'3×', statlabel:'spread across Val66Met genotypes',
+     body:'Measured with TMS-EEG in a retrospective study of 200 stroke patients: Val/Val 0.22, Val/Met 0.12, Met/Met 0.07. Clinical recovery tracked genotype. This is one study and has not been replicated in the sources here.',
+     cite:'Lin, <em>Neurological Sciences</em> 2026'},
+    {id:'pnn', loc:false, name:'Perineuronal nets', ev:'Review of songbird studies',
+     where:'Not tied to one region: these nets wrap inhibitory neurons in many areas.',
      title:'Nets that set the length of a lifetime',
      stat:'3', statlabel:'species, one gradient',
      body:'Perineuronal nets are dense in zebra finches, which learn one song and stop. Intermediate in canaries. Sparse in starlings, which learn new songs every year. Evolution tuned the same structure to set how long learning stays possible.',
      cite:'Cornez et al., <em>Dev. Neurobiol.</em> 2017'},
-    {id:'trkb',  name:'TrkB Receptor', hue:'#E8B87A',
+    {id:'trkb', loc:false, name:'TrkB receptor', ev:'Cell and mouse studies',
+     where:'Not tied to one region: a receptor found throughout the brain.',
      title:'A thousand times tighter',
-     stat:'1000\u00D7', statlabel:'affinity vs. other antidepressants',
-     body:'In cell and mouse studies, LSD and psilocin bind TrkB directly, at a site overlapping where antidepressants bind. The plasticity effects depend on that binding and on promoting endogenous BDNF — not on making more of it.',
+     stat:'1000×', statlabel:'affinity vs. other antidepressants',
+     body:'In cell and mouse studies, LSD and psilocin bind TrkB directly, at a site overlapping where antidepressants bind. The plasticity effects depend on that binding and on promoting endogenous BDNF, not on making more of it.',
      cite:'Moliner et al., <em>Nature Neuroscience</em> 2023'},
-    {id:'mol',   name:'Molecular Layer', hue:'#C98BB8',
+    {id:'mol', loc:false, name:'BDNF and proBDNF', ev:'Cell and mouse studies',
+     where:'Not tied to one region: a signalling molecule.',
      title:'The same gene, opposite directions',
      stat:'2', statlabel:'forms, inverse effects',
      body:'Mature BDNF signals through TrkB and builds synapses. proBDNF signals through p75NTR and dismantles them. A cleavage-resistant knockin mouse showed reduced spine density and impaired LTP. "More BDNF" is an underspecified instruction.',
-     cite:'Woo et al., <em>Nat. Neurosci.</em> 2005 \u00B7 Yang et al., <em>Cell Reports</em> 2014'},
-    {id:'mot',   name:'Motor Cortex', hue:'#8FD98F',
-     title:'One letter of DNA, triple the plasticity',
-     stat:'3\u00D7', statlabel:'spread across Val66Met genotypes',
-     body:'Measured with TMS-EEG in a retrospective study of 200 stroke patients: Val/Val 0.22, Val/Met 0.12, Met/Met 0.07. Clinical recovery tracked genotype. This is one study and has not been replicated in the sources here.',
-     cite:'Lin, <em>Neurological Sciences</em> 2026'},
-    {id:'cbl',   name:'Cerebellum', hue:'#D98F8F',
+     cite:'Woo et al., <em>Nat. Neurosci.</em> 2005 · Yang et al., <em>Cell Reports</em> 2014'},
+    {id:'cbl', loc:false, name:'Blood, after exercise', ev:'Human crossover study, 12 men',
+     where:'Measured in blood, not in the brain.',
      title:'The window is sixty minutes wide',
      stat:'15 min', statlabel:'peak, baseline by 60',
      body:'In 12 young men, high-intensity intervals raised serum BDNF above moderate and low intensity, which did not differ from each other. The rise peaked at fifteen minutes and was gone within the hour.',
      cite:'Birinci et al., <em>Scientific Reports</em> 2026'},
-    {id:'stem',  name:'Brainstem &amp; Blood', hue:'#8A8FA8',
+    {id:'stem', loc:false, name:'Blood, after psychedelics', ev:'Human meta-analysis, 29 studies',
+     where:'Measured in blood, not in the brain.',
      title:'The measurement that fails',
      stat:'0.02', statlabel:'effect size, 29 pooled studies',
-     body:'Ketamine, LSD, psilocybin, ayahuasca, DMT, MDMA. No change in peripheral BDNF. Better-controlled studies reported smaller effects — the signature of a literature built on noise.',
+     body:'Ketamine, LSD, psilocybin, ayahuasca, DMT, MDMA. No change in peripheral BDNF. Better-controlled studies reported smaller effects.',
      cite:'Calder et al., <em>Molecular Psychiatry</em> 2024'}
   ];
 
@@ -401,7 +498,7 @@
 
   // cerebral hemispheres, split by the longitudinal fissure
   [-1,1].forEach(function(s){
-    for(n=0;n<620;n++){
+    for(n=0;n<1500;n++){
       var u=Math.random()*Math.PI*2, v=Math.acos(rnd());
       var sx=Math.sin(v)*Math.cos(u), sy=Math.cos(v), sz=Math.sin(v)*Math.sin(u);
       var g=1+0.06*Math.sin(sx*8+sz*3)*Math.cos(sy*9)+0.04*Math.sin(sz*11);
@@ -411,33 +508,27 @@
       y-=6;
       if(z<0) { y+=z*0.14; }              // occipital taper
       if(z>28) { y+=(z-28)*0.10; }        // frontal slope
-      var reg;
-      if(z>26)      reg='pfc';
-      else if(z>2 && y<-14) reg='mot';
-      else if(z<-24) reg='vis';
-      else if(y>4 && Math.abs(x)>26) reg='dmn';
-      else reg='pnn';
-      push(x,y,z,reg);
+      push(x,y,z,'cortex');
     }
   });
 
   // temporal lobes
-  [-1,1].forEach(function(s){ lobe(s*40,26,10,17,11,30,150,'mol',false); });
+  [-1,1].forEach(function(s){ lobe(s*40,26,10,17,11,30,340,'temporal',false); });
   // hippocampus, deep and medial
-  [-1,1].forEach(function(s){ lobe(s*20,22,2,6,5,20,90,'hip',false); });
-  // TrkB cluster, symbolic: dense core
-  lobe(0,6,14,10,9,12,110,'trkb',false);
+  [-1,1].forEach(function(s){ lobe(s*20,22,2,6,5,20,140,'hip',false); });
+  // deep grey matter (thalamus and basal ganglia), drawn as one mass
+  lobe(0,6,14,10,9,12,160,'deep',false);
   // cerebellum
-  [-1,1].forEach(function(s){ lobe(s*20,34,-52,19,14,15,170,'cbl',false); });
+  [-1,1].forEach(function(s){ lobe(s*20,34,-52,19,14,15,420,'cerebellum',false); });
   // brainstem
-  for(n=0;n<130;n++){
-    var t=n/130, a=Math.random()*Math.PI*2, rr=8-t*3.4;
-    push(Math.cos(a)*rr, 22+t*46, -18+Math.sin(a)*rr*0.8, 'stem');
+  for(n=0;n<240;n++){
+    var t=n/240, a=Math.random()*Math.PI*2, rr=8-t*3.4;
+    push(Math.cos(a)*rr, 22+t*46, -18+Math.sin(a)*rr*0.8, 'brainstem');
   }
 
   // neighbour links for the network look
   var LINK=[];
-  for(i=0;i<P.length;i+=3){
+  for(i=0;i<P.length;i+=6){
     var best=-1,bd=1e9;
     for(var j=i+1;j<Math.min(i+70,P.length);j++){
       var dx=P[i].x-P[j].x, dy=P[i].y-P[j].y, dz=P[i].z-P[j].z;
@@ -446,6 +537,44 @@
     }
     if(best>-1 && bd<330) LINK.push([i,best,Math.random()]);
   }
+
+  // Lobe colors blend smoothly across boundaries (Atlas palette), so the
+  // brain reads as anatomy rather than as hard-edged patches.
+  var LOBE={frontal:[221,145,120], parietal:[134,172,214], temporal:[160,197,133],
+            occipital:[217,185,100], cerebellum:[179,152,208], brainstem:[159,169,181],
+            deep:[216,146,166]};
+  var ANCH=[['frontal',30,-14,46],['parietal',30,-34,-10],['occipital',24,-12,-58],['temporal',44,22,6]];
+  function tint(q){
+    if(q.r==='cerebellum'||q.r==='brainstem'||q.r==='deep') return LOBE[q.r];
+    if(q.r==='hip') return LOBE.deep;
+    var ax=Math.abs(q.x), sw=0, c=[0,0,0];
+    ANCH.forEach(function(a){
+      var dx=ax-a[1], dy=q.y-a[2], dz=q.z-a[3];
+      var w=Math.exp(-(dx*dx+dy*dy+dz*dz)/648);
+      if(q.r==='temporal' && a[0]==='temporal') w*=3;
+      sw+=w; var lc=LOBE[a[0]];
+      c[0]+=w*lc[0]; c[1]+=w*lc[1]; c[2]+=w*lc[2];
+    });
+    return sw>1e-9 ? [c[0]/sw,c[1]/sw,c[2]/sw] : LOBE.parietal;
+  }
+  // Where each located finding was measured. Approximate, and only for the five
+  // findings tied to a region.
+  function tags(q){
+    var out=[], ax=Math.abs(q.x);
+    if(q.r==='hip') out.push('hip');
+    if(q.r!=='cortex') return out;
+    if(q.z>26) out.push('pfc');
+    if(q.z>4 && q.z<18 && q.y<-16) out.push('mot');
+    if(q.z<-26) out.push('vis');
+    if((ax<20 && q.z>24) || (ax<20 && q.z<-4 && q.z>-30 && q.y<-6) ||
+       (ax>28 && q.y<0 && q.z<-6 && q.z>-30)) out.push('dmn');
+    return out;
+  }
+  P.forEach(function(q){
+    var c=tint(q); q.c='rgb('+Math.round(c[0])+','+Math.round(c[1])+','+Math.round(c[2])+')';
+    q.t=tags(q);
+  });
+  var PATH='#c0573a';
 
   // recentre the cloud: cerebellum + brainstem drag the centroid downward
   (function(){
@@ -484,41 +613,31 @@
     var pts=[],k;
     for(k=0;k<P.length;k++){
       var q=project(P[k]);
-      pts.push({X:cx+q.x*scale, Y:cy+q.y*scale, Z:q.z, r:P[k].r});
+      pts.push({X:cx+q.x*scale, Y:cy+q.y*scale, Z:q.z, t:P[k].t, c:P[k].c});
     }
 
     // links
-    var tt=(now-t0)/1000;
+    var dim = active && RM[active].loc;
     for(k=0;k<LINK.length;k++){
-      var a=pts[LINK[k][0]], b=pts[LINK[k][1]], ph=LINK[k][2];
+      var a=pts[LINK[k][0]], b=pts[LINK[k][1]];
       var dep=(a.Z+b.Z)/2, f=(dep+90)/180;
-      var on = (a.r===active||b.r===active);
-      X.globalAlpha=(0.05+f*0.13)*(active? (on?1.7:0.28):1);
-      X.strokeStyle = on ? RM[active].hue : '#6E6A8C';
+      var on = dim && (a.t.indexOf(active)>-1 && b.t.indexOf(active)>-1);
+      X.globalAlpha=(0.06+f*0.12)*(dim? (on?2.2:0.3):1);
+      X.strokeStyle = on ? PATH : '#aab4bf';
       X.lineWidth=DPR*0.6;
       X.beginPath(); X.moveTo(a.X,a.Y); X.lineTo(b.X,b.Y); X.stroke();
-      // travelling pulse
-      if(!reduce){
-        var u=((tt*0.30+ph)%1);
-        if(u<0.97){
-          var pxp=a.X+(b.X-a.X)*u, pyp=a.Y+(b.Y-a.Y)*u;
-          X.globalAlpha=(0.5-Math.abs(u-0.5))*(on?1.5:0.5)*f;
-          X.fillStyle= on ? RM[active].hue : '#D9A05B';
-          X.beginPath(); X.arc(pxp,pyp,DPR*1.05,0,6.284); X.fill();
-        }
-      }
     }
 
     // nodes, painter's order
     pts.sort(function(a,b){return a.Z-b.Z;});
     for(k=0;k<pts.length;k++){
       var p=pts[k], f2=(p.Z+90)/180;
-      var lit=(p.r===active)||(p.r===hot);
-      X.globalAlpha=(0.20+f2*0.72)*(active&&!lit?0.22:1);
-      X.fillStyle=lit?RM[p.r].hue:(active?RM[p.r].hue:'#9E9ABA');
-      var rad=DPR*(0.85+f2*1.25)*(lit?1.85:1);
+      var lit=(dim && p.t.indexOf(active)>-1) || (hot && p.t.indexOf(hot)>-1);
+      X.globalAlpha=(0.55+f2*0.45)*(dim&&!lit?0.22:1);
+      X.fillStyle=lit?PATH:p.c;
+      var rad=DPR*(1.15+f2*1.55)*(lit?1.45:1);
       X.beginPath(); X.arc(p.X,p.Y,rad,0,6.284); X.fill();
-      if(lit){ X.globalAlpha=0.13; X.beginPath(); X.arc(p.X,p.Y,rad*3.4,0,6.284); X.fill(); }
+      if(lit){ X.globalAlpha=0.10; X.beginPath(); X.arc(p.X,p.Y,rad*2.6,0,6.284); X.fill(); }
     }
     X.globalAlpha=1;
     requestAnimationFrame(draw);
@@ -536,7 +655,7 @@
       var q=project(P[k]);
       var dx=cx+q.x*scale-mx, dy=cy+q.y*scale-my;
       var d=Math.sqrt(dx*dx+dy*dy);
-      if(d<bd){bd=d;best=P[k].r;}
+      if(d<bd && P[k].t.length){bd=d;best=P[k].t[0];}
     }
     return best;
   }
@@ -558,6 +677,8 @@
     var r=RM[id]; if(!r) return;
     active=id;
     document.getElementById('r-region').innerHTML=r.name;
+    document.getElementById('r-ev').textContent=r.ev;
+    document.getElementById('r-where').textContent=r.where;
     document.getElementById('r-title').textContent=r.title;
     document.getElementById('r-stat').textContent=r.stat;
     document.getElementById('r-statlabel').textContent=r.statlabel;
@@ -565,11 +686,11 @@
     document.getElementById('r-cite').innerHTML=r.cite;
     RO.classList.add('on');
     document.querySelectorAll('.lg').forEach(function(b){
-      b.style.color = b.dataset.id===id ? 'var(--ink)' : '';
+      b.setAttribute('aria-pressed', b.dataset.id===id ? 'true' : 'false');
     });
   }
   function close(){active=null;RO.classList.remove('on');
-    document.querySelectorAll('.lg').forEach(function(b){b.style.color='';});}
+    document.querySelectorAll('.lg').forEach(function(b){b.setAttribute('aria-pressed','false');});}
   document.getElementById('shut').addEventListener('click',close);
   addEventListener('keydown',function(e){if(e.key==='Escape')close();});
 
@@ -578,8 +699,8 @@
     var S=document.getElementById('syn'); if(!S) return;
     var G=S.getContext('2d'), D=1;
 
-    var COL={trkb:'#D9A05B', p75:'#C98BB8', ht2a:'#9B7BD6',
-             nmda:'#7FA8D9', pnn:'#6FC2B0', bdnf:'#E8B87A', glu:'#8FD98F'};
+    var COL={trkb:'#c0573a', p75:'#a2477e', ht2a:'#6a54a6',
+             nmda:'#2f6fa8', pnn:'#2b8273', bdnf:'#c98a2b', glu:'#3d8a4a'};
 
     var STATE={
       base:{label:'Baseline', spine:1, title:'A ratio, not a total',
@@ -627,7 +748,7 @@
       var sc=D*(u<400?0.72:1);
 
       // ---- presynaptic bouton ----
-      G.globalAlpha=1; G.fillStyle='#1F2437'; G.strokeStyle='#33395180';
+      G.globalAlpha=1; G.fillStyle='#e4e9ef'; G.strokeStyle='#b9c3ce';
       G.lineWidth=D; G.beginPath();
       G.moveTo(w*0.16,0); G.lineTo(w*0.84,0);
       G.bezierCurveTo(w*0.86,top, w*0.80,cleft*0.9, cx+w*0.16,cleft*0.92);
@@ -645,12 +766,12 @@
 
       // ---- postsynaptic spine (mushroom) ----
       var headR=42*sc*spine, neckW=17*sc;
-      G.globalAlpha=1; G.fillStyle='#1F2437'; G.beginPath();
+      G.globalAlpha=1; G.fillStyle='#e4e9ef'; G.beginPath();
       G.moveTo(cx-neckW,h);
       G.lineTo(cx-neckW,post+headR*0.85);
       G.arc(cx,post+headR*0.5,headR,Math.PI*0.86,Math.PI*0.14,true);
       G.lineTo(cx+neckW,h); G.closePath(); G.fill();
-      G.strokeStyle='#33395180'; G.stroke();
+      G.strokeStyle='#b9c3ce'; G.stroke();
 
       // perineuronal net: dashed arc round the spine base
       var pnnLvl=0; st.rec.forEach(function(r){if(r[0]==='pnn')pnnLvl=r[2];});
@@ -695,7 +816,7 @@
       }
 
       // membrane hairlines
-      G.globalAlpha=.5; G.strokeStyle='#3A4059'; G.lineWidth=D;
+      G.globalAlpha=.5; G.strokeStyle='#9aa6b2'; G.lineWidth=D;
       G.beginPath(); G.moveTo(0,cleft*0.93); G.lineTo(w,cleft*0.93); G.stroke();
       G.globalAlpha=1;
       requestAnimationFrame(render);
@@ -731,12 +852,16 @@
   })();
 
   var L=document.getElementById('legend');
-  REG.forEach(function(r){
-    var b=document.createElement('button');
-    b.className='lg mono'; b.dataset.id=r.id;
-    b.innerHTML='<span class="dot" style="background:'+r.hue+'"></span>'+r.name;
-    b.addEventListener('click',function(){active===r.id?close():open(r.id);});
-    L.appendChild(b);
+  [[true,'Measured in a region'],[false,'Not tied to one region']].forEach(function(g){
+    var h=document.createElement('p'); h.className='lg-h'; h.textContent=g[1]; L.appendChild(h);
+    REG.filter(function(r){return r.loc===g[0];}).forEach(function(r){
+      var b=document.createElement('button');
+      b.className='lg'+(r.loc?' located':''); b.dataset.id=r.id;
+      b.setAttribute('aria-pressed','false');
+      b.innerHTML='<span class="dot"></span>'+r.name;
+      b.addEventListener('click',function(){active===r.id?close():open(r.id);});
+      L.appendChild(b);
+    });
   });
 })();
 </script>

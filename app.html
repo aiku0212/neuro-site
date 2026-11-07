@@ -3,13 +3,17 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Neuroscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
 <meta name="description" content="Descend from the whole brain to a single receptor, and measure a generated neuron.">
 
 <style>
   :root{
-    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
-    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
-    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --sky:#7FA8D9; --rose:#C98BB8;
+    --bg:#f6f7f9; --panel:#ffffff; --panel-2:#eceff3; --rule:#dde2e8;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --amber:#b24e33; --violet:#6a54a6; --teal:#2b8273; --sky:#2f6fa8; --rose:#a2477e;
     --bar:54px;
   }
   *{box-sizing:border-box}
@@ -54,7 +58,7 @@
     transition:height .18s ease}
   .knob{position:absolute; left:-4px; width:10px; height:10px; border-radius:50%;
     background:var(--amber); transition:top .18s ease;
-    box-shadow:0 0 0 4px rgba(217,160,91,.16)}
+    box-shadow:0 0 0 4px rgba(192,87,58,.12)}
   .ticks{display:flex; flex-direction:column; justify-content:space-between;
     height:min(56vh,400px)}
   .tick{background:none;border:0;padding:0;text-align:left;cursor:pointer;
@@ -80,7 +84,7 @@
   .parts i{width:7px;height:7px;border-radius:50%;display:block}
   .handoff{margin-top:14px; font:400 10.5px/1 ui-monospace,Menlo,monospace;
     letter-spacing:.12em; text-transform:uppercase; padding:9px 14px;
-    background:var(--amber); color:#0A0C12; border:0; border-radius:2px;
+    background:var(--amber); color:#ffffff; border:0; border-radius:2px;
     cursor:pointer; display:none}
   .handoff.on{display:inline-block}
 
@@ -117,7 +121,7 @@
     text-transform:uppercase;padding:8px 11px;background:var(--panel);
     border:1px solid var(--rule);color:var(--muted);border-radius:2px;cursor:pointer}
   .tool:hover{color:var(--ink-2)}
-  .tool[aria-pressed="true"]{background:var(--amber);color:#0A0C12;border-color:var(--amber)}
+  .tool[aria-pressed="true"]{background:var(--amber);color:#ffffff;border-color:var(--amber)}
 
   .scaleb{position:absolute;left:clamp(14px,2.5vw,34px);bottom:16px;
     color:var(--muted);font-size:10px;letter-spacing:.11em}
@@ -137,12 +141,13 @@
   @media (max-width:900px){
     .cap{position:absolute;left:0;right:0;top:auto;bottom:54px;transform:none;
       width:auto;padding:0 18px;
-      background:linear-gradient(transparent,rgba(10,12,18,.92) 26%)}
+      background:linear-gradient(transparent,rgba(255,255,255,.94) 26%)}
     .side{width:100%;top:auto;height:46%;border-left:0;border-top:1px solid var(--rule)}
     .ramp{display:none} .rail{left:10px}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
+<link rel="stylesheet" href="assets/atlas.css">
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
@@ -177,7 +182,8 @@
       <p class="cite" id="c-cite"></p>
       <button class="handoff" id="handoff">Measure this neuron &rarr;</button>
     </aside>
-    <p class="howto explore-only mono">Scroll to descend &middot; drag to rotate &middot; Teaching model, not medical advice</p>
+    <p class="howto explore-only mono"><span class="fig-kind" data-kind="illustrative">Illustrative model</span>
+      Scroll to descend &middot; drag to rotate &middot; not medical advice</p>
 
     <!-- analyze -->
     <div class="tools analyze-only" id="tools"></div>
@@ -214,9 +220,20 @@ var C=document.getElementById('gl'), X=C.getContext('2d'), D=1;
 var SH=document.getElementById('sholl'), SX=SH.getContext('2d');
 var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-var COL={violet:'#9B7BD6',amber:'#D9A05B',teal:'#6FC2B0',rose:'#C98BB8',
-         sky:'#7FA8D9',pale:'#9E9ABA',green:'#8FD98F'};
-var ORDER_COL=['#D9A05B','#E0B36F','#C98BB8','#9B7BD6','#7FA8D9','#6FC2B0','#8FD98F'];
+var COL={violet:'#6a54a6',amber:'#c0573a',teal:'#2b8273',rose:'#a2477e',
+         sky:'#2f6fa8',pale:'#8fa0b3',green:'#3d8a4a'};
+var ORDER_COL=['#c0573a','#d07a4a','#a2477e','#6a54a6','#2f6fa8','#2b8273','#3d8a4a'];
+// Atlas lobe colors, blended across boundaries (same scheme as the Evidence page).
+var LOBE={frontal:[221,145,120],parietal:[134,172,214],temporal:[160,197,133],occipital:[217,185,100]};
+var ANCH=[['frontal',30,-14,46],['parietal',30,-34,-10],['occipital',24,-12,-58],['temporal',44,22,6]];
+function lobeTint(q){
+  var ax=Math.abs(q.x),sw=0,c=[0,0,0];
+  ANCH.forEach(function(a){var dx=ax-a[1],dy=q.y-a[2],dz=q.z-a[3];
+    var w=Math.exp(-(dx*dx+dy*dy+dz*dz)/648);sw+=w;var l=LOBE[a[0]];
+    c[0]+=w*l[0];c[1]+=w*l[1];c[2]+=w*l[2];});
+  if(sw<1e-9) return COL.pale;
+  return 'rgb('+Math.round(c[0]/sw)+','+Math.round(c[1]/sw)+','+Math.round(c[2]/sw)+')';
+}
 
 /* ================= geometry ================= */
 var seed=20260812;
@@ -226,7 +243,7 @@ var BRAIN=[];
 (function(){
   var s2=seed;
   [-1,1].forEach(function(s){
-    for(var n=0;n<520;n++){
+    for(var n=0;n<1300;n++){
       var u=rnd()*6.283, v=Math.acos(rnd()*2-1);
       var sx=Math.sin(v)*Math.cos(u), sy=Math.cos(v), sz=Math.sin(v)*Math.sin(u);
       var g=1+.06*Math.sin(sx*8+sz*3)*Math.cos(sy*9);
@@ -235,12 +252,17 @@ var BRAIN=[];
       BRAIN.push({x:s*(6+Math.abs(x)*.92), y:y-6+(zz<0?zz*.14:0), z:zz, c:'pale'});
     }
   });
-  [-1,1].forEach(function(s){for(var n=0;n<130;n++){
+  [-1,1].forEach(function(s){for(var n=0;n<260;n++){
     var u=rnd()*6.283,v=Math.acos(rnd()*2-1);
     BRAIN.push({x:s*20+Math.sin(v)*Math.cos(u)*19,y:34+Math.cos(v)*14,
       z:-52+Math.sin(v)*Math.sin(u)*15,c:'rose'});}});
-  for(var n=0;n<90;n++){var t=n/90,a=rnd()*6.283,r=8-t*3.4;
+  for(var n=0;n<200;n++){var t=n/200,a=rnd()*6.283,r=8-t*3.4;
     BRAIN.push({x:Math.cos(a)*r,y:22+t*44,z:-18+Math.sin(a)*r*.8,c:'sky'});}
+  BRAIN.forEach(function(p){
+    if(p.c==='pale') p.c=lobeTint(p);
+    else if(p.c==='rose') p.c='rgb(179,152,208)';   // cerebellum
+    else if(p.c==='sky') p.c='rgb(159,169,181)';    // brainstem
+  });
   var sy2=0; BRAIN.forEach(function(p){sy2+=p.y;}); sy2/=BRAIN.length;
   BRAIN.forEach(function(p){p.y-=sy2;});
   seed=s2;
@@ -353,15 +375,15 @@ function drawBrain(a,S,cx,cy){
   var pts=BRAIN.map(function(p){var q=proj(p,S,cx,cy);q.c=p.c;return q;})
                .sort(function(m,n){return m.Z-n.Z;});
   for(var i=0;i<pts.length;i++){var p=pts[i],f=(p.Z+90)/180;
-    X.globalAlpha=a*(0.18+f*0.7);X.fillStyle=COL[p.c];
-    X.beginPath();X.arc(p.X,p.Y,D*(0.8+f*1.3),0,6.283);X.fill();}
+    X.globalAlpha=a*(0.45+f*0.55);X.fillStyle=COL[p.c]||p.c;
+    X.beginPath();X.arc(p.X,p.Y,D*(1.1+f*1.6),0,6.283);X.fill();}
 }
 function drawNet(a,S,cx,cy){
   var pts=NET.map(function(p){var q=proj(p,S,cx,cy);q.c=p.c;q.r=p.r;return q;});
   var tt=performance.now()/1000;
   for(var i=0;i<NLINK.length;i++){
     var A=pts[NLINK[i][0]],B=pts[NLINK[i][1]];
-    X.globalAlpha=a*0.13;X.strokeStyle='#6E6A8C';X.lineWidth=D*.7;
+    X.globalAlpha=a*0.18;X.strokeStyle='#aab4bf';X.lineWidth=D*.7;
     X.beginPath();X.moveTo(A.X,A.Y);X.lineTo(B.X,B.Y);X.stroke();
     if(!reduce){var u=((tt*0.3+NLINK[i][2])%1);
       X.globalAlpha=a*(0.55-Math.abs(u-.5))*.9;X.fillStyle=COL.amber;
@@ -381,7 +403,7 @@ function drawArbor(a,S,cx,cy,order){
     var it=list[i], f=(it.Z+STATS.ext)/(STATS.ext*2);
     var on = sel&&sel.kind==='seg'&&sel.i===it.i;
     X.globalAlpha=a*(on?1:(0.30+f*0.62));
-    X.strokeStyle=on?'#FFF':(order?ORDER_COL[Math.min(it.s.o,6)]:COL.violet);
+    X.strokeStyle=on?'#1f2a35':(order?ORDER_COL[Math.min(it.s.o,6)]:COL.violet);
     X.lineWidth=Math.max(D*0.7,it.s.w*S*0.30*(on?1.7:1)); X.lineCap='round';
     X.beginPath();X.moveTo(it.A.X,it.A.Y);X.lineTo(it.B.X,it.B.Y);X.stroke();
   }
@@ -399,7 +421,7 @@ function drawSpineDots(a,S,cx,cy){
             .sort(function(m,n){return m.Z-n.Z;});
   for(var k=0;k<sp.length;k++){var q=sp[k],f=(q.Z+STATS.ext)/(STATS.ext*2);
     var on=sel&&sel.kind==='spine'&&sel.i===q.i;
-    X.globalAlpha=a*(on?1:(0.35+f*0.6));X.fillStyle=on?'#FFF':'#B892E8';
+    X.globalAlpha=a*(on?1:(0.35+f*0.6));X.fillStyle=on?'#1f2a35':'#7a63b8';
     X.beginPath();X.arc(q.X,q.Y,Math.max(D*0.8,q.p.head*S*(on?2.6:1.35)),0,6.283);X.fill();}
 }
 function drawShaft(a,S,cx,cy){
@@ -480,14 +502,14 @@ function drawSholl(){
   var pad=10*D,bw=(w-pad*2)/SHOLL.length,mx=0;
   SHOLL.forEach(function(p){if(p.n>mx)mx=p.n;});
   var peak=SHOLL.reduce(function(a,b){return b.n>a.n?b:a;},SHOLL[0]);
-  SX.strokeStyle='#232838';SX.lineWidth=D;
+  SX.strokeStyle='#dde2e8';SX.lineWidth=D;
   for(var g=0;g<=3;g++){var yy=pad+(h-pad*2)*g/3;
     SX.beginPath();SX.moveTo(pad,yy);SX.lineTo(w-pad,yy);SX.stroke();}
   SHOLL.forEach(function(p,i){var bh=(h-pad*2)*(p.n/mx);
-    SX.fillStyle=p===peak?'#D9A05B':'#3D4358';
+    SX.fillStyle=p===peak?'#c0573a':'#b9c3ce';
     SX.fillRect(pad+i*bw+bw*0.16,h-pad-bh,bw*0.68,bh);});
   SX.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-  SX.fillStyle='#736F8C';SX.textAlign='left';SX.fillText('0',pad,h-2*D);
+  SX.fillStyle='#5f6d7b';SX.textAlign='left';SX.fillText('0',pad,h-2*D);
   SX.textAlign='right';SX.fillText(Math.round(STATS.ext)+' µm',w-pad,h-2*D);
   SX.textAlign='center';SX.fillStyle='#D9A05B';
   SX.fillText('peak '+peak.n+' @ '+peak.r+' µm',w/2,11*D);

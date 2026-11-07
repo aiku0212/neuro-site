@@ -50,3 +50,21 @@ Calder (29 studies, SMD 0.024, p = 0.64), Moliner (1,000-fold), Shao 2021 (about
 - "Every supervised model of an animal internal state" has "no held-out ground truth" (Comparative): this is an uncited generalization.
 - Brain-region placement on the Evidence page: for example, a serum BDNF study sits on the cerebellum.
 - Whether to publish the open problem register on the Comparative page. It reads as an internal research plan.
+
+## Second pass, 2026-11-07
+
+Primary sources were added for every claim listed as open above, each confirmed against Crossref.
+
+| Claim | Change | Source |
+|---|---|---|
+| Ketamine disinhibition, mTOR, "arrives in a day" | Now labeled a leading model from rat studies, with a competing mechanism; onset about two hours in a small trial | Homayoun & Moghaddam 2007; Li et al. 2010; Zanos et al. 2016; Zarate et al. 2006 |
+| "Measurable spine loss" in depression | Human postmortem evidence is synapse loss; spine loss is from rats | Kang et al. 2012 |
+| "Most serum BDNF comes from platelets" | Reworded: platelets store and release BDNF, so serum is not a direct brain measure | Fujimura et al. 2002 |
+| "Dogs age roughly seven times faster" | Removed; the relationship is non-linear | Wang et al. 2020 |
+| Stimulant, opioid, benzodiazepine, cannabinoid mechanisms | Primary citations replace "textbook consensus" | Ritz 1987; Sulzer 2005; Johnson & North 1992; Study & Barker 1981; Wilson & Nicoll 2001 |
+| Spike page: 13.5 µA/cm² "buys 38 mV" | The model gives about 36 mV; threshold about 13.3 | Rerun of the page's own equations |
+| "The signature of a literature built on noise" | Removed from the blood BDNF card (not the authors' conclusion) | Calder et al. 2024 |
+| Findings placed on unrelated brain regions | Only five findings are now placed on the brain; blood, receptor, molecule and cell-type findings are not | Page redesign |
+| Headline "pays to stop learning" | Now "works to stop learning": closure is active, but no source supports an energy cost | Takesian & Hensch 2013 |
+
+Still open: spine dimensions need Harris & Stevens 1989 in full text (the journal page was not accessible); the nine Time page references are listed but not checked against the model text; the Pharmacology page describes mechanisms but not adverse effects; most papers were compared by abstract only.

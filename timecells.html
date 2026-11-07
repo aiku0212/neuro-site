@@ -3,32 +3,20 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Time Cells</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
 <meta name="description" content="A live 3D model of how the medial temporal lobe could keep a compressed timeline of the past: Laplace cells in entorhinal cortex, time cells in hippocampus.">
 
 <style>
   :root{
-    --bg:#0A0C12; --panel:#111420; --panel-2:#161A28; --rule:#232838;
-    --ink:#E9E7F0; --ink-2:#AFACC2; --muted:#736F8C;
-    --amber:#D9A05B; --violet:#9B7BD6; --teal:#6FC2B0; --rose:#C98BB8;
-    --ev-a:#E0A458; --ev-b:#A083E0; --ev-c:#62C7B2; --ev-d:#D98AB9;
-    --cloud:#8C88A8; --wire:#3A3F58;
-    --bar:54px; --barbg:rgba(10,12,18,.9);
-  }
-  @media (prefers-color-scheme: light){
-    :root:not([data-theme="dark"]){
-      --bg:#F4F0E8; --panel:#EBE5D9; --panel-2:#E3DCCD; --rule:#D3C9B6;
-      --ink:#221C14; --ink-2:#4A4133; --muted:#7A6E5B;
-      --amber:#9A5F1E; --violet:#6B4BA3; --teal:#23806F; --rose:#9B4F82;
-      --ev-a:#B26A12; --ev-b:#6A45B8; --ev-c:#1E8A74; --ev-d:#B0457F;
-      --cloud:#8A7F6B; --wire:#C9BFAA; --barbg:rgba(244,240,232,.9);
-    }
-  }
-  :root[data-theme="light"]{
-    --bg:#F4F0E8; --panel:#EBE5D9; --panel-2:#E3DCCD; --rule:#D3C9B6;
-    --ink:#221C14; --ink-2:#4A4133; --muted:#7A6E5B;
-    --amber:#9A5F1E; --violet:#6B4BA3; --teal:#23806F; --rose:#9B4F82;
-    --ev-a:#B26A12; --ev-b:#6A45B8; --ev-c:#1E8A74; --ev-d:#B0457F;
-    --cloud:#8A7F6B; --wire:#C9BFAA; --barbg:rgba(244,240,232,.9);
+    --bg:#f6f7f9; --panel:#ffffff; --panel-2:#eceff3; --rule:#dde2e8;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --amber:#b24e33; --violet:#6a54a6; --teal:#2b8273; --rose:#a2477e;
+    --ev-a:#c0573a; --ev-b:#6a54a6; --ev-c:#2b8273; --ev-d:#2f6fa8;
+    --cloud:#9aa5b1; --wire:#c9d1da;
+    --bar:54px; --barbg:rgba(255,255,255,.94);
   }
 
   *{box-sizing:border-box}
@@ -118,10 +106,6 @@
     letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
   .pull{border-left:2px solid var(--amber);padding:4px 0 4px 20px;margin:26px 0;font-size:18px;
     line-height:1.5;color:var(--ink)}
-  .prog{list-style:none;padding:0;margin:0;border-top:1px solid var(--rule)}
-  .prog li{display:grid;grid-template-columns:110px 1fr;gap:14px;padding:13px 0;border-bottom:1px solid var(--rule);
-    font-size:14px;color:var(--ink-2)}
-  .prog li b{font:400 10.5px/1.6 ui-monospace,Menlo,monospace;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
   .refs{padding-left:18px;margin:0;color:var(--muted);font-size:13px}
   .refs li{margin:0 0 8px}
   .refs em{color:var(--ink-2)}
@@ -141,6 +125,7 @@
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
+<link rel="stylesheet" href="assets/atlas.css">
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
@@ -163,6 +148,8 @@
   <div class="mast">
     <p class="eyebrow mono">Model &middot; Medial temporal lobe</p>
     <h1 class="serif">How a brain could keep a <em>compressed</em> timeline of the past</h1>
+    <p class="fig-note"><span class="fig-kind" data-kind="simulation">Simulation</span>
+      A computational model with chosen parameters. The cells shown are not recordings.</p>
   </div>
   <div class="clock mono" aria-live="off"><b id="clock">0.0 s</b><span>model time</span></div>
 
@@ -228,13 +215,9 @@
   </section>
 
   <section class="sec">
-    <h2>Where this sits in the research program</h2>
-    <ul class="prog">
-      <li><b>Project 3</b><span>This model. Python implementation with 10 passing checks (exact decay, peak at &tau;*, scale invariance, numerical inverse matches the analytic one within r &gt; 0.999, forward contiguity in recall). This page runs the same equations.</span></li>
-      <li><b>Project 1</b><span>Test the ratio prediction in human single neurons: medial temporal lobe recordings during movie clips with a temporal order test (DANDI 000207, Zheng et al. 2022).</span></li>
-      <li><b>Project 2</b><span>A time-pressure recall experiment. The same model, extended with context drift (TCM), is the null hypothesis: a 30 s limit that only truncates recall. Simulation shows naive order-error scores flag an effect that is not there; the pre-registered score does not.</span></li>
-    </ul>
-    <p style="margin-top:18px">Honest status: this is a model, not data. Parameters are illustrative. Nothing here has been fit to recordings yet.</p>
+    <h2>Status</h2>
+    <p>This is a model, not data. Its parameters are illustrative, and nothing here has
+      been fit to recordings yet.</p>
   </section>
 
   <section class="sec">
@@ -253,7 +236,7 @@
   </section>
 </main>
 
-<footer>Neuroscope &middot; Time, Memory, and Neural Causality &middot; Project 3 model, illustrative parameters<br>Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a></footer>
+<footer>Neuroscope &middot; Time, Memory, and Neural Causality &middot; Illustrative model, not fit to data<br>Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a></footer>
 
 <script>
 (function(){
