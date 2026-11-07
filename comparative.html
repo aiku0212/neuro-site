@@ -75,12 +75,6 @@
   .scroller{overflow-x:auto}
   .rx{color:var(--teal)}
 
-  .tagline{display:inline-block;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;
-    padding:2px 7px;border:1px solid var(--rule);border-radius:2px;color:var(--muted);
-    vertical-align:middle;white-space:nowrap}
-  .tagline.key{color:var(--amber);border-color:#f6e3dc}
-  .tagline.verify{color:var(--rose);border-color:#f3e1ec}
-  .tagline.open{color:var(--teal);border-color:#dff0eb}
 
   /* ---- observability collapse ---- */
   .scope{border:1px solid var(--rule);border-radius:3px;background:var(--panel);
@@ -108,17 +102,6 @@
     font-size:11.5px;color:var(--muted)}
   .card .link b{color:var(--violet);font-weight:400}
   @media (max-width:820px){.bridges{grid-template-columns:1fr}}
-
-  /* ---- register ---- */
-  .reg{display:grid;grid-template-columns:26px 1fr auto;gap:14px;align-items:baseline;
-    padding:14px 0;border-top:1px solid var(--rule)}
-  .reg .n{color:var(--muted);font-size:11px;font-family:ui-monospace,Menlo,monospace}
-  .reg .t{margin:0 0 4px;font-size:15px;line-height:1.4;color:var(--ink)}
-  .reg .m{margin:0;font-size:12.5px;color:var(--muted);max-width:62ch}
-  @media (max-width:640px){
-    .reg{grid-template-columns:22px 1fr;gap:10px}
-    .reg .s{grid-column:2;margin-top:6px}
-  }
 
   .caveat{background:var(--panel);border:1px solid var(--rule);
     border-left:2px solid var(--rose);border-radius:2px;padding:18px 20px;margin:34px 0 0}
@@ -317,102 +300,6 @@
           found it is non-linear (Wang et al., <em>Cell Systems</em> 2020).</p>
         <p class="link">New territory &middot; Dog Aging Project is the public cohort</p>
       </div>
-    </div>
-  </div>
-
-  <!-- ============ 4. REGISTER ============ -->
-  <div class="sec">
-    <h2 class="mono">Open problem register</h2>
-    <p class="gnote">Every candidate retained. Nothing here is closed; status describes
-      how far the groundwork has gone, not whether the problem is solved.</p>
-
-    <div class="reg">
-      <span class="n">01</span>
-      <div>
-        <p class="t">VeDDRA &harr; MedDRA crosswalk</p>
-        <p class="m">No public mapping exists between the veterinary and human
-          adverse-event vocabularies. Lexical normalization plus 17 hand-written synonyms
-          currently matches 13 of the top 40 dog terms. Ontology alignment; embeddings are suited to
-          it; the vet-only-drug negative control already exists in code.</p>
-      </div>
-      <span class="s"><span class="tagline key">Wedge</span></span>
-    </div>
-
-    <div class="reg">
-      <span class="n">02</span>
-      <div>
-        <p class="t">Non-verbal ground truth</p>
-        <p class="m">Inferring internal states in a patient that cannot self-report.
-          Underlies pain scales, welfare scoring, and every behavioural label in pet
-          psychiatry. The hardest of these and the one with the widest reach.</p>
-      </div>
-      <span class="s"><span class="tagline open">Thesis</span></span>
-    </div>
-
-    <div class="reg">
-      <span class="n">03</span>
-      <div>
-        <p class="t">Anthelmintic resistance as a reporting signal</p>
-        <p class="m">69k lack-of-efficacy reports for heartworm larvae, 63k for flea
-          preventives. Testable claim: failure reports cluster geographically and trend
-          in time. Needs a reporting-effort control analogous to the German Shepherd
-          comparison.</p>
-      </div>
-      <span class="s"><span class="tagline open">Open</span></span>
-    </div>
-
-    <div class="reg">
-      <span class="n">04</span>
-      <div>
-        <p class="t">Bayesian shrinkage for small cells</p>
-        <p class="m">EBGM/MGPS in place of raw PRR. Prerequisite for anything sliced by
-          region &times; year &times; breed, where cells fall to double digits.
-          Retroactively strengthens the MDR1 result.</p>
-      </div>
-      <span class="s"><span class="tagline open">Open</span></span>
-    </div>
-
-    <div class="reg">
-      <span class="n">05</span>
-      <div>
-        <p class="t">Breed entity resolution</p>
-        <p class="m">Owner-typed free text in an inverted taxonomy. 112k mixed-breed
-          reports are currently invisible to any breed-stratified analysis.</p>
-      </div>
-      <span class="s"><span class="tagline open">Open</span></span>
-    </div>
-
-    <div class="reg">
-      <span class="n">06</span>
-      <div>
-        <p class="t">Dose- and weight-adjusted exposure</p>
-        <p class="m">The database carries dose numerator, unit, and animal weight.
-          Breaks the count-only query model, so it needs new machinery before it needs
-          new statistics.</p>
-      </div>
-      <span class="s"><span class="tagline open">Deferred</span></span>
-    </div>
-
-    <div class="reg">
-      <span class="n">07</span>
-      <div>
-        <p class="t">Veterinary clinical NLP</p>
-        <p class="m">Vet records are unstructured with no consistently applied coding
-          standard. Far behind human clinical NLP. Largest gap on this list; also the
-          one most dependent on data access.</p>
-      </div>
-      <span class="s"><span class="tagline verify">Scope</span></span>
-    </div>
-
-    <div class="reg">
-      <span class="n">08</span>
-      <div>
-        <p class="t">Comparative neuropsychiatry</p>
-        <p class="m">This page. Critical-period closure, compulsive disorder, and
-          cognitive decline as three phenotypes where canine and human neuroscience are
-          measuring the same mechanism through different instruments.</p>
-      </div>
-      <span class="s"><span class="tagline key">New</span></span>
     </div>
   </div>
 

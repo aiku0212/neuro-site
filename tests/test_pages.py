@@ -79,6 +79,20 @@ class PublicPages(unittest.TestCase):
             with self.subTest(page=name):
                 self.assertRegex(read(name), r'class="fig-kind" data-kind="(schematic|simulation|illustrative|measured)"')
 
+    def test_about_names_author_corrections_and_license(self):
+        about = read("about")
+        self.assertIn("written and maintained by", about)
+        self.assertIn("neuro-site/issues/new", about)
+        self.assertIn("CC BY 4.0", about)
+        self.assertIn("MIT License", about)
+        self.assertTrue((ROOT / "LICENSE").read_text(encoding="utf8").startswith("MIT License"))
+
+    def test_internal_plans_are_not_published(self):
+        self.assertNotIn("Open problem register", read("comparative"))
+        self.assertNotRegex(read("timecells"), r"Project [123]")
+        self.assertTrue((ROOT / "docs" / "open-problem-register.md").exists())
+        self.assertTrue((ROOT / "docs" / "time-model-research-plan.md").exists())
+
     def test_pages_state_they_are_not_advice(self):
         for name in PUBLIC:
             with self.subTest(page=name):
