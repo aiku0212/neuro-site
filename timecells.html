@@ -43,7 +43,9 @@
     border-bottom:1px solid var(--rule)}
   .brand{font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
   .brand b{font-weight:400;color:var(--amber)}
-  .tabs{display:flex;gap:4px;margin-left:auto;overflow-x:auto;scrollbar-width:none}
+  .tabs{display:flex;gap:4px;margin-left:auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .tab{flex:none;white-space:nowrap}
+  .brand{flex:none}
   .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;text-transform:uppercase;
     padding:9px 14px;color:var(--muted);border:1px solid transparent;border-radius:2px;
     text-decoration:none;white-space:nowrap}
@@ -144,6 +146,7 @@
   <span class="brand">Neuro<b>scope</b></span>
   <nav class="tabs" aria-label="Site">
     <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
     <a class="tab" href="spike.html">Spike</a>
     <a class="tab" href="synapse.html">Spines</a>
     <a class="tab" href="pharma.html">Pharmacology</a>
@@ -151,6 +154,7 @@
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html" aria-current="true">Time</a>
     <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
   </nav>
 </div>
 
@@ -249,7 +253,7 @@
   </section>
 </main>
 
-<footer>Neuroscope &middot; Time, Memory, and Neural Causality &middot; Project 3 model, illustrative parameters</footer>
+<footer>Neuroscope &middot; Time, Memory, and Neural Causality &middot; Project 3 model, illustrative parameters<br>Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a></footer>
 
 <script>
 (function(){

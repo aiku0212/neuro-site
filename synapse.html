@@ -1,4 +1,9 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Dendritic Spines</title>
+<meta name="description" content="An interactive 3D model of dendritic spines and how they change.">
 
 <style>
   :root{
@@ -111,6 +116,7 @@
     color:var(--ink); margin-bottom:3px}
   .fact span{font-size:13px; color:var(--ink-2)}
   .cite{font-size:12px; color:var(--muted); margin-top:5px}
+  @media (max-width:640px){.bar{position:static}}
   footer{border-top:1px solid var(--rule); margin-top:54px; padding:22px 0;
     font-size:12px; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
   footer a{color:var(--ink-2)}
@@ -122,6 +128,7 @@
   <span class="brand">Neuro<b>scope</b></span>
   <nav class="tabs" aria-label="Site">
     <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
     <a class="tab" href="spike.html">Spike</a>
     <a class="tab" href="synapse.html" aria-current="true">Spines</a>
     <a class="tab" href="pharma.html">Pharmacology</a>
@@ -129,6 +136,7 @@
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
     <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
   </nav>
 </div>
 
@@ -195,6 +203,8 @@
     <a href="pharma.html">Down a level: the receptors in that membrane</a>
     <a href="app.html">Up a level: the whole arbor</a>
     <a href="references.html">Sources</a>
+    <span>Educational model. Not medical or veterinary advice.</span>
+    <a href="about.html">About and limits</a>
   </footer>
 </main>
 </div>

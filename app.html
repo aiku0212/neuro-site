@@ -1,4 +1,9 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Neuroscope</title>
+<meta name="description" content="Descend from the whole brain to a single receptor, and measure a generated neuron.">
 
 <style>
   :root{
@@ -23,7 +28,9 @@
   .brand{font-size:11px; letter-spacing:.26em; text-transform:uppercase;
     color:var(--ink); white-space:nowrap}
   .brand b{font-weight:400; color:var(--amber)}
-  .tabs{display:flex; gap:4px; margin-left:auto}
+  .tabs{display:flex;gap:4px;margin-left:auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .tab{flex:none;white-space:nowrap}
+  .brand{flex:none}
   .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace; letter-spacing:.14em;
     text-transform:uppercase; padding:9px 15px; background:none; color:var(--muted);
     border:1px solid transparent; border-radius:2px; cursor:pointer; text-decoration:none}
@@ -139,13 +146,17 @@
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
-  <nav class="tabs">
+  <nav class="tabs" aria-label="Site">
     <button class="tab" id="t-explore" aria-current="true">Explore</button>
     <button class="tab" id="t-analyze" aria-current="false">Analyze</button>
     <a class="tab" href="spike.html">Spike</a>
     <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
     <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
   </nav>
 </div>
 
@@ -166,7 +177,7 @@
       <p class="cite" id="c-cite"></p>
       <button class="handoff" id="handoff">Measure this neuron &rarr;</button>
     </aside>
-    <p class="howto explore-only mono">Scroll to descend &middot; drag to rotate</p>
+    <p class="howto explore-only mono">Scroll to descend &middot; drag to rotate &middot; Teaching model, not medical advice</p>
 
     <!-- analyze -->
     <div class="tools analyze-only" id="tools"></div>
@@ -599,5 +610,6 @@ addEventListener('keydown',function(e){
 
 document.body.dataset.mode='explore';
 setZ(0);
+if(location.hash==='#analyze') setMode('analyze');
 })();
 </script>

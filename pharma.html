@@ -1,4 +1,9 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Pharmacology Bench</title>
+<meta name="description" content="How major drug classes act at the synapse, shown as interactive mechanism models.">
 
 <style>
   :root{
@@ -20,7 +25,9 @@
     backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
   .brand{font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
   .brand b{font-weight:400;color:var(--amber)}
-  .tabs{display:flex;gap:4px;margin-left:auto}
+  .tabs{display:flex;gap:4px;margin-left:auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .tab{flex:none;white-space:nowrap}
+  .brand{flex:none}
   .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;
     text-transform:uppercase;padding:9px 15px;background:none;color:var(--muted);
     border:1px solid transparent;border-radius:2px;cursor:pointer;text-decoration:none}
@@ -94,15 +101,17 @@
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
-  <nav class="tabs">
+  <nav class="tabs" aria-label="Site">
     <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
     <a class="tab" href="spike.html">Spike</a>
     <a class="tab" href="synapse.html">Spines</a>
-    <a class="tab" href="app.html">Analyze</a>
-    <button class="tab" aria-current="true">Pharmacology</button>
+    <a class="tab" href="pharma.html" aria-current="true">Pharmacology</a>
     <a class="tab" href="index.html">Evidence</a>
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
   </nav>
 </div>
 
@@ -116,6 +125,7 @@
   </div>
 
   <aside class="side">
+    <p class="cite" style="margin:0 0 16px;padding:10px 12px;border:1px solid var(--rule);border-left:2px solid var(--rose)">Explains mechanisms only. Not medical advice, not dosing guidance, and not a suggestion that any drug is safe or legal to use. Several mechanisms here are not yet cited to primary sources. <a href="about.html" style="color:inherit">About and limits</a></p>
     <h1 class="serif" id="d-name"></h1>
     <p class="sub" id="d-ex"></p>
     <div class="kv"><span>Primary target</span><b id="d-target"></b></div>

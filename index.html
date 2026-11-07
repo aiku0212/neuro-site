@@ -1,4 +1,9 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>The Plastic Brain</title>
+<meta name="description" content="An evidence review of neuroplasticity: what the studies measured, including the null results.">
 
 <style>
   :root{
@@ -172,6 +177,17 @@
     #syn{height:340px}
   }
 
+  .bar{display:flex; align-items:center; gap:22px; flex-wrap:wrap; padding:14px 20px;
+    border-bottom:1px solid var(--rule); background:var(--ground-2); position:sticky; top:0; z-index:20}
+  .brand{font:600 15px/1 Georgia,serif; letter-spacing:.01em; color:var(--ink)}
+  .brand b{color:var(--amber); font-weight:600}
+  .tabs{display:flex; gap:16px; flex-wrap:wrap}
+  .tab{font-size:13px; color:var(--ink-2); text-decoration:none; padding:3px 0;
+    border-bottom:1.5px solid transparent}
+  .tab:hover{color:var(--ink)}
+  .tab[aria-current]{color:var(--amber); border-bottom-color:var(--amber)}
+
+  @media (max-width:640px){.bar{position:static}}
   footer{border-top:1px solid var(--rule); padding:36px 24px 56px;
     text-align:center; color:var(--muted); font-size:12.5px}
 
@@ -186,6 +202,22 @@
     #brain{height:58vh}
   }
 </style>
+
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html" aria-current="true">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
+  </nav>
+</div>
 
 <div class="wrap">
 
@@ -288,7 +320,8 @@
 
   <footer class="mono">
     Compiled from Consensus, PubMed &amp; ClinicalTrials.gov &middot; August 2026<br>
-    Figures are sourced on the Sources page. Nulls included.
+    Figures are sourced on the <a href="references.html" style="color:inherit">Sources page</a>. Nulls included.<br>
+    Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a>
   </footer>
 </div>
 

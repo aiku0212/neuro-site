@@ -1,4 +1,9 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Comparative Neuropsychiatry</title>
+<meta name="description" content="The same psychiatric drugs are given to people and dogs, but a dog cannot describe a symptom. What FDA adverse-event data can and cannot show.">
 
 <style>
   :root{
@@ -20,7 +25,9 @@
     backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
   .brand{font-size:11px;letter-spacing:.26em;text-transform:uppercase;white-space:nowrap}
   .brand b{font-weight:400;color:var(--amber)}
-  .tabs{display:flex;gap:4px;margin-left:auto;flex-wrap:wrap}
+  .tabs{display:flex;gap:4px;margin-left:auto;min-width:0;overflow-x:auto;scrollbar-width:none}
+  .tab{flex:none;white-space:nowrap}
+  .brand{flex:none}
   .tab{font:400 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.14em;
     text-transform:uppercase;padding:9px 14px;color:var(--muted);
     border:1px solid transparent;border-radius:2px;text-decoration:none}
@@ -122,22 +129,23 @@
 
 <div class="bar">
   <span class="brand">Neuro<b>scope</b></span>
-  <nav class="tabs">
+  <nav class="tabs" aria-label="Site">
     <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
     <a class="tab" href="spike.html">Spike</a>
     <a class="tab" href="synapse.html">Spines</a>
-    <a class="tab" href="app.html">Analyze</a>
     <a class="tab" href="pharma.html">Pharmacology</a>
     <a class="tab" href="index.html">Evidence</a>
     <a class="tab" href="comparative.html" aria-current="true">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
     <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
   </nav>
 </div>
 
 <main>
 
-  <p class="eyebrow mono">Comparative Neuropsychiatry &middot; Direction Note</p>
+  <p class="eyebrow mono">Comparative Neuropsychiatry</p>
   <h1 class="serif">The receptor is conserved.<br>The patient <em>cannot answer</em>.</h1>
   <p class="lede">Everything else on this site measures plasticity in one species — the
     one that can describe what a drug feels like. <strong>Dogs are prescribed the same
@@ -148,7 +156,12 @@
     <div><b>1,378,854</b><span>Vet adverse-event reports</span></div>
     <div><b>21,054,159</b><span>Human FAERS reports</span></div>
     <div><b>6 / 40</b><span>Terms that map across</span></div>
-    <div><b>6.17&times;</b><span>Canine lethargy vs human</span></div>
+    <div><b>5.22&times;</b><span>Canine lethargy vs human lethargy or somnolence</span></div>
+  </div>
+
+  <div class="caveat">
+    <h3>If your pet takes one of these medications</h3>
+    <p>This page is research commentary, not veterinary advice. Adverse-event reports cannot show that a drug caused a problem, or how often it happens. Do not stop or change a pet's medication, or give a pet a medication prescribed for a person, without talking to a veterinarian. <a href="about.html" style="color:inherit">About and limits</a></p>
   </div>
 
   <!-- ============ 1. SHARED PHARMACOLOGY ============ -->
@@ -190,8 +203,8 @@
       </table>
     </div>
     <p class="gnote" style="margin-top:14px">Indications are approximate and partly
-      off-label; each row needs a label check before it is cited. The point of the table
-      is the overlap, not the detail.</p>
+      off-label. Only fluoxetine's canine approval has been checked against a label so far.
+      The point of the table is the overlap, not the detail.</p>
   </div>
 
   <!-- ============ 2. THE COLLAPSE ============ -->
@@ -237,13 +250,13 @@
         <circle cx="530" cy="150" r="34" fill="#D9A05B" opacity=".13"/>
         <circle cx="530" cy="150" r="9" fill="#D9A05B"/>
         <text class="sink-t" x="574" y="146">Lethargy</text>
-        <text class="sink-p" x="574" y="166">16.76% dog &middot; 2.71% human</text>
+        <text class="sink-p" x="574" y="166">16.76% dog &middot; 3.21% human</text>
 
         <text class="axis" x="8" y="308">21% of human reports list at least one of these six symptoms</text>
       </svg>
     </div>
 
-    <p>The naive read is that dogs are six times more prone to gabapentin lethargy. That read is probably wrong, and the reason is the whole problem. <strong>About a fifth of human gabapentin reports list an internal state</strong> — pain, fatigue, nausea, headache, dizziness or anxiety — that is hard to see from outside. Owners can record some of it: pain appears in 5.33% of dog reports. A dog experiencing the same pharmacology may produce one word in the record, because that may be the only word the observer has. Different patient populations and reasons for prescribing also contribute.</p>
+    <p>The naive read is that dogs are five times more prone to gabapentin lethargy. (The human figure pools two terms: 0.59% of reports say lethargy and 2.71% say somnolence, 3.21% with either. Treating them as one symptom is a judgment call, and using lethargy alone would make the gap far larger.) That read is probably wrong, and the reason is the whole problem. <strong>About a fifth of human gabapentin reports list an internal state</strong> — pain, fatigue, nausea, headache, dizziness or anxiety — that is hard to see from outside. Owners can record some of it: pain appears in 5.33% of dog reports. A dog experiencing the same pharmacology may produce one word in the record, because that may be the only word the observer has. Different patient populations and reasons for prescribing also contribute.</p>
 
     <p class="pull serif">Canine "lethargy" may not be one symptom. It may be a compression artifact — an entire subjective symptom space flattened into the one thing a human
       can see from across the room.</p>
@@ -252,7 +265,7 @@
       internal state — pain, anxiety, distress, welfare — trains on labels that are a
       human's inference about an animal that cannot be asked. There is no held-out
       ground truth, because the patient cannot be interviewed. That is the wall this
-      direction exists to attack.</p>
+      work exists to attack.</p>
   </div>
 
   <!-- ============ 3. BRIDGES ============ -->
@@ -260,7 +273,8 @@
     <h2 class="mono">Three bridges into pet psychiatry</h2>
     <p class="gnote">Each connects an existing section of this site to a companion-animal
       phenotype with a public data source. Ordered by how directly the site already
-      covers the mechanism.</p>
+      covers the mechanism. <strong>Not yet sourced: treat these as hypotheses, as explained
+      under Provenance below.</strong></p>
 
     <div class="bridges">
       <div class="card">
@@ -399,17 +413,16 @@
       from openFDA count queries, and carry the limitations documented alongside the
       analysis — spontaneous reports have no denominator, and disproportionality is not
       risk.</p>
-    <p><strong>The bridge sections are not yet sourced to this site's standard.</strong>
-      Every other page here links each figure to a peer-reviewed source and includes the
-      nulls. The three bridges are directional claims written from background knowledge
-      and must be verified against current literature — and their specific numbers
-      supplied — before any of it is cited or presented. They are marked as a direction,
-      not as evidence.</p>
+    <p><strong>The bridge sections are not yet sourced.</strong> They are hypotheses
+      written from background knowledge, with no links to specific papers, and have not been
+      checked against current literature. Treat them as directions for research, not as
+      evidence, and please do not cite them.</p>
   </div>
 
 </main>
 
 <footer class="mono">
-  Direction note &middot; August 2026<br>
-  Computed figures reproduce from openFDA. Bridge claims pending source verification.
+  Updated November 2026<br>
+  Report figures reproduce from openFDA. Bridge sections are not yet sourced. Not affiliated with or endorsed by the FDA.<br>
+  Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a>
 </footer>
