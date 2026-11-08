@@ -53,6 +53,33 @@
       "authors": "Díaz-Feliz et al.",
       "journal": "Neuroscience",
       "year": 2026
+    },
+    {
+      "pmid": "42996008",
+      "doi": "10.64898/2026.10.21.760719",
+      "group": "cp",
+      "title": "Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.",
+      "authors": "Parkes et al.",
+      "journal": "bioRxiv : the preprint server for biology",
+      "year": 2026
+    },
+    {
+      "pmid": "42994543",
+      "doi": "10.1016/j.neubiorev.2026.107082",
+      "group": "cp",
+      "title": "Narrowing margins: exploring how MeCP2 deficiency degrades precision, timing, and adaptability in motor circuits.",
+      "authors": "Dant et al.",
+      "journal": "Neuroscience and biobehavioral reviews",
+      "year": 2026
+    },
+    {
+      "pmid": "42995877",
+      "doi": "10.64898/2026.10.18.759937",
+      "group": "bird",
+      "title": "Artificial selection diversifies birdsong through polygenic changes across sensory and motor systems.",
+      "authors": "Gazda et al.",
+      "journal": "bioRxiv : the preprint server for biology",
+      "year": 2026
     }
   ],
   "seen": [
@@ -61,6 +88,9 @@
     "42957826",
     "42957634",
     "42975863",
-    "42988203"
+    "42988203",
+    "42996008",
+    "42994543",
+    "42995877"
   ]
 }

@@ -1,10 +1,6 @@
-Last run: 2026-11-06
+Last run: 2026-11-08
 
-## New notices: review any claims that rely on these
-
-- **erratum**: Experience-dependent structural synaptic plasticity in the mammalian brain (https://doi.org/10.1038/nrn2699) ([notice](https://doi.org/10.1038/nrn2721))
-
-## New papers to review (6)
+## New papers to review (9)
 Tick one box per paper. The next daily run applies it.
 
 **Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.**  
@@ -36,4 +32,19 @@ Yao et al., Neuroscience bulletin, 2026 · group `cp` · https://doi.org/10.1007
 Díaz-Feliz et al., Neuroscience, 2026 · group `cp` · https://doi.org/10.1016/j.neuroscience.2026.11.005
 - [ ] Approve <!-- review:42988203:approve -->
 - [ ] Dismiss <!-- review:42988203:dismiss -->
+
+**Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.**  
+Parkes et al., bioRxiv : the preprint server for biology, 2026 · group `cp` · https://doi.org/10.64898/2026.10.21.760719
+- [ ] Approve <!-- review:42996008:approve -->
+- [ ] Dismiss <!-- review:42996008:dismiss -->
+
+**Narrowing margins: exploring how MeCP2 deficiency degrades precision, timing, and adaptability in motor circuits.**  
+Dant et al., Neuroscience and biobehavioral reviews, 2026 · group `cp` · https://doi.org/10.1016/j.neubiorev.2026.107082
+- [ ] Approve <!-- review:42994543:approve -->
+- [ ] Dismiss <!-- review:42994543:dismiss -->
+
+**Artificial selection diversifies birdsong through polygenic changes across sensory and motor systems.**  
+Gazda et al., bioRxiv : the preprint server for biology, 2026 · group `bird` · https://doi.org/10.64898/2026.10.18.759937
+- [ ] Approve <!-- review:42995877:approve -->
+- [ ] Dismiss <!-- review:42995877:dismiss -->
 
