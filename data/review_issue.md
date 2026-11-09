@@ -1,6 +1,6 @@
-Last run: 2026-11-08
+Last run: 2026-11-09
 
-## New papers to review (9)
+## New papers to review (10)
 Tick one box per paper. The next daily run applies it.
 
 **Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.**  
@@ -47,4 +47,9 @@ Dant et al., Neuroscience and biobehavioral reviews, 2026 · group `cp` · https
 Gazda et al., bioRxiv : the preprint server for biology, 2026 · group `bird` · https://doi.org/10.64898/2026.10.18.759937
 - [ ] Approve <!-- review:42995877:approve -->
 - [ ] Dismiss <!-- review:42995877:dismiss -->
+
+**Peripheral Brain-Derived Neurotrophic Factor Changes and Clinical Response to Electroconvulsive Therapy and Repetitive Transcranial Magnetic Stimulation in Major Depressive Disorder: A Systematic Review.**  
+Galindo et al., Cureus, 2026 · group `bdnf` · https://doi.org/10.7759/cureus.119286
+- [ ] Approve <!-- review:42999924:approve -->
+- [ ] Dismiss <!-- review:42999924:dismiss -->
 

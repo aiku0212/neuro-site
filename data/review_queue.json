@@ -80,6 +80,15 @@
       "authors": "Gazda et al.",
       "journal": "bioRxiv : the preprint server for biology",
       "year": 2026
+    },
+    {
+      "pmid": "42999924",
+      "doi": "10.7759/cureus.119286",
+      "group": "bdnf",
+      "title": "Peripheral Brain-Derived Neurotrophic Factor Changes and Clinical Response to Electroconvulsive Therapy and Repetitive Transcranial Magnetic Stimulation in Major Depressive Disorder: A Systematic Review.",
+      "authors": "Galindo et al.",
+      "journal": "Cureus",
+      "year": 2026
     }
   ],
   "seen": [
@@ -91,6 +100,7 @@
     "42988203",
     "42996008",
     "42994543",
-    "42995877"
+    "42995877",
+    "42999924"
   ]
 }
