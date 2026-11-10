@@ -1,6 +1,6 @@
-Last run: 2026-11-09
+Last run: 2026-11-10
 
-## New papers to review (10)
+## New papers to review (12)
 Tick one box per paper. The next daily run applies it.
 
 **Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.**  
@@ -52,4 +52,14 @@ Gazda et al., bioRxiv : the preprint server for biology, 2026 · group `bird` ·
 Galindo et al., Cureus, 2026 · group `bdnf` · https://doi.org/10.7759/cureus.119286
 - [ ] Approve <!-- review:42999924:approve -->
 - [ ] Dismiss <!-- review:42999924:dismiss -->
+
+**Current perspectives in the pharmacological treatment of gambling disorder: psychedelics and beyond.**  
+Chiappini et al., Expert opinion on pharmacotherapy, 2026 · group `psy` · https://doi.org/10.1080/14656566.2026.2761183
+- [ ] Approve <!-- review:43002438:approve -->
+- [ ] Dismiss <!-- review:43002438:dismiss -->
+
+**Environmental enrichment during adolescence ameliorates anxiety-related corticosterone, enhances memory, and is associated with changes in regional dopamine levels in the Wistar Kyoto rat, a putative model of endogenous depression.**  
+Daniel et al., Cognitive, affective & behavioral neuroscience, 2026 · group `cp` · https://doi.org/10.3758/s13415-026-01512-3
+- [ ] Approve <!-- review:43004115:approve -->
+- [ ] Dismiss <!-- review:43004115:dismiss -->
 

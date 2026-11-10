@@ -89,6 +89,24 @@
       "authors": "Galindo et al.",
       "journal": "Cureus",
       "year": 2026
+    },
+    {
+      "pmid": "43002438",
+      "doi": "10.1080/14656566.2026.2761183",
+      "group": "psy",
+      "title": "Current perspectives in the pharmacological treatment of gambling disorder: psychedelics and beyond.",
+      "authors": "Chiappini et al.",
+      "journal": "Expert opinion on pharmacotherapy",
+      "year": 2026
+    },
+    {
+      "pmid": "43004115",
+      "doi": "10.3758/s13415-026-01512-3",
+      "group": "cp",
+      "title": "Environmental enrichment during adolescence ameliorates anxiety-related corticosterone, enhances memory, and is associated with changes in regional dopamine levels in the Wistar Kyoto rat, a putative model of endogenous depression.",
+      "authors": "Daniel et al.",
+      "journal": "Cognitive, affective & behavioral neuroscience",
+      "year": 2026
     }
   ],
   "seen": [
@@ -101,6 +119,8 @@
     "42996008",
     "42994543",
     "42995877",
-    "42999924"
+    "42999924",
+    "43002438",
+    "43004115"
   ]
 }
