@@ -1,6 +1,6 @@
-Last run: 2026-11-10
+Last run: 2026-11-11
 
-## New papers to review (12)
+## New papers to review (14)
 Tick one box per paper. The next daily run applies it.
 
 **Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.**  
@@ -62,4 +62,14 @@ Chiappini et al., Expert opinion on pharmacotherapy, 2026 · group `psy` · http
 Daniel et al., Cognitive, affective & behavioral neuroscience, 2026 · group `cp` · https://doi.org/10.3758/s13415-026-01512-3
 - [ ] Approve <!-- review:43004115:approve -->
 - [ ] Dismiss <!-- review:43004115:dismiss -->
+
+**Rapid-Acting Antidepressants: Targeting Neuroplasticity Beyond Monoamines.**  
+Das et al., Central nervous system agents in medicinal chemistry, 2026 · group `psy` · https://doi.org/10.2174/0118715249485751261025102238
+- [ ] Approve <!-- review:43012274:approve -->
+- [ ] Dismiss <!-- review:43012274:dismiss -->
+
+**Fifty years at the addiction bench and bedside: from withdrawal syndromes to adaptive brain states.**  
+Gold, Frontiers in public health, 2026 · group `psy` · https://doi.org/10.3389/fpubh.2026.1969403
+- [ ] Approve <!-- review:43011373:approve -->
+- [ ] Dismiss <!-- review:43011373:dismiss -->
 

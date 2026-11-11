@@ -107,6 +107,24 @@
       "authors": "Daniel et al.",
       "journal": "Cognitive, affective & behavioral neuroscience",
       "year": 2026
+    },
+    {
+      "pmid": "43012274",
+      "doi": "10.2174/0118715249485751261025102238",
+      "group": "psy",
+      "title": "Rapid-Acting Antidepressants: Targeting Neuroplasticity Beyond Monoamines.",
+      "authors": "Das et al.",
+      "journal": "Central nervous system agents in medicinal chemistry",
+      "year": 2026
+    },
+    {
+      "pmid": "43011373",
+      "doi": "10.3389/fpubh.2026.1969403",
+      "group": "psy",
+      "title": "Fifty years at the addiction bench and bedside: from withdrawal syndromes to adaptive brain states.",
+      "authors": "Gold",
+      "journal": "Frontiers in public health",
+      "year": 2026
     }
   ],
   "seen": [
@@ -121,6 +139,8 @@
     "42995877",
     "42999924",
     "43002438",
-    "43004115"
+    "43004115",
+    "43012274",
+    "43011373"
   ]
 }
