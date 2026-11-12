@@ -125,6 +125,24 @@
       "authors": "Gold",
       "journal": "Frontiers in public health",
       "year": 2026
+    },
+    {
+      "pmid": "43015122",
+      "doi": "10.1523/jneurosci.1198-26.2026",
+      "group": "psy",
+      "title": "From Rapid Synaptic Events to Lasting Antidepressant States: Convergent and Divergent Mechanisms of Ketamine and Psychedelics.",
+      "authors": "Kim et al.",
+      "journal": "The Journal of neuroscience : the official journal of the Society for Neuroscience",
+      "year": 2026
+    },
+    {
+      "pmid": "43017070",
+      "doi": "10.3389/fnmol.2026.1995597",
+      "group": "cp",
+      "title": "Integrative transcriptomics reveals an ECM/PNN-high astrocyte state and cross-tissue biomarkers in major depressive disorder.",
+      "authors": "Wang et al.",
+      "journal": "Frontiers in molecular neuroscience",
+      "year": 2026
     }
   ],
   "seen": [
@@ -141,6 +159,8 @@
     "43002438",
     "43004115",
     "43012274",
-    "43011373"
+    "43011373",
+    "43015122",
+    "43017070"
   ]
 }

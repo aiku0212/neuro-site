@@ -1,6 +1,6 @@
-Last run: 2026-11-11
+Last run: 2026-11-12
 
-## New papers to review (14)
+## New papers to review (16)
 Tick one box per paper. The next daily run applies it.
 
 **Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.**  
@@ -72,4 +72,14 @@ Das et al., Central nervous system agents in medicinal chemistry, 2026 · group 
 Gold, Frontiers in public health, 2026 · group `psy` · https://doi.org/10.3389/fpubh.2026.1969403
 - [ ] Approve <!-- review:43011373:approve -->
 - [ ] Dismiss <!-- review:43011373:dismiss -->
+
+**From Rapid Synaptic Events to Lasting Antidepressant States: Convergent and Divergent Mechanisms of Ketamine and Psychedelics.**  
+Kim et al., The Journal of neuroscience : the official journal of the Society for Neuroscience, 2026 · group `psy` · https://doi.org/10.1523/jneurosci.1198-26.2026
+- [ ] Approve <!-- review:43015122:approve -->
+- [ ] Dismiss <!-- review:43015122:dismiss -->
+
+**Integrative transcriptomics reveals an ECM/PNN-high astrocyte state and cross-tissue biomarkers in major depressive disorder.**  
+Wang et al., Frontiers in molecular neuroscience, 2026 · group `cp` · https://doi.org/10.3389/fnmol.2026.1995597
+- [ ] Approve <!-- review:43017070:approve -->
+- [ ] Dismiss <!-- review:43017070:dismiss -->
 
