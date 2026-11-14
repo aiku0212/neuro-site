@@ -1,6 +1,6 @@
-Last run: 2026-11-13
+Last run: 2026-11-14
 
-## New papers to review (16)
+## New papers to review (17)
 Tick one box per paper. The next daily run applies it.
 
 **Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.**  
@@ -82,4 +82,9 @@ Kim et al., The Journal of neuroscience : the official journal of the Society fo
 Wang et al., Frontiers in molecular neuroscience, 2026 · group `cp` · https://doi.org/10.3389/fnmol.2026.1995597
 - [ ] Approve <!-- review:43017070:approve -->
 - [ ] Dismiss <!-- review:43017070:dismiss -->
+
+**Mechanisms of Psychedelic Metaplasticity: Intracellular Receptor Pharmacology, Epigenomic Priming and Candidate Substrates of Persistence-A Narrative Review.**  
+Anchesi et al., International journal of molecular sciences, 2026 · group `psy` · https://doi.org/10.3390/ijms272110010
+- [ ] Approve <!-- review:43028252:approve -->
+- [ ] Dismiss <!-- review:43028252:dismiss -->
 

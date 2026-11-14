@@ -143,6 +143,15 @@
       "authors": "Wang et al.",
       "journal": "Frontiers in molecular neuroscience",
       "year": 2026
+    },
+    {
+      "pmid": "43028252",
+      "doi": "10.3390/ijms272110010",
+      "group": "psy",
+      "title": "Mechanisms of Psychedelic Metaplasticity: Intracellular Receptor Pharmacology, Epigenomic Priming and Candidate Substrates of Persistence-A Narrative Review.",
+      "authors": "Anchesi et al.",
+      "journal": "International journal of molecular sciences",
+      "year": 2026
     }
   ],
   "seen": [
@@ -161,6 +170,7 @@
     "43012274",
     "43011373",
     "43015122",
-    "43017070"
+    "43017070",
+    "43028252"
   ]
 }
