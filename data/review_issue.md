@@ -1,6 +1,6 @@
-Last run: 2026-11-14
+Last run: 2026-11-15
 
-## New papers to review (17)
+## New papers to review (18)
 Tick one box per paper. The next daily run applies it.
 
 **Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.**  
@@ -87,4 +87,9 @@ Wang et al., Frontiers in molecular neuroscience, 2026 · group `cp` · https://
 Anchesi et al., International journal of molecular sciences, 2026 · group `psy` · https://doi.org/10.3390/ijms272110010
 - [ ] Approve <!-- review:43028252:approve -->
 - [ ] Dismiss <!-- review:43028252:dismiss -->
+
+**Acoustic stimuli-enhanced environmental enrichment remodulates cortical processing of sound azimuth in adult female rats.**  
+Gao et al., Neuroscience, 2026 · group `cp` · https://doi.org/10.1016/j.neuroscience.2026.11.022
+- [ ] Approve <!-- review:43034011:approve -->
+- [ ] Dismiss <!-- review:43034011:dismiss -->
 

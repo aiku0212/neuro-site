@@ -152,6 +152,15 @@
       "authors": "Anchesi et al.",
       "journal": "International journal of molecular sciences",
       "year": 2026
+    },
+    {
+      "pmid": "43034011",
+      "doi": "10.1016/j.neuroscience.2026.11.022",
+      "group": "cp",
+      "title": "Acoustic stimuli-enhanced environmental enrichment remodulates cortical processing of sound azimuth in adult female rats.",
+      "authors": "Gao et al.",
+      "journal": "Neuroscience",
+      "year": 2026
     }
   ],
   "seen": [
@@ -171,6 +180,7 @@
     "43011373",
     "43015122",
     "43017070",
-    "43028252"
+    "43028252",
+    "43034011"
   ]
 }
