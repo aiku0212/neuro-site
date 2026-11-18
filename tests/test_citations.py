@@ -394,6 +394,19 @@ class Review(unittest.TestCase):
         self.assertEqual(reading[0]["page_check"], TODAY)
         self.assertNotIn("pages to check", daily_check.render_issue(queue, [], [], TODAY, reading))
 
+    def test_reapplying_stale_ticks_changes_nothing(self):
+        # When the body changed during a run the workflow leaves it, so the next run sees
+        # ticks it already applied; they must be no-ops.
+        body = self.render().replace("- [ ] Approve", "- [x] Approve")
+        reading, queue = [], {"pending": [dict(self.ITEM)], "seen": ["2"]}
+        apply_review.apply_decisions(reading, queue, apply_review.parse_decisions(body), TODAY)
+        apply_review.apply_page_checks(reading, {"2"}, TODAY)
+        before = json.dumps([reading, queue], sort_keys=True)
+        self.assertEqual(apply_review.apply_decisions(reading, queue, apply_review.parse_decisions(body),
+                                                      "2026-11-07"), (0, 0))
+        self.assertEqual(apply_review.apply_page_checks(reading, {"2"}, "2026-11-07"), 0)
+        self.assertEqual(json.dumps([reading, queue], sort_keys=True), before)
+
     def test_page_check_for_unknown_paper_does_nothing(self):
         reading = [apply_review.to_reading_entry(self.ITEM, TODAY)]
         self.assertEqual(apply_review.apply_page_checks(reading, {"999"}, TODAY), 0)
@@ -467,25 +480,37 @@ class Alerts(unittest.TestCase):
 
 
 class Announce(unittest.TestCase):
-    def test_announces_new_items_once(self):
+    def test_announces_until_marked_then_once(self):
         queue = {"pending": [dict(Review.ITEM)], "seen": ["2"]}
         state = {"open": []}
         daily_check.record_alerts(state, [dict(Alerts.ALERT)], TODAY)
-        text = daily_check.announcement(queue, state, TODAY)
+        text, ids = daily_check.announcement(queue, state)
         self.assertIn("1 correction or retraction notice and 1 paper to review", text)
-        self.assertEqual(daily_check.announcement(queue, state, TODAY), "")
+        self.assertEqual(ids, {"papers": ["2"], "notices": [state["open"][0]["id"]]})
+        # Not marked until the comment is posted: a failed step announces again.
+        self.assertEqual(daily_check.announcement(queue, state)[0], text)
+        self.assertEqual(daily_check.mark_announced(queue, state, ids, TODAY), 2)
+        self.assertEqual(daily_check.announcement(queue, state)[0], "")
+
+    def test_marks_only_what_was_announced(self):
+        queue = {"pending": [dict(Review.ITEM), dict(Review.ITEM, pmid="3")], "seen": ["2", "3"]}
+        state = {"open": []}
+        self.assertEqual(daily_check.mark_announced(queue, state, {"papers": ["2"], "notices": []}, TODAY), 1)
+        text, ids = daily_check.announcement(queue, state)
+        self.assertIn("1 paper to review", text)
+        self.assertEqual(ids["papers"], ["3"])
 
     def test_quiet_when_nothing_is_new(self):
-        self.assertEqual(daily_check.announcement({"pending": [], "seen": []}, {"open": []}, TODAY), "")
+        self.assertEqual(daily_check.announcement({"pending": [], "seen": []}, {"open": []})[0], "")
 
     def test_comment_is_short_and_cannot_ping(self):
         items = [dict(Review.ITEM, pmid=str(i), title=f"@user{i} paper") for i in range(40)]
-        text = daily_check.announcement({"pending": items, "seen": []}, {"open": []}, TODAY)
+        text, _ = daily_check.announcement({"pending": items, "seen": []}, {"open": []})
         self.assertLessEqual(len(text.splitlines()), daily_check.MAX_ANNOUNCED_TITLES + 3)
         self.assertIn("and 35 more", text)
         self.assertNotIn("@user", text)
 
-    def test_main_writes_comment_only_when_new(self):
+    def test_main_announces_until_the_comment_is_recorded(self):
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             data = Path(tmp)
@@ -498,6 +523,14 @@ class Announce(unittest.TestCase):
                     mock.patch("sys.stdout", new_callable=io.StringIO):
                 daily_check.main(["--announce", str(out)])
                 self.assertIn("1 paper to review", out.read_text())
+                # The comment step failed: nothing was recorded, so the next run announces again.
+                daily_check.main(["--announce", str(out)])
+                self.assertIn("1 paper to review", out.read_text())
+                ids = out.with_suffix(".json")
+                self.assertEqual(json.loads(ids.read_text())["papers"], ["2"])
+                self.assertEqual(daily_check.main(["--mark-announced", str(ids)]), 0)
+                queue = json.loads((data / "review_queue.json").read_text())
+                self.assertRegex(queue["pending"][0]["announced"], r"^\d{4}-\d{2}-\d{2}$")
                 daily_check.main(["--announce", str(out)])
                 self.assertEqual(out.read_text(), "")
 
@@ -595,10 +628,32 @@ class FailureReporting(unittest.TestCase):
     def test_failure_is_no_longer_a_step_inside_check(self):
         self.assertNotIn("if: failure()", job("check"))
 
-    def test_heartbeat_is_confirmed_after_the_push(self):
+    def test_announced_is_recorded_only_after_the_comment(self):
         check = job("check")
-        self.assertLess(check.index("git push"), check.index("check_freshness.py"))
-        self.assertIn("--max-age-days 0", check)
+        comment = check.index("gh issue comment")
+        self.assertLess(check.index("git push"), comment)  # the day's data is pushed first
+        self.assertLess(comment, check.index("--mark-announced"))
+        self.assertLess(check.index("--mark-announced"), check.rindex("git push"))
+
+    def test_heartbeat_is_confirmed_last_and_without_a_clock(self):
+        check = job("check")
+        confirm = check.index("git merge-base --is-ancestor HEAD origin/main")
+        self.assertLess(check.rindex("git push"), confirm)
+        self.assertLess(check.index("gh issue comment"), confirm)
+        self.assertNotIn("--max-age-days 0", check)  # a run crossing midnight UTC would fail
+
+    def test_gap_since_last_run_is_a_warning_before_the_check(self):
+        check = job("check")
+        self.assertIn("check_freshness.py --warn-only", check)
+        self.assertLess(check.index("check_freshness.py"), check.index("daily_check.py --announce"))
+
+    def test_body_is_not_overwritten_when_it_changed_during_the_run(self):
+        check = job("check")
+        reread = check.index('> "$RUNNER_TEMP/issue-now.md"')
+        compare = check.index('cmp -s "$RUNNER_TEMP/issue.md" "$RUNNER_TEMP/issue-now.md"')
+        self.assertLess(check.index("apply_review.py"), reread)
+        self.assertLess(reread, compare)
+        self.assertLess(compare, check.index("gh issue edit"))
 
     def test_comment_only_when_announcement_has_content(self):
         self.assertIn('[ -s "$RUNNER_TEMP/announcement.md" ]', job("check"))
@@ -626,6 +681,18 @@ class Freshness(unittest.TestCase):
             path.write_text(json.dumps({"last_run": (today - datetime.timedelta(days=1)).isoformat()}))
             self.assertEqual(check_freshness.main([str(path), "--max-age-days", "0"]), 1)
             self.assertEqual(check_freshness.main([str(Path(tmp) / "missing.json")]), 1)
+
+    def test_warn_only_never_fails(self):
+        import tempfile
+        stderr = io.StringIO()
+        with tempfile.TemporaryDirectory() as tmp, mock.patch("sys.stdout", new_callable=io.StringIO), \
+                mock.patch("sys.stderr", stderr):
+            path = Path(tmp) / "status.json"
+            path.write_text(json.dumps({"last_run": "2020-01-01"}))
+            self.assertEqual(check_freshness.main([str(path), "--warn-only"]), 0)
+            self.assertEqual(check_freshness.main([str(Path(tmp) / "missing.json"), "--warn-only"]), 0)
+        self.assertIn("::warning::", stderr.getvalue())
+        self.assertNotIn("::error::", stderr.getvalue())
 
     @unittest.skipIf(os.environ.get("GITHUB_ACTIONS"),
                      "the workflow checks the heartbeat it just pushed instead; failing here would block recovery")

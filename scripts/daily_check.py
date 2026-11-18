@@ -216,17 +216,16 @@ def record_alerts(state, alerts, today):
             open_ids.add(entry["id"])
 
 
-def announcement(queue, alert_state, today):
-    """Comment text for anything not announced before, or "" if nothing is new.
+def announcement(queue, alert_state):
+    """(comment text, ids) for anything not announced before; ("", ids) if nothing is new.
 
-    Marks what it announces, so a paper or notice triggers one notification, however
-    long it then waits in the issue body."""
+    Marks nothing: the workflow records the ids with mark_announced only after the comment
+    is posted, so a failed step announces again next run rather than never."""
     papers = [i for i in queue["pending"] if not i.get("announced")]
     notices = [a for a in alert_state["open"] if not a.get("announced")]
+    ids = {"papers": [i["pmid"] for i in papers], "notices": [a["id"] for a in notices]}
     if not papers and not notices:
-        return ""
-    for entry in papers + notices:
-        entry["announced"] = today
+        return "", ids
     counts = []
     if notices:
         counts.append(f"{len(notices)} correction or retraction notice{'s' * (len(notices) != 1)}")
@@ -238,7 +237,20 @@ def announcement(queue, alert_state, today):
     lines += [""] + titles[:MAX_ANNOUNCED_TITLES]
     if len(titles) > MAX_ANNOUNCED_TITLES:
         lines.append(f"- and {len(titles) - MAX_ANNOUNCED_TITLES} more")
-    return "\n".join(lines) + "\n"
+    return "\n".join(lines) + "\n", ids
+
+
+def mark_announced(queue, alert_state, ids, today):
+    """Record that these papers and notices were announced, so each triggers one comment.
+    Returns how many were marked."""
+    papers, notices = set(ids.get("papers", [])), set(ids.get("notices", []))
+    marked = 0
+    for entry in [i for i in queue["pending"] if i["pmid"] in papers] + \
+            [a for a in alert_state["open"] if a["id"] in notices]:
+        if not entry.get("announced"):
+            entry["announced"] = today
+            marked += 1
+    return marked
 
 
 def short_authors(summary):
@@ -392,9 +404,21 @@ def expire_queue(queue, today):
 def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--announce", type=Path,
-                        help="write a notification comment here when there are new papers or notices")
+                        help="write a notification comment here when there are new papers or notices, "
+                             "and the ids it covers next to it (.json), for --mark-announced")
+    parser.add_argument("--mark-announced", type=Path, metavar="IDS_JSON",
+                        help="after the comment is posted: record its ids as announced, and do nothing else")
     args = parser.parse_args(argv)
     today = time.strftime("%Y-%m-%d")
+    if args.mark_announced:
+        ids = json.loads(args.mark_announced.read_text(encoding="utf8"))
+        queue = load(DATA_DIR / "review_queue.json", {"pending": [], "seen": []})
+        alert_state = load(DATA_DIR / "alerts.json", {"open": []})
+        marked = mark_announced(queue, alert_state, ids, today)
+        save(DATA_DIR / "review_queue.json", queue)
+        save(DATA_DIR / "alerts.json", alert_state)
+        print(f"Recorded {marked} announced papers and notices")
+        return 0
     refs = load(DATA_DIR / "references.json", [])
     queue = load(DATA_DIR / "review_queue.json", {"pending": [], "seen": []})
     queries = load(DATA_DIR / "watch_queries.json", {})
@@ -408,7 +432,9 @@ def main(argv=None):
     errors += search_errors
     record_alerts(alert_state, alerts, today)
     if args.announce:
-        args.announce.write_text(announcement(queue, alert_state, today), encoding="utf8")
+        text, ids = announcement(queue, alert_state)
+        args.announce.write_text(text, encoding="utf8")
+        args.announce.with_suffix(".json").write_text(json.dumps(ids) + "\n", encoding="utf8")
 
     save(DATA_DIR / "references.json", refs)
     save(DATA_DIR / "review_queue.json", queue)

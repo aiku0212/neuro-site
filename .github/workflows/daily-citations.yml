@@ -51,6 +51,12 @@ jobs:
           gh issue view "${{ steps.issue.outputs.number }}" --json body --jq .body > "$RUNNER_TEMP/issue.md"
           python scripts/apply_review.py "$RUNNER_TEMP/issue.md"
 
+      - name: Note any gap since the last run
+        # Warns (never fails) when the last committed run is days old, e.g. after the
+        # schedule was paused. A schedule that never starts at all can only be caught
+        # from outside this workflow.
+        run: python scripts/check_freshness.py --warn-only
+
       - name: Check citations
         run: python scripts/daily_check.py --announce "$RUNNER_TEMP/announcement.md"
 
@@ -66,19 +72,19 @@ jobs:
           git diff --cached --quiet || git commit -m "Daily citation check"
           git push
 
-      - name: Confirm today's heartbeat reached main
-        # status.json changes every day; if it did not reach main, the schedule can lapse.
-        run: |
-          git fetch -q origin main
-          git show origin/main:data/status.json > "$RUNNER_TEMP/status.json"
-          python scripts/check_freshness.py "$RUNNER_TEMP/status.json" --max-age-days 0
-
       - name: Update the review issue
         # Body edits send no notification, so anything new also gets a short comment.
         run: |
           number="${{ steps.issue.outputs.number }}"
           if [ -n "$number" ]; then
-            gh issue edit "$number" --body-file data/review_issue.md
+            # Ticks made since "Apply reviewed papers" read the body would be erased by
+            # the edit. If it changed, leave it; the next run applies the ticks and updates it.
+            gh issue view "$number" --json body --jq .body > "$RUNNER_TEMP/issue-now.md"
+            if cmp -s "$RUNNER_TEMP/issue.md" "$RUNNER_TEMP/issue-now.md"; then
+              gh issue edit "$number" --body-file data/review_issue.md
+            else
+              echo "::notice::The review issue changed during this run; the next run applies the new ticks."
+            fi
           else
             gh label create citation-review --color 2D6A8F --force
             url=$(gh issue create --title "Citation review queue" --label citation-review --body-file data/review_issue.md)
@@ -87,6 +93,24 @@ jobs:
           if [ -s "$RUNNER_TEMP/announcement.md" ]; then
             gh issue comment "$number" --body-file "$RUNNER_TEMP/announcement.md"
           fi
+
+      - name: Record what was announced
+        # Only once the comment is posted: if anything before this fails, the next run
+        # announces the same items again. A duplicate comment is better than a lost one.
+        run: |
+          if [ -s "$RUNNER_TEMP/announcement.md" ]; then
+            python scripts/daily_check.py --mark-announced "$RUNNER_TEMP/announcement.json"
+            git add data
+            git diff --cached --quiet || git commit -m "Record announced review items"
+            git push
+          fi
+
+      - name: Confirm this run's data reached main
+        # status.json changes every day; if it did not reach main, the schedule can lapse.
+        # Compares commits, not dates, so a run that crosses midnight UTC still passes.
+        run: |
+          git fetch -q origin main
+          git merge-base --is-ancestor HEAD origin/main
 
       - name: Assemble the public site
         run: |

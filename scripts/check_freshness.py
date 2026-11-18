@@ -1,11 +1,13 @@
 #!/usr/bin/env python3
 """Fail when status.json's last_run is older than allowed.
 
-Usage: check_freshness.py [path/to/status.json] [--max-age-days N]
+Usage: check_freshness.py [path/to/status.json] [--max-age-days N] [--warn-only]
 
-The daily workflow runs this with --max-age-days 0 against the status.json it just
-pushed, so a run that did not save its heartbeat fails. The unit tests run it with the
-default limit, so a schedule that has silently stopped shows up as a failing test.
+Run it by hand (or from any outside scheduler) to see whether the daily check is still
+saving runs: it exits 1 when the last committed run is too old. The daily workflow runs
+it with --warn-only before its own check, so a gap since the previous run is flagged once
+runs resume. Nothing inside the workflow can notice a schedule that never starts; only
+an outside watcher can. The unit suite runs the live check only when CHECK_HEARTBEAT=1.
 """
 import argparse
 import datetime
@@ -40,6 +42,7 @@ def main(argv=None):
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("path", nargs="?", type=Path, default=ROOT / "data" / "status.json")
     parser.add_argument("--max-age-days", type=int, default=MAX_STATUS_AGE_DAYS)
+    parser.add_argument("--warn-only", action="store_true", help="report a stale heartbeat but exit 0")
     args = parser.parse_args(argv)
     try:
         status = json.loads(args.path.read_text(encoding="utf8"))
@@ -48,8 +51,8 @@ def main(argv=None):
         print(f"Could not read {args.path}: {err}", file=sys.stderr)
     message = problem(status, datetime.datetime.now(datetime.timezone.utc).date(), args.max_age_days)
     if message:
-        print(f"::error::{message}", file=sys.stderr)
-        return 1
+        print(f"::{'warning' if args.warn_only else 'error'}::{message}", file=sys.stderr)
+        return 0 if args.warn_only else 1
     print(f"Heartbeat is fresh: last_run {status['last_run']}")
     return 0
 
