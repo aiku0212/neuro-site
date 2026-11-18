@@ -274,7 +274,7 @@
     "authors": "Vargas et al.",
     "year": 2023,
     "journal": "Science",
-    "citations": 529,
+    "citations": 530,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -1201,7 +1201,7 @@
     "authors": "Zrenner et al.",
     "year": 2017,
     "journal": "Brain Stimulation",
-    "citations": 509,
+    "citations": 511,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -1507,7 +1507,7 @@
     "authors": "Johnson & North",
     "year": 1992,
     "journal": "The Journal of Neuroscience",
-    "citations": 1383,
+    "citations": 1384,
     "tag": null,
     "meta_analysis": false,
     "note": "Rat midbrain slices: mu-opioid agonists inhibit GABA interneurons, disinhibiting dopamine neurons",
@@ -1937,5 +1937,115 @@
     "citations_checked": "2026-11-18",
     "updates": [],
     "crossref_year": 2016
+  },
+  {
+    "group": "psy",
+    "title": "Evolutionary neuropharmacology of serotonergic psychedelics: a cross-species perspective on mechanisms, consciousness, and therapeutic potential.",
+    "authors": "Zhai et al.",
+    "year": 2026,
+    "journal": "Molecular psychiatry",
+    "doi": "10.1038/s41380-026-03939-z",
+    "pmid": "42957826",
+    "meta_analysis": false,
+    "site_title": "Evolutionary neuropharmacology of serotonergic psychedelics: a cross-species perspective on mechanisms, consciousness, and therapeutic potential.",
+    "site_year": 2026,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Approved from review queue"
+      ],
+      "checked": "2026-11-18"
+    },
+    "citations": 0,
+    "citations_checked": "2026-11-18"
+  },
+  {
+    "group": "cp",
+    "title": "Systematic Microcircuit Reconfigurations Underlie Early Experience-induced Visual Cortical Plasticity.",
+    "authors": "Yao et al.",
+    "year": 2026,
+    "journal": "Neuroscience bulletin",
+    "doi": "10.1007/s12264-026-01740-0",
+    "pmid": "42975863",
+    "meta_analysis": false,
+    "site_title": "Systematic Microcircuit Reconfigurations Underlie Early Experience-induced Visual Cortical Plasticity.",
+    "site_year": 2026,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Approved from review queue"
+      ],
+      "checked": "2026-11-18"
+    },
+    "citations": 0,
+    "citations_checked": "2026-11-18"
+  },
+  {
+    "group": "bdnf",
+    "title": "Peripheral Brain-Derived Neurotrophic Factor Changes and Clinical Response to Electroconvulsive Therapy and Repetitive Transcranial Magnetic Stimulation in Major Depressive Disorder: A Systematic Review.",
+    "authors": "Galindo et al.",
+    "year": 2026,
+    "journal": "Cureus",
+    "doi": "10.7759/cureus.119286",
+    "pmid": "42999924",
+    "meta_analysis": false,
+    "site_title": "Peripheral Brain-Derived Neurotrophic Factor Changes and Clinical Response to Electroconvulsive Therapy and Repetitive Transcranial Magnetic Stimulation in Major Depressive Disorder: A Systematic Review.",
+    "site_year": 2026,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Approved from review queue"
+      ],
+      "checked": "2026-11-18"
+    },
+    "citations": 0,
+    "citations_checked": "2026-11-18"
+  },
+  {
+    "group": "psy",
+    "title": "From Rapid Synaptic Events to Lasting Antidepressant States: Convergent and Divergent Mechanisms of Ketamine and Psychedelics.",
+    "authors": "Kim et al.",
+    "year": 2026,
+    "journal": "The Journal of neuroscience : the official journal of the Society for Neuroscience",
+    "doi": "10.1523/jneurosci.1198-26.2026",
+    "pmid": "43015122",
+    "meta_analysis": false,
+    "site_title": "From Rapid Synaptic Events to Lasting Antidepressant States: Convergent and Divergent Mechanisms of Ketamine and Psychedelics.",
+    "site_year": 2026,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Approved from review queue"
+      ],
+      "checked": "2026-11-18"
+    },
+    "citations": 0,
+    "citations_checked": "2026-11-18"
+  },
+  {
+    "group": "psy",
+    "title": "Mechanisms of Psychedelic Metaplasticity: Intracellular Receptor Pharmacology, Epigenomic Priming and Candidate Substrates of Persistence-A Narrative Review.",
+    "authors": "Anchesi et al.",
+    "year": 2026,
+    "journal": "International journal of molecular sciences",
+    "doi": "10.3390/ijms272110010",
+    "pmid": "43028252",
+    "meta_analysis": false,
+    "site_title": "Mechanisms of Psychedelic Metaplasticity: Intracellular Receptor Pharmacology, Epigenomic Priming and Candidate Substrates of Persistence-A Narrative Review.",
+    "site_year": 2026,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Approved from review queue"
+      ],
+      "checked": "2026-11-18"
+    },
+    "citations": 0,
+    "citations_checked": "2026-11-18"
   }
 ]

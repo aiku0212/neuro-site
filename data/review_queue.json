@@ -1,75 +1,12 @@
 {
   "pending": [
     {
-      "pmid": "42974518",
-      "doi": "10.25259/sni_962_2026",
-      "group": "psy",
-      "title": "Psychedelics in neurosurgery: Potential utility in prevention, perioperative care, pain management, and neurorehabilitation.",
-      "authors": "Garcia-Bitar et al.",
-      "journal": "Surgical neurology international",
-      "year": 2026
-    },
-    {
-      "pmid": "42964905",
-      "doi": "10.65801/pcp.3512",
-      "group": "psy",
-      "title": "Therapeutic Potential of Classical Psychedelics and Non-Hallucinogenic Psychoplastogens in Psychiatric Disorders.",
-      "authors": "Hashimoto et al.",
-      "journal": "Psychiatry and clinical psychopharmacology",
-      "year": 2026
-    },
-    {
-      "pmid": "42957826",
-      "doi": "10.1038/s41380-026-03939-z",
-      "group": "psy",
-      "title": "Evolutionary neuropharmacology of serotonergic psychedelics: a cross-species perspective on mechanisms, consciousness, and therapeutic potential.",
-      "authors": "Zhai et al.",
-      "journal": "Molecular psychiatry",
-      "year": 2026
-    },
-    {
-      "pmid": "42957634",
-      "doi": "10.1038/s41398-026-04349-z",
-      "group": "psy",
-      "title": "Cross-species mapping of acute psychedelic-responsive genes links HTR2A cortical expression, cell-type enrichment, and human cortical expression modules.",
-      "authors": "McConnell et al.",
-      "journal": "Translational psychiatry",
-      "year": 2026
-    },
-    {
-      "pmid": "42975863",
-      "doi": "10.1007/s12264-026-01740-0",
-      "group": "cp",
-      "title": "Systematic Microcircuit Reconfigurations Underlie Early Experience-induced Visual Cortical Plasticity.",
-      "authors": "Yao et al.",
-      "journal": "Neuroscience bulletin",
-      "year": 2026
-    },
-    {
-      "pmid": "42988203",
-      "doi": "10.1016/j.neuroscience.2026.11.005",
-      "group": "cp",
-      "title": "Quantitative anatomy of the human striatum suggests limited synaptic plasticity and higher structural stability in the intermediate putamen than in the nucleus accumbens.",
-      "authors": "Díaz-Feliz et al.",
-      "journal": "Neuroscience",
-      "year": 2026
-    },
-    {
       "pmid": "42996008",
       "doi": "10.64898/2026.10.21.760719",
       "group": "cp",
       "title": "Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.",
       "authors": "Parkes et al.",
       "journal": "bioRxiv : the preprint server for biology",
-      "year": 2026
-    },
-    {
-      "pmid": "42994543",
-      "doi": "10.1016/j.neubiorev.2026.107082",
-      "group": "cp",
-      "title": "Narrowing margins: exploring how MeCP2 deficiency degrades precision, timing, and adaptability in motor circuits.",
-      "authors": "Dant et al.",
-      "journal": "Neuroscience and biobehavioral reviews",
       "year": 2026
     },
     {
@@ -82,84 +19,21 @@
       "year": 2026
     },
     {
-      "pmid": "42999924",
-      "doi": "10.7759/cureus.119286",
+      "pmid": "43044894",
+      "doi": "10.1016/j.exger.2026.113388",
       "group": "bdnf",
-      "title": "Peripheral Brain-Derived Neurotrophic Factor Changes and Clinical Response to Electroconvulsive Therapy and Repetitive Transcranial Magnetic Stimulation in Major Depressive Disorder: A Systematic Review.",
-      "authors": "Galindo et al.",
-      "journal": "Cureus",
+      "title": "Circulating brain-derived neurotrophic factor as a biomarker of sarcopenia: A systematic review of clinical evidence.",
+      "authors": "Wielińska et al.",
+      "journal": "Experimental gerontology",
       "year": 2026
     },
     {
-      "pmid": "43002438",
-      "doi": "10.1080/14656566.2026.2761183",
-      "group": "psy",
-      "title": "Current perspectives in the pharmacological treatment of gambling disorder: psychedelics and beyond.",
-      "authors": "Chiappini et al.",
-      "journal": "Expert opinion on pharmacotherapy",
-      "year": 2026
-    },
-    {
-      "pmid": "43004115",
-      "doi": "10.3758/s13415-026-01512-3",
+      "pmid": "43045009",
+      "doi": "10.1016/j.lfs.2026.124789",
       "group": "cp",
-      "title": "Environmental enrichment during adolescence ameliorates anxiety-related corticosterone, enhances memory, and is associated with changes in regional dopamine levels in the Wistar Kyoto rat, a putative model of endogenous depression.",
-      "authors": "Daniel et al.",
-      "journal": "Cognitive, affective & behavioral neuroscience",
-      "year": 2026
-    },
-    {
-      "pmid": "43012274",
-      "doi": "10.2174/0118715249485751261025102238",
-      "group": "psy",
-      "title": "Rapid-Acting Antidepressants: Targeting Neuroplasticity Beyond Monoamines.",
-      "authors": "Das et al.",
-      "journal": "Central nervous system agents in medicinal chemistry",
-      "year": 2026
-    },
-    {
-      "pmid": "43011373",
-      "doi": "10.3389/fpubh.2026.1969403",
-      "group": "psy",
-      "title": "Fifty years at the addiction bench and bedside: from withdrawal syndromes to adaptive brain states.",
-      "authors": "Gold",
-      "journal": "Frontiers in public health",
-      "year": 2026
-    },
-    {
-      "pmid": "43015122",
-      "doi": "10.1523/jneurosci.1198-26.2026",
-      "group": "psy",
-      "title": "From Rapid Synaptic Events to Lasting Antidepressant States: Convergent and Divergent Mechanisms of Ketamine and Psychedelics.",
-      "authors": "Kim et al.",
-      "journal": "The Journal of neuroscience : the official journal of the Society for Neuroscience",
-      "year": 2026
-    },
-    {
-      "pmid": "43017070",
-      "doi": "10.3389/fnmol.2026.1995597",
-      "group": "cp",
-      "title": "Integrative transcriptomics reveals an ECM/PNN-high astrocyte state and cross-tissue biomarkers in major depressive disorder.",
-      "authors": "Wang et al.",
-      "journal": "Frontiers in molecular neuroscience",
-      "year": 2026
-    },
-    {
-      "pmid": "43028252",
-      "doi": "10.3390/ijms272110010",
-      "group": "psy",
-      "title": "Mechanisms of Psychedelic Metaplasticity: Intracellular Receptor Pharmacology, Epigenomic Priming and Candidate Substrates of Persistence-A Narrative Review.",
-      "authors": "Anchesi et al.",
-      "journal": "International journal of molecular sciences",
-      "year": 2026
-    },
-    {
-      "pmid": "43034011",
-      "doi": "10.1016/j.neuroscience.2026.11.022",
-      "group": "cp",
-      "title": "Acoustic stimuli-enhanced environmental enrichment remodulates cortical processing of sound azimuth in adult female rats.",
-      "authors": "Gao et al.",
-      "journal": "Neuroscience",
+      "title": "Neuroprotective effects of ropinirole against nicotine- and ethanol-induced cognitive impairment, oxidative stress, neuroinflammation, and neurodegenerative alterations in rats.",
+      "authors": "Azizi et al.",
+      "journal": "Life sciences",
       "year": 2026
     }
   ],
@@ -181,6 +55,8 @@
     "43015122",
     "43017070",
     "43028252",
-    "43034011"
+    "43034011",
+    "43044894",
+    "43045009"
   ]
 }
