@@ -127,6 +127,23 @@ class PublicPages(unittest.TestCase):
                 Path(f.name).unlink()
                 self.assertEqual(result.returncode, 0, result.stderr[-400:])
 
+    def test_pages_name_the_site_and_have_link_previews(self):
+        base = "https://aiku0212.github.io/neuro-site/"
+        self.assertTrue((ROOT / "assets" / "favicon.svg").exists())
+        self.assertTrue((ROOT / "assets" / "og.png").exists())
+        for name in PUBLIC:
+            page = read(name)
+            head = page[:page.index("<style")] if "<style" in page else page[:3000]
+            with self.subTest(page=name):
+                self.assertIn("Neuroscope", re.search(r"<title>([^<]*)</title>", head).group(1))
+                self.assertIn('<link rel="icon" href="assets/favicon.svg"', head)
+                desc = re.search(r'<meta name="description" content="([^"]*)">', head).group(1)
+                self.assertIn(f'<meta property="og:description" content="{desc}">', head)
+                self.assertIn(f'<meta property="og:image" content="{base}assets/og.png">', head)
+                url = base if name == "index" else f"{base}{name}.html"
+                self.assertIn(f'<meta property="og:url" content="{url}">', head)
+                self.assertIn('<meta name="twitter:card" content="summary_large_image">', head)
+
     def test_pages_state_they_are_not_advice(self):
         for name in PUBLIC:
             with self.subTest(page=name):
