@@ -21,6 +21,10 @@ are older versions kept in the repository but not published.
   when a page claim cites it. New papers and notices get an issue comment, notices stay in the
   issue until dismissed, and nothing is published if a step fails or too many lookups fail.
   `data/status.json` records each run and the date by which every reference was last checked.
+  An item counts as announced only once its comment is posted, so a failed run announces it
+  again rather than never. The workflow cannot notice a schedule that never starts: run
+  `python3 scripts/check_freshness.py` (or `CHECK_HEARTBEAT=1` with the tests) to check that
+  the last run is recent, or watch it from outside.
 
 ## Run it
 
