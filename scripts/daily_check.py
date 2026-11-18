@@ -10,6 +10,7 @@ If too many lookups fail, the run exits non-zero so nothing is published, and
 status.json never dates a reference as checked on a day its lookup failed.
 """
 import argparse
+import datetime
 import hashlib
 import json
 import os
@@ -32,6 +33,18 @@ PAUSE = 0.4
 MAX_FAILED_LOOKUPS = 5
 MAX_FAILED_FRACTION = 0.20
 MAX_ANNOUNCED_TITLES = 5  # titles listed in a notification comment; the rest are counted
+
+# GitHub rejects issue bodies over 65,536 characters. The review issue stays under a
+# smaller budget, measured in bytes so it is safe however GitHub counts.
+ISSUE_BODY_LIMIT = 65536
+ISSUE_BODY_BUDGET = 60000
+OVERFLOW_NOTE_BYTES = 200
+QUEUE_EXPIRY_DAYS = 90
+MAX_SHOWN_ERRORS = 30
+MAX_SHOWN_ALERTS = 50
+MAX_SHOWN_CHECKS = 50
+MAX_SHOWN_PAPERS = 100
+MAX_TITLE_CHARS = 300
 
 
 def load(path, default):
@@ -226,7 +239,7 @@ def discover(refs, queue, queries):
             year = re.match(r"\d{4}", summary.get("pubdate", "") or "")
             item = {"pmid": pmid, "doi": doi, "group": group, "title": summary.get("title", "").strip(),
                     "authors": short_authors(summary), "journal": summary.get("fulljournalname", ""),
-                    "year": int(year.group()) if year else None}
+                    "year": int(year.group()) if year else None, "queued": time.strftime("%Y-%m-%d")}
             queue["pending"].append(item)
             queue["seen"].append(pmid)
             seen.add(pmid)
@@ -240,46 +253,103 @@ def safe_md(text):
     return re.sub(r"\s+", " ", str(text)).replace("@", "@​").replace("<", "&lt;").replace("[", "\\[").replace("]", "\\]")
 
 
-def render_issue(queue, alerts, errors, today, reading_list=()):
-    lines = [f"Last run: {today}", ""]
+def size(text):
+    return len(text.encode("utf8"))
+
+
+def clip(text, limit=MAX_TITLE_CHARS):
+    text = re.sub(r"\s+", " ", str(text)).strip()
+    return text if len(text) <= limit else text[:limit - 1] + "…"
+
+
+def section(title, intro, blocks, cap, what):
+    return {"head": f"## {title}\n{intro}\n\n" if intro else f"## {title}\n\n",
+            "blocks": blocks, "cap": cap, "what": what}
+
+
+def render_issue(queue, alerts, errors, today, reading_list=(), expired=0):
+    """Markdown for the review issue, always within ISSUE_BODY_BUDGET bytes.
+
+    Sections are written in order of urgency. Each shows at most its cap, and stops early
+    when the budget runs out; the rest are counted, not dropped from the data."""
+    sections = []
     if errors:
-        lines += [f"## Lookup problems ({len(errors)})", "The last good data stayed in place.", ""]
-        lines += [f"- {safe_md(e)}" for e in errors] + [""]
+        sections.append(section(f"Lookup problems ({len(errors)})", "The last good data stayed in place.",
+                                [f"- {safe_md(clip(e))}\n" for e in errors], MAX_SHOWN_ERRORS, "problems"))
     if alerts:
-        lines += [f"## Correction and retraction notices ({len(alerts)})",
-                  "Review any claims that rely on these papers. Each notice stays here until you tick Dismiss.", ""]
+        blocks = []
         for a in alerts:
             link = f" · [notice](https://doi.org/{a['notice_doi']})" if a.get("notice_doi") else ""
-            lines.append(f"**{safe_md(a['type'])}**: {safe_md(a['title'])}  ")
-            lines.append(f"found {a.get('found', '?')} · https://doi.org/{a['doi']}{link}")
-            lines.append(f"- [ ] Dismiss <!-- alert:{a['id']}:dismiss -->")
-            lines.append("")
+            blocks.append(f"**{safe_md(a['type'])}**: {safe_md(clip(a['title']))}  \n"
+                          f"found {a.get('found', '?')} · https://doi.org/{a['doi']}{link}\n"
+                          f"- [ ] Dismiss <!-- alert:{a['id']}:dismiss -->\n\n")
+        sections.append(section(f"Correction and retraction notices ({len(alerts)})",
+                                "Review any claims that rely on these papers. "
+                                "Each notice stays here until you tick Dismiss.", blocks, MAX_SHOWN_ALERTS, "notices"))
     checks = [e for e in reading_list if e.get("page_check") == "open"]
     if checks:
-        lines += [f"## Approved papers: pages to check ({len(checks)})",
-                  "Approved papers go on the reading list (data/reading_list.json), not the Sources page. "
-                  "Check whether the page should change, then tick the box. A paper becomes a source "
-                  "only when a page claim cites it.", ""]
+        blocks = []
         for entry in checks:
             label = " · **preprint, not peer reviewed**" if entry.get("preprint") else ""
-            lines.append(f"**{safe_md(entry['title'])}**  ")
-            lines.append(f"approved {entry['approved']} · check {', '.join(entry['pages'])} · "
-                         f"https://doi.org/{entry['doi']}{label}")
-            lines.append(f"- [ ] Page checked <!-- check:{entry['pmid']}:done -->")
-            lines.append("")
-    lines += [f"## New papers to review ({len(queue['pending'])})",
-              "Tick one box per paper. The next daily run applies it. "
-              "Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources.", ""]
+            blocks.append(f"**{safe_md(clip(entry['title']))}**  \n"
+                          f"approved {entry['approved']} · check {', '.join(entry['pages'])} · "
+                          f"https://doi.org/{entry['doi']}{label}\n"
+                          f"- [ ] Page checked <!-- check:{entry['pmid']}:done -->\n\n")
+        sections.append(section(f"Approved papers: pages to check ({len(checks)})",
+                                "Approved papers go on the reading list (data/reading_list.json), not the Sources "
+                                "page. Check whether the page should change, then tick the box. A paper becomes a "
+                                "source only when a page claim cites it.", blocks, MAX_SHOWN_CHECKS, "page checks"))
+    blocks = []
     for item in queue["pending"]:
         pid = item["pmid"]
         label = " · **preprint, not peer reviewed**" if is_preprint(item.get("doi"), item.get("journal")) else ""
-        lines.append(f"**{safe_md(item['title'])}**  ")
-        lines.append(f"{safe_md(item['authors'])}, {safe_md(item['journal'])}, {item['year']} · "
-                     f"group `{item['group']}` · https://doi.org/{item['doi']}{label}")
-        lines.append(f"- [ ] Approve <!-- review:{pid}:approve -->")
-        lines.append(f"- [ ] Dismiss <!-- review:{pid}:dismiss -->")
-        lines.append("")
-    return "\n".join(lines) + "\n"
+        blocks.append(f"**{safe_md(clip(item['title']))}**  \n"
+                      f"{safe_md(clip(item['authors'], 100))}, {safe_md(clip(item['journal'], 150))}, {item['year']} · "
+                      f"group `{safe_md(item['group'])}` · https://doi.org/{item['doi']}{label}\n"
+                      f"- [ ] Approve <!-- review:{pid}:approve -->\n"
+                      f"- [ ] Dismiss <!-- review:{pid}:dismiss -->\n\n")
+    intro = ("Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading "
+             "list and asks for a page check; it does not add it to Sources. "
+             f"Papers not reviewed within {QUEUE_EXPIRY_DAYS} days expire.")
+    if expired:
+        intro += f" {expired} expired on this run."
+    sections.append(section(f"New papers to review ({len(queue['pending'])})", intro, blocks,
+                            MAX_SHOWN_PAPERS, "papers"))
+
+    out = f"Last run: {today}\n\n"
+    reserve = OVERFLOW_NOTE_BYTES * len(sections)  # room for every section's "N more" line
+    for sec in sections:
+        reserve -= OVERFLOW_NOTE_BYTES
+        if size(out + sec["head"]) + reserve > ISSUE_BODY_BUDGET:
+            out += f"_{len(sec['blocks'])} {sec['what']} not shown: the issue is at its size limit._\n\n"
+            continue
+        out += sec["head"]
+        shown = 0
+        for block in sec["blocks"][:sec["cap"]]:
+            if size(out + block) + reserve + OVERFLOW_NOTE_BYTES > ISSUE_BODY_BUDGET:
+                break
+            out += block
+            shown += 1
+        if shown < len(sec["blocks"]):
+            out += (f"_{len(sec['blocks']) - shown} more {sec['what']} not shown here. "
+                    "They appear as the ones above are cleared._\n\n")
+    if size(out) > ISSUE_BODY_BUDGET:  # cannot happen with the reserve above; never exceed the limit
+        out = out.encode("utf8")[:ISSUE_BODY_BUDGET - 100].decode("utf8", "ignore") + "\n\n_Truncated._\n"
+    return out
+
+
+def expire_queue(queue, today):
+    """Drop papers waiting longer than QUEUE_EXPIRY_DAYS. They stay in "seen", so they
+    are never queued again. Returns how many expired."""
+    now = datetime.date.fromisoformat(today)
+    kept = []
+    for item in queue["pending"]:
+        queued = item.setdefault("queued", today)
+        if (now - datetime.date.fromisoformat(queued)).days <= QUEUE_EXPIRY_DAYS:
+            kept.append(item)
+    expired = len(queue["pending"]) - len(kept)
+    queue["pending"] = kept
+    return expired
 
 
 def main(argv=None):
@@ -297,6 +367,7 @@ def main(argv=None):
     previous = load(DATA_DIR / "status.json", {})
     alerts, errors, failed = check_references(refs, today)
     new_items, search_errors = discover(refs, queue, queries)
+    expired = expire_queue(queue, today)
     errors += search_errors
     record_alerts(alert_state, alerts, today)
     if args.announce:
@@ -311,8 +382,9 @@ def main(argv=None):
                                     "references": len(refs), "alerts": len(alerts),
                                     "open_alerts": len(alert_state["open"]),
                                     "new_papers": len(new_items), "pending_review": len(queue["pending"]),
+                                    "expired": expired,
                                     "errors": len(errors)})
-    (DATA_DIR / "review_issue.md").write_text(render_issue(queue, alert_state["open"], errors, today, reading_list), encoding="utf8")
+    (DATA_DIR / "review_issue.md").write_text(render_issue(queue, alert_state["open"], errors, today, reading_list, expired), encoding="utf8")
     print(f"{len(refs) - len(failed)} of {len(refs)} references checked; {len(alerts)} new notices; {len(new_items)} new papers; "
           f"{len(queue['pending'])} pending; {len(errors)} errors")
     for err in errors:

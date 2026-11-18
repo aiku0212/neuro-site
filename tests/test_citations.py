@@ -348,6 +348,53 @@ class Announce(unittest.TestCase):
                 self.assertEqual(out.read_text(), "")
 
 
+class QueueSize(unittest.TestCase):
+    @staticmethod
+    def queue(n, title="A fairly long paper title about plasticity in the adult cortex " * 3):
+        items = [dict(Review.ITEM, pmid=str(10000000 + i), title=f"{title} {i}", queued=TODAY,
+                      journal="bioRxiv : the preprint server for biology") for i in range(n)]
+        return {"pending": items, "seen": [i["pmid"] for i in items]}
+
+    def test_300_item_queue_stays_under_github_limit(self):
+        queue = self.queue(300)
+        out = daily_check.render_issue(queue, [], [], TODAY)
+        self.assertLessEqual(len(out.encode("utf8")), daily_check.ISSUE_BODY_BUDGET)
+        self.assertLess(len(out), daily_check.ISSUE_BODY_LIMIT)
+        self.assertIn("New papers to review (300)", out)
+        self.assertIn("more papers not shown here", out)
+        self.assertEqual(out.count("<!-- review:"), 2 * daily_check.MAX_SHOWN_PAPERS)
+
+    def test_everything_at_once_stays_under_limit(self):
+        long = "Ünïcode tïtle with many characters " * 40
+        alerts = [{"id": f"{i:010x}", "type": "retraction", "doi": f"10.1/{i}", "title": long, "found": TODAY}
+                  for i in range(300)]
+        reading = [dict(apply_review.to_reading_entry(dict(Review.ITEM, pmid=str(i), title=long), TODAY))
+                   for i in range(300)]
+        errors = [f"Lookup failed for 10.1/{i}: " + "x" * 2000 for i in range(300)]
+        out = daily_check.render_issue(self.queue(300, long), alerts, errors, TODAY, reading)
+        self.assertLessEqual(len(out.encode("utf8")), daily_check.ISSUE_BODY_BUDGET)
+        # Shown boxes still parse, so whatever is visible can be acted on.
+        self.assertTrue(apply_review.parse_alert_dismissals(out.replace("- [ ] Dismiss", "- [x] Dismiss")))
+
+    def test_small_queue_is_shown_in_full(self):
+        out = daily_check.render_issue(self.queue(3), [], [], TODAY)
+        self.assertEqual(out.count("<!-- review:"), 6)
+        self.assertNotIn("not shown", out)
+
+    def test_old_items_expire_but_are_not_requeued(self):
+        queue = self.queue(2)
+        queue["pending"][0]["queued"] = "2026-07-01"
+        expired = daily_check.expire_queue(queue, TODAY)
+        self.assertEqual(expired, 1)
+        self.assertEqual([i["pmid"] for i in queue["pending"]], ["10000001"])
+        self.assertIn("10000000", queue["seen"])
+
+    def test_items_without_a_date_start_their_clock_now(self):
+        queue = {"pending": [dict(Review.ITEM)], "seen": ["2"]}
+        self.assertEqual(daily_check.expire_queue(queue, TODAY), 0)
+        self.assertEqual(queue["pending"][0]["queued"], TODAY)
+
+
 class Build(unittest.TestCase):
     def test_refuses_preprint_sources(self):
         self.assertEqual(build_refs.blocked([ref(doi="10.1101/2024.01.02.573000", journal="bioRxiv")]), ["A paper"])
