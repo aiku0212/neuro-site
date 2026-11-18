@@ -1,4 +1,8 @@
+import json
 import re
+import shutil
+import subprocess
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -94,6 +98,34 @@ class PublicPages(unittest.TestCase):
         self.assertNotRegex(read("timecells"), r"Project [123]")
         self.assertTrue((ROOT / "docs" / "open-problem-register.md").exists())
         self.assertTrue((ROOT / "docs" / "time-model-research-plan.md").exists())
+
+    def test_pharmacology_lists_sourced_harms_for_every_class(self):
+        page = read("pharma")
+        for cid in ["psy", "dis", "stim", "op", "benzo", "cb"]:
+            start = page.index("{id:'%s'," % cid)
+            nxt = page.find("\n\n{id:", start + 5)
+            block = page[start:nxt if nxt != -1 else page.index("\n];", start)]
+            harms = re.search(r'harms:\[(.*?)\],\n hcite:("(?:[^"\\]|\\.)*")}', block, re.S)
+            with self.subTest(drug=cid):
+                self.assertIsNotNone(harms)
+                self.assertIn(len(re.findall(r'^\s*"', harms.group(1), re.M)), (3, 4))
+                cite = json.loads(harms.group(2))
+                self.assertGreaterEqual(cite.count('<a href="http'), 3)
+                # Harm text must never give amounts or routes.
+                self.assertNotRegex(harms.group(1), r"\b\d+(\.\d+)?\s?(mg|mcg|µg|ml|g)\b")
+        self.assertNotIn("G&#8321;&#8320;", page)
+        self.assertNotIn("has a ceiling", page)
+
+    @unittest.skipUnless(shutil.which("node"), "node is not installed")
+    def test_inline_scripts_parse(self):
+        for name in PUBLIC:
+            scripts = re.findall(r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", read(name), re.S)
+            for i, code in enumerate(scripts):
+                with self.subTest(page=name, script=i), tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as f:
+                    f.write(code)
+                result = subprocess.run(["node", "--check", f.name], capture_output=True, text=True)
+                Path(f.name).unlink()
+                self.assertEqual(result.returncode, 0, result.stderr[-400:])
 
     def test_pages_state_they_are_not_advice(self):
         for name in PUBLIC:

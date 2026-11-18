@@ -68,3 +68,22 @@ Primary sources were added for every claim listed as open above, each confirmed 
 | Headline "pays to stop learning" | Now "works to stop learning": closure is active, but no source supports an energy cost | Takesian & Hensch 2013 |
 
 Still open: spine dimensions need Harris & Stevens 1989 in full text (the journal page was not accessible); the nine Time page references are listed but not checked against the model text; the Pharmacology page describes mechanisms but not adverse effects; most papers were compared by abstract only.
+
+## Pharmacology pass, 2026-11-17
+
+Each drug class now lists three or four harms and limits. Every bullet was drafted from a source the drafter opened (FDA labels and safety communications, CDC, NIDA, DEA, or a peer-reviewed paper), checked a second time by an independent reviewer, and read by a final reviewer for doses, use tips and US-only advice. Harm sources are linked under each list; the 13 that have DOIs are also on the Sources page.
+
+| Class | Corrected | Source |
+|---|---|---|
+| Opioids, cannabinoids | Receptor type "G₁₀-coupled" is Gi/o-coupled | UniProt P35372; Lovinger 2008 |
+| Psychedelics | Steps merged two competing models into one chain; now presented as two models, both from cell and animal work | Vargas et al. 2023; Moliner et al. 2023 |
+| Psychedelics | "Persists for weeks" is "still present a month later, in mouse frontal cortex" | Shao et al. 2021 |
+| Dissociatives | The disinhibition study used MK-801, not ketamine; the trial sentence now gives n = 18 and the one-week response rate | Homayoun & Moghaddam 2007; Zarate et al. 2006 |
+| Dissociatives | Schedule label now covers PCP (II) and DXM (not controlled) | eCFR 21 CFR 1308 |
+| Stimulants | Noradrenaline rises as well as dopamine | Faraone 2018 |
+| Opioids | "Rather than exciting them" contradicted the cited paper; opioids excite dopamine neurons by disinhibition. Breathing suppression added | Johnson & North 1992; Jalabert et al. 2011; Baldo & Rose 2022 |
+| Benzodiazepines | "Has a ceiling" read as a safety assurance; replaced with the combination risk. "Alone it does nothing" overstated | FDA boxed warning; Campo-Soria et al. 2006; Löscher & Rogawski 2012 |
+| Cannabinoids | Schedule label: DEA rule of Apr 28, 2026 moved FDA-approved and state-licensed medical marijuana to Schedule III | Federal Register 2026-08176 |
+| Cannabinoids | "Partial agonist" applies to THC only; synthetics are full agonists. THC skips the retrograde step | Tai & Fantegrossi 2017 |
+
+Still open on this page: psilocybin may be rescheduled if FDA approves a psilocybin product in 2027; recheck the label then.
