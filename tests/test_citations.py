@@ -39,7 +39,32 @@ class CheckReferences(unittest.TestCase):
         refs = [ref()]
         alerts, errors, _ = self.run_check(refs, {"is-referenced-by-count": 9})
         self.assertEqual((refs[0]["citations"], alerts, errors), (9, [], []))
-        self.assertEqual(refs[0]["verification"]["checked"], TODAY)
+        self.assertEqual(refs[0]["citations_checked"], TODAY)
+
+    def test_unchanged_reference_is_not_rewritten(self):
+        refs = [ref(citations_checked="2026-01-01")]
+        before = json.dumps(refs, sort_keys=True)
+        _, errors, failed = self.run_check(refs, {"is-referenced-by-count": 5})
+        self.assertEqual((errors, failed), ([], set()))
+        self.assertEqual(json.dumps(refs, sort_keys=True), before)
+
+    def test_status_is_the_daily_heartbeat(self):
+        import tempfile
+        refs = [ref(doi=f"10.1/{i}", pmid=None, citations_checked="2026-01-01") for i in range(3)]
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp)
+            (data / "references.json").write_text(json.dumps(refs, indent=2, ensure_ascii=False) + "\n")
+            (data / "status.json").write_text(json.dumps({"last_run": "2026-01-01"}))
+            before = (data / "references.json").read_text()
+            with mock.patch.object(daily_check, "DATA_DIR", data), \
+                    mock.patch.object(daily_check, "crossref_record", return_value={"is-referenced-by-count": 5}), \
+                    mock.patch.object(daily_check, "crossref_notices", return_value=[]), \
+                    mock.patch.object(daily_check, "discover", return_value=([], [])), \
+                    mock.patch.object(daily_check.time, "sleep"), \
+                    mock.patch("sys.stdout", new_callable=io.StringIO):
+                self.assertEqual(daily_check.main([]), 0)
+            self.assertEqual((data / "references.json").read_text(), before)
+            self.assertNotEqual(json.loads((data / "status.json").read_text())["last_run"], "2026-01-01")
 
     def test_failure_keeps_last_good_data(self):
         refs = [ref()]
@@ -490,6 +515,13 @@ class Freshness(unittest.TestCase):
         self.assertIsNone(message, f"{message} Fetch origin; if it is still stale, check the Actions tab.")
 
 
+class Cleanup(unittest.TestCase):
+    def test_index_counts_helper_is_gone(self):
+        # index.html no longer quotes citation counts, so the rewrite it did was a no-op.
+        self.assertFalse(hasattr(build_refs, "update_index_counts"))
+        self.assertNotRegex((ROOT / "index.html").read_text("utf8"), r"\\u00B7 [\d,]+ citations'")
+
+
 class Build(unittest.TestCase):
     def test_refuses_preprint_sources(self):
         self.assertEqual(build_refs.blocked([ref(doi="10.1101/2024.01.02.573000", journal="bioRxiv")]), ["A paper"])
@@ -504,16 +536,6 @@ class Build(unittest.TestCase):
                                                   {"type": "erratum", "notice_doi": "10.1/n"}]))
         self.assertEqual(rec["upd"][0]["url"], "https://pubmed.ncbi.nlm.nih.gov/1/")
         self.assertEqual(rec["upd"][1]["url"], "https://doi.org/10.1/n")
-
-    def test_index_counts_follow_data(self):
-        html = "cite:'Shao et al., <em>Neuron</em> 2021 \\u00B7 458 citations'},"
-        data = [ref(authors="Shao et al.", year=2021, citations=628)]
-        self.assertIn("\\u00B7 628 citations", build_refs.update_index_counts(html, data))
-
-    def test_index_count_needs_matching_year(self):
-        html = "cite:'Shao et al., <em>Neuron</em> 2021 \\u00B7 458 citations'},"
-        data = [ref(authors="Shao et al.", year=2025, citations=121)]
-        self.assertIn("\\u00B7 458 citations", build_refs.update_index_counts(html, data))
 
 
 if __name__ == "__main__":

@@ -6,6 +6,9 @@ Never published automatically: new papers. They wait in data/review_queue.json u
 a person approves them, because a new study can change what a page should claim.
 
 A failed lookup keeps the last good data and is reported instead of changing anything.
+A reference's record changes only when something about it changed (citations_checked is
+the date its count last changed); status.json carries the date of each run, which is the
+daily heartbeat that keeps GitHub from pausing the schedule.
 If too many lookups fail, the run exits non-zero so nothing is published, and
 status.json never dates a reference as checked on a day its lookup failed.
 """
@@ -106,10 +109,10 @@ def check_references(refs, today):
             failed.add(doi)
             continue
         count = record.get("is-referenced-by-count")
-        if isinstance(count, int):
+        # Only real changes are written; the day's check date lives in status.json.
+        if isinstance(count, int) and count != ref.get("citations"):
             ref["citations"] = count
             ref["citations_checked"] = today
-        ref["verification"]["checked"] = today
 
         summary = (summaries or {}).get(ref.get("pmid"), {})
         if any("retracted publication" in str(p).lower() for p in summary.get("pubtype", [])):
@@ -376,7 +379,7 @@ def main(argv=None):
     save(DATA_DIR / "references.json", refs)
     save(DATA_DIR / "review_queue.json", queue)
     save(DATA_DIR / "alerts.json", alert_state)
-    # A dated commit each day also keeps GitHub from pausing the schedule on a quiet repo.
+    # The one record that changes every day: a dated commit keeps GitHub from pausing the schedule.
     checked, lookup_failed = checked_status(refs, failed, previous, today)
     save(DATA_DIR / "status.json", {"last_run": today, "checked": checked, "lookup_failed": lookup_failed,
                                     "references": len(refs), "alerts": len(alerts),

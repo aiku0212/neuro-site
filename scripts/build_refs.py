@@ -40,17 +40,6 @@ def notice_url(update):
     return f'https://pubmed.ncbi.nlm.nih.gov/{update["pmid"]}/'
 
 
-def update_index_counts(text, refs):
-    """Keep the citation counts quoted on the Evidence page in step with the data."""
-    for ref in refs:
-        if ref.get("citations") is None:
-            continue
-        pattern = (r"(cite:'" + re.escape(esc(ref["authors"])) + r", <em>[^<]*</em> "
-                   + str(ref["year"]) + r" \\u00B7 )[\d,]+( citations')")
-        text = re.sub(pattern, lambda m: f'{m.group(1)}{ref["citations"]}{m.group(2)}', text)
-    return text
-
-
 def checked_date(refs, status):
     """The date by which every reference had been checked, as daily_check recorded it.
 
@@ -84,8 +73,6 @@ def main():
     if n != 1:
         raise SystemExit("Could not find the checked-date marker in references.html")
     PAGE.write_text(src, encoding="utf8")
-    index = ROOT / "index.html"
-    index.write_text(update_index_counts(index.read_text(encoding="utf8"), refs), encoding="utf8")
     print(f"Built references.html from {len(refs)} references, checked {checked}")
 
 
