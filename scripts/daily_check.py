@@ -151,15 +151,22 @@ def checked_status(refs, failed, previous, today):
 
     lookup_failed maps each DOI whose check failed today to the last date it is known
     to have been checked; checked is the date by which every reference had been checked
-    (today only when none failed). Neither ever claims a check that did not happen."""
+    (today only when none failed). Neither ever claims a check that did not happen.
+
+    Only a run that passed is committed, so in a status.json of this format (it has
+    "checked") a DOI missing from lookup_failed was checked on that run's last_run.
+    verification.checked is the date the reference was confirmed; it is no longer
+    updated daily, so it only counts when it is later (a reference added since then).
+    An older status.json's last_run proves nothing, so then only verification.checked counts."""
     prior = previous.get("lookup_failed", {})
+    last_good = previous.get("last_run") if "checked" in previous else None
     lookup_failed = {}
     for ref in refs:
         doi = ref.get("doi")
         if doi not in failed:
             continue
-        known = [d for d in (previous.get("checked"), ref.get("verification", {}).get("checked")) if d]
-        lookup_failed[doi] = prior.get(doi) if doi in prior else (min(known) if known else None)
+        known = [d for d in (last_good, ref.get("verification", {}).get("checked")) if d]
+        lookup_failed[doi] = prior.get(doi) if doi in prior else (max(known) if known else None)
     dates = list(lookup_failed.values())
     checked = today if not dates else (None if None in dates else min(dates))
     return checked, lookup_failed

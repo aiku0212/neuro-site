@@ -165,12 +165,36 @@ class FailedLookups(unittest.TestCase):
         self.assertEqual((checked, failed), (TODAY, {}))
         previous = {"last_run": "2026-11-05", "checked": "2026-11-05", "lookup_failed": {}}
         checked, failed = daily_check.checked_status(refs, {"10.1/b"}, previous, TODAY)
-        self.assertEqual(failed, {"10.1/b": "2026-01-01"})  # older of status and record dates
-        self.assertEqual(checked, "2026-01-01")
+        self.assertEqual(failed, {"10.1/b": "2026-11-05"})  # checked on the previous (passing) run
+        self.assertEqual(checked, "2026-11-05")
+        # An older status.json format proves nothing about the run, so the record's date counts.
+        checked, failed = daily_check.checked_status(refs, {"10.1/b"}, {"last_run": "2026-11-05"}, TODAY)
+        self.assertEqual((checked, failed), ("2026-01-01", {"10.1/b": "2026-01-01"}))
         # A second failure keeps the date of the last real check, not the previous run.
         checked, failed = daily_check.checked_status(refs, {"10.1/b"}, {"checked": "2026-11-06",
                                                      "lookup_failed": {"10.1/b": "2026-01-01"}}, "2026-11-07")
         self.assertEqual((checked, failed), ("2026-01-01", {"10.1/b": "2026-01-01"}))
+
+    def test_one_failure_months_later_shows_the_last_real_check(self):
+        # verification.checked is frozen at confirmation; months of passing runs come after it.
+        refs = [ref(doi="10.1/a", verification={"status": "confirmed", "reasons": [], "checked": "2026-11-18"}),
+                ref(doi="10.1/b", verification={"status": "confirmed", "reasons": [], "checked": "2026-11-18"})]
+        previous = {}
+        for day in ("2026-11-19", "2026-12-15", "2027-03-01"):
+            checked, failed = daily_check.checked_status(refs, set(), previous, day)
+            previous = {"last_run": day, "checked": checked, "lookup_failed": failed}
+        checked, failed = daily_check.checked_status(refs, {"10.1/b"}, previous, "2027-03-02")
+        self.assertEqual((checked, failed), ("2027-03-01", {"10.1/b": "2027-03-01"}))
+        # Still failing the next day: the date stays at the last real check.
+        previous = {"last_run": "2027-03-02", "checked": checked, "lookup_failed": failed}
+        checked, _ = daily_check.checked_status(refs, {"10.1/b"}, previous, "2027-03-03")
+        self.assertEqual(checked, "2027-03-01")
+
+    def test_reference_added_after_the_last_run_keeps_its_own_date(self):
+        refs = [ref(doi="10.1/new", verification={"status": "confirmed", "reasons": [], "checked": "2026-11-10"})]
+        previous = {"last_run": "2026-11-05", "checked": "2026-11-05", "lookup_failed": {}}
+        _, failed = daily_check.checked_status(refs, {"10.1/new"}, previous, TODAY)
+        self.assertEqual(failed, {"10.1/new": "2026-11-10"})
 
     def run_main(self, record_error=None):
         import tempfile
@@ -194,7 +218,7 @@ class FailedLookups(unittest.TestCase):
     def test_run_fails_above_threshold_without_dating_today(self):
         code, status = self.run_main(record_error=OSError("down"))
         self.assertEqual(code, 1)
-        self.assertEqual(status["checked"], "2026-01-01")
+        self.assertEqual(status["checked"], "2026-11-05")  # the previous passing run
         self.assertEqual(len(status["lookup_failed"]), 10)
         self.assertNotIn(TODAY, status["lookup_failed"].values())
 
