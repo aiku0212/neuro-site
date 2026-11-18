@@ -616,6 +616,9 @@ class FailureReporting(unittest.TestCase):
         report = job("report-failure")
         self.assertIn("needs: [check, deploy]", report)
         self.assertIn("if: failure() || cancelled()", report)
+        # A timed-out job is "cancelled" without the workflow being cancelled.
+        self.assertIn("needs.check.result != 'success'", report)
+        self.assertIn("needs.deploy.result != 'success'", report)
         self.assertIn("Citation check failed", report)
         # It must not depend on a checkout or an action that could itself fail to set up.
         self.assertNotIn("uses:", report)
@@ -694,8 +697,9 @@ class Freshness(unittest.TestCase):
         self.assertIn("::warning::", stderr.getvalue())
         self.assertNotIn("::error::", stderr.getvalue())
 
-    @unittest.skipIf(os.environ.get("GITHUB_ACTIONS"),
-                     "the workflow checks the heartbeat it just pushed instead; failing here would block recovery")
+    @unittest.skipUnless(os.environ.get("CHECK_HEARTBEAT") == "1",
+                         "depends on the date and on git state; run with CHECK_HEARTBEAT=1 "
+                         "(or scripts/check_freshness.py) to check the live schedule")
     def test_daily_heartbeat_is_recent(self):
         """Fails when the daily run has stopped saving status.json (the schedule lapsed or every run fails)."""
         dates = [json.loads((ROOT / "data" / "status.json").read_text("utf8")).get("last_run")]
@@ -704,7 +708,7 @@ class Freshness(unittest.TestCase):
         if shown.returncode == 0:
             dates.append(json.loads(shown.stdout).get("last_run"))
         newest = max(d for d in dates if d)
-        message = check_freshness.problem({"last_run": newest}, datetime.date.today())
+        message = check_freshness.problem({"last_run": newest}, datetime.datetime.now(datetime.timezone.utc).date())
         self.assertIsNone(message, f"{message} Fetch origin; if it is still stale, check the Actions tab.")
 
 

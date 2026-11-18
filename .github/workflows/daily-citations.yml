@@ -154,7 +154,9 @@ jobs:
     # A separate job, so it also runs when a job fails before its first step
     # (for example in "Set up job") and when the deploy fails.
     needs: [check, deploy]
-    if: failure() || cancelled()
+    # A job that hits timeout-minutes is cancelled, which neither failure() nor
+    # cancelled() (the whole workflow) reports, so the needs results are checked too.
+    if: failure() || cancelled() || needs.check.result != 'success' || needs.deploy.result != 'success'
     runs-on: ubuntu-latest
     timeout-minutes: 5
     permissions:
