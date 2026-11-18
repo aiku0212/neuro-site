@@ -16,8 +16,11 @@ are older versions kept in the repository but not published.
 - `data/references.json` holds every reference, with DOIs confirmed against Crossref.
 - `docs/claim-check.md` records each claim that was checked against its source, and what changed.
 - `.github/workflows/daily-citations.yml` refreshes citation counts and correction notices daily,
-  queues new papers in an issue for review, and publishes the site. Papers are added only when a
-  maintainer ticks them, and nothing is published if any check fails.
+  queues new papers in an issue for review, and publishes the site. Approving a paper puts it on
+  `data/reading_list.json` and asks for a check of the page it bears on; it becomes a source only
+  when a page claim cites it. New papers and notices get an issue comment, notices stay in the
+  issue until dismissed, and nothing is published if a step fails or too many lookups fail.
+  `data/status.json` records each run and the date by which every reference was last checked.
 
 ## Run it
 
