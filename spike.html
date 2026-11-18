@@ -156,7 +156,7 @@
     <div class="scopes">
       <div class="scope">
         <span class="scopelabel mono">Membrane potential, mV</span>
-        <canvas id="scopeV" width="1400" height="560"
+        <canvas id="scopeV" role="img" width="1400" height="560"
           aria-label="Membrane voltage over time. Threshold, peak, and afterhyperpolarization are marked."></canvas>
       </div>
       <div class="legend mono">
@@ -166,12 +166,12 @@
       </div>
       <div class="scope">
         <span class="scopelabel mono">Gates open, 0 to 1</span>
-        <canvas id="scopeG" width="1400" height="300"
+        <canvas id="scopeG" role="img" width="1400" height="300"
           aria-label="Gating variables m, h and n over time."></canvas>
       </div>
       <div class="scope">
         <span class="scopelabel mono">Conductance, mS per cm squared</span>
-        <canvas id="scopeC" width="1400" height="300"
+        <canvas id="scopeC" role="img" width="1400" height="300"
           aria-label="Sodium and potassium conductances over time."></canvas>
       </div>
     </div>
@@ -231,7 +231,7 @@
   <div class="exp">
     <div class="card">
       <h3>All or none</h3>
-      <div class="scope"><canvas id="expAON" width="900" height="480"
+      <div class="scope"><canvas id="expAON" role="img" width="900" height="480"
         aria-label="Six traces at increasing stimulus strength. Below threshold nothing happens, above it every spike is the same height."></canvas></div>
       <p>Six stimulus strengths straddling the model's threshold, about 13.3 uA/cm&sup2; for a half
         millisecond pulse. Below it the membrane sags back. Above it every spike is the same height:
@@ -240,7 +240,7 @@
     </div>
     <div class="card">
       <h3>Refractory period</h3>
-      <div class="scope"><canvas id="expREF" width="900" height="480"
+      <div class="scope"><canvas id="expREF" role="img" width="900" height="480"
         aria-label="Paired pulses at 8, 14, 17 and 22 milliseconds showing the second response blocked then returning at full height."></canvas></div>
       <p>Two identical pulses, separated by 8, 14, 17 and 22 ms. The second is blocked outright
         until about 17 ms, because the h gate has not released its inactivation yet. Then it comes
@@ -250,7 +250,7 @@
     </div>
     <div class="card">
       <h3>Temperature</h3>
-      <div class="scope"><canvas id="expTMP" width="900" height="480"
+      <div class="scope"><canvas id="expTMP" role="img" width="900" height="480"
         aria-label="Traces at 6.3, 10, 14 and 17 degrees showing faster smaller spikes when warm and failure at 17."></canvas></div>
       <p>The same axon at 6.3, 10, 14 and 17 C. Rates scale by a Q10 of 3, so warming makes the
         spike faster and smaller: the peak falls from 38 mV to 29 mV between 6.3 and 14 C. At 17 C

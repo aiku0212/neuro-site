@@ -144,6 +144,20 @@ class PublicPages(unittest.TestCase):
                 self.assertIn(f'<meta property="og:url" content="{url}">', head)
                 self.assertIn('<meta name="twitter:card" content="summary_large_image">', head)
 
+    def test_visuals_have_text_for_screen_readers(self):
+        for name in PUBLIC:
+            for tag in re.findall(r"<canvas\b[^>]*>", read(name)):
+                with self.subTest(page=name, canvas=tag[:40]):
+                    self.assertIn('role="img"', tag)
+                    self.assertRegex(tag, r'aria-label="[^"]{20,}"')
+
+    def test_pages_have_one_h1_and_a_main_landmark(self):
+        for name in PUBLIC:
+            page = read(name)
+            with self.subTest(page=name):
+                self.assertEqual(len(re.findall(r"<h1\b", page)), 1)
+                self.assertTrue("<main" in page or 'role="main"' in page)
+
     def test_pages_state_they_are_not_advice(self):
         for name in PUBLIC:
             with self.subTest(page=name):

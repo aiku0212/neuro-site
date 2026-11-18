@@ -198,12 +198,12 @@
         <button class="btn" id="m-lp" aria-pressed="false">Laplace cells</button>
       </div>
     </div>
-    <canvas id="raster"></canvas>
+    <canvas id="raster" role="img" aria-label="Raster plot of simulated cells sorted by preferred delay. After each event a sweep of firing climbs the rows and slows down."></canvas>
     <p class="cap" id="raster-cap">Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event a sweep of firing climbs the rows and slows down: that curve is the signature of a logarithmically compressed timeline.</p>
   </div>
   <div class="card">
     <div class="card-hd"><h2>What the population says: when?</h2></div>
-    <canvas id="past"></canvas>
+    <canvas id="past" role="img" aria-label="Chart of the population's estimate of when each past event happened, on a logarithmic time axis. Each bump slides left as the event recedes and keeps the same width on this axis."></canvas>
     <p class="cap">Each bump is the whole time-cell population's estimate of when one event happened, on a log axis. The bumps slide left and slow down but keep the same width: recent past is sharp, distant past is blurry in seconds but equally sharp in ratio.</p>
   </div>
 </section>

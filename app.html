@@ -176,8 +176,9 @@
   </nav>
 </div>
 
-<div class="stage">
-  <canvas id="gl"></canvas>
+<div class="stage" role="main">
+  <h1 class="sr-only">Explore the brain, from the whole organ to a single receptor</h1>
+  <canvas id="gl" role="img" aria-label="Interactive 3D view. In Explore it zooms from the whole brain through a cortical column, one neuron and a dendritic spine to the membrane; in Analyze it shows a generated neuron to measure. Drag to rotate."></canvas>
   <div class="overlay">
 
     <!-- explore -->
@@ -214,7 +215,7 @@
       <div class="kv"><span>Radial extent</span><b class="mono" id="m-ext">0</b></div>
       <div class="kv"><span>Spine density</span><b class="mono" id="m-dens">0</b></div>
       <h3>Sholl analysis</h3>
-      <canvas id="sholl"></canvas>
+      <canvas id="sholl" role="img" aria-label="Sholl analysis chart: number of branch intersections with shells every 10 micrometres from the cell body, with the peak marked."></canvas>
       <p class="cn">Intersections with shells every 10&nbsp;&micro;m from the soma. Peak marked.</p>
       <h3>Selection</h3>
       <div class="pick" id="pick"><p class="none">Click a filament or spine.</p></div>
