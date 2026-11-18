@@ -369,7 +369,7 @@ var LEVELS=[
   parts:[['Pyramidal cells','amber'],['Interneurons','teal'],['Axons','pale']],
   body:'Excitatory pyramidal cells wired through inhibitory interneurons. Perineuronal nets form mostly around the parvalbumin interneurons as the juvenile critical period ends, and help limit later rewiring. Removing them in adult rat visual cortex restored juvenile-like plasticity.',
   cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013 &middot; Lensj&oslash; et al., <em>J. Neurosci.</em> 2017'},
- {tag:'Single neuron',unit:'~100 &micro;m',title:'One cell, thousands of inputs',
+ {tag:'Single neuron',unit:'~100 &micro;m',title:'One cell, tens of thousands of inputs',
   parts:[['Dendrites','violet'],['Soma','amber'],['Axon','sky']],
   body:'Dendrites collect input, the soma integrates it, the axon carries the result away. This is the arbor you can measure in Analyze. For comparison, a single pyramidal cell in the CA1 region of the rat hippocampus receives about 30,000 excitatory and 1,700 inhibitory inputs.',
   cite:'Meg&iacute;as et al., <em>Neuroscience</em> 2001'},
@@ -379,7 +379,7 @@ var LEVELS=[
   cite:'Shao et al., <em>Neuron</em> 2021'},
  {tag:'Membrane',unit:'~10 nm',title:'Where the drug meets the cell',
   parts:[['TrkB','amber'],['p75NTR','rose'],['5-HT2A','violet'],['NMDA','sky']],
-  body:'TrkB builds the synapse, p75NTR dismantles it. In cell and mouse studies, LSD and psilocin bound TrkB about a thousand times more tightly than the antidepressants tested, and psychedelics crossed the bilayer to reach 5-HT2A receptors inside, which serotonin cannot.',
+  body:'TrkB builds the synapse, p75NTR dismantles it. In cell and mouse studies, LSD and psilocin bound TrkB about a thousand times more tightly than the antidepressants tested. Another group found that psychedelics instead act on 5-HT2A receptors inside the cell, which serotonin cannot reach. The two groups disagree on which route matters.',
   cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023'}
 ];
 
@@ -525,6 +525,7 @@ function drawSholl(){
   SX.textAlign='right';SX.fillText(Math.round(STATS.ext)+' µm',w-pad,h-2*D);
   SX.textAlign='center';SX.fillStyle='#D9A05B';
   SX.fillText('peak '+peak.n+' @ '+peak.r+' µm',w/2,11*D);
+  SH.setAttribute('aria-label','Sholl analysis chart: branch intersections with shells every 10 micrometres from the cell body. Peak: '+peak.n+' intersections at '+peak.r+' micrometres.');
 }
 function paintStats(){
   document.getElementById('m-len').textContent=fmt(STATS.len);

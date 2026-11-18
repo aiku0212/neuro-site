@@ -144,6 +144,10 @@ class PublicPages(unittest.TestCase):
                 url = base if name == "index" else f"{base}{name}.html"
                 self.assertIn(f'<meta property="og:url" content="{url}">', head)
                 self.assertIn('<meta name="twitter:card" content="summary_large_image">', head)
+                title = re.search(r"<title>([^<]*)</title>", head).group(1)
+                self.assertIn(f'<meta property="og:title" content="{title}">', head)
+                self.assertIn('<meta property="og:image:width" content="1200">', head)
+                self.assertIn('<meta property="og:image:height" content="630">', head)
 
     def test_visuals_have_text_for_screen_readers(self):
         for name in PUBLIC:
@@ -160,10 +164,37 @@ class PublicPages(unittest.TestCase):
                 self.assertTrue("<main" in page or 'role="main"' in page)
 
     def test_animation_respects_reduced_motion(self):
-        for name in ["index", "app", "synapse", "pharma", "timecells"]:
+        checks = {"index": "if(!drag && !reduce) ry+=vy;",
+                  "app": "if(!drag&&!reduce) ry+=",
+                  "synapse": "autoYaw = !reduceMotion",
+                  "pharma": "var vp=reduce?0.5:",
+                  "timecells": "var zoom = reduce ? 1 : 0"}
+        for name, code in checks.items():
             with self.subTest(page=name):
-                self.assertRegex(read(name), r"matchMedia\('\(prefers-reduced-motion: ?reduce\)'\)")
-        self.assertIn("autoYaw = !reduceMotion", read("synapse"))
+                page = read(name)
+                self.assertRegex(page, r"= *(window\.matchMedia && )?matchMedia\('\(prefers-reduced-motion: ?reduce\)'\)\.matches;")
+                self.assertIn(code, page)
+        self.assertIn("ry=reduce?1.25:0.5", read("index"))
+
+    def test_app_heading_is_hidden_not_removed(self):
+        self.assertIn('<h1 class="sr-only">', read("app"))
+        self.assertIn(".sr-only{position:absolute", (ROOT / "assets" / "atlas.css").read_text(encoding="utf8"))
+
+    def test_main_landmark_holds_the_heading_and_the_models(self):
+        for name in PUBLIC:
+            page = read(name)
+            if "<main" not in page:
+                continue
+            start, end = page.index("<main"), page.index("</main>")
+            with self.subTest(page=name):
+                for m in re.finditer(r"<h1\b|<canvas\b", page):
+                    self.assertTrue(start < m.start() < end, page[m.start():m.start() + 40])
+
+    def test_home_page_names_the_lobes(self):
+        page = read("index")
+        self.assertIn("var NAMES=[['Frontal'", page)
+        self.assertIn("X.fillText(nm[0],lx,ly)", page)
+        self.assertIn("y:nm[2]-YC", page)
 
     def test_pages_state_they_are_not_advice(self):
         for name in PUBLIC:

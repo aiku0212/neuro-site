@@ -104,7 +104,7 @@
     font-family:ui-monospace,monospace; font-size:11px; padding:1.5px 0}
   .inspect p{margin:7px 0 0; color:var(--ink-2); font-size:12px; line-height:1.5}
 
-  main{max-width:900px; margin:0 auto; padding:44px 20px 90px}
+  .prose{max-width:900px; margin:0 auto; padding:44px 20px 90px}
   h2{font-size:24px; font-weight:400; margin:40px 0 8px}
   p{color:var(--ink-2); max-width:66ch}
   .facts{display:grid; grid-template-columns:repeat(auto-fit,minmax(196px,1fr));
@@ -139,6 +139,7 @@
   </nav>
 </div>
 
+<main>
 <section class="stage">
   <canvas id="gl" role="img" aria-label="Rotatable 3D model of a dendrite segment covered in spines. Drag to rotate, scroll to zoom, click a spine to inspect it."></canvas>
   <div class="mast">
@@ -172,7 +173,7 @@
   </div>
 </section>
 
-<main>
+<div class="prose" style="padding-bottom:0">
   <h2 class="serif">Why the shape is the whole story</h2>
   <p>A spine is not decoration on a dendrite. It is a chemical compartment with a deliberately
     narrow neck, and that neck is a resistor. It isolates whatever happens in the head from the rest
@@ -201,7 +202,10 @@
   <p class="cite">Stability by class, Holtmaat and Svoboda, <em>Nat. Rev. Neurosci.</em> 2009.
     Psilocybin raising mouse spine size and density about 10% within 24 hours, persisting a month,
     Shao et al., <em>Neuron</em> 2021.</p>
+</div>
+</main>
 
+<div class="prose" style="padding-top:0">
   <footer>
     <a href="spike.html">Down a level: the membrane and the spike</a>
     <a href="pharma.html">Down a level: the receptors in that membrane</a>
@@ -210,7 +214,7 @@
     <span>Educational model. Not medical or veterinary advice.</span>
     <a href="about.html">About and limits</a>
   </footer>
-</main>
+</div>
 </div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js" integrity="sha512-vnmn/Qqn6aG0POAc9mIGzjq0IybrvxJXYDafNvp9JSnDGxeF3pbkSqLvf+YGd5ku63pT7sa/jxHn7/d0mU8+tA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

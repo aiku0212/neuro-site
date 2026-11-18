@@ -234,20 +234,21 @@
     <div class="card">
       <h3>All or none</h3>
       <div class="scope"><canvas id="expAON" role="img" width="900" height="480"
-        aria-label="Six traces at increasing stimulus strength. Below threshold nothing happens, above it every spike is the same height."></canvas></div>
+        aria-label="Six traces at increasing stimulus strength. Below threshold nothing happens; above it every spike reaches nearly the same height."></canvas></div>
       <p>Six stimulus strengths straddling the model's threshold, about 13.3 uA/cm&sup2; for a half
-        millisecond pulse. Below it the membrane sags back. Above it every spike is the same height:
-        35 uA/cm&sup2; buys a peak of 40 mV where 13.5 buys about 36. A stronger push does not make a
-        bigger spike, it makes an earlier one. Intensity is carried by rate, not amplitude.</p>
+        millisecond pulse. Below it the membrane sags back. Above it every pulse gives a full spike of nearly
+        the same height: 35 uA/cm&sup2; buys a peak of about 41 mV where 13.5 buys about 36. Pushing
+        much harder adds only a few millivolts; mostly it makes the spike come earlier. Intensity is
+        carried by rate, not amplitude.</p>
     </div>
     <div class="card">
       <h3>Refractory period</h3>
       <div class="scope"><canvas id="expREF" role="img" width="900" height="480"
         aria-label="Paired pulses at 8, 14, 17 and 22 milliseconds showing the second response blocked then returning at full height."></canvas></div>
       <p>Two identical pulses, separated by 8, 14, 17 and 22 ms. In this model the second
-        pulse fails until the gap reaches about 15 ms, because potassium channels are still open,
-        holding the membrane below rest, and sodium channels are still recovering from inactivation
-        (the h gate). By 17 ms the second spike is back at full height. There is no half sized spike
+        pulse fails until the gap reaches about 15 ms. Near that limit the cause is potassium: its
+        channels are still slightly open and the membrane is still about 3 mV below rest. At shorter
+        gaps, sodium channels are also still recovering from inactivation (the h gate). By 17 ms the second spike is back at full height. There is no half sized spike
         anywhere in between, which is the all or none rule seen from a second angle. The block is not
         total, though: a much stronger second pulse, 80 uA/cm&sup2;, fires a slightly smaller spike
         at an 11 ms gap. The refractory period sets the ceiling on firing rate, and it is why a
@@ -256,7 +257,7 @@
     <div class="card">
       <h3>Temperature</h3>
       <div class="scope"><canvas id="expTMP" role="img" width="900" height="480"
-        aria-label="Traces at 6.3, 10, 14 and 17 degrees showing faster smaller spikes when warm and failure at 17."></canvas></div>
+        aria-label="Traces at 6.3, 10, 14 and 17 degrees showing faster, smaller spikes when warm, and no spike at 17 for this stimulus strength."></canvas></div>
       <p>The same axon at 6.3, 10, 14 and 17 C. Rates scale by a Q10 of 3, so warming makes the
         spike faster and smaller: the peak falls from 38 mV to 29 mV between 6.3 and 14 C. At 17 C
         this 15 uA/cm&sup2; stimulus no longer fires. Potassium now opens, and sodium inactivates,
@@ -531,7 +532,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     if (state.ttx) v.textContent = "With sodium blocked the membrane can only charge passively. This is what tetrodotoxin does, and why pufferfish poisoning stops nerves rather than muscles specifically.";
     else if (state.tea) v.textContent = "With potassium blocked there is nothing to bring the membrane back down quickly. The spike broadens badly. TEA was the original tool for showing that the falling phase is a separate conductance.";
     else if (!m.fired) v.textContent = "Below threshold. The membrane charges, leaks the charge back out, and nothing happens. Push the stimulus up.";
-    else v.textContent = "Fired. Note the peak stays near " + m.peak.toFixed(0) + " mV no matter how much harder you push.";
+    else v.textContent = "Fired. Near 6.3 C the peak stays near " + m.peak.toFixed(0) + " mV even when you push much harder; warm the axon and spike size starts to depend on the stimulus.";
   }
 
   // ---------------------------------------------------------- experiments

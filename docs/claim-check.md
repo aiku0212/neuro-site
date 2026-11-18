@@ -71,7 +71,7 @@ Still open: spine dimensions need Harris & Stevens 1989 in full text (the journa
 
 ## Pharmacology pass, 2026-11-17
 
-Each drug class now lists three or four harms and limits. Every bullet was drafted from a source the drafter opened (FDA labels and safety communications, CDC, NIDA, DEA, or a peer-reviewed paper), checked a second time by an independent reviewer, and read by a final reviewer for doses, use tips and US-only advice. Harm sources are linked under each list; the 13 that have DOIs are also on the Sources page.
+Each drug class now lists three or four harms and limits. Every bullet was drafted from a source the drafter opened (FDA labels and safety communications, CDC, NIDA, DEA, or a peer-reviewed paper), checked a second time in a separate AI-assisted pass, and read in a final AI-assisted pass for doses, use tips and US-only advice. No pharmacist or physician has reviewed them. Harm sources are linked under each list; the 13 that have DOIs are also on the Sources page.
 
 | Class | Corrected | Source |
 |---|---|---|
@@ -90,7 +90,7 @@ Still open on this page: psilocybin may be rescheduled if FDA approves a psilocy
 
 ## Claim pass, 2026-11-18
 
-Each change below was drafted by one reviewer from the source or the page's own model, then checked by a second reviewer who tried to refute it. Model figures come from running the page's own code. Citation counts and correction notices were checked on Crossref. Sixteen sources were added to the Sources page.
+Each change below was drafted in one AI-assisted pass from the source or the page's own model, then checked in a second, separate AI-assisted pass that tried to refute it; two further AI-assisted passes then reread the whole change. No outside expert has reviewed these changes. Model figures come from running the page's own code. Citation counts and correction notices were checked on Crossref. Sixteen sources were added to the Sources page.
 
 | Page | Corrected | Source |
 |---|---|---|
@@ -114,4 +114,14 @@ Each change below was drafted by one reviewer from the source or the page's own 
 | About | Ketamine line and the Pharmacology pass brought up to date | — |
 | Time | Internal project name removed from the footer | — |
 
-Still open from this pass: on the Comparative page, gabapentin is listed alongside another drug in almost every dog report, so the comparison may need a different cohort (for example reports where gabapentin is the first drug listed). On the Spike page, "every spike is the same height" and "a stronger push does not make a bigger spike" sit beside numbers that differ by about 5 mV, and the TTX and TEA notes were not checked. On the Spines page, "that neck is a resistor" overstates Harris & Stevens 1989.
+Also in this pass, after a second read of the whole branch:
+
+| Page | Corrected | Source |
+|---|---|---|
+| Spike | "Every spike is the same height" is "nearly the same height"; the simulator note says spike size depends on the stimulus once the axon is warm | The page's model |
+| Explore | The membrane card no longer chains Moliner and Vargas into one mechanism; it says the two groups disagree | Moliner et al. 2023; Vargas et al. 2023 |
+| Evidence | The bench list no longer prints level words for hand-set values; under ketamine the blocked NMDA receptor is drawn dimmed, not brighter | The page's own values are hand-set |
+| Evidence | Exercise title: BDNF was already up right after exercise and peaked at fifteen minutes | Birinci et al. 2026 |
+
+Still open from this pass: on the Comparative page, gabapentin is listed alongside another drug in almost every dog report, so the comparison may need a different cohort (for example reports where gabapentin is the first drug listed). On the Spike page, the TTX and TEA notes were not checked. On the Spines page, "that neck is a resistor" overstates Harris & Stevens 1989. On the Evidence page, the directions the hand-set bench values imply (for example perineuronal nets under psilocybin and ketamine) have not been checked against sources. Hodgkin & Katz 1949 was read from the scanned pages on PubMed Central; its summary states the 35 to 40 C heat block.
+

@@ -105,7 +105,7 @@
   #past{height:230px}
   .cap{font-size:12.5px;color:var(--muted);margin:10px 0 0;line-height:1.5}
 
-  main{max-width:760px;margin:0 auto;padding:clamp(40px,6vw,70px) 22px 80px}
+  .prose{max-width:760px;margin:0 auto;padding:clamp(40px,6vw,70px) 22px 80px}
   .sec{margin:0 0 50px}
   .sec > h2{font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);
     margin:0 0 18px;font-weight:400;padding-bottom:10px;border-bottom:1px solid var(--rule)}
@@ -154,6 +154,7 @@
   </nav>
 </div>
 
+<main>
 <section class="stage" aria-label="3D model of entorhinal Laplace cells and hippocampal time cells">
   <canvas id="scene" role="img" aria-label="Rotatable 3D rendering of the model. Drag to rotate, click a cell to inspect it."></canvas>
   <div class="mast">
@@ -198,7 +199,7 @@
         <button class="btn" id="m-lp" aria-pressed="false">Laplace cells</button>
       </div>
     </div>
-    <canvas id="raster" role="img" aria-label="Raster plot of simulated cells sorted by preferred delay. After each event a sweep of firing climbs the rows and slows down."></canvas>
+    <canvas id="raster" role="img" aria-label="Raster plot of simulated cells sorted by preferred delay, short delays at the bottom." aria-describedby="raster-cap"></canvas>
     <p class="cap" id="raster-cap">Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event a sweep of firing climbs the rows and slows down: that curve is the signature of a logarithmically compressed timeline.</p>
   </div>
   <div class="card">
@@ -208,7 +209,7 @@
   </div>
 </section>
 
-<main>
+<div class="prose">
   <section class="sec">
     <h2>What you are looking at</h2>
     <p>The top sheet is a population of <strong>Laplace cells</strong>, the kind reported in lateral entorhinal cortex. Each one jumps when an event happens and then decays exponentially at its own rate. Left to right, they go from fast decay to slow decay. On their own they do not say when anything happened; together they hold the Laplace transform of the recent past.</p>
@@ -245,6 +246,7 @@
       <li>Zheng et al. (2022). Neurons detect cognitive boundaries to structure episodic memories in humans. <em>Nature Neuroscience</em> 25.</li>
     </ol>
   </section>
+</div>
 </main>
 
 <footer>Neuroscope &middot; Illustrative model, not fit to data<br>Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a></footer>
