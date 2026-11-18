@@ -234,13 +234,13 @@
 <div class="wrap">
 
   <section class="stage">
-    <canvas id="brain" role="img" aria-label="Rotating point-cloud drawing of a brain, colored by lobe. Picking a finding highlights the region where it was measured."></canvas>
+    <canvas id="brain" role="img" aria-label="Rotating point-cloud drawing of a brain, colored and labeled by lobe. Picking a finding highlights the region where it was measured."></canvas>
 
     <div class="masthead">
       <p class="eyebrow mono">Neuroplasticity &middot; Evidence Review</p>
       <h1 class="serif">The brain works<br>to stop <em>learning</em></h1>
       <p class="dek">Ten findings on how plasticity opens, what writes into it,
-        and why closing the window is a feature. Colors show the lobes. Pick a
+        and why closing the window is a feature. Colors and labels show the lobes. Pick a
         finding to see where it was measured.</p>
     </div>
 
@@ -588,10 +588,19 @@
   var PATH='#c0573a';
 
   // recentre the cloud: cerebellum + brainstem drag the centroid downward
+  var YC=0;
   (function(){
     var sy=0,k; for(k=0;k<P.length;k++) sy+=P[k].y;
     sy/=P.length; for(k=0;k<P.length;k++) P[k].y-=sy;
+    YC=sy;
   })();
+
+  // Lobe names drawn on the brain, so telling the lobes apart does not rest on
+  // color alone (parietal and cerebellum look alike to red-green color vision).
+  // Positions are the color anchors above; each name sits on the hemisphere
+  // facing the viewer and fades as its lobe turns away.
+  var NAMES=[['Frontal',30,-14,46],['Parietal',30,-34,-10],['Occipital',24,-12,-58],
+             ['Temporal',44,22,6],['Cerebellum',20,34,-52],['Brainstem',0,50,-18]];
 
   var RM={}; REG.forEach(function(r){RM[r.id]=r;});
   var rx=0.16, ry=0.5, vx=0, vy=0.0022, drag=false, px=0, py=0, moved=0;
@@ -649,6 +658,20 @@
       var rad=DPR*(1.15+f2*1.55)*(lit?1.45:1);
       X.beginPath(); X.arc(p.X,p.Y,rad,0,6.284); X.fill();
       if(lit){ X.globalAlpha=0.10; X.beginPath(); X.arc(p.X,p.Y,rad*2.6,0,6.284); X.fill(); }
+    }
+
+    // lobe names
+    X.font='600 '+Math.round((Math.min(w,h)/DPR<520?11:13)*DPR)+'px Figtree, system-ui, sans-serif';
+    X.textAlign='center'; X.textBaseline='middle'; X.lineJoin='round';
+    X.lineWidth=3.5*DPR; X.strokeStyle='rgba(246,247,249,.92)'; X.fillStyle='#1f2a35';
+    for(k=0;k<NAMES.length;k++){
+      var nm=NAMES[k], near=project({x:nm[1], y:nm[2]-YC, z:nm[3]});
+      if(nm[1]){ var far=project({x:-nm[1], y:nm[2]-YC, z:nm[3]}); if(far.z>near.z) near=far; }
+      var vis=Math.max(0,Math.min(1,(near.z+45)/45));
+      if(vis<0.05) continue;
+      X.globalAlpha=vis*(dim?0.5:1);
+      var lx=cx+near.x*scale, ly=cy+near.y*scale;
+      X.strokeText(nm[0],lx,ly); X.fillText(nm[0],lx,ly);
     }
     X.globalAlpha=1;
     requestAnimationFrame(draw);
