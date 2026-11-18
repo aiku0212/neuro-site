@@ -158,6 +158,12 @@ class PublicPages(unittest.TestCase):
                 self.assertEqual(len(re.findall(r"<h1\b", page)), 1)
                 self.assertTrue("<main" in page or 'role="main"' in page)
 
+    def test_animation_respects_reduced_motion(self):
+        for name in ["index", "app", "synapse", "pharma", "timecells"]:
+            with self.subTest(page=name):
+                self.assertRegex(read(name), r"matchMedia\('\(prefers-reduced-motion: ?reduce\)'\)")
+        self.assertIn("autoYaw = !reduceMotion", read("synapse"))
+
     def test_pages_state_they_are_not_advice(self):
         for name in PUBLIC:
             with self.subTest(page=name):

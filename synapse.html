@@ -489,7 +489,9 @@
   }
 
   // ---------------------------------------------------------------- camera
-  var yaw = 0.5, pitch = 0.16, dist = 17, autoYaw = true, userZoom = false;
+  // Slow turntable rotation, off for readers who ask for reduced motion.
+  var reduceMotion = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var yaw = 0.5, pitch = 0.16, dist = 17, autoYaw = !reduceMotion, userZoom = false;
 
   function fitDist(){
     var r = host.getBoundingClientRect();
