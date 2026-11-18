@@ -12,6 +12,7 @@ from resolve_dois import is_preprint  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 PAGE = ROOT / "references.html"
 DATA = ROOT / "data" / "references.json"
+STATUS = ROOT / "data" / "status.json"
 
 
 def esc(text):
@@ -50,6 +51,15 @@ def update_index_counts(text, refs):
     return text
 
 
+def checked_date(refs, status):
+    """The date by which every reference had been checked, as daily_check recorded it.
+
+    Never the newest check: if some lookups failed, the page shows the oldest date."""
+    if "checked" in status:
+        return status["checked"] or "not yet"
+    return min(r["verification"]["checked"] for r in refs)
+
+
 def blocked(refs):
     """Titles that must not appear as confirmed sources: unconfirmed records and preprints."""
     return [r["title"] for r in refs
@@ -67,7 +77,8 @@ def main():
                      src, count=1, flags=re.S)
     if n != 1:
         raise SystemExit("Could not find the REFS block in references.html")
-    checked = max(r["verification"]["checked"] for r in refs)
+    status = json.loads(STATUS.read_text(encoding="utf8")) if STATUS.exists() else {}
+    checked = checked_date(refs, status)
     src, n = re.subn(r"<!--checked:start-->.*?<!--checked:end-->",
                      f"<!--checked:start-->{checked}<!--checked:end-->", src, count=1, flags=re.S)
     if n != 1:

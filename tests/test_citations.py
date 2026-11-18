@@ -1,3 +1,4 @@
+import io
 import sys
 import unittest
 from pathlib import Path
@@ -30,39 +31,119 @@ class CheckReferences(unittest.TestCase):
 
     def test_updates_count(self):
         refs = [ref()]
-        alerts, errors = self.run_check(refs, {"is-referenced-by-count": 9})
+        alerts, errors, _ = self.run_check(refs, {"is-referenced-by-count": 9})
         self.assertEqual((refs[0]["citations"], alerts, errors), (9, [], []))
         self.assertEqual(refs[0]["verification"]["checked"], TODAY)
 
     def test_failure_keeps_last_good_data(self):
         refs = [ref()]
-        alerts, errors = self.run_check(refs, record_error=OSError("down"))
+        alerts, errors, _ = self.run_check(refs, record_error=OSError("down"))
         self.assertEqual(refs[0]["citations"], 5)
         self.assertEqual(refs[0]["verification"]["checked"], "2026-01-01")
         self.assertEqual(len(errors), 1)
 
     def test_missing_record_is_an_error_not_a_change(self):
         refs = [ref()]
-        _, errors = self.run_check(refs, None)
+        _, errors, _ = self.run_check(refs, None)
         self.assertEqual(refs[0]["citations"], 5)
         self.assertEqual(len(errors), 1)
 
     def test_new_retraction_alerts_once(self):
         refs = [ref()]
         notice = {"type": "retraction", "notice_doi": "10.1/n"}
-        alerts, _ = self.run_check(refs, {"is-referenced-by-count": 5}, [notice])
+        alerts, _, _ = self.run_check(refs, {"is-referenced-by-count": 5}, [notice])
         self.assertEqual(len(alerts), 1)
-        alerts, _ = self.run_check(refs, {"is-referenced-by-count": 5}, [notice])
+        alerts, _, _ = self.run_check(refs, {"is-referenced-by-count": 5}, [notice])
         self.assertEqual(alerts, [])
         self.assertEqual(len(refs[0]["updates"]), 1)
 
     def test_pubmed_retraction_detected_without_duplicating_crossref(self):
         refs = [ref()]
         summaries = {"1": {"pubtype": ["Journal Article", "Retracted Publication"]}}
-        alerts, _ = self.run_check(refs, {"is-referenced-by-count": 5}, [], summaries)
+        alerts, _, _ = self.run_check(refs, {"is-referenced-by-count": 5}, [], summaries)
         self.assertEqual(alerts[0]["type"], "retraction")
-        alerts, _ = self.run_check(refs, {"is-referenced-by-count": 5}, [], summaries)
+        alerts, _, _ = self.run_check(refs, {"is-referenced-by-count": 5}, [], summaries)
         self.assertEqual(alerts, [])
+
+
+class FailedLookups(unittest.TestCase):
+    run_check = CheckReferences.run_check
+
+    def test_failed_dois_are_reported(self):
+        refs = [ref(doi="10.1/a"), ref(doi="10.1/b")]
+        _, _, failed = self.run_check(refs, record_error=OSError("down"))
+        self.assertEqual(failed, {"10.1/a", "10.1/b"})
+        _, _, failed = self.run_check(refs, None)
+        self.assertEqual(failed, {"10.1/a", "10.1/b"})
+        _, _, failed = self.run_check(refs, {"is-referenced-by-count": 5})
+        self.assertEqual(failed, set())
+
+    def test_pubmed_outage_counts_as_failed_for_pmid_references(self):
+        refs = [ref(doi="10.1/a", pmid="1"), ref(doi="10.1/b", pmid=None)]
+        with mock.patch.object(daily_check, "crossref_record", return_value={"is-referenced-by-count": 5}), \
+                mock.patch.object(daily_check, "crossref_notices", return_value=[]), \
+                mock.patch.object(daily_check, "pubmed_summaries", side_effect=OSError("down")), \
+                mock.patch.object(daily_check.time, "sleep"):
+            _, errors, failed = daily_check.check_references(refs, TODAY)
+        self.assertEqual(failed, {"10.1/a"})
+        self.assertTrue(any("PubMed" in e for e in errors))
+
+    def test_threshold(self):
+        self.assertFalse(daily_check.too_many_failures(set(range(5)), 84))
+        self.assertTrue(daily_check.too_many_failures(set(range(6)), 84))
+        self.assertTrue(daily_check.too_many_failures({1, 2}, 5))   # 40% of a small set
+        self.assertFalse(daily_check.too_many_failures({1}, 5))
+
+    def test_status_never_dates_a_failed_lookup_today(self):
+        refs = [ref(doi="10.1/a"), ref(doi="10.1/b")]
+        checked, failed = daily_check.checked_status(refs, set(), {}, TODAY)
+        self.assertEqual((checked, failed), (TODAY, {}))
+        previous = {"last_run": "2026-11-05", "checked": "2026-11-05", "lookup_failed": {}}
+        checked, failed = daily_check.checked_status(refs, {"10.1/b"}, previous, TODAY)
+        self.assertEqual(failed, {"10.1/b": "2026-01-01"})  # older of status and record dates
+        self.assertEqual(checked, "2026-01-01")
+        # A second failure keeps the date of the last real check, not the previous run.
+        checked, failed = daily_check.checked_status(refs, {"10.1/b"}, {"checked": "2026-11-06",
+                                                     "lookup_failed": {"10.1/b": "2026-01-01"}}, "2026-11-07")
+        self.assertEqual((checked, failed), ("2026-01-01", {"10.1/b": "2026-01-01"}))
+
+    def run_main(self, record_error=None):
+        import json
+        import tempfile
+        refs = [ref(doi=f"10.1/{i}", pmid=None) for i in range(10)]
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp)
+            (data / "references.json").write_text(json.dumps(refs))
+            (data / "status.json").write_text(json.dumps({"last_run": "2026-11-05", "checked": "2026-11-05"}))
+            rec = mock.Mock(side_effect=record_error) if record_error else mock.Mock(
+                return_value={"is-referenced-by-count": 5})
+            with mock.patch.object(daily_check, "DATA_DIR", data), \
+                    mock.patch.object(daily_check, "crossref_record", rec), \
+                    mock.patch.object(daily_check, "crossref_notices", return_value=[]), \
+                    mock.patch.object(daily_check, "discover", return_value=([], [])), \
+                    mock.patch.object(daily_check.time, "sleep"), \
+                    mock.patch("sys.stdout", new_callable=io.StringIO), \
+                    mock.patch("sys.stderr", new_callable=io.StringIO):
+                code = daily_check.main([])
+            return code, json.loads((data / "status.json").read_text())
+
+    def test_run_fails_above_threshold_without_dating_today(self):
+        code, status = self.run_main(record_error=OSError("down"))
+        self.assertEqual(code, 1)
+        self.assertEqual(status["checked"], "2026-01-01")
+        self.assertEqual(len(status["lookup_failed"]), 10)
+        self.assertNotIn(TODAY, status["lookup_failed"].values())
+
+    def test_run_passes_when_lookups_succeed(self):
+        code, status = self.run_main()
+        self.assertEqual(code, 0)
+        self.assertEqual(status["lookup_failed"], {})
+        self.assertEqual(status["checked"], status["last_run"])
+
+    def test_sources_page_shows_the_oldest_check(self):
+        refs = [ref()]
+        self.assertEqual(build_refs.checked_date(refs, {"last_run": TODAY, "checked": "2026-11-01"}), "2026-11-01")
+        self.assertEqual(build_refs.checked_date(refs, {}), "2026-01-01")
 
 
 class Discover(unittest.TestCase):
@@ -259,7 +340,8 @@ class Announce(unittest.TestCase):
             out = data / "announce.md"
             with mock.patch.object(daily_check, "DATA_DIR", data), \
                     mock.patch.object(daily_check, "discover", return_value=([], [])), \
-                    mock.patch.object(daily_check, "pubmed_summaries", return_value={}):
+                    mock.patch.object(daily_check, "pubmed_summaries", return_value={}), \
+                    mock.patch("sys.stdout", new_callable=io.StringIO):
                 daily_check.main(["--announce", str(out)])
                 self.assertIn("1 paper to review", out.read_text())
                 daily_check.main(["--announce", str(out)])

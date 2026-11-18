@@ -6,10 +6,13 @@ Never published automatically: new papers. They wait in data/review_queue.json u
 a person approves them, because a new study can change what a page should claim.
 
 A failed lookup keeps the last good data and is reported instead of changing anything.
+If too many lookups fail, the run exits non-zero so nothing is published, and
+status.json never dates a reference as checked on a day its lookup failed.
 """
 import argparse
 import hashlib
 import json
+import os
 import re
 import sys
 import time
@@ -25,6 +28,9 @@ EUTILS = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils"
 LOOKBACK_DAYS = 7
 MAX_PER_QUERY = 20
 PAUSE = 0.4
+# Fail the run (nothing is published) when more reference lookups fail than either limit.
+MAX_FAILED_LOOKUPS = 5
+MAX_FAILED_FRACTION = 0.20
 MAX_ANNOUNCED_TITLES = 5  # titles listed in a notification comment; the rest are counted
 
 
@@ -61,25 +67,30 @@ def pubmed_summaries(pmids):
 
 
 def check_references(refs, today):
-    """Update refs in place. Returns (alerts, errors)."""
-    alerts, errors = [], []
+    """Update refs in place. Returns (alerts, errors, failed), failed being the DOIs
+    whose check did not complete (Crossref, or PubMed's retraction check)."""
+    alerts, errors, failed = [], [], set()
     pmids = [r["pmid"] for r in refs if r.get("pmid")]
     try:
         summaries = pubmed_summaries(pmids)
     except Exception as err:  # keep checking Crossref if PubMed is down
-        summaries = {}
+        summaries = None
         errors.append(f"PubMed retraction check failed: {err}")
     for ref in refs:
         doi = ref.get("doi")
+        if summaries is None and ref.get("pmid"):
+            failed.add(doi)
         try:
             record = crossref_record(doi)
             if not record:
                 errors.append(f"No Crossref record for {doi}")
+                failed.add(doi)
                 continue
             time.sleep(PAUSE)
             notices = crossref_notices(doi)
         except Exception as err:
             errors.append(f"Lookup failed for {doi}: {err}")
+            failed.add(doi)
             continue
         count = record.get("is-referenced-by-count")
         if isinstance(count, int):
@@ -87,7 +98,7 @@ def check_references(refs, today):
             ref["citations_checked"] = today
         ref["verification"]["checked"] = today
 
-        summary = summaries.get(ref.get("pmid"), {})
+        summary = (summaries or {}).get(ref.get("pmid"), {})
         if any("retracted publication" in str(p).lower() for p in summary.get("pubtype", [])):
             notices.append({"type": "retraction", "pmid": ref["pmid"]})
 
@@ -106,7 +117,38 @@ def check_references(refs, today):
             alerts.append({"type": notice["type"], "doi": doi, "title": ref["title"],
                            "notice_doi": notice.get("notice_doi"), "pmid": notice.get("pmid")})
         time.sleep(PAUSE)
-    return alerts, errors
+    return alerts, errors, failed
+
+
+def checked_status(refs, failed, previous, today):
+    """Return (checked, lookup_failed) for status.json.
+
+    lookup_failed maps each DOI whose check failed today to the last date it is known
+    to have been checked; checked is the date by which every reference had been checked
+    (today only when none failed). Neither ever claims a check that did not happen."""
+    prior = previous.get("lookup_failed", {})
+    lookup_failed = {}
+    for ref in refs:
+        doi = ref.get("doi")
+        if doi not in failed:
+            continue
+        known = [d for d in (previous.get("checked"), ref.get("verification", {}).get("checked")) if d]
+        lookup_failed[doi] = prior.get(doi) if doi in prior else (min(known) if known else None)
+    dates = list(lookup_failed.values())
+    checked = today if not dates else (None if None in dates else min(dates))
+    return checked, lookup_failed
+
+
+def too_many_failures(failed, total):
+    return len(failed) > MAX_FAILED_LOOKUPS or len(failed) > MAX_FAILED_FRACTION * max(total, 1)
+
+
+def report_failure(message):
+    print(f"::error::{message}", file=sys.stderr)
+    summary = os.environ.get("GITHUB_STEP_SUMMARY")
+    if summary:
+        with open(summary, "a", encoding="utf8") as f:
+            f.write(f"## Citation check failed\n\n{message}\n")
 
 
 def alert_id(alert):
@@ -252,7 +294,8 @@ def main(argv=None):
     reading_list = load(DATA_DIR / "reading_list.json", [])
     alert_state = load(DATA_DIR / "alerts.json", {"open": []})
 
-    alerts, errors = check_references(refs, today)
+    previous = load(DATA_DIR / "status.json", {})
+    alerts, errors, failed = check_references(refs, today)
     new_items, search_errors = discover(refs, queue, queries)
     errors += search_errors
     record_alerts(alert_state, alerts, today)
@@ -263,16 +306,25 @@ def main(argv=None):
     save(DATA_DIR / "review_queue.json", queue)
     save(DATA_DIR / "alerts.json", alert_state)
     # A dated commit each day also keeps GitHub from pausing the schedule on a quiet repo.
-    save(DATA_DIR / "status.json", {"last_run": today, "references": len(refs), "alerts": len(alerts),
+    checked, lookup_failed = checked_status(refs, failed, previous, today)
+    save(DATA_DIR / "status.json", {"last_run": today, "checked": checked, "lookup_failed": lookup_failed,
+                                    "references": len(refs), "alerts": len(alerts),
                                     "open_alerts": len(alert_state["open"]),
                                     "new_papers": len(new_items), "pending_review": len(queue["pending"]),
                                     "errors": len(errors)})
     (DATA_DIR / "review_issue.md").write_text(render_issue(queue, alert_state["open"], errors, today, reading_list), encoding="utf8")
-    print(f"{len(refs)} references checked; {len(alerts)} new notices; {len(new_items)} new papers; "
+    print(f"{len(refs) - len(failed)} of {len(refs)} references checked; {len(alerts)} new notices; {len(new_items)} new papers; "
           f"{len(queue['pending'])} pending; {len(errors)} errors")
     for err in errors:
         print("  !", err)
+    if too_many_failures(failed, len(refs)):
+        report_failure(f"{len(failed)} of {len(refs)} reference lookups failed (limit: more than "
+                       f"{MAX_FAILED_LOOKUPS}, or more than {MAX_FAILED_FRACTION:.0%}). Citation counts and "
+                       f"correction checks are incomplete, so this run publishes nothing. "
+                       f"Sources stay dated {checked or 'unchecked'}.")
+        return 1
+    return 0
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(main())
