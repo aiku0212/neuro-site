@@ -27,11 +27,11 @@ PREPRINT_NAME = re.compile(r"biorxiv|medrxiv|arxiv|research square|preprints\.or
 PREPRINT_DOI = re.compile(r"^10\.(1101/(\d{4}\.\d{2}\.\d{2}\.)?\d{6,}|64898/|21203/rs\.|48550/|2139/ssrn\.|20944/preprints)", re.I)
 
 
-def get_json(url, tries=5):
+def get_json(url, tries=5, timeout=30):
     for attempt in range(tries):
         try:
             req = urllib.request.Request(url, headers=UA)
-            with urllib.request.urlopen(req, timeout=30) as resp:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
                 return json.load(resp)
         except urllib.error.HTTPError as err:
             if err.code == 404:

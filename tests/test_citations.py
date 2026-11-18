@@ -26,6 +26,11 @@ def ref(**extra):
     return base
 
 
+def others(n=8):
+    """Passing references without a PMID, so one failure stays under the failure limit."""
+    return [ref(doi=f"10.9/{i}", pmid=None) for i in range(n)]
+
+
 class CheckReferences(unittest.TestCase):
     def run_check(self, refs, record=None, notices=(), summaries=None, record_error=None):
         rec = mock.Mock(side_effect=record_error) if record_error else mock.Mock(return_value=record)
@@ -111,7 +116,7 @@ class FailedLookups(unittest.TestCase):
         self.assertEqual(failed, set())
 
     def test_pubmed_outage_counts_as_failed_for_pmid_references(self):
-        refs = [ref(doi="10.1/a", pmid="1"), ref(doi="10.1/b", pmid=None)]
+        refs = [ref(doi="10.1/a", pmid="1"), ref(doi="10.1/b", pmid=None)] + others()
         with mock.patch.object(daily_check, "crossref_record", return_value={"is-referenced-by-count": 5}), \
                 mock.patch.object(daily_check, "crossref_notices", return_value=[]), \
                 mock.patch.object(daily_check, "pubmed_summaries", side_effect=OSError("down")), \
@@ -121,7 +126,7 @@ class FailedLookups(unittest.TestCase):
         self.assertTrue(any("PubMed" in e for e in errors))
 
     def test_pubmed_partial_reply_counts_as_failed(self):
-        refs = [ref(doi="10.1/a", pmid="1"), ref(doi="10.1/b", pmid="2"), ref(doi="10.1/c", pmid=None)]
+        refs = [ref(doi="10.1/a", pmid="1"), ref(doi="10.1/b", pmid="2"), ref(doi="10.1/c", pmid=None)] + others()
         _, errors, failed = self.run_check(refs, {"is-referenced-by-count": 5}, summaries={"1": {}})
         self.assertEqual(failed, {"10.1/b"})
         self.assertTrue(any("PMID 2" in e for e in errors))
@@ -142,7 +147,7 @@ class FailedLookups(unittest.TestCase):
         self.assertEqual(summaries, {"1": {"pubtype": []}})
 
     def test_pubmed_404_fails_every_pmid_reference(self):
-        refs = [ref(doi="10.1/a", pmid="1"), ref(doi="10.1/b", pmid=None)]
+        refs = [ref(doi="10.1/a", pmid="1"), ref(doi="10.1/b", pmid=None)] + others()
         with mock.patch.object(daily_check, "get_json", return_value=None), \
                 mock.patch.object(daily_check, "crossref_record", return_value={"is-referenced-by-count": 5}), \
                 mock.patch.object(daily_check, "crossref_notices", return_value=[]), \
@@ -232,6 +237,69 @@ class FailedLookups(unittest.TestCase):
         refs = [ref()]
         self.assertEqual(build_refs.checked_date(refs, {"last_run": TODAY, "checked": "2026-11-01"}), "2026-11-01")
         self.assertEqual(build_refs.checked_date(refs, {}), "2026-01-01")
+
+
+class Outage(unittest.TestCase):
+    """Real get_json against a dead network, on a simulated clock: the run must report the
+    failure itself, well inside the check job's 20-minute timeout."""
+    JOB_TIMEOUT = 20 * 60
+
+    def run_outage(self, error):
+        import tempfile
+        import urllib.error
+        clock = {"t": 0.0, "calls": 0}
+
+        def urlopen(req, timeout):
+            clock["calls"] += 1
+            if error == "timeout":
+                clock["t"] += timeout
+                raise TimeoutError("timed out")
+            raise urllib.error.HTTPError(req.full_url, 503, "Service Unavailable", {}, None)
+
+        def sleep(seconds):
+            clock["t"] += seconds
+
+        refs = [ref(doi=f"10.1/{i}", pmid=str(i) if i < 29 else None) for i in range(84)]
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp)
+            (data / "references.json").write_text(json.dumps(refs))
+            (data / "watch_queries.json").write_text(json.dumps({g: "term" for g in "abcdef"}))
+            stderr = io.StringIO()
+            with mock.patch.object(daily_check, "DATA_DIR", data), \
+                    mock.patch("resolve_dois.urllib.request.urlopen", side_effect=urlopen), \
+                    mock.patch.object(daily_check.time, "sleep", side_effect=sleep), \
+                    mock.patch.dict(os.environ, {"GITHUB_STEP_SUMMARY": ""}), \
+                    mock.patch("sys.stdout", new_callable=io.StringIO), mock.patch("sys.stderr", stderr):
+                code = daily_check.main([])
+            status = json.loads((data / "status.json").read_text())
+        return code, clock, stderr.getvalue(), status
+
+    def test_hanging_connections_fail_fast_with_a_clear_error(self):
+        code, clock, stderr, status = self.run_outage("timeout")
+        self.assertEqual(code, 1)
+        self.assertIn("::error::", stderr)
+        self.assertLess(clock["t"], self.JOB_TIMEOUT / 2)
+        self.assertEqual(len(status["lookup_failed"]), 84)  # none dated as checked
+        self.assertNotEqual(status["checked"], status["last_run"])
+
+    def test_server_errors_fail_fast_with_a_clear_error(self):
+        code, clock, stderr, _ = self.run_outage("503")
+        self.assertEqual(code, 1)
+        self.assertIn("::error::", stderr)
+        self.assertLess(clock["t"], self.JOB_TIMEOUT / 2)
+        # PubMed, at most a limit's worth of Crossref lookups, then the six searches.
+        tries = daily_check.DAILY_TRIES
+        self.assertLessEqual(clock["calls"], tries * (1 + daily_check.MAX_FAILED_LOOKUPS + 1 + 6))
+
+    def test_breaker_stops_after_the_limit(self):
+        refs = [ref(doi=f"10.1/{i}", pmid=None) for i in range(84)]
+        rec = mock.Mock(side_effect=OSError("down"))
+        with mock.patch.object(daily_check, "crossref_record", rec), \
+                mock.patch.object(daily_check.time, "sleep"):
+            _, errors, failed = daily_check.check_references(refs, TODAY)
+        self.assertEqual(rec.call_count, daily_check.MAX_FAILED_LOOKUPS + 1)
+        self.assertEqual(len(failed), 84)
+        self.assertIn("78 references not checked", errors[-1])
 
 
 class Discover(unittest.TestCase):

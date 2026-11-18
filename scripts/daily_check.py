@@ -35,6 +35,10 @@ PAUSE = 0.4
 # Fail the run (nothing is published) when more reference lookups fail than either limit.
 MAX_FAILED_LOOKUPS = 5
 MAX_FAILED_FRACTION = 0.20
+# Daily lookups give up quickly, so an outage trips the failure limit, and the run reports
+# it, long before the job's 20-minute timeout (each failing lookup costs at most ~22 s).
+DAILY_TRIES = 2
+DAILY_TIMEOUT = 10
 MAX_ANNOUNCED_TITLES = 5  # titles listed in a notification comment; the rest are counted
 
 # GitHub rejects issue bodies over 65,536 characters. The review issue stays under a
@@ -58,14 +62,18 @@ def save(path, value):
     path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf8")
 
 
+def fetch(url):
+    return get_json(url, tries=DAILY_TRIES, timeout=DAILY_TIMEOUT)
+
+
 def crossref_record(doi):
     quoted = urllib.parse.quote(doi, safe="")
-    return (get_json(f"https://api.crossref.org/works/{quoted}") or {}).get("message")
+    return (fetch(f"https://api.crossref.org/works/{quoted}") or {}).get("message")
 
 
 def crossref_notices(doi):
     q = urllib.parse.urlencode({"filter": f"updates:{doi}", "select": "DOI,update-to", "rows": 20})
-    items = (get_json(f"https://api.crossref.org/works?{q}") or {}).get("message", {}).get("items", [])
+    items = (fetch(f"https://api.crossref.org/works?{q}") or {}).get("message", {}).get("items", [])
     found = []
     for item in items:
         for update in item.get("update-to", []):
@@ -81,7 +89,7 @@ def pubmed_summaries(pmids):
     if not pmids:
         return {}
     q = urllib.parse.urlencode({"db": "pubmed", "retmode": "json", "id": ",".join(pmids)})
-    reply = get_json(f"{EUTILS}/esummary.fcgi?{q}")
+    reply = fetch(f"{EUTILS}/esummary.fcgi?{q}")
     result = reply.get("result") if isinstance(reply, dict) else None
     if not isinstance(result, dict) or not isinstance(result.get("uids"), list):
         raise RuntimeError(f"PubMed esummary gave no result for {len(pmids)} PMIDs")
@@ -100,12 +108,21 @@ def check_references(refs, today):
         summaries = None
         errors.append(f"PubMed retraction check failed: {err}")
     for ref in refs:
-        doi = ref.get("doi")
         if summaries is None and ref.get("pmid"):
-            failed.add(doi)
+            failed.add(ref.get("doi"))
         elif ref.get("pmid") and ref["pmid"] not in summaries:
-            errors.append(f"PubMed gave no record for PMID {ref['pmid']} ({doi}); retraction check incomplete")
-            failed.add(doi)
+            errors.append(f"PubMed gave no record for PMID {ref['pmid']} ({ref.get('doi')}); "
+                          "retraction check incomplete")
+            failed.add(ref.get("doi"))
+    for i, ref in enumerate(refs):
+        if too_many_failures(failed, len(refs)):
+            # The run fails anyway; stop now so it says why instead of hitting the job timeout.
+            rest = {r.get("doi") for r in refs[i:]} - failed
+            failed |= rest
+            errors.append(f"Stopped after {len(failed) - len(rest)} failed lookups; "
+                          f"{len(rest)} references not checked")
+            break
+        doi = ref.get("doi")
         try:
             record = crossref_record(doi)
             if not record:
@@ -243,7 +260,7 @@ def discover(refs, queue, queries):
         q = urllib.parse.urlencode({"db": "pubmed", "retmode": "json", "datetype": "edat",
                                     "reldate": LOOKBACK_DAYS, "retmax": MAX_PER_QUERY, "term": term})
         try:
-            ids = (get_json(f"{EUTILS}/esearch.fcgi?{q}") or {}).get("esearchresult", {}).get("idlist", [])
+            ids = (fetch(f"{EUTILS}/esearch.fcgi?{q}") or {}).get("esearchresult", {}).get("idlist", [])
             time.sleep(PAUSE)
             fresh = [i for i in ids if i not in seen and i not in cited_pmids]
             summaries = pubmed_summaries(fresh)
