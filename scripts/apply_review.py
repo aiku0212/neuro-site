@@ -9,6 +9,8 @@ on. A paper joins data/references.json only when a page claim cites it, by the u
 route that confirms it against Crossref (scripts/finalize_refs.py). Preprints are marked
 on the reading list so they are never mistaken for confirmed sources.
 
+Correction and retraction notices stay in the issue until their Dismiss box is ticked.
+
 Only papers already in data/review_queue.json can be approved, so editing the issue
 can't add arbitrary content. A paper with both boxes ticked stays pending.
 """
@@ -24,8 +26,9 @@ from resolve_dois import is_preprint  # noqa: E402
 ROOT = Path(__file__).resolve().parent.parent
 QUEUE = ROOT / "data" / "review_queue.json"
 READING_LIST = ROOT / "data" / "reading_list.json"
-TICKED = re.compile(r"^\s*-\s*\[[xX]\].*<!--\s*(review|check):(\d+):(approve|dismiss|done)\s*-->", re.M)
-VALID = {("review", "approve"), ("review", "dismiss"), ("check", "done")}
+ALERTS = ROOT / "data" / "alerts.json"
+TICKED = re.compile(r"^\s*-\s*\[[xX]\].*<!--\s*(review|check|alert):([0-9a-f]+):(approve|dismiss|done)\s*-->", re.M)
+VALID = {("review", "approve"), ("review", "dismiss"), ("check", "done"), ("alert", "dismiss")}
 
 # Pages that draw on each watch group, so an approval says where to look.
 GROUP_PAGES = {
@@ -60,6 +63,17 @@ def parse_decisions(body):
 
 def parse_page_checks(body):
     return set(ticked(body, "check"))
+
+
+def parse_alert_dismissals(body):
+    return set(ticked(body, "alert"))
+
+
+def dismiss_alerts(alert_state, ids):
+    """Drop ticked notices from the issue. The notice itself stays on the Sources page."""
+    before = len(alert_state["open"])
+    alert_state["open"] = [a for a in alert_state["open"] if a["id"] not in ids]
+    return before - len(alert_state["open"])
 
 
 def to_reading_entry(item, today):
@@ -103,10 +117,13 @@ def main():
     reading_list = load(READING_LIST, [])
     approved, dismissed = apply_decisions(reading_list, queue, parse_decisions(body), today)
     checked = apply_page_checks(reading_list, parse_page_checks(body), today)
+    alert_state = load(ALERTS, {"open": []})
+    cleared = dismiss_alerts(alert_state, parse_alert_dismissals(body))
     save(QUEUE, queue)
     save(READING_LIST, reading_list)
+    save(ALERTS, alert_state)
     print(f"Applied review: {approved} approved to the reading list, {dismissed} dismissed, "
-          f"{checked} page checks done")
+          f"{checked} page checks done, {cleared} notices dismissed")
 
 
 if __name__ == "__main__":

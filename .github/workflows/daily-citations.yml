@@ -51,7 +51,7 @@ jobs:
           python scripts/apply_review.py "$RUNNER_TEMP/issue.md"
 
       - name: Check citations
-        run: python scripts/daily_check.py
+        run: python scripts/daily_check.py --announce "$RUNNER_TEMP/announcement.md"
 
       - name: Build pages
         # Refuses to build if any reference is unconfirmed or a preprint.
@@ -66,13 +66,18 @@ jobs:
           git push
 
       - name: Update the review issue
+        # Body edits send no notification, so anything new also gets a short comment.
         run: |
           number="${{ steps.issue.outputs.number }}"
           if [ -n "$number" ]; then
             gh issue edit "$number" --body-file data/review_issue.md
           else
             gh label create citation-review --color 2D6A8F --force
-            gh issue create --title "Citation review queue" --label citation-review --body-file data/review_issue.md
+            url=$(gh issue create --title "Citation review queue" --label citation-review --body-file data/review_issue.md)
+            number="${url##*/}"
+          fi
+          if [ -s "$RUNNER_TEMP/announcement.md" ]; then
+            gh issue comment "$number" --body-file "$RUNNER_TEMP/announcement.md"
           fi
 
       - name: Assemble the public site

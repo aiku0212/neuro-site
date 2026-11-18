@@ -197,6 +197,75 @@ class Preprints(unittest.TestCase):
         self.assertEqual(build_refs.blocked(refs), [])
 
 
+class Alerts(unittest.TestCase):
+    ALERT = {"type": "retraction", "doi": "10.1/a", "title": "A paper", "notice_doi": "10.1/n", "pmid": None}
+
+    def test_alert_stays_in_issue_until_dismissed(self):
+        state = {"open": []}
+        daily_check.record_alerts(state, [dict(self.ALERT)], TODAY)
+        queue = {"pending": [], "seen": []}
+        for _ in range(2):  # a later run with no new notices still shows it
+            out = daily_check.render_issue(queue, state["open"], [], TODAY)
+            self.assertIn("Correction and retraction notices (1)", out)
+        ids = apply_review.parse_alert_dismissals(out.replace("- [ ] Dismiss", "- [x] Dismiss"))
+        self.assertEqual(apply_review.dismiss_alerts(state, ids), 1)
+        self.assertNotIn("retraction notices", daily_check.render_issue(queue, state["open"], [], TODAY))
+
+    def test_same_notice_is_recorded_once(self):
+        state = {"open": []}
+        daily_check.record_alerts(state, [dict(self.ALERT)], TODAY)
+        daily_check.record_alerts(state, [dict(self.ALERT)], "2026-11-07")
+        self.assertEqual(len(state["open"]), 1)
+        self.assertEqual(state["open"][0]["found"], TODAY)
+
+    def test_unknown_alert_id_dismisses_nothing(self):
+        state = {"open": []}
+        daily_check.record_alerts(state, [dict(self.ALERT)], TODAY)
+        self.assertEqual(apply_review.dismiss_alerts(state, {"deadbeef00"}), 0)
+
+    def test_dismissing_a_paper_does_not_dismiss_an_alert(self):
+        state = {"open": []}
+        daily_check.record_alerts(state, [dict(self.ALERT)], TODAY)
+        body = "- [x] Dismiss <!-- review:%s:dismiss -->" % state["open"][0]["id"]
+        self.assertEqual(apply_review.parse_alert_dismissals(body), set())
+
+
+class Announce(unittest.TestCase):
+    def test_announces_new_items_once(self):
+        queue = {"pending": [dict(Review.ITEM)], "seen": ["2"]}
+        state = {"open": []}
+        daily_check.record_alerts(state, [dict(Alerts.ALERT)], TODAY)
+        text = daily_check.announcement(queue, state, TODAY)
+        self.assertIn("1 correction or retraction notice and 1 paper to review", text)
+        self.assertEqual(daily_check.announcement(queue, state, TODAY), "")
+
+    def test_quiet_when_nothing_is_new(self):
+        self.assertEqual(daily_check.announcement({"pending": [], "seen": []}, {"open": []}, TODAY), "")
+
+    def test_comment_is_short_and_cannot_ping(self):
+        items = [dict(Review.ITEM, pmid=str(i), title=f"@user{i} paper") for i in range(40)]
+        text = daily_check.announcement({"pending": items, "seen": []}, {"open": []}, TODAY)
+        self.assertLessEqual(len(text.splitlines()), daily_check.MAX_ANNOUNCED_TITLES + 3)
+        self.assertIn("and 35 more", text)
+        self.assertNotIn("@user", text)
+
+    def test_main_writes_comment_only_when_new(self):
+        import json
+        import tempfile
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp)
+            (data / "references.json").write_text("[]")
+            (data / "review_queue.json").write_text(json.dumps({"pending": [dict(Review.ITEM)], "seen": ["2"]}))
+            out = data / "announce.md"
+            with mock.patch.object(daily_check, "DATA_DIR", data), \
+                    mock.patch.object(daily_check, "discover", return_value=([], [])), \
+                    mock.patch.object(daily_check, "pubmed_summaries", return_value={}):
+                daily_check.main(["--announce", str(out)])
+                self.assertIn("1 paper to review", out.read_text())
+                daily_check.main(["--announce", str(out)])
+                self.assertEqual(out.read_text(), "")
+
+
 class Build(unittest.TestCase):
     def test_refuses_preprint_sources(self):
         self.assertEqual(build_refs.blocked([ref(doi="10.1101/2024.01.02.573000", journal="bioRxiv")]), ["A paper"])
