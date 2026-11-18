@@ -1,8 +1,8 @@
 name: Daily citation check
 
 # Refreshes citation counts and correction notices, queues new papers for human
-# review, and publishes the site. New papers reach the site only after a
-# maintainer ticks them in the review issue; nothing here writes claims.
+# review, and publishes the site. A paper a maintainer approves in the review issue
+# goes on a reading list, not the Sources page; nothing here adds sources or writes claims.
 # If any step fails, nothing is published, the last good site stays up, and the
 # "Citation check failed" issue is opened or updated with a link to the run.
 
@@ -54,7 +54,7 @@ jobs:
         run: python scripts/daily_check.py
 
       - name: Build pages
-        # Refuses to build if any reference is unconfirmed.
+        # Refuses to build if any reference is unconfirmed or a preprint.
         run: python scripts/build_refs.py
 
       - name: Commit changes

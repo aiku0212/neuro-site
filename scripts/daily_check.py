@@ -15,7 +15,7 @@ import urllib.parse
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from resolve_dois import get_json  # noqa: E402
+from resolve_dois import get_json, is_preprint  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA_DIR = ROOT / "data"
@@ -155,7 +155,7 @@ def safe_md(text):
     return re.sub(r"\s+", " ", str(text)).replace("@", "@​").replace("<", "&lt;").replace("[", "\\[").replace("]", "\\]")
 
 
-def render_issue(queue, alerts, errors, today):
+def render_issue(queue, alerts, errors, today, reading_list=()):
     lines = [f"Last run: {today}", ""]
     if errors:
         lines += [f"## Lookup problems ({len(errors)})", "The last good data stayed in place.", ""]
@@ -166,13 +166,28 @@ def render_issue(queue, alerts, errors, today):
             link = f" ([notice](https://doi.org/{a['notice_doi']}))" if a.get("notice_doi") else ""
             lines.append(f"- **{safe_md(a['type'])}**: {safe_md(a['title'])} (https://doi.org/{a['doi']}){link}")
         lines.append("")
+    checks = [e for e in reading_list if e.get("page_check") == "open"]
+    if checks:
+        lines += [f"## Approved papers: pages to check ({len(checks)})",
+                  "Approved papers go on the reading list (data/reading_list.json), not the Sources page. "
+                  "Check whether the page should change, then tick the box. A paper becomes a source "
+                  "only when a page claim cites it.", ""]
+        for entry in checks:
+            label = " · **preprint, not peer reviewed**" if entry.get("preprint") else ""
+            lines.append(f"**{safe_md(entry['title'])}**  ")
+            lines.append(f"approved {entry['approved']} · check {', '.join(entry['pages'])} · "
+                         f"https://doi.org/{entry['doi']}{label}")
+            lines.append(f"- [ ] Page checked <!-- check:{entry['pmid']}:done -->")
+            lines.append("")
     lines += [f"## New papers to review ({len(queue['pending'])})",
-              "Tick one box per paper. The next daily run applies it.", ""]
+              "Tick one box per paper. The next daily run applies it. "
+              "Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources.", ""]
     for item in queue["pending"]:
         pid = item["pmid"]
+        label = " · **preprint, not peer reviewed**" if is_preprint(item.get("doi"), item.get("journal")) else ""
         lines.append(f"**{safe_md(item['title'])}**  ")
         lines.append(f"{safe_md(item['authors'])}, {safe_md(item['journal'])}, {item['year']} · "
-                     f"group `{item['group']}` · https://doi.org/{item['doi']}")
+                     f"group `{item['group']}` · https://doi.org/{item['doi']}{label}")
         lines.append(f"- [ ] Approve <!-- review:{pid}:approve -->")
         lines.append(f"- [ ] Dismiss <!-- review:{pid}:dismiss -->")
         lines.append("")
@@ -184,6 +199,7 @@ def main():
     refs = load(DATA_DIR / "references.json", [])
     queue = load(DATA_DIR / "review_queue.json", {"pending": [], "seen": []})
     queries = load(DATA_DIR / "watch_queries.json", {})
+    reading_list = load(DATA_DIR / "reading_list.json", [])
 
     alerts, errors = check_references(refs, today)
     new_items, search_errors = discover(refs, queue, queries)
@@ -195,7 +211,7 @@ def main():
     save(DATA_DIR / "status.json", {"last_run": today, "references": len(refs), "alerts": len(alerts),
                                     "new_papers": len(new_items), "pending_review": len(queue["pending"]),
                                     "errors": len(errors)})
-    (DATA_DIR / "review_issue.md").write_text(render_issue(queue, alerts, errors, today), encoding="utf8")
+    (DATA_DIR / "review_issue.md").write_text(render_issue(queue, alerts, errors, today, reading_list), encoding="utf8")
     print(f"{len(refs)} references checked; {len(alerts)} new notices; {len(new_items)} new papers; "
           f"{len(queue['pending'])} pending; {len(errors)} errors")
     for err in errors:

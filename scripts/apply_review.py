@@ -3,6 +3,12 @@
 
 Usage: apply_review.py path/to/issue_body.md
 
+Approving a paper does not make it a source. It moves to data/reading_list.json, which
+the Sources page never reads, and the issue then asks for a check of the page it bears
+on. A paper joins data/references.json only when a page claim cites it, by the usual
+route that confirms it against Crossref (scripts/finalize_refs.py). Preprints are marked
+on the reading list so they are never mistaken for confirmed sources.
+
 Only papers already in data/review_queue.json can be approved, so editing the issue
 can't add arbitrary content. A paper with both boxes ticked stays pending.
 """
@@ -12,32 +18,66 @@ import sys
 import time
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from resolve_dois import is_preprint  # noqa: E402
+
 ROOT = Path(__file__).resolve().parent.parent
-REFS = ROOT / "data" / "references.json"
 QUEUE = ROOT / "data" / "review_queue.json"
-TICKED = re.compile(r"^\s*-\s*\[[xX]\].*<!--\s*review:(\d+):(approve|dismiss)\s*-->", re.M)
+READING_LIST = ROOT / "data" / "reading_list.json"
+TICKED = re.compile(r"^\s*-\s*\[[xX]\].*<!--\s*(review|check):(\d+):(approve|dismiss|done)\s*-->", re.M)
+VALID = {("review", "approve"), ("review", "dismiss"), ("check", "done")}
+
+# Pages that draw on each watch group, so an approval says where to look.
+GROUP_PAGES = {
+    "bdnf": ["index.html"],
+    "psy": ["index.html", "pharma.html"],
+    "cp": ["index.html"],
+    "bird": ["index.html", "comparative.html"],
+    "int": ["index.html"],
+    "gen": ["index.html"],
+}
+
+
+def load(path, default):
+    return json.loads(path.read_text(encoding="utf8")) if path.exists() else default
+
+
+def save(path, value):
+    path.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf8")
+
+
+def ticked(body, kind):
+    marks = {}
+    for k, ident, action in TICKED.findall(body):
+        if k == kind and (k, action) in VALID:
+            marks.setdefault(ident, set()).add(action)
+    return marks
 
 
 def parse_decisions(body):
-    decisions = {}
-    for pmid, action in TICKED.findall(body):
-        decisions.setdefault(pmid, set()).add(action)
-    return {pmid: actions.pop() for pmid, actions in decisions.items() if len(actions) == 1}
+    return {pmid: actions.pop() for pmid, actions in ticked(body, "review").items() if len(actions) == 1}
 
 
-def to_reference(item, today):
-    return {"group": item["group"], "title": item["title"], "authors": item["authors"],
-            "year": item["year"], "journal": item["journal"], "doi": item["doi"], "pmid": item["pmid"],
-            "meta_analysis": False, "site_title": item["title"], "site_year": item["year"], "updates": [],
-            "verification": {"status": "confirmed", "reasons": ["Approved from review queue"], "checked": today}}
+def parse_page_checks(body):
+    return set(ticked(body, "check"))
 
 
-def apply_decisions(refs, queue, decisions, today):
+def to_reading_entry(item, today):
+    return {"pmid": item["pmid"], "doi": item["doi"], "group": item["group"], "title": item["title"],
+            "authors": item["authors"], "journal": item["journal"], "year": item["year"],
+            "preprint": is_preprint(doi=item["doi"], journal=item["journal"]),
+            "approved": today, "pages": GROUP_PAGES.get(item["group"], ["index.html"]),
+            "page_check": "open"}
+
+
+def apply_decisions(reading_list, queue, decisions, today):
     approved, dismissed, still_pending = 0, 0, []
+    listed = {e["pmid"] for e in reading_list}
     for item in queue["pending"]:
         action = decisions.get(item["pmid"])
         if action == "approve":
-            refs.append(to_reference(item, today))
+            if item["pmid"] not in listed:
+                reading_list.append(to_reading_entry(item, today))
             approved += 1
         elif action == "dismiss":
             dismissed += 1
@@ -47,14 +87,26 @@ def apply_decisions(refs, queue, decisions, today):
     return approved, dismissed
 
 
+def apply_page_checks(reading_list, done, today):
+    closed = 0
+    for entry in reading_list:
+        if entry.get("page_check") == "open" and entry["pmid"] in done:
+            entry["page_check"] = today
+            closed += 1
+    return closed
+
+
 def main():
     body = Path(sys.argv[1]).read_text(encoding="utf8")
-    refs = json.loads(REFS.read_text(encoding="utf8"))
-    queue = json.loads(QUEUE.read_text(encoding="utf8")) if QUEUE.exists() else {"pending": [], "seen": []}
-    approved, dismissed = apply_decisions(refs, queue, parse_decisions(body), time.strftime("%Y-%m-%d"))
-    REFS.write_text(json.dumps(refs, indent=2, ensure_ascii=False) + "\n", encoding="utf8")
-    QUEUE.write_text(json.dumps(queue, indent=2, ensure_ascii=False) + "\n", encoding="utf8")
-    print(f"Applied review: {approved} approved, {dismissed} dismissed")
+    today = time.strftime("%Y-%m-%d")
+    queue = load(QUEUE, {"pending": [], "seen": []})
+    reading_list = load(READING_LIST, [])
+    approved, dismissed = apply_decisions(reading_list, queue, parse_decisions(body), today)
+    checked = apply_page_checks(reading_list, parse_page_checks(body), today)
+    save(QUEUE, queue)
+    save(READING_LIST, reading_list)
+    print(f"Applied review: {approved} approved to the reading list, {dismissed} dismissed, "
+          f"{checked} page checks done")
 
 
 if __name__ == "__main__":

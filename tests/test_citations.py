@@ -111,19 +111,56 @@ class Review(unittest.TestCase):
     def test_unticked_stays_pending(self):
         self.assertEqual(apply_review.parse_decisions(self.render()), {})
 
-    def test_approve_round_trip(self):
+    def test_approve_goes_to_reading_list_not_sources(self):
         body = self.render().replace("- [ ] Approve", "- [x] Approve")
-        refs, queue = [], {"pending": [dict(self.ITEM)], "seen": ["2"]}
-        counts = apply_review.apply_decisions(refs, queue, apply_review.parse_decisions(body), TODAY)
+        reading, queue = [], {"pending": [dict(self.ITEM)], "seen": ["2"]}
+        counts = apply_review.apply_decisions(reading, queue, apply_review.parse_decisions(body), TODAY)
         self.assertEqual(counts, (1, 0))
-        self.assertEqual(refs[0]["doi"], "10.1/new")
+        self.assertEqual(reading[0]["doi"], "10.1/new")
+        self.assertEqual(reading[0]["page_check"], "open")
+        self.assertNotIn("verification", reading[0])
+        self.assertFalse(reading[0]["preprint"])
         self.assertEqual(queue["pending"], [])
 
-    def test_dismiss_round_trip(self):
-        body = self.render().replace("- [ ] Dismiss", "- [x] Dismiss")
-        refs, queue = [], {"pending": [dict(self.ITEM)], "seen": ["2"]}
-        self.assertEqual(apply_review.apply_decisions(refs, queue, apply_review.parse_decisions(body), TODAY), (0, 1))
-        self.assertEqual(refs, [])
+    def test_approving_twice_lists_once(self):
+        reading = []
+        for _ in range(2):
+            queue = {"pending": [dict(self.ITEM)], "seen": ["2"]}
+            apply_review.apply_decisions(reading, queue, {"2": "approve"}, TODAY)
+        self.assertEqual(len(reading), 1)
+
+    def test_approved_preprint_is_marked_and_never_confirmed(self):
+        item = dict(self.ITEM, doi="10.64898/2026.10.21.760719", journal="bioRxiv : the preprint server for biology")
+        reading, queue = [], {"pending": [item], "seen": ["2"]}
+        apply_review.apply_decisions(reading, queue, {"2": "approve"}, TODAY)
+        self.assertTrue(reading[0]["preprint"])
+        out = daily_check.render_issue({"pending": [], "seen": []}, [], [], TODAY, reading)
+        self.assertIn("preprint, not peer reviewed", out)
+
+    def test_approval_does_not_change_the_sources_page(self):
+        refs = [ref()]
+        before = [build_refs.page_record(r) for r in refs]
+        reading, queue = [], {"pending": [dict(self.ITEM)], "seen": ["2"]}
+        apply_review.apply_decisions(reading, queue, {"2": "approve"}, TODAY)
+        self.assertEqual([build_refs.page_record(r) for r in refs], before)
+        self.assertEqual(len(refs), 1)
+
+    def test_approval_asks_for_a_page_check_until_ticked(self):
+        reading, queue = [], {"pending": [dict(self.ITEM, group="psy")], "seen": ["2"]}
+        apply_review.apply_decisions(reading, queue, {"2": "approve"}, TODAY)
+        out = daily_check.render_issue(queue, [], [], TODAY, reading)
+        self.assertIn("pages to check (1)", out)
+        self.assertIn("index.html, pharma.html", out)
+        ticked = out.replace("- [ ] Page checked", "- [x] Page checked")
+        done = apply_review.parse_page_checks(ticked)
+        self.assertEqual(apply_review.apply_page_checks(reading, done, TODAY), 1)
+        self.assertEqual(reading[0]["page_check"], TODAY)
+        self.assertNotIn("pages to check", daily_check.render_issue(queue, [], [], TODAY, reading))
+
+    def test_page_check_for_unknown_paper_does_nothing(self):
+        reading = [apply_review.to_reading_entry(self.ITEM, TODAY)]
+        self.assertEqual(apply_review.apply_page_checks(reading, {"999"}, TODAY), 0)
+        self.assertEqual(reading[0]["page_check"], "open")
 
     def test_both_ticked_stays_pending(self):
         body = self.render().replace("- [ ] Approve", "- [x] Approve").replace("- [ ] Dismiss", "- [x] Dismiss")
@@ -131,9 +168,9 @@ class Review(unittest.TestCase):
 
     def test_unknown_id_cannot_add_a_reference(self):
         body = "- [x] Approve <!-- review:999:approve -->"
-        refs, queue = [], {"pending": [dict(self.ITEM)], "seen": ["2"]}
-        apply_review.apply_decisions(refs, queue, apply_review.parse_decisions(body), TODAY)
-        self.assertEqual(refs, [])
+        reading, queue = [], {"pending": [dict(self.ITEM)], "seen": ["2"]}
+        apply_review.apply_decisions(reading, queue, apply_review.parse_decisions(body), TODAY)
+        self.assertEqual(reading, [])
 
     def test_title_cannot_ping_or_inject(self):
         item = dict(self.ITEM, title="Hi @someone <img src=x> [link](y)")
@@ -142,7 +179,29 @@ class Review(unittest.TestCase):
         self.assertNotIn("<img", out)
 
 
+class Preprints(unittest.TestCase):
+    def test_detects_preprints_by_type_name_and_doi(self):
+        from resolve_dois import is_preprint
+        self.assertTrue(is_preprint(crossref_type="posted-content"))
+        self.assertTrue(is_preprint(journal="medRxiv : the preprint server for health sciences"))
+        self.assertTrue(is_preprint(doi="10.1101/2024.01.02.573000"))
+        self.assertTrue(is_preprint(doi="10.64898/2026.10.18.759937"))
+        # Cold Spring Harbor journals share the 10.1101 prefix.
+        self.assertFalse(is_preprint(doi="10.1101/lm.041012.115", journal="Learning & Memory"))
+        self.assertFalse(is_preprint(doi="10.1016/j.neuron.2021.06.008", journal="Neuron",
+                                     crossref_type="journal-article"))
+
+    def test_no_current_source_is_a_preprint(self):
+        import json
+        refs = json.loads((Path(__file__).resolve().parent.parent / "data" / "references.json").read_text("utf8"))
+        self.assertEqual(build_refs.blocked(refs), [])
+
+
 class Build(unittest.TestCase):
+    def test_refuses_preprint_sources(self):
+        self.assertEqual(build_refs.blocked([ref(doi="10.1101/2024.01.02.573000", journal="bioRxiv")]), ["A paper"])
+        self.assertEqual(build_refs.blocked([ref()]), [])
+
     def test_escapes_html(self):
         rec = build_refs.page_record(ref(title="A <b> & C"))
         self.assertEqual(rec["t"], "A &lt;b&gt; &amp; C")

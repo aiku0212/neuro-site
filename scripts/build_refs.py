@@ -3,7 +3,11 @@
 import html
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from resolve_dois import is_preprint  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 PAGE = ROOT / "references.html"
@@ -46,11 +50,16 @@ def update_index_counts(text, refs):
     return text
 
 
+def blocked(refs):
+    """Titles that must not appear as confirmed sources: unconfirmed records and preprints."""
+    return [r["title"] for r in refs
+            if r["verification"]["status"] != "confirmed" or is_preprint(r.get("doi"), r.get("journal"))]
+
+
 def main():
     refs = json.loads(DATA.read_text(encoding="utf8"))
-    blocked = [r["title"] for r in refs if r["verification"]["status"] != "confirmed"]
-    if blocked:
-        raise SystemExit(f"Refusing to build; unconfirmed references: {blocked}")
+    if blocked(refs):
+        raise SystemExit(f"Refusing to build; unconfirmed or preprint references: {blocked(refs)}")
     payload = json.dumps([page_record(r) for r in refs], indent=1).replace("</", "<\\/")
     src = PAGE.read_text(encoding="utf8")
     src, n = re.subn(r"var REFS=(?:/\*refs:start\*/)?\[.*?\](?:/\*refs:end\*/)?;\n\nvar GROUPS",
