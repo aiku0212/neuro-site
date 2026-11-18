@@ -600,7 +600,7 @@
     "authors": "Reichelt et al.",
     "year": 2019,
     "journal": "Trends in Neurosciences",
-    "citations": 239,
+    "citations": 240,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
@@ -962,7 +962,7 @@
     "authors": "Makepeace et al.",
     "year": 2024,
     "journal": "PLOS ONE",
-    "citations": 5,
+    "citations": 6,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
@@ -1006,7 +1006,7 @@
     "authors": "Cahn et al.",
     "year": 2017,
     "journal": "Frontiers in Human Neuroscience",
-    "citations": 209,
+    "citations": 210,
     "tag": "mixed",
     "note": "No control group; authors note exercise confound; later corrections disclose funding by a co-author and Chopra Foundation ties",
     "meta_analysis": false,
@@ -1292,7 +1292,7 @@
       ],
       "checked": "2026-11-18"
     },
-    "citations": 18503,
+    "citations": 18505,
     "citations_checked": "2026-11-18"
   },
   {
@@ -1339,7 +1339,7 @@
       ],
       "checked": "2026-11-18"
     },
-    "citations": 1788,
+    "citations": 1790,
     "citations_checked": "2026-11-18"
   },
   {
@@ -1415,7 +1415,7 @@
     "authors": "Zarate et al.",
     "year": 2006,
     "journal": "Archives of General Psychiatry",
-    "citations": 3179,
+    "citations": 3180,
     "tag": null,
     "meta_analysis": false,
     "note": "18 patients, crossover: improvement within 110 minutes, significant for a week",
