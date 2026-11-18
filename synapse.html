@@ -160,8 +160,8 @@
 
     <div class="inspect" id="inspect">
       <b>Click a spine</b>
-      <p id="plastNote">Thin spines grow into mushroom spines when a synapse is
-        strengthened. The slider runs that transition.</p>
+      <p id="plastNote">Strengthening a synapse can make the head of a small, thin spine
+        grow, moving it toward the mushroom shape. The slider runs that change.</p>
     </div>
   </div>
 
@@ -178,16 +178,19 @@
     narrow neck, and that neck is a resistor. It isolates whatever happens in the head from the rest
     of the cell, so one synapse can change its own strength without dragging its neighbors with it.
     Widen the neck and the compartment leaks. Grow the head and the synapse gets stronger, because
-    head volume tracks the number of AMPA receptors in the membrane above it almost linearly.</p>
+    in rat hippocampus, the bigger the head, the more working AMPA receptors it tends to carry.</p>
 
   <div class="facts">
     <div class="fact"><b>0.5 to 2 &micro;m</b><span>Total spine length, base to top of head</span></div>
     <div class="fact"><b>0.1 to 0.3 &micro;m</b><span>Neck diameter, the resistor</span></div>
     <div class="fact"><b>1 to 3 per &micro;m</b><span>Density on a pyramidal apical dendrite</span></div>
-    <div class="fact"><b>~10,000</b><span>Spines on one cortical pyramidal cell</span></div>
+    <div class="fact"><b>8,000 to 15,000</b><span>Average spines per pyramidal cell in rat visual cortex, by cell type</span></div>
   </div>
-  <p class="cite">Dimensions from serial reconstruction of CA1 dendrites, Harris and Stevens,
-    <em>J. Neurosci.</em> 1989.</p>
+  <p class="cite">Dimensions from serial reconstruction of rat CA1 dendrites, Harris and Stevens,
+    <em>J. Neurosci.</em> 1989. Spines per cell in rat visual cortex, Larkman, <em>J. Comp. Neurol.</em> 1991.
+    AMPA receptors tracking head size, and small spines enlarging after stimulation, in rat hippocampal
+    slices, Matsuzaki et al., <em>Nat. Neurosci.</em> 2001 and <em>Nature</em> 2004. Thin spines as
+    learning spines, Bourne and Harris, <em>Curr. Opin. Neurobiol.</em> 2007.</p>
 
   <h2 class="serif">The four shapes are four life stages</h2>
   <p>Classifying spines by shape sounds like taxonomy for its own sake until you watch them over
@@ -236,8 +239,8 @@
                  head:[0.26,0.46], neck:[0.5,1.0], neckW:[0.09,0.14],
                  psd:false,
                  note:"Small head on a long narrow neck. Appears and disappears "
-                    + "within hours. This is the learning spine, and the one a "
-                    + "strengthened synapse grows out of." },
+                    + "within hours. Proposed as the learning spine, because it changes "
+                    + "readily with activity and can grow when its synapse is strengthened." },
     stubby:    { label:"Stubby", color:0xc0573a, share:0.14,
                  head:[0.35,0.55], neck:[0.0,0.12], neckW:[0.22,0.32],
                  psd:true,
@@ -473,8 +476,8 @@
     selected = g;
     var box = document.getElementById("inspect");
     if (!g){
-      box.innerHTML = '<b>Click a spine</b><p>Thin spines grow into mushroom spines when a '
-        + 'synapse is strengthened. The slider runs that transition.</p>';
+      box.innerHTML = '<b>Click a spine</b><p>Strengthening a synapse can make the head of a small, '
+        + 'thin spine grow, moving it toward the mushroom shape. The slider runs that change.</p>';
       return;
     }
     g.userData.mat.emissiveIntensity = 0.85;

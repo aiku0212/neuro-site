@@ -415,7 +415,7 @@
   </main>
 
   <footer class="mono">
-    Compiled from Consensus, PubMed &amp; ClinicalTrials.gov &middot; August 2026<br>
+    Compiled from Consensus, PubMed &amp; ClinicalTrials.gov &middot; August 2026, updated November 2026<br>
     Figures are sourced on the <a href="references.html" style="color:inherit">Sources page</a>. Nulls included.<br>
     Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a>
   </footer>
@@ -478,9 +478,9 @@
      cite:'Woo et al., <em>Nat. Neurosci.</em> 2005 · Yang et al., <em>Cell Reports</em> 2014'},
     {id:'cbl', loc:false, name:'Blood, after exercise', ev:'Human crossover study, 12 men',
      where:'Measured in blood, not in the brain.',
-     title:'The window is sixty minutes wide',
-     stat:'15 min', statlabel:'peak, baseline by 60',
-     body:'In 12 young men, high-intensity intervals raised serum BDNF above moderate and low intensity, which did not differ from each other. The rise peaked at fifteen minutes and was gone within the hour.',
+     title:'A rise that fades within the hour',
+     stat:'15 min', statlabel:'peak, fading by 60',
+     body:'In 12 young men, high-intensity intervals raised serum BDNF above moderate and low intensity, which did not differ from each other. The rise peaked at fifteen minutes and by sixty minutes was no longer clearly above baseline.',
      cite:'Birinci et al., <em>Scientific Reports</em> 2026'},
     {id:'stem', loc:false, name:'Blood, after psychedelics', ev:'Human meta-analysis, 29 studies',
      where:'Measured in blood, not in the brain.',
@@ -753,9 +753,9 @@
         rec:[['nmda','NMDA (blocked)',1],['glu','Glutamate surge',.9],['trkb','TrkB',.8],['pnn','Perineuronal net',.35]],
         body:'In one leading model, built mostly on rat studies, ketamine blocks NMDA receptors that drive inhibitory interneurons, releasing the brake on pyramidal cells. The signalling that follows activates mTOR and adds new spine synapses in prefrontal cortex within hours. Other mechanisms are proposed, including a metabolite that acts without blocking NMDA receptors. In a small trial, depression improved within about two hours of one infusion, against weeks for standard antidepressants.',
         cite:'Homayoun &amp; Moghaddam, <em>J. Neurosci.</em> 2007 &middot; Li et al., <em>Science</em> 2010 &middot; Zanos et al., <em>Nature</em> 2016 &middot; Zarate et al., <em>Arch. Gen. Psychiatry</em> 2006'},
-      ex:{label:'Exercise', spine:1.18, title:'Sixty minutes, then gone',
+      ex:{label:'Exercise', spine:1.18, title:'Up at fifteen minutes, fading by sixty',
         rec:[['bdnf','Circulating BDNF',1],['trkb','TrkB',.75],['p75','p75NTR',.3],['pnn','Perineuronal net',.5]],
-        body:'High-intensity intervals raise serum BDNF well above moderate and low intensity, which do not differ from each other. It peaks at fifteen minutes and is back to baseline within the hour. Of the interventions here, it has the strongest pooled evidence for moving the blood measure, though serum is a noisy readout: platelets store BDNF and release it when activated, so serum BDNF is not a direct measure of the brain.',
+        body:'In one study of 12 young men, high-intensity intervals raised serum BDNF well above moderate and low intensity, which did not differ from each other. BDNF peaked at fifteen minutes and was no longer clearly above baseline by sixty minutes. Of the interventions here, exercise has the strongest pooled evidence for moving the blood measure, though serum is a noisy readout: platelets store BDNF and release it when activated, so serum BDNF is not a direct measure of the brain.',
         cite:'Birinci et al., <em>Scientific Reports</em> 2026 &middot; Gholami et al., <em>Exp. Gerontology</em> 2024 &middot; Fujimura et al., <em>Thromb. Haemost.</em> 2002'},
       dep:{label:'Depression', spine:.62, title:'Signalling withdrawn',
         rec:[['trkb','TrkB',.18],['p75','p75NTR',.85],['bdnf','Circulating BDNF',.25],['pnn','Perineuronal net',.85]],
@@ -867,7 +867,7 @@
         var li=document.createElement('li');
         li.className = r[2]>=0.7?'up':(r[2]<=0.3?'down':'');
         li.innerHTML='<span class="swatch" style="background:'+COL[r[0]]+'"></span>'+
-          r[1]+'<span class="lvl">'+Math.round(r[2]*100)+'%</span>';
+          r[1]+'<span class="lvl">'+(r[2]>=0.7?'high':(r[2]<=0.3?'low':'medium'))+'</span>';
         ul.appendChild(li);
       });
       document.querySelectorAll('.sw').forEach(function(b){

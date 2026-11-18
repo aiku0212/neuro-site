@@ -96,6 +96,7 @@ class PublicPages(unittest.TestCase):
     def test_internal_plans_are_not_published(self):
         self.assertNotIn("Open problem register", read("comparative"))
         self.assertNotRegex(read("timecells"), r"Project [123]")
+        self.assertNotIn("Neural Causality", read("timecells"))
         self.assertTrue((ROOT / "docs" / "open-problem-register.md").exists())
         self.assertTrue((ROOT / "docs" / "time-model-research-plan.md").exists())
 

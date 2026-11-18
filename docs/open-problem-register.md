@@ -3,11 +3,11 @@
 Moved from the Comparative page on 2026-11-07, because it reads as an internal research plan.
 Nothing here is closed; status describes how far the groundwork has gone.
 
-The report counts (69k, 63k, 112k) have not been rechecked against current openFDA data. The vocabulary match was updated to 13 of the top 40 dog terms on 2026-11-07.
+The report counts (69k, 63k, 112k) have not been rechecked against current openFDA data. The vocabulary match was updated to 13 of the top 40 dog terms on 2026-11-07, and to 12 of 40 on 2026-11-18, when the dog figures moved to safety reports only.
 
 | # | Problem | Notes | Status |
 |---|---|---|---|
-| 01 | VeDDRA ↔ MedDRA crosswalk | No public mapping exists between the veterinary and human adverse-event vocabularies. Lexical normalization plus 17 hand-written synonyms currently matches 13 of the top 40 dog terms. Ontology alignment; embeddings are suited to it; the vet-only-drug negative control already exists in code. | Wedge |
+| 01 | VeDDRA ↔ MedDRA crosswalk | No public mapping exists between the veterinary and human adverse-event vocabularies. Lexical normalization plus 17 hand-written synonyms currently matches 12 of the top 40 dog terms (safety reports). Ontology alignment; embeddings are suited to it; the vet-only-drug negative control already exists in code. | Wedge |
 | 02 | Non-verbal ground truth | Inferring internal states in a patient that cannot self-report. Underlies pain scales, welfare scoring, and every behavioural label in pet psychiatry. The hardest of these and the one with the widest reach. | Thesis |
 | 03 | Anthelmintic resistance as a reporting signal | 69k lack-of-efficacy reports for heartworm larvae, 63k for flea preventives. Testable claim: failure reports cluster geographically and trend in time. Needs a reporting-effort control analogous to the German Shepherd comparison. | Open |
 | 04 | Bayesian shrinkage for small cells | EBGM/MGPS in place of raw PRR. Prerequisite for anything sliced by region × year × breed, where cells fall to double digits. Retroactively strengthens the MDR1 result. | Open |

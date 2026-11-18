@@ -69,6 +69,7 @@ footer{font-family:var(--f-body); color:var(--atlas-muted)}
 .fig-kind[data-kind="measured"]{color:#2b6a3f; background:#e2f0e6}
 .fig-kind[data-kind="simulation"]{color:#5a47a0; background:#ebe7f6}
 .fig-kind[data-kind="illustrative"]{color:#4d5a67; background:#e9edf1}
+.fig-kind[data-kind="hypothesis"]{color:#8a3f24; background:#f8e8e1}
 .fig-note{font-size:12.5px; color:var(--atlas-muted); margin:6px 0 0}
 
 /* ---- evidence chip: what kind of study ---- */

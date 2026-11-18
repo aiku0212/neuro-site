@@ -157,7 +157,7 @@
       <div class="scope">
         <span class="scopelabel mono">Membrane potential, mV</span>
         <canvas id="scopeV" role="img" width="1400" height="560"
-          aria-label="Membrane voltage over time. Threshold, peak, and afterhyperpolarization are marked."></canvas>
+          aria-label="Membrane voltage over time. When the membrane fires, threshold and peak are marked."></canvas>
       </div>
       <div class="legend mono">
         <span><i style="background:var(--na)"></i>m, sodium activation</span>
@@ -214,14 +214,16 @@
   </section>
 
   <div class="phases">
-    <div class="phase"><b>1. Rest</b><span>Leak and the pump hold about -65 mV. The h gate sits
-      open, waiting, which is the part people forget.</span></div>
+    <div class="phase"><b>1. Rest</b><span>Potassium, sodium and leak currents balance at about
+      -65 mV. The model has no pump; it treats the ion gradients as fixed. The h gate sits
+      mostly open, waiting, which is the part people forget.</span></div>
     <div class="phase"><b>2. Upstroke</b><span>m opens in tenths of a millisecond. Sodium enters,
       depolarizing further, opening more m. Positive feedback with no brake yet.</span></div>
     <div class="phase"><b>3. Repolarization</b><span>h closes and n opens, both slower than m.
       Sodium shuts off while potassium leaves. The membrane falls.</span></div>
     <div class="phase"><b>4. Undershoot</b><span>n is still open past rest, so the membrane
-      overshoots downward toward E_K before settling. This is the refractory period.</span></div>
+      overshoots downward toward E_K before settling. The refractory period overlaps this dip but
+      is not the same thing: it starts earlier, during the spike itself.</span></div>
   </div>
 
   <h2 class="serif">Three experiments that make the point</h2>
@@ -242,10 +244,13 @@
       <h3>Refractory period</h3>
       <div class="scope"><canvas id="expREF" role="img" width="900" height="480"
         aria-label="Paired pulses at 8, 14, 17 and 22 milliseconds showing the second response blocked then returning at full height."></canvas></div>
-      <p>Two identical pulses, separated by 8, 14, 17 and 22 ms. The second is blocked outright
-        until about 17 ms, because the h gate has not released its inactivation yet. Then it comes
-        back at full height. There is no half sized spike anywhere in between, which is the all or
-        none rule seen from a second angle. This sets the ceiling on firing rate, and it is why a
+      <p>Two identical pulses, separated by 8, 14, 17 and 22 ms. In this model the second
+        pulse fails until the gap reaches about 15 ms, because potassium channels are still open,
+        holding the membrane below rest, and sodium channels are still recovering from inactivation
+        (the h gate). By 17 ms the second spike is back at full height. There is no half sized spike
+        anywhere in between, which is the all or none rule seen from a second angle. The block is not
+        total, though: a much stronger second pulse, 80 uA/cm&sup2;, fires a slightly smaller spike
+        at an 11 ms gap. The refractory period sets the ceiling on firing rate, and it is why a
         spike cannot run backwards down the axon.</p>
     </div>
     <div class="card">
@@ -254,9 +259,11 @@
         aria-label="Traces at 6.3, 10, 14 and 17 degrees showing faster smaller spikes when warm and failure at 17."></canvas></div>
       <p>The same axon at 6.3, 10, 14 and 17 C. Rates scale by a Q10 of 3, so warming makes the
         spike faster and smaller: the peak falls from 38 mV to 29 mV between 6.3 and 14 C. At 17 C
-        this stimulus stops firing at all. Potassium now activates fast enough to cancel sodium
-        before it can run away. That is heat block, and it appeared in these equations before anyone
-        cornered it at the bench.</p>
+        this 15 uA/cm&sup2; stimulus no longer fires. Potassium now opens, and sodium inactivates,
+        fast enough to stop the runaway. That is a raised threshold, not heat block: it has gone from
+        about 13.3 to about 15.3 uA/cm&sup2;, and a slightly stronger pulse still fires. Real squid
+        axons keep firing far warmer than this: Hodgkin and Katz (1949) found a reversible heat block
+        between 35 and 40 C.</p>
     </div>
   </div>
 
@@ -283,6 +290,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     <a href="timecells.html">Up a level: populations keeping time</a>
     <a href="references.html">Sources</a>
     <span>Hodgkin AL, Huxley AF. J Physiol 117:500-544, 1952.</span>
+    <span>Hodgkin AL, Katz B. J Physiol 109:240-249, 1949.</span>
     <span>Educational model. Not medical or veterinary advice.</span>
     <a href="about.html">About and limits</a>
   </footer>
@@ -537,7 +545,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     });
     plot(el("expAON"), { height:190, tMax:25, tStep:5, yMin:-90, yMax:60,
       ticks:[{at:-55, label:"-55", color:vio, dash:true}, {at:-65, label:"rest", dash:true}],
-      series:series, note:"4 to 35 uA/cm2, threshold 13.5" });
+      series:series, note:"4 to 35 uA/cm2, threshold about 13.3" });
   }
 
   function drawREF(){
