@@ -1,6 +1,9 @@
+import datetime
 import io
 import json
+import os
 import re
+import subprocess
 import sys
 import unittest
 from pathlib import Path
@@ -9,6 +12,7 @@ from unittest import mock
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "scripts"))
 import apply_review  # noqa: E402
 import build_refs  # noqa: E402
+import check_freshness  # noqa: E402
 import daily_check  # noqa: E402
 
 TODAY = "2026-11-06"
@@ -410,6 +414,80 @@ class WatchQueries(unittest.TestCase):
             with self.subTest(group=group):
                 for m in re.finditer(r'(?<!")\bplasticity\[tiab\]', term):
                     self.assertTrue(term[m.end():].startswith(" AND ("), term[m.start() - 20:m.end() + 20])
+
+
+ROOT = Path(__file__).resolve().parent.parent
+WORKFLOW = (ROOT / ".github" / "workflows" / "daily-citations.yml").read_text(encoding="utf8")
+
+
+def job(name):
+    """The text of one job in the workflow."""
+    start = WORKFLOW.index(f"\n  {name}:\n")
+    nxt = re.search(r"\n  [a-z-]+:\n", WORKFLOW[start + 1:])
+    return WORKFLOW[start:start + 1 + nxt.start()] if nxt else WORKFLOW[start:]
+
+
+class FailureReporting(unittest.TestCase):
+    def test_failure_job_covers_every_job_including_setup(self):
+        report = job("report-failure")
+        self.assertIn("needs: [check, deploy]", report)
+        self.assertIn("if: failure() || cancelled()", report)
+        self.assertIn("Citation check failed", report)
+        # It must not depend on a checkout or an action that could itself fail to set up.
+        self.assertNotIn("uses:", report)
+        self.assertIn("GH_REPO:", report)
+
+    def test_failure_job_is_least_privilege(self):
+        perms = re.search(r"permissions:\n((?:      .*\n)+)", job("report-failure")).group(1)
+        self.assertEqual(perms.split(), ["issues:", "write"])
+
+    def test_failure_is_no_longer_a_step_inside_check(self):
+        self.assertNotIn("if: failure()", job("check"))
+
+    def test_heartbeat_is_confirmed_after_the_push(self):
+        check = job("check")
+        self.assertLess(check.index("git push"), check.index("check_freshness.py"))
+        self.assertIn("--max-age-days 0", check)
+
+    def test_comment_only_when_announcement_has_content(self):
+        self.assertIn('[ -s "$RUNNER_TEMP/announcement.md" ]', job("check"))
+        self.assertIn("--announce", job("check"))
+
+
+class Freshness(unittest.TestCase):
+    TODAY = datetime.date(2026, 11, 18)
+
+    def test_fresh_stale_and_missing(self):
+        self.assertIsNone(check_freshness.problem({"last_run": "2026-11-17"}, self.TODAY))
+        self.assertIn("4 days ago", check_freshness.problem({"last_run": "2026-11-14"}, self.TODAY))
+        self.assertIsNotNone(check_freshness.problem({}, self.TODAY))
+        self.assertIsNotNone(check_freshness.problem({"last_run": "soon"}, self.TODAY))
+        self.assertIsNotNone(check_freshness.problem({"last_run": "2026-11-17"}, self.TODAY, max_age_days=0))
+
+    def test_cli_exit_codes(self):
+        import tempfile
+        today = datetime.datetime.now(datetime.timezone.utc).date()
+        with tempfile.TemporaryDirectory() as tmp, mock.patch("sys.stdout", new_callable=io.StringIO), \
+                mock.patch("sys.stderr", new_callable=io.StringIO):
+            path = Path(tmp) / "status.json"
+            path.write_text(json.dumps({"last_run": today.isoformat()}))
+            self.assertEqual(check_freshness.main([str(path), "--max-age-days", "0"]), 0)
+            path.write_text(json.dumps({"last_run": (today - datetime.timedelta(days=1)).isoformat()}))
+            self.assertEqual(check_freshness.main([str(path), "--max-age-days", "0"]), 1)
+            self.assertEqual(check_freshness.main([str(Path(tmp) / "missing.json")]), 1)
+
+    @unittest.skipIf(os.environ.get("GITHUB_ACTIONS"),
+                     "the workflow checks the heartbeat it just pushed instead; failing here would block recovery")
+    def test_daily_heartbeat_is_recent(self):
+        """Fails when the daily run has stopped saving status.json (the schedule lapsed or every run fails)."""
+        dates = [json.loads((ROOT / "data" / "status.json").read_text("utf8")).get("last_run")]
+        shown = subprocess.run(["git", "-C", str(ROOT), "show", "origin/main:data/status.json"],
+                               capture_output=True, text=True)
+        if shown.returncode == 0:
+            dates.append(json.loads(shown.stdout).get("last_run"))
+        newest = max(d for d in dates if d)
+        message = check_freshness.problem({"last_run": newest}, datetime.date.today())
+        self.assertIsNone(message, f"{message} Fetch origin; if it is still stale, check the Actions tab.")
 
 
 class Build(unittest.TestCase):
