@@ -429,6 +429,44 @@ class Review(unittest.TestCase):
         self.assertNotIn("<img", out)
 
 
+class ApplyReviewMain(unittest.TestCase):
+    def test_main_applies_every_kind_of_tick(self):
+        import tempfile
+        item = dict(Review.ITEM)
+        other = dict(Review.ITEM, pmid="3", doi="10.1/other")
+        listed = dict(apply_review.to_reading_entry(dict(Review.ITEM, pmid="4", doi="10.1/listed"), "2026-11-01"))
+        state = {"open": []}
+        daily_check.record_alerts(state, [dict(Alerts.ALERT)], TODAY)
+        body = daily_check.render_issue({"pending": [item, other], "seen": []}, state["open"], [], TODAY, [listed])
+        body = (body.replace("- [ ] Approve <!-- review:2:", "- [x] Approve <!-- review:2:")
+                    .replace("- [ ] Dismiss <!-- review:3:", "- [x] Dismiss <!-- review:3:")
+                    .replace("- [ ] Page checked", "- [x] Page checked")
+                    .replace("- [ ] Dismiss <!-- alert:", "- [x] Dismiss <!-- alert:"))
+        with tempfile.TemporaryDirectory() as tmp:
+            data = Path(tmp)
+            (data / "review_queue.json").write_text(json.dumps({"pending": [item, other], "seen": ["2", "3"]}))
+            (data / "reading_list.json").write_text(json.dumps([listed]))
+            (data / "alerts.json").write_text(json.dumps(state))
+            (data / "issue.md").write_text(body)
+            out = io.StringIO()
+            with mock.patch.object(apply_review, "QUEUE", data / "review_queue.json"), \
+                    mock.patch.object(apply_review, "READING_LIST", data / "reading_list.json"), \
+                    mock.patch.object(apply_review, "ALERTS", data / "alerts.json"), \
+                    mock.patch.object(sys, "argv", ["apply_review.py", str(data / "issue.md")]), \
+                    mock.patch("sys.stdout", out):
+                apply_review.main()
+            queue = json.loads((data / "review_queue.json").read_text())
+            reading = {e["pmid"]: e for e in json.loads((data / "reading_list.json").read_text())}
+            alerts = json.loads((data / "alerts.json").read_text())
+        self.assertEqual(queue["pending"], [])
+        self.assertEqual(reading["2"]["page_check"], "open")      # approved, check still to do
+        self.assertNotIn("3", reading)                            # dismissed
+        self.assertNotEqual(reading["4"]["page_check"], "open")   # page check done
+        self.assertEqual(alerts["open"], [])                      # notice dismissed
+        self.assertIn("1 approved to the reading list, 1 dismissed, 1 page checks done, 1 notices dismissed",
+                      out.getvalue())
+
+
 class Preprints(unittest.TestCase):
     def test_detects_preprints_by_type_name_and_doi(self):
         from resolve_dois import is_preprint
@@ -440,6 +478,13 @@ class Preprints(unittest.TestCase):
         self.assertFalse(is_preprint(doi="10.1101/lm.041012.115", journal="Learning & Memory"))
         self.assertFalse(is_preprint(doi="10.1016/j.neuron.2021.06.008", journal="Neuron",
                                      crossref_type="journal-article"))
+
+    def test_server_name_alone_marks_a_preprint(self):
+        # If a server moves to a DOI prefix we do not know, its name still gives it away.
+        from resolve_dois import is_preprint
+        for journal in ("bioRxiv : the preprint server for biology", "medRxiv", "arXiv"):
+            with self.subTest(journal=journal):
+                self.assertTrue(is_preprint(doi="10.99999/x", journal=journal))
 
     def test_no_current_source_is_a_preprint(self):
         refs = json.loads((Path(__file__).resolve().parent.parent / "data" / "references.json").read_text("utf8"))
@@ -560,6 +605,8 @@ class QueueSize(unittest.TestCase):
         errors = [f"Lookup failed for 10.1/{i}: " + "x" * 2000 for i in range(300)]
         out = daily_check.render_issue(self.queue(300, long), alerts, errors, TODAY, reading)
         self.assertLessEqual(len(out.encode("utf8")), daily_check.ISSUE_BODY_BUDGET)
+        # The per-block budget does the work; the blunt truncation fallback never fires.
+        self.assertNotIn("_Truncated._", out)
         # Shown boxes still parse, so whatever is visible can be acted on.
         self.assertTrue(apply_review.parse_alert_dismissals(out.replace("- [ ] Dismiss", "- [x] Dismiss")))
 
@@ -590,6 +637,39 @@ class WatchQueries(unittest.TestCase):
             with self.subTest(group=group):
                 self.assertTrue(term.endswith(" NOT preprint[pt]"))
                 self.assertEqual(term.count("(") , term.count(")"))
+
+    @staticmethod
+    def and_clauses(term):
+        """The top-level AND clauses of a PubMed query (before its NOT)."""
+        term = term.rsplit(" NOT ", 1)[0].strip()
+        while term.startswith("(") and term.endswith(")") and WatchQueries.balanced(term[1:-1]):
+            term = term[1:-1]
+        parts, depth, start = [], 0, 0
+        for i, c in enumerate(term):
+            depth += (c == "(") - (c == ")")
+            if depth == 0 and term.startswith(" AND ", i):
+                parts.append(term[start:i])
+                start = i + 5
+        return parts + [term[start:]]
+
+    @staticmethod
+    def balanced(text):
+        depth = 0
+        for c in text:
+            depth += (c == "(") - (c == ")")
+            if depth < 0:
+                return False
+        return depth == 0
+
+    def test_critical_period_query_requires_a_neural_plasticity_term(self):
+        # The old query was (cp OR pnn) AND plasticity AND (brain OR cortex OR neuron*), which
+        # let through papers on "critical periods" of behavioural or phenotypic plasticity.
+        clauses = self.and_clauses(self.QUERIES["cp"])
+        self.assertGreaterEqual(len(clauses), 4, clauses)
+        neural = clauses[-1]
+        for t in ('"dendritic spine*"', '"structural plasticity"', "parvalbumin", '"ocular dominance"',
+                  "hippocamp*", "synap*"):
+            self.assertIn(f"{t}[tiab]", neural)
 
     def test_bare_plasticity_needs_a_neural_term(self):
         # "plasticity" alone matched phenotypic, psychological and materials plasticity.
