@@ -75,11 +75,18 @@ def crossref_notices(doi):
 
 
 def pubmed_summaries(pmids):
+    """PubMed summaries by PMID. Raises when PubMed gives no usable reply (404, or no
+    "result"), so an outage is never mistaken for "no retraction". A PMID PubMed skips or
+    returns with an error is left out; callers treat it as not checked."""
     if not pmids:
         return {}
     q = urllib.parse.urlencode({"db": "pubmed", "retmode": "json", "id": ",".join(pmids)})
-    result = (get_json(f"{EUTILS}/esummary.fcgi?{q}") or {}).get("result", {})
-    return {uid: result[uid] for uid in result.get("uids", [])}
+    reply = get_json(f"{EUTILS}/esummary.fcgi?{q}")
+    result = reply.get("result") if isinstance(reply, dict) else None
+    if not isinstance(result, dict) or not isinstance(result.get("uids"), list):
+        raise RuntimeError(f"PubMed esummary gave no result for {len(pmids)} PMIDs")
+    return {uid: result[uid] for uid in result["uids"]
+            if isinstance(result.get(uid), dict) and "error" not in result[uid]}
 
 
 def check_references(refs, today):
@@ -95,6 +102,9 @@ def check_references(refs, today):
     for ref in refs:
         doi = ref.get("doi")
         if summaries is None and ref.get("pmid"):
+            failed.add(doi)
+        elif ref.get("pmid") and ref["pmid"] not in summaries:
+            errors.append(f"PubMed gave no record for PMID {ref['pmid']} ({doi}); retraction check incomplete")
             failed.add(doi)
         try:
             record = crossref_record(doi)

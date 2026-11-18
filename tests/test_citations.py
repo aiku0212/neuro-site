@@ -31,7 +31,8 @@ class CheckReferences(unittest.TestCase):
         rec = mock.Mock(side_effect=record_error) if record_error else mock.Mock(return_value=record)
         with mock.patch.object(daily_check, "crossref_record", rec), \
                 mock.patch.object(daily_check, "crossref_notices", return_value=list(notices)), \
-                mock.patch.object(daily_check, "pubmed_summaries", return_value=summaries or {}), \
+                mock.patch.object(daily_check, "pubmed_summaries", return_value=summaries if summaries is not None
+                                  else {r["pmid"]: {} for r in refs if r.get("pmid")}), \
                 mock.patch.object(daily_check.time, "sleep"):
             return daily_check.check_references(refs, TODAY)
 
@@ -118,6 +119,39 @@ class FailedLookups(unittest.TestCase):
             _, errors, failed = daily_check.check_references(refs, TODAY)
         self.assertEqual(failed, {"10.1/a"})
         self.assertTrue(any("PubMed" in e for e in errors))
+
+    def test_pubmed_partial_reply_counts_as_failed(self):
+        refs = [ref(doi="10.1/a", pmid="1"), ref(doi="10.1/b", pmid="2"), ref(doi="10.1/c", pmid=None)]
+        _, errors, failed = self.run_check(refs, {"is-referenced-by-count": 5}, summaries={"1": {}})
+        self.assertEqual(failed, {"10.1/b"})
+        self.assertTrue(any("PMID 2" in e for e in errors))
+
+    def esummary(self, reply=None, error=None):
+        with mock.patch.object(daily_check, "get_json", return_value=reply, side_effect=error) as get:
+            return daily_check.pubmed_summaries(["1", "2"]), get
+
+    def test_pubmed_soft_failures_raise(self):
+        # A 404 (get_json gives None) or a 200 without "result" is an outage, not "no retraction".
+        for reply in (None, {"esummaryresult": ["Unable to obtain query #1"]}, {"result": {}}, []):
+            with self.subTest(reply=reply), self.assertRaises(RuntimeError):
+                self.esummary(reply)
+
+    def test_pubmed_drops_uids_it_could_not_summarise(self):
+        reply = {"result": {"uids": ["1", "2"], "1": {"pubtype": []}, "2": {"uid": "2", "error": "cannot get"}}}
+        summaries, _ = self.esummary(reply)
+        self.assertEqual(summaries, {"1": {"pubtype": []}})
+
+    def test_pubmed_404_fails_every_pmid_reference(self):
+        refs = [ref(doi="10.1/a", pmid="1"), ref(doi="10.1/b", pmid=None)]
+        with mock.patch.object(daily_check, "get_json", return_value=None), \
+                mock.patch.object(daily_check, "crossref_record", return_value={"is-referenced-by-count": 5}), \
+                mock.patch.object(daily_check, "crossref_notices", return_value=[]), \
+                mock.patch.object(daily_check.time, "sleep"):
+            _, errors, failed = daily_check.check_references(refs, TODAY)
+        self.assertEqual(failed, {"10.1/a"})
+        self.assertTrue(any("PubMed" in e for e in errors))
+        checked, _ = daily_check.checked_status(refs, failed, {}, TODAY)
+        self.assertNotEqual(checked, TODAY)
 
     def test_threshold(self):
         self.assertFalse(daily_check.too_many_failures(set(range(5)), 84))
