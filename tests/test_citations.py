@@ -1,4 +1,6 @@
 import io
+import json
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -108,7 +110,6 @@ class FailedLookups(unittest.TestCase):
         self.assertEqual((checked, failed), ("2026-01-01", {"10.1/b": "2026-01-01"}))
 
     def run_main(self, record_error=None):
-        import json
         import tempfile
         refs = [ref(doi=f"10.1/{i}", pmid=None) for i in range(10)]
         with tempfile.TemporaryDirectory() as tmp:
@@ -273,7 +274,6 @@ class Preprints(unittest.TestCase):
                                      crossref_type="journal-article"))
 
     def test_no_current_source_is_a_preprint(self):
-        import json
         refs = json.loads((Path(__file__).resolve().parent.parent / "data" / "references.json").read_text("utf8"))
         self.assertEqual(build_refs.blocked(refs), [])
 
@@ -331,7 +331,6 @@ class Announce(unittest.TestCase):
         self.assertNotIn("@user", text)
 
     def test_main_writes_comment_only_when_new(self):
-        import json
         import tempfile
         with tempfile.TemporaryDirectory() as tmp:
             data = Path(tmp)
@@ -393,6 +392,24 @@ class QueueSize(unittest.TestCase):
         queue = {"pending": [dict(Review.ITEM)], "seen": ["2"]}
         self.assertEqual(daily_check.expire_queue(queue, TODAY), 0)
         self.assertEqual(queue["pending"][0]["queued"], TODAY)
+
+
+class WatchQueries(unittest.TestCase):
+    QUERIES = json.loads((Path(__file__).resolve().parent.parent / "data" / "watch_queries.json").read_text("utf8"))
+
+    def test_every_query_excludes_preprints(self):
+        for group, term in self.QUERIES.items():
+            with self.subTest(group=group):
+                self.assertTrue(term.endswith(" NOT preprint[pt]"))
+                self.assertEqual(term.count("(") , term.count(")"))
+
+    def test_bare_plasticity_needs_a_neural_term(self):
+        # "plasticity" alone matched phenotypic, psychological and materials plasticity.
+        for group in ("psy", "cp"):
+            term = self.QUERIES[group]
+            with self.subTest(group=group):
+                for m in re.finditer(r'(?<!")\bplasticity\[tiab\]', term):
+                    self.assertTrue(term[m.end():].startswith(" AND ("), term[m.start() - 20:m.end() + 20])
 
 
 class Build(unittest.TestCase):
