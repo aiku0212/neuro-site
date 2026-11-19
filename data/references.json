@@ -144,7 +144,7 @@
     "authors": "Polyakova et al.",
     "year": 2015,
     "journal": "Journal of Affective Disorders",
-    "citations": 461,
+    "citations": 462,
     "meta_analysis": true,
     "verification": {
       "status": "confirmed",
@@ -1311,10 +1311,10 @@
       "reasons": [
         "Added in claim check"
       ],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "citations": 440,
-    "citations_checked": "2026-11-18"
+    "citations_checked": "2026-11-19"
   },
   {
     "group": "found",
@@ -1390,20 +1390,20 @@
     "authors": "Howard & Kahana",
     "year": 2002,
     "journal": "Journal of Mathematical Psychology",
-    "citations": 908,
+    "citations": 909,
     "tag": null,
     "meta_analysis": false,
     "note": "Temporal context model: context changes as earlier contexts are retrieved, which can explain recency and contiguity effects in free recall",
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "A distributed representation of temporal context",
     "site_year": 2002,
     "citations_at_compile": 908,
     "doi": "10.1006/jmps.2001.1388",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2002
   },
@@ -1413,21 +1413,21 @@
     "authors": "MacDonald et al.",
     "year": 2011,
     "journal": "Neuron",
-    "citations": 1127,
+    "citations": 1128,
     "tag": null,
     "meta_analysis": false,
     "note": "Rats: hippocampal time cells fire at successive moments of an empty gap between two events",
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Hippocampal \"time cells\" bridge the gap in memory for discontiguous events",
     "site_year": 2011,
     "citations_at_compile": 1127,
     "doi": "10.1016/j.neuron.2011.07.012",
     "pmid": "21867888",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2011
   },
@@ -1444,14 +1444,14 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "A scale-invariant internal representation of time",
     "site_year": 2012,
     "citations_at_compile": 126,
     "doi": "10.1162/neco_a_00212",
     "pmid": "21919782",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2012
   },
@@ -1468,14 +1468,14 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "A unified mathematical framework for coding time, space, and sequences in the hippocampal region",
     "site_year": 2014,
     "citations_at_compile": 171,
     "doi": "10.1523/jneurosci.5808-12.2014",
     "pmid": "24672015",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2014
   },
@@ -1485,21 +1485,21 @@
     "authors": "Tsao et al.",
     "year": 2018,
     "journal": "Nature",
-    "citations": 485,
+    "citations": 486,
     "tag": null,
     "meta_analysis": false,
     "note": "Freely foraging rats: lateral entorhinal population activity encodes time from seconds to hours",
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Integrating time from experience in the lateral entorhinal cortex",
     "site_year": 2018,
     "citations_at_compile": 485,
     "doi": "10.1038/s41586-018-0459-6",
     "pmid": "30158699",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2018
   },
@@ -1516,14 +1516,14 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "A temporal record of the past with a spectrum of time constants in the monkey entorhinal cortex",
     "site_year": 2020,
     "citations_at_compile": 106,
     "doi": "10.1073/pnas.1917197117",
     "pmid": "32747574",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2020
   },
@@ -1540,14 +1540,14 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Time cells in the human hippocampus and entorhinal cortex support episodic memory",
     "site_year": 2020,
     "citations_at_compile": 196,
     "doi": "10.1073/pnas.2013250117",
     "pmid": "33109718",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2020
   },
@@ -1564,14 +1564,14 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Internally generated time in the rodent hippocampus is logarithmically compressed",
     "site_year": 2022,
     "citations_at_compile": 31,
     "doi": "10.7554/elife.75353",
     "pmid": "36250631",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2022
   },
@@ -2163,14 +2163,14 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Equal numbers of neuronal and nonneuronal cells make the human brain an isometrically scaled-up primate brain",
     "site_year": 2009,
     "citations_at_compile": 2051,
     "doi": "10.1002/cne.21974",
     "pmid": "19226510",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2009
   },
@@ -2187,14 +2187,14 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Total number and distribution of inhibitory and excitatory synapses on hippocampal CA1 pyramidal cells",
     "site_year": 2001,
     "citations_at_compile": 868,
     "doi": "10.1016/s0306-4522(00)00496-6",
     "pmid": "11226691",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2001
   },
@@ -2211,13 +2211,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Dendritic morphology of pyramidal neurones of the visual cortex of the rat: III. Spine distributions",
     "site_year": 1991,
     "citations_at_compile": 204,
     "doi": "10.1002/cne.903060209",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 1991
   },
@@ -2234,13 +2234,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Dendritic spine geometry is critical for AMPA receptor expression in hippocampal CA1 pyramidal neurons",
     "site_year": 2001,
     "citations_at_compile": 1461,
     "doi": "10.1038/nn736",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2001
   },
@@ -2250,20 +2250,20 @@
     "authors": "Matsuzaki et al.",
     "year": 2004,
     "journal": "Nature",
-    "citations": 2259,
+    "citations": 2260,
     "tag": null,
     "meta_analysis": false,
     "note": "Rat hippocampal slice cultures: stimulating single spines enlarges them, persistently in small spines, with stronger AMPA currents",
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Structural basis of long-term potentiation in single dendritic spines",
     "site_year": 2004,
     "citations_at_compile": 2259,
     "doi": "10.1038/nature02617",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2004
   },
@@ -2280,13 +2280,13 @@
     "verification": {
       "status": "confirmed",
       "reasons": [],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "site_title": "Do thin spines learn to be mushroom spines that remember?",
     "site_year": 2007,
     "citations_at_compile": 834,
     "doi": "10.1016/j.conb.2007.04.009",
-    "citations_checked": "2026-11-18",
+    "citations_checked": "2026-11-19",
     "updates": [],
     "crossref_year": 2007
   },
@@ -2307,10 +2307,10 @@
       "reasons": [
         "Added in claim check"
       ],
-      "checked": "2026-11-18"
+      "checked": "2026-11-19"
     },
     "citations": 30,
-    "citations_checked": "2026-11-18"
+    "citations_checked": "2026-11-19"
   },
   {
     "group": "psy",
