@@ -3,11 +3,16 @@
 import html
 import json
 import re
+import sys
 from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from resolve_dois import is_preprint  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 PAGE = ROOT / "references.html"
 DATA = ROOT / "data" / "references.json"
+STATUS = ROOT / "data" / "status.json"
 
 
 def esc(text):
@@ -35,22 +40,25 @@ def notice_url(update):
     return f'https://pubmed.ncbi.nlm.nih.gov/{update["pmid"]}/'
 
 
-def update_index_counts(text, refs):
-    """Keep the citation counts quoted on the Evidence page in step with the data."""
-    for ref in refs:
-        if ref.get("citations") is None:
-            continue
-        pattern = (r"(cite:'" + re.escape(esc(ref["authors"])) + r", <em>[^<]*</em> "
-                   + str(ref["year"]) + r" \\u00B7 )[\d,]+( citations')")
-        text = re.sub(pattern, lambda m: f'{m.group(1)}{ref["citations"]}{m.group(2)}', text)
-    return text
+def checked_date(refs, status):
+    """The date by which every reference had been checked, as daily_check recorded it.
+
+    Never the newest check: if some lookups failed, the page shows the oldest date."""
+    if "checked" in status:
+        return status["checked"] or "not yet"
+    return min(r["verification"]["checked"] for r in refs)
+
+
+def blocked(refs):
+    """Titles that must not appear as confirmed sources: unconfirmed records and preprints."""
+    return [r["title"] for r in refs
+            if r["verification"]["status"] != "confirmed" or is_preprint(r.get("doi"), r.get("journal"))]
 
 
 def main():
     refs = json.loads(DATA.read_text(encoding="utf8"))
-    blocked = [r["title"] for r in refs if r["verification"]["status"] != "confirmed"]
-    if blocked:
-        raise SystemExit(f"Refusing to build; unconfirmed references: {blocked}")
+    if blocked(refs):
+        raise SystemExit(f"Refusing to build; unconfirmed or preprint references: {blocked(refs)}")
     payload = json.dumps([page_record(r) for r in refs], indent=1).replace("</", "<\\/")
     src = PAGE.read_text(encoding="utf8")
     src, n = re.subn(r"var REFS=(?:/\*refs:start\*/)?\[.*?\](?:/\*refs:end\*/)?;\n\nvar GROUPS",
@@ -58,14 +66,13 @@ def main():
                      src, count=1, flags=re.S)
     if n != 1:
         raise SystemExit("Could not find the REFS block in references.html")
-    checked = max(r["verification"]["checked"] for r in refs)
+    status = json.loads(STATUS.read_text(encoding="utf8")) if STATUS.exists() else {}
+    checked = checked_date(refs, status)
     src, n = re.subn(r"<!--checked:start-->.*?<!--checked:end-->",
                      f"<!--checked:start-->{checked}<!--checked:end-->", src, count=1, flags=re.S)
     if n != 1:
         raise SystemExit("Could not find the checked-date marker in references.html")
     PAGE.write_text(src, encoding="utf8")
-    index = ROOT / "index.html"
-    index.write_text(update_index_counts(index.read_text(encoding="utf8"), refs), encoding="utf8")
     print(f"Built references.html from {len(refs)} references, checked {checked}")
 
 

@@ -20,12 +20,18 @@ DATA = ROOT / "data" / "references.json"
 UA = {"User-Agent": "neuroscope-citation-check/1.0"}
 TITLE_MIN = 0.90
 
+# Preprint servers, by name and by DOI (10.64898 is on the bioRxiv records seen in the
+# review queue). 10.1101 is shared with Cold Spring Harbor journals (10.1101/gad...,
+# 10.1101/gr...), so only its numeric bioRxiv/medRxiv form counts.
+PREPRINT_NAME = re.compile(r"biorxiv|medrxiv|arxiv|research square|preprints\.org|ssrn|preprint server", re.I)
+PREPRINT_DOI = re.compile(r"^10\.(1101/(\d{4}\.\d{2}\.\d{2}\.)?\d{6,}|64898/|21203/rs\.|48550/|2139/ssrn\.|20944/preprints)", re.I)
 
-def get_json(url, tries=5):
+
+def get_json(url, tries=5, timeout=30):
     for attempt in range(tries):
         try:
             req = urllib.request.Request(url, headers=UA)
-            with urllib.request.urlopen(req, timeout=30) as resp:
+            with urllib.request.urlopen(req, timeout=timeout) as resp:
                 return json.load(resp)
         except urllib.error.HTTPError as err:
             if err.code == 404:
@@ -38,6 +44,12 @@ def get_json(url, tries=5):
             if attempt == tries - 1:
                 raise
             time.sleep(2 ** (attempt + 1))
+
+
+def is_preprint(doi=None, journal=None, crossref_type=None):
+    """True for a preprint: Crossref type posted-content, a preprint server's name or its DOI prefix."""
+    return (crossref_type == "posted-content" or bool(PREPRINT_DOI.match((doi or "").strip()))
+            or bool(PREPRINT_NAME.search(journal or "")))
 
 
 def norm(text):

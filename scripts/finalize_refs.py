@@ -15,7 +15,7 @@ import urllib.parse
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from resolve_dois import first_author, get_json, norm  # noqa: E402
+from resolve_dois import first_author, get_json, is_preprint, norm  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 DATA = ROOT / "data" / "references.json"
@@ -107,7 +107,7 @@ def main():
                     problems.append(f"Crossref lists no author; PubMed gave {pm_author}")
             if year is None or abs(year - ref["site_year"]) > 2:
                 problems.append(f'year {ref["site_year"]} vs {year}')
-            if msg.get("type") == "posted-content":
+            if is_preprint(doi=doi, journal=journal, crossref_type=msg.get("type")):
                 problems.append("DOI is a preprint")
             if not problems:
                 ref["doi"] = doi
