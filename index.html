@@ -2,12 +2,23 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>The Plastic Brain</title>
+<title>Neuroscope: Neuroplasticity Evidence Review</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <meta name="theme-color" content="#f6f7f9">
 <meta name="description" content="An evidence review of neuroplasticity: what the studies measured, including the null results.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neuroscope">
+<meta property="og:title" content="Neuroscope: Neuroplasticity Evidence Review">
+<meta property="og:description" content="An evidence review of neuroplasticity: what the studies measured, including the null results.">
+<meta property="og:url" content="https://aiku0212.github.io/neuro-site/">
+<meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Neuroscope: interactive models of the brain, neurons and synapses, and an evidence review of neuroplasticity.">
+<meta name="twitter:card" content="summary_large_image">
 
 <style>
   :root{
@@ -95,7 +106,7 @@
   .shut:hover{color:var(--ink); border-color:var(--muted)}
 
   /* ---------- prose ---------- */
-  main{max-width:760px; margin:0 auto; padding:clamp(56px,9vw,104px) 24px}
+  .prose{max-width:760px; margin:0 auto; padding:clamp(56px,9vw,104px) 24px}
   .lede{font-size:clamp(19px,2.4vw,23px); line-height:1.55; color:var(--ink);
     margin:0 0 48px; text-wrap:pretty}
   .lede strong{color:var(--amber); font-weight:400}
@@ -221,15 +232,16 @@
 </div>
 
 <div class="wrap">
+<main>
 
   <section class="stage">
-    <canvas id="brain"></canvas>
+    <canvas id="brain" role="img" aria-label="Point-cloud drawing of a brain that turns slowly unless reduced motion is on; drag to rotate. Colors and names mark the frontal, parietal, temporal and occipital lobes, the cerebellum and the brainstem. Choosing one of the five findings measured in a region highlights that region."></canvas>
 
     <div class="masthead">
       <p class="eyebrow mono">Neuroplasticity &middot; Evidence Review</p>
       <h1 class="serif">The brain works<br>to stop <em>learning</em></h1>
       <p class="dek">Ten findings on how plasticity opens, what writes into it,
-        and why closing the window is a feature. Colors show the lobes. Pick a
+        and why closing the window is a feature. Colors and labels show the lobes. Pick a
         finding to see where it was measured.</p>
     </div>
 
@@ -275,7 +287,7 @@
       <div class="bench-grid">
         <div class="scope">
           <span class="scope-tag">Presynaptic terminal &rarr; cleft &rarr; dendritic spine</span>
-          <canvas id="syn"></canvas>
+          <canvas id="syn" role="img" aria-label="Schematic synapse, from presynaptic terminal across the cleft to a dendritic spine, for the intervention chosen above. Receptor levels and spine size show direction only, not measured amounts."></canvas>
         </div>
         <aside class="note">
           <h4 class="serif" id="s-title"></h4>
@@ -287,7 +299,7 @@
     </div>
   </section>
 
-  <main>
+  <div class="prose">
     <p class="lede serif">Blood BDNF is the measure most often used to sell these
       interventions. <strong>Exercise has the strongest evidence for moving it.</strong>
       Yoga and meditation trend upward in small or uncontrolled studies, fasting results
@@ -401,10 +413,11 @@
       <p>Which reframes the goal. Not maximum plasticity — <strong>plasticity you can
         open and close on purpose.</strong></p>
     </div>
-  </main>
+  </div>
+</main>
 
   <footer class="mono">
-    Compiled from Consensus, PubMed &amp; ClinicalTrials.gov &middot; August 2026<br>
+    Compiled from Consensus, PubMed &amp; ClinicalTrials.gov &middot; August 2026, updated November 2026<br>
     Figures are sourced on the <a href="references.html" style="color:inherit">Sources page</a>. Nulls included.<br>
     Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a>
   </footer>
@@ -467,9 +480,9 @@
      cite:'Woo et al., <em>Nat. Neurosci.</em> 2005 · Yang et al., <em>Cell Reports</em> 2014'},
     {id:'cbl', loc:false, name:'Blood, after exercise', ev:'Human crossover study, 12 men',
      where:'Measured in blood, not in the brain.',
-     title:'The window is sixty minutes wide',
-     stat:'15 min', statlabel:'peak, baseline by 60',
-     body:'In 12 young men, high-intensity intervals raised serum BDNF above moderate and low intensity, which did not differ from each other. The rise peaked at fifteen minutes and was gone within the hour.',
+     title:'A rise that fades within the hour',
+     stat:'15 min', statlabel:'peak, fading by 60',
+     body:'In 12 young men, high-intensity intervals raised serum BDNF above moderate and low intensity, which did not differ from each other. The rise peaked at fifteen minutes and by sixty minutes was no longer clearly above baseline.',
      cite:'Birinci et al., <em>Scientific Reports</em> 2026'},
     {id:'stem', loc:false, name:'Blood, after psychedelics', ev:'Human meta-analysis, 29 studies',
      where:'Measured in blood, not in the brain.',
@@ -577,15 +590,25 @@
   var PATH='#c0573a';
 
   // recentre the cloud: cerebellum + brainstem drag the centroid downward
+  var YC=0;
   (function(){
     var sy=0,k; for(k=0;k<P.length;k++) sy+=P[k].y;
     sy/=P.length; for(k=0;k<P.length;k++) P[k].y-=sy;
+    YC=sy;
   })();
 
+  // Lobe names drawn on the brain, so telling the lobes apart does not rest on
+  // color alone (parietal and cerebellum look alike to red-green color vision).
+  // Positions are the color anchors above; each name sits on the hemisphere
+  // facing the viewer and fades as its lobe turns away.
+  var NAMES=[['Frontal',30,-14,46],['Parietal',30,-34,-10],['Occipital',24,-12,-58],
+             ['Temporal',44,22,6],['Cerebellum',20,34,-52],['Brainstem',0,50,-18]];
+
   var RM={}; REG.forEach(function(r){RM[r.id]=r;});
-  var rx=0.16, ry=0.5, vx=0, vy=0.0022, drag=false, px=0, py=0, moved=0;
-  var active=null, hot=null, t0=performance.now();
   var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  // Without rotation, start side-on, where all six lobe names are visible.
+  var rx=0.16, ry=reduce?1.25:0.5, vx=0, vy=0.0022, drag=false, px=0, py=0, moved=0;
+  var active=null, hot=null, t0=performance.now();
 
   function size(){
     var b=C.getBoundingClientRect();
@@ -638,6 +661,20 @@
       var rad=DPR*(1.15+f2*1.55)*(lit?1.45:1);
       X.beginPath(); X.arc(p.X,p.Y,rad,0,6.284); X.fill();
       if(lit){ X.globalAlpha=0.10; X.beginPath(); X.arc(p.X,p.Y,rad*2.6,0,6.284); X.fill(); }
+    }
+
+    // lobe names
+    X.font='600 '+Math.round((Math.min(w,h)/DPR<520?11:13)*DPR)+'px Figtree, system-ui, sans-serif';
+    X.textAlign='center'; X.textBaseline='middle'; X.lineJoin='round';
+    X.lineWidth=3.5*DPR; X.strokeStyle='rgba(246,247,249,.92)'; X.fillStyle='#1f2a35';
+    for(k=0;k<NAMES.length;k++){
+      var nm=NAMES[k], near=project({x:nm[1], y:nm[2]-YC, z:nm[3]});
+      if(nm[1]){ var far=project({x:-nm[1], y:nm[2]-YC, z:nm[3]}); if(far.z>near.z) near=far; }
+      var vis=Math.max(0,Math.min(1,(near.z+45)/45));
+      if(vis<0.5) continue;
+      X.globalAlpha=dim?0.75:1;
+      var lx=cx+near.x*scale, ly=cy+near.y*scale;
+      X.strokeText(nm[0],lx,ly); X.fillText(nm[0],lx,ly);
     }
     X.globalAlpha=1;
     requestAnimationFrame(draw);
@@ -716,12 +753,12 @@
         body:'Fluoxetine binds a partly overlapping TrkB site, far more weakly. Signaling only shifts after the drug accumulates over weeks, which may explain why the clinical response is slow rather than immediate.',
         cite:'Casarotto et al., <em>Cell</em> 2021 &middot; Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
       ket:{label:'Ketamine', spine:1.3, title:'Disinhibition, then a burst',
-        rec:[['nmda','NMDA (blocked)',1],['glu','Glutamate surge',.9],['trkb','TrkB',.8],['pnn','Perineuronal net',.35]],
+        rec:[['nmda','NMDA (blocked)',.1],['glu','Glutamate surge',.9],['trkb','TrkB',.8],['pnn','Perineuronal net',.35]],
         body:'In one leading model, built mostly on rat studies, ketamine blocks NMDA receptors that drive inhibitory interneurons, releasing the brake on pyramidal cells. The signalling that follows activates mTOR and adds new spine synapses in prefrontal cortex within hours. Other mechanisms are proposed, including a metabolite that acts without blocking NMDA receptors. In a small trial, depression improved within about two hours of one infusion, against weeks for standard antidepressants.',
         cite:'Homayoun &amp; Moghaddam, <em>J. Neurosci.</em> 2007 &middot; Li et al., <em>Science</em> 2010 &middot; Zanos et al., <em>Nature</em> 2016 &middot; Zarate et al., <em>Arch. Gen. Psychiatry</em> 2006'},
-      ex:{label:'Exercise', spine:1.18, title:'Sixty minutes, then gone',
+      ex:{label:'Exercise', spine:1.18, title:'Peaks at fifteen minutes, fading by sixty',
         rec:[['bdnf','Circulating BDNF',1],['trkb','TrkB',.75],['p75','p75NTR',.3],['pnn','Perineuronal net',.5]],
-        body:'High-intensity intervals raise serum BDNF well above moderate and low intensity, which do not differ from each other. It peaks at fifteen minutes and is back to baseline within the hour. Of the interventions here, it has the strongest pooled evidence for moving the blood measure, though serum is a noisy readout: platelets store BDNF and release it when activated, so serum BDNF is not a direct measure of the brain.',
+        body:'In one study of 12 young men, high-intensity intervals raised serum BDNF well above moderate and low intensity, which did not differ from each other. BDNF peaked at fifteen minutes and was no longer clearly above baseline by sixty minutes. Of the interventions here, exercise has the strongest pooled evidence for moving the blood measure, though serum is a noisy readout: platelets store BDNF and release it when activated, so serum BDNF is not a direct measure of the brain.',
         cite:'Birinci et al., <em>Scientific Reports</em> 2026 &middot; Gholami et al., <em>Exp. Gerontology</em> 2024 &middot; Fujimura et al., <em>Thromb. Haemost.</em> 2002'},
       dep:{label:'Depression', spine:.62, title:'Signalling withdrawn',
         rec:[['trkb','TrkB',.18],['p75','p75NTR',.85],['bdnf','Circulating BDNF',.25],['pnn','Perineuronal net',.85]],
@@ -831,9 +868,9 @@
       var ul=document.getElementById('s-list'); ul.innerHTML='';
       st.rec.forEach(function(r){
         var li=document.createElement('li');
-        li.className = r[2]>=0.7?'up':(r[2]<=0.3?'down':'');
-        li.innerHTML='<span class="swatch" style="background:'+COL[r[0]]+'"></span>'+
-          r[1]+'<span class="lvl">'+Math.round(r[2]*100)+'%</span>';
+        // Names only: the drawing shows direction against baseline. The values are
+        // hand-set, not measured, so they get no number or level word.
+        li.innerHTML='<span class="swatch" style="background:'+COL[r[0]]+'"></span>'+r[1];
         ul.appendChild(li);
       });
       document.querySelectorAll('.sw').forEach(function(b){

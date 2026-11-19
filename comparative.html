@@ -2,12 +2,23 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Comparative Neuropsychiatry</title>
+<title>Comparative Neuropsychiatry · Neuroscope</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <meta name="theme-color" content="#f6f7f9">
 <meta name="description" content="The same psychiatric drugs are given to people and dogs, but a dog cannot describe a symptom. What FDA adverse-event data can and cannot show.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neuroscope">
+<meta property="og:title" content="Comparative Neuropsychiatry · Neuroscope">
+<meta property="og:description" content="The same psychiatric drugs are given to people and dogs, but a dog cannot describe a symptom. What FDA adverse-event data can and cannot show.">
+<meta property="og:url" content="https://aiku0212.github.io/neuro-site/comparative.html">
+<meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Neuroscope: interactive models of the brain, neurons and synapses, and an evidence review of neuroplasticity.">
+<meta name="twitter:card" content="summary_large_image">
 
 <style>
   :root{
@@ -101,6 +112,7 @@
   .card .link{margin-top:auto;padding-top:12px;border-top:1px solid var(--rule);
     font-size:11.5px;color:var(--muted)}
   .card .link b{color:var(--violet);font-weight:400}
+  .bridges .card{border-style:dashed}
   @media (max-width:820px){.bridges{grid-template-columns:1fr}}
 
   .caveat{background:var(--panel);border:1px solid var(--rule);
@@ -143,8 +155,8 @@
   <div class="counts mono">
     <div><b>1,378,854</b><span>Vet adverse-event reports</span></div>
     <div><b>21,054,159</b><span>Human FAERS reports</span></div>
-    <div><b>13 / 40</b><span>Top dog terms with a human match</span></div>
-    <div><b>5.22&times;</b><span>Canine lethargy vs human lethargy or somnolence</span></div>
+    <div><b>12 / 40</b><span>Top dog terms with a human match</span></div>
+    <div><b>5.55&times;</b><span>Canine lethargy vs human lethargy or somnolence</span></div>
   </div>
 
   <div class="caveat">
@@ -155,7 +167,7 @@
   <!-- ============ 1. SHARED PHARMACOLOGY ============ -->
   <div class="sec">
     <h2 class="mono">Shared pharmacology</h2>
-    <p class="gnote">The Synapse Bench on the Evidence page models fluoxetine binding
+    <p class="gnote">The &ldquo;What each thing actually binds&rdquo; section of the Evidence page models fluoxetine binding
       TrkB weakly, and ketamine disinhibiting the local network. Both of those drugs are
       given to dogs. So are most of the others.</p>
 
@@ -167,7 +179,7 @@
             <td><b>Fluoxetine</b></td>
             <td>Depression, OCD</td>
             <td class="rx">Separation anxiety &mdash; FDA-approved for dogs</td>
-            <td>SSRI state, Synapse Bench</td>
+            <td>SSRI state, Evidence page</td>
           </tr>
           <tr>
             <td><b>Trazodone</b></td>
@@ -178,14 +190,14 @@
           <tr>
             <td><b>Gabapentin</b></td>
             <td>Seizures, neuropathic pain</td>
-            <td class="rx">Anxiety, pain &mdash; the 9,028-report cohort</td>
+            <td class="rx">Anxiety, pain &mdash; the 8,444-report cohort</td>
             <td>Not yet modelled</td>
           </tr>
           <tr>
             <td><b>Ketamine</b></td>
             <td>Depression, anaesthesia</td>
             <td class="rx">Anaesthesia; analgesia</td>
-            <td>Ketamine state, Synapse Bench</td>
+            <td>Ketamine state, Evidence page</td>
           </tr>
         </tbody>
       </table>
@@ -199,7 +211,13 @@
   <div class="sec">
     <h2 class="mono">The observability collapse</h2>
     <p class="gnote">The percentages are measured; the reading below them is a hypothesis. openFDA, November 2026. Gabapentin reaction profiles, canine versus
-      human, drawn from the two FDA spontaneous-reporting systems.</p>
+      human, drawn from the two FDA spontaneous-reporting systems. Dog figures count
+      safety reports only: 8,444 of 9,028. Almost all of the 584 left out are reports that a
+      product did not work. Gabapentin is rarely the main product in these dog reports: in the
+      first 100 safety reports openFDA returns, it was never the first drug listed, which was
+      usually another veterinary drug such as bedinvetmab, grapiprant or carprofen. So the dog
+      figures almost always describe reports in which gabapentin was given alongside something else, not
+      reactions to gabapentin alone. The human figures also count gabapentin in any role.</p>
 
     <div class="scope">
       <p class="scope-tag">Human self-report &rarr; owner observation &middot; gabapentin</p>
@@ -240,21 +258,25 @@
         <circle cx="530" cy="150" r="34" fill="#b24e33" opacity=".13"/>
         <circle cx="530" cy="150" r="9" fill="#b24e33"/>
         <text class="sink-t" x="574" y="146">Lethargy</text>
-        <text class="sink-p" x="574" y="166">16.76% dog &middot; 3.21% human</text>
+        <text class="sink-p" x="574" y="166">17.82% dog &middot; 3.21% human</text>
 
         <text class="axis" x="8" y="308">21% of human reports list at least one of these six symptoms</text>
       </svg>
     </div>
 
-    <p>The naive read is that dogs are five times more prone to gabapentin lethargy. (The human figure pools two terms: 0.59% of reports say lethargy and 2.71% say somnolence, 3.21% with either. Treating them as one symptom is a judgment call, and using lethargy alone would make the gap far larger.) That read is probably wrong, and the reason is the whole problem. <strong>About a fifth of human gabapentin reports list an internal state</strong> — pain, fatigue, nausea, headache, dizziness or anxiety — that is hard to see from outside. Owners can record some of it: pain appears in 5.33% of dog reports. A dog experiencing the same pharmacology may produce one word in the record, because that may be the only word the observer has. Different patient populations and reasons for prescribing also contribute.</p>
+    <p>The naive read is that dogs are more than five times as prone to gabapentin lethargy. (The human figure pools two terms: 0.59% of reports say lethargy and 2.71% say somnolence, 3.21% with either. Treating them as one symptom is a judgment call, and using lethargy alone would make the gap far larger.) That read is probably wrong, and the reason is the whole problem. <strong>About a fifth of human gabapentin reports list an internal state</strong> — pain, fatigue, nausea, headache, dizziness or anxiety — that is hard to see from outside. Owners can record some of it: pain appears in 5.64% of dog reports. A dog experiencing the same pharmacology may produce one word in the record, because that may be the only word the observer has. Different patient populations and reasons for prescribing also contribute.</p>
 
     <p class="pull serif">Canine "lethargy" may not be one symptom. It may be a compression artifact — an entire subjective symptom space flattened into the one thing a human
       can see from across the room.</p>
 
-    <p>This generalizes past pharmacovigilance. Every supervised model of an animal
-      internal state — pain, anxiety, distress, welfare — trains on labels that are a
-      human's inference about an animal that cannot be asked. There is no held-out
-      ground truth, because the patient cannot be interviewed. That is the wall this
+    <p>This generalizes past pharmacovigilance. Supervised models that recognize pain
+      in animals learn from one of two kinds of label: an expert's reading of the
+      animal's behaviour, or whether it was recorded during a stimulus expected to be
+      painful. Neither is the animal's own report, because the patient cannot be
+      interviewed. Models of emotional states such as anxiety or distress face the same
+      gap. A 2024 review of automated pain recognition calls the lack of a consistent
+      ground truth a significant limitation (Chiavaccini et al., <em>Frontiers in
+      Veterinary Science</em> 2024). That is the wall this
       work exists to attack.</p>
   </div>
 
@@ -269,6 +291,7 @@
     <div class="bridges">
       <div class="card">
         <p class="k">Bridge 01 &middot; Critical periods</p>
+        <p class="fig-note"><span class="fig-kind" data-kind="hypothesis">Unsourced hypothesis</span></p>
         <h3 class="serif">The socialization window</h3>
         <p>The Evidence page argues critical periods are actively shut by molecular
           brakes, and uses songbirds to show the closing schedule is tuned by species.
@@ -281,16 +304,19 @@
 
       <div class="card">
         <p class="k">Bridge 02 &middot; Compulsion</p>
+        <p class="fig-note"><span class="fig-kind" data-kind="hypothesis">Unsourced hypothesis</span></p>
         <h3 class="serif">Canine compulsive disorder</h3>
         <p>Tail-chasing and acral lick dermatitis are treated as a naturally occurring
           model of human OCD — same drug class responds, and breed concentration implies
           genetic architecture rather than pure environment. A spontaneous animal model
           in a shared household environment, which no rodent model gets.</p>
-        <p class="link">Extends <b>SSRI &middot; TrkB</b> state on the Synapse Bench</p>
+        <p class="link">Extends <b>&ldquo;What each thing actually binds&rdquo;</b> &middot;
+          SSRI state</p>
       </div>
 
       <div class="card">
         <p class="k">Bridge 03 &middot; Decline</p>
+        <p class="fig-note"><span class="fig-kind" data-kind="hypothesis">Mostly unsourced</span></p>
         <h3 class="serif">Cognitive dysfunction</h3>
         <p>Canine cognitive dysfunction syndrome involves amyloid pathology and presents
           as disorientation, altered social interaction, and sleep-cycle disruption. Dogs
@@ -308,9 +334,10 @@
     <p>The four counts at the top and the gabapentin figures are computed, reproducible
       from openFDA count queries, and carry the limitations documented alongside the
       analysis — spontaneous reports have no denominator, and disproportionality is not
-      risk.</p>
+      risk. The note that gabapentin is rarely the first drug listed comes from records
+      retrieved in openFDA's default order, not from a count query.</p>
     <p><strong>The bridge sections are not yet sourced.</strong> They are hypotheses
-      written from background knowledge, with no links to specific papers, and have not been
+      written from background knowledge, with at most one citation each, and have not been
       checked against current literature. Treat them as directions for research, not as
       evidence, and please do not cite them.</p>
   </div>

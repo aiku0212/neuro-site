@@ -2,12 +2,23 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Action Potential</title>
+<title>Action Potential · Neuroscope</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <meta name="theme-color" content="#f6f7f9">
 <meta name="description" content="An interactive model of the action potential based on Hodgkin and Huxley.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neuroscope">
+<meta property="og:title" content="Action Potential · Neuroscope">
+<meta property="og:description" content="An interactive model of the action potential based on Hodgkin and Huxley.">
+<meta property="og:url" content="https://aiku0212.github.io/neuro-site/spike.html">
+<meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Neuroscope: interactive models of the brain, neurons and synapses, and an evidence review of neuroplasticity.">
+<meta name="twitter:card" content="summary_large_image">
 
 <style>
   :root{
@@ -145,8 +156,8 @@
     <div class="scopes">
       <div class="scope">
         <span class="scopelabel mono">Membrane potential, mV</span>
-        <canvas id="scopeV" width="1400" height="560"
-          aria-label="Membrane voltage over time. Threshold, peak, and afterhyperpolarization are marked."></canvas>
+        <canvas id="scopeV" role="img" width="1400" height="560"
+          aria-label="Membrane voltage over time. When the membrane fires, threshold and peak are marked."></canvas>
       </div>
       <div class="legend mono">
         <span><i style="background:var(--na)"></i>m, sodium activation</span>
@@ -155,12 +166,12 @@
       </div>
       <div class="scope">
         <span class="scopelabel mono">Gates open, 0 to 1</span>
-        <canvas id="scopeG" width="1400" height="300"
+        <canvas id="scopeG" role="img" width="1400" height="300"
           aria-label="Gating variables m, h and n over time."></canvas>
       </div>
       <div class="scope">
         <span class="scopelabel mono">Conductance, mS per cm squared</span>
-        <canvas id="scopeC" width="1400" height="300"
+        <canvas id="scopeC" role="img" width="1400" height="300"
           aria-label="Sodium and potassium conductances over time."></canvas>
       </div>
     </div>
@@ -203,14 +214,16 @@
   </section>
 
   <div class="phases">
-    <div class="phase"><b>1. Rest</b><span>Leak and the pump hold about -65 mV. The h gate sits
-      open, waiting, which is the part people forget.</span></div>
+    <div class="phase"><b>1. Rest</b><span>Potassium, sodium and leak currents balance at about
+      -65 mV. The model has no pump; it treats the ion gradients as fixed. The h gate sits
+      mostly open, waiting, which is the part people forget.</span></div>
     <div class="phase"><b>2. Upstroke</b><span>m opens in tenths of a millisecond. Sodium enters,
       depolarizing further, opening more m. Positive feedback with no brake yet.</span></div>
     <div class="phase"><b>3. Repolarization</b><span>h closes and n opens, both slower than m.
       Sodium shuts off while potassium leaves. The membrane falls.</span></div>
     <div class="phase"><b>4. Undershoot</b><span>n is still open past rest, so the membrane
-      overshoots downward toward E_K before settling. This is the refractory period.</span></div>
+      overshoots downward toward E_K before settling. The refractory period overlaps this dip but
+      is not the same thing: it starts earlier, during the spike itself.</span></div>
   </div>
 
   <h2 class="serif">Three experiments that make the point</h2>
@@ -220,32 +233,38 @@
   <div class="exp">
     <div class="card">
       <h3>All or none</h3>
-      <div class="scope"><canvas id="expAON" width="900" height="480"
-        aria-label="Six traces at increasing stimulus strength. Below threshold nothing happens, above it every spike is the same height."></canvas></div>
+      <div class="scope"><canvas id="expAON" role="img" width="900" height="480"
+        aria-label="Six traces at increasing stimulus strength. Below threshold nothing happens; above it every spike reaches nearly the same height."></canvas></div>
       <p>Six stimulus strengths straddling the model's threshold, about 13.3 uA/cm&sup2; for a half
-        millisecond pulse. Below it the membrane sags back. Above it every spike is the same height:
-        35 uA/cm&sup2; buys a peak of 40 mV where 13.5 buys about 36. A stronger push does not make a
-        bigger spike, it makes an earlier one. Intensity is carried by rate, not amplitude.</p>
+        millisecond pulse. Below it the membrane sags back. Above it every pulse gives a full spike of nearly
+        the same height: 35 uA/cm&sup2; buys a peak of about 41 mV where 13.5 buys about 36. Pushing
+        much harder adds only a few millivolts; mostly it makes the spike come earlier. Intensity is
+        carried by rate, not amplitude.</p>
     </div>
     <div class="card">
       <h3>Refractory period</h3>
-      <div class="scope"><canvas id="expREF" width="900" height="480"
+      <div class="scope"><canvas id="expREF" role="img" width="900" height="480"
         aria-label="Paired pulses at 8, 14, 17 and 22 milliseconds showing the second response blocked then returning at full height."></canvas></div>
-      <p>Two identical pulses, separated by 8, 14, 17 and 22 ms. The second is blocked outright
-        until about 17 ms, because the h gate has not released its inactivation yet. Then it comes
-        back at full height. There is no half sized spike anywhere in between, which is the all or
-        none rule seen from a second angle. This sets the ceiling on firing rate, and it is why a
+      <p>Two identical pulses, separated by 8, 14, 17 and 22 ms. In this model the second
+        pulse fails until the gap reaches about 15 ms. Near that limit the cause is potassium: its
+        channels are still slightly open and the membrane is still about 3 mV below rest. At shorter
+        gaps, sodium channels are also still recovering from inactivation (the h gate). By 17 ms the second spike is back at full height. There is no half sized spike
+        anywhere in between, which is the all or none rule seen from a second angle. The block is not
+        total, though: a much stronger second pulse, 80 uA/cm&sup2;, fires a slightly smaller spike
+        at an 11 ms gap. The refractory period sets the ceiling on firing rate, and it is why a
         spike cannot run backwards down the axon.</p>
     </div>
     <div class="card">
       <h3>Temperature</h3>
-      <div class="scope"><canvas id="expTMP" width="900" height="480"
-        aria-label="Traces at 6.3, 10, 14 and 17 degrees showing faster smaller spikes when warm and failure at 17."></canvas></div>
+      <div class="scope"><canvas id="expTMP" role="img" width="900" height="480"
+        aria-label="Traces at 6.3, 10, 14 and 17 degrees showing faster, smaller spikes when warm, and no spike at 17 for this stimulus strength."></canvas></div>
       <p>The same axon at 6.3, 10, 14 and 17 C. Rates scale by a Q10 of 3, so warming makes the
         spike faster and smaller: the peak falls from 38 mV to 29 mV between 6.3 and 14 C. At 17 C
-        this stimulus stops firing at all. Potassium now activates fast enough to cancel sodium
-        before it can run away. That is heat block, and it appeared in these equations before anyone
-        cornered it at the bench.</p>
+        this 15 uA/cm&sup2; stimulus no longer fires. Potassium now opens, and sodium inactivates,
+        fast enough to stop the runaway. That is a raised threshold, not heat block: it has gone from
+        about 13.3 to about 15.3 uA/cm&sup2;, and a slightly stronger pulse still fires. Real squid
+        axons keep firing far warmer than this: Hodgkin and Katz (1949) found a reversible heat block
+        between 35 and 40 C.</p>
     </div>
   </div>
 
@@ -272,6 +291,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     <a href="timecells.html">Up a level: populations keeping time</a>
     <a href="references.html">Sources</a>
     <span>Hodgkin AL, Huxley AF. J Physiol 117:500-544, 1952.</span>
+    <span>Hodgkin AL, Katz B. J Physiol 109:240-249, 1949.</span>
     <span>Educational model. Not medical or veterinary advice.</span>
     <a href="about.html">About and limits</a>
   </footer>
@@ -512,7 +532,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     if (state.ttx) v.textContent = "With sodium blocked the membrane can only charge passively. This is what tetrodotoxin does, and why pufferfish poisoning stops nerves rather than muscles specifically.";
     else if (state.tea) v.textContent = "With potassium blocked there is nothing to bring the membrane back down quickly. The spike broadens badly. TEA was the original tool for showing that the falling phase is a separate conductance.";
     else if (!m.fired) v.textContent = "Below threshold. The membrane charges, leaks the charge back out, and nothing happens. Push the stimulus up.";
-    else v.textContent = "Fired. Note the peak stays near " + m.peak.toFixed(0) + " mV no matter how much harder you push.";
+    else v.textContent = "Fired. Near 6.3 C the peak stays near " + m.peak.toFixed(0) + " mV even when you push much harder; warm the axon and spike size starts to depend on the stimulus.";
   }
 
   // ---------------------------------------------------------- experiments
@@ -526,7 +546,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     });
     plot(el("expAON"), { height:190, tMax:25, tStep:5, yMin:-90, yMax:60,
       ticks:[{at:-55, label:"-55", color:vio, dash:true}, {at:-65, label:"rest", dash:true}],
-      series:series, note:"4 to 35 uA/cm2, threshold 13.5" });
+      series:series, note:"4 to 35 uA/cm2, threshold about 13.3" });
   }
 
   function drawREF(){

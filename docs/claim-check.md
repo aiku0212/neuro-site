@@ -40,14 +40,14 @@ Calder (29 studies, SMD 0.024, p = 0.64), Moliner (1,000-fold), Shao 2021 (about
 - **Exercise:** "most serum BDNF comes from platelets" has no source on the page.
 - **Pharmacology page:** stimulant, opioid, benzodiazepine and cannabinoid mechanisms still lack primary citations.
 - **Comparative, unverified:** the bridge sections, including "dogs age roughly seven times faster," which is a known oversimplification. Register figures (69k, 63k, 112k, 17 synonyms, 6 of ~40 terms) have not been rechecked.
-- **Not checked at all:** Spike and Time Cells page claims, the nine references listed on the Time Cells page, spine dimensions on the Spines page, and the Comparative indications table beyond fluoxetine.
+- **Not checked at all:** Spike page claims outside the passages listed under the 2026-11-18 pass; the Time Cells page's sentences (its nine references now have DOIs and are on the Sources page, but the sentences have not been compared with them); spine dimensions on the Spines page; and the Comparative indications table beyond fluoxetine.
 - **Abstract only:** most papers were compared by abstract. Closed-access papers, including van Dongen, Woo and Takesian & Hensch, were not read in full.
 - **Corrections not read:** Shao 2025, Schosser 2022 and Holtmaat & Svoboda 2009.
+- **Corrections read, 2026-11-18:** Cahn 2017 has two notices. A 2022 corrigendum (doi 10.3389/fnhum.2022.868021) corrects the funding statement, which now says a co-author paid the experimental costs by private donation, and adds a conflict-of-interest statement not disclosed before: that co-author organized data collection and analyzed results, and the senior author is Scientific Director of the Chopra Foundation. In it the authors say this does not change the scientific conclusions. A 2023 erratum (doi 10.3389/fnhum.2023.1278043) amends that statement again on the editorial office's advice and corrects two authors' affiliations, adding the Chopra Foundation for the senior author. Both notices were read in full on PubMed Central.
 
 ## For the author to decide
 
 - The headline "The brain pays to stop learning": sources support active closure, but not an energy cost.
-- "Every supervised model of an animal internal state" has "no held-out ground truth" (Comparative): this is an uncited generalization.
 - Brain-region placement on the Evidence page: for example, a serum BDNF study sits on the cerebellum.
 - Whether to publish the open problem register on the Comparative page. It reads as an internal research plan.
 
@@ -71,7 +71,7 @@ Still open: spine dimensions need Harris & Stevens 1989 in full text (the journa
 
 ## Pharmacology pass, 2026-11-17
 
-Each drug class now lists three or four harms and limits. Every bullet was drafted from a source the drafter opened (FDA labels and safety communications, CDC, NIDA, DEA, or a peer-reviewed paper), checked a second time by an independent reviewer, and read by a final reviewer for doses, use tips and US-only advice. Harm sources are linked under each list; the 13 that have DOIs are also on the Sources page.
+Each drug class now lists three or four harms and limits. Every bullet was drafted from a source the drafter opened (FDA labels and safety communications, CDC, NIDA, DEA, or a peer-reviewed paper), checked a second time in a separate AI-assisted pass, and read in a final AI-assisted pass for doses, use tips and US-only advice. No pharmacist or physician has reviewed them. Harm sources are linked under each list; the 13 that have DOIs are also on the Sources page.
 
 | Class | Corrected | Source |
 |---|---|---|
@@ -87,3 +87,41 @@ Each drug class now lists three or four harms and limits. Every bullet was draft
 | Cannabinoids | "Partial agonist" applies to THC only; synthetics are full agonists. THC skips the retrograde step | Tai & Fantegrossi 2017 |
 
 Still open on this page: psilocybin may be rescheduled if FDA approves a psilocybin product in 2027; recheck the label then.
+
+## Claim pass, 2026-11-18
+
+Each change below was drafted in one AI-assisted pass from the source or the page's own model, then checked in a second, separate AI-assisted pass that tried to refute it; two further AI-assisted passes then reread the whole change. No outside expert has reviewed these changes. Model figures come from running the page's own code. Citation counts and correction notices were checked on Crossref. Sixteen sources were added to the Sources page.
+
+| Page | Corrected | Source |
+|---|---|---|
+| Spike | The second identical pulse fires from a 15 ms gap, not about 17 ms; the block is relative, since an 80 uA/cm² pulse fires at an 11 ms gap. Potassium activation, not only the h gate, delays recovery | The page's model; Hodgkin & Huxley 1952 |
+| Spike | The undershoot is not the refractory period; the refractory period starts during the spike | The page's model; Hodgkin & Huxley 1952 |
+| Spike | The model has no pump; rest is where the currents balance | Hodgkin & Huxley 1952 |
+| Spike | At 17 C the threshold rises (about 13.3 to 15.3 uA/cm²); it is not heat block, and the uncited history claim is gone. Real squid axons show reversible heat block at 35 to 40 C | The page's model; Hodgkin & Katz 1949 |
+| Spike | Threshold given as about 13.3 everywhere; the voltage chart's label no longer mentions an undrawn afterhyperpolarization mark | The page's model |
+| Explore | 86 billion neurons and 16 billion in the cerebral cortex cited; the uncited "thousands of synapses" clause removed | Azevedo et al. 2009 |
+| Explore | Single-neuron caption cited Yang 2014, a proBDNF paper; now cites rat CA1 input counts | Megías et al. 2001 |
+| Explore | TrkB binding now says "in cell and mouse studies" | Moliner et al. 2023 |
+| Explore | Perineuronal-net line toned down to what the source shows | Lensjø et al. 2017 |
+| Spines | Species named (rat); "~10,000 spines per cortical cell" is 8,000 to 15,000 by cell type in rat visual cortex | Larkman 1991 |
+| Spines | "Almost linear" AMPA claim softened; "thin spines grow into mushroom spines" is "can grow toward"; "the learning spine" is a proposal | Matsuzaki et al. 2001, 2004; Bourne & Harris 2007 |
+| Evidence | Schematic bars no longer print "100%"; they say high, medium or low | The page's own values are hand-set |
+| Evidence | Exercise: "12 young men" added; "back to baseline within the hour" is "no longer clearly above baseline by sixty minutes", in the card titles too | Birinci et al. |
+| Comparative | Unsourced bridge cards are labelled "Unsourced hypothesis" | — |
+| Comparative | "No held-out ground truth" rewritten and cited | Chiavaccini et al. 2024 |
+| Comparative | "Synapse Bench" (an internal name) replaced with the visible section name | — |
+| Comparative | Gabapentin figures recomputed on safety reports: 8,444 reports, lethargy 17.82%, 5.55× (supersedes the 5.22× and 13 of 40 above), 12 of 40 terms, pain 5.64%. Added that gabapentin is rarely the main product in these dog reports | Live openFDA queries, 2026-11-18 |
+| About | Ketamine line and the Pharmacology pass brought up to date | — |
+| Time | Internal project name removed from the footer | — |
+
+Also in this pass, after a second read of the whole branch:
+
+| Page | Corrected | Source |
+|---|---|---|
+| Spike | "Every spike is the same height" is "nearly the same height"; the simulator note says spike size depends on the stimulus once the axon is warm | The page's model |
+| Explore | The membrane card no longer chains Moliner and Vargas into one mechanism; it says the two groups disagree | Moliner et al. 2023; Vargas et al. 2023 |
+| Evidence | The bench list no longer prints level words for hand-set values; under ketamine the blocked NMDA receptor is drawn dimmed, not brighter | The page's own values are hand-set |
+| Evidence | Exercise title: BDNF was already up right after exercise and peaked at fifteen minutes | Birinci et al. 2026 |
+
+Still open from this pass: on the Comparative page, gabapentin is listed alongside another drug in almost every dog report, so the comparison may need a different cohort (for example reports where gabapentin is the first drug listed). On the Spike page, the TTX and TEA notes were not checked. On the Spines page, "that neck is a resistor" overstates Harris & Stevens 1989. On the Evidence page, the directions the hand-set bench values imply (for example perineuronal nets under psilocybin and ketamine) have not been checked against sources. Hodgkin & Katz 1949 was read from the scanned pages on PubMed Central; its summary states the 35 to 40 C heat block.
+

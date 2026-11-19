@@ -96,6 +96,7 @@ class PublicPages(unittest.TestCase):
     def test_internal_plans_are_not_published(self):
         self.assertNotIn("Open problem register", read("comparative"))
         self.assertNotRegex(read("timecells"), r"Project [123]")
+        self.assertNotIn("Neural Causality", read("timecells"))
         self.assertTrue((ROOT / "docs" / "open-problem-register.md").exists())
         self.assertTrue((ROOT / "docs" / "time-model-research-plan.md").exists())
 
@@ -126,6 +127,74 @@ class PublicPages(unittest.TestCase):
                 result = subprocess.run(["node", "--check", f.name], capture_output=True, text=True)
                 Path(f.name).unlink()
                 self.assertEqual(result.returncode, 0, result.stderr[-400:])
+
+    def test_pages_name_the_site_and_have_link_previews(self):
+        base = "https://aiku0212.github.io/neuro-site/"
+        self.assertTrue((ROOT / "assets" / "favicon.svg").exists())
+        self.assertTrue((ROOT / "assets" / "og.png").exists())
+        for name in PUBLIC:
+            page = read(name)
+            head = page[:page.index("<style")] if "<style" in page else page[:3000]
+            with self.subTest(page=name):
+                self.assertIn("Neuroscope", re.search(r"<title>([^<]*)</title>", head).group(1))
+                self.assertIn('<link rel="icon" href="assets/favicon.svg"', head)
+                desc = re.search(r'<meta name="description" content="([^"]*)">', head).group(1)
+                self.assertIn(f'<meta property="og:description" content="{desc}">', head)
+                self.assertIn(f'<meta property="og:image" content="{base}assets/og.png">', head)
+                url = base if name == "index" else f"{base}{name}.html"
+                self.assertIn(f'<meta property="og:url" content="{url}">', head)
+                self.assertIn('<meta name="twitter:card" content="summary_large_image">', head)
+                title = re.search(r"<title>([^<]*)</title>", head).group(1)
+                self.assertIn(f'<meta property="og:title" content="{title}">', head)
+                self.assertIn('<meta property="og:image:width" content="1200">', head)
+                self.assertIn('<meta property="og:image:height" content="630">', head)
+
+    def test_visuals_have_text_for_screen_readers(self):
+        for name in PUBLIC:
+            for tag in re.findall(r"<canvas\b[^>]*>", read(name)):
+                with self.subTest(page=name, canvas=tag[:40]):
+                    self.assertIn('role="img"', tag)
+                    self.assertRegex(tag, r'aria-label="[^"]{20,}"')
+
+    def test_pages_have_one_h1_and_a_main_landmark(self):
+        for name in PUBLIC:
+            page = read(name)
+            with self.subTest(page=name):
+                self.assertEqual(len(re.findall(r"<h1\b", page)), 1)
+                self.assertTrue("<main" in page or 'role="main"' in page)
+
+    def test_animation_respects_reduced_motion(self):
+        checks = {"index": "if(!drag && !reduce) ry+=vy;",
+                  "app": "if(!drag&&!reduce) ry+=",
+                  "synapse": "autoYaw = !reduceMotion",
+                  "pharma": "var vp=reduce?0.5:",
+                  "timecells": "var zoom = reduce ? 1 : 0"}
+        for name, code in checks.items():
+            with self.subTest(page=name):
+                page = read(name)
+                self.assertRegex(page, r"= *(window\.matchMedia && )?matchMedia\('\(prefers-reduced-motion: ?reduce\)'\)\.matches;")
+                self.assertIn(code, page)
+        self.assertIn("ry=reduce?1.25:0.5", read("index"))
+
+    def test_app_heading_is_hidden_not_removed(self):
+        self.assertIn('<h1 class="sr-only">', read("app"))
+        self.assertIn(".sr-only{position:absolute", (ROOT / "assets" / "atlas.css").read_text(encoding="utf8"))
+
+    def test_main_landmark_holds_the_heading_and_the_models(self):
+        for name in PUBLIC:
+            page = read(name)
+            if "<main" not in page:
+                continue
+            start, end = page.index("<main"), page.index("</main>")
+            with self.subTest(page=name):
+                for m in re.finditer(r"<h1\b|<canvas\b", page):
+                    self.assertTrue(start < m.start() < end, page[m.start():m.start() + 40])
+
+    def test_home_page_names_the_lobes(self):
+        page = read("index")
+        self.assertIn("var NAMES=[['Frontal'", page)
+        self.assertIn("X.fillText(nm[0],lx,ly)", page)
+        self.assertIn("y:nm[2]-YC", page)
 
     def test_pages_state_they_are_not_advice(self):
         for name in PUBLIC:

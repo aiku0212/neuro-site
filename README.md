@@ -4,11 +4,14 @@ An educational site about neuroplasticity: what the studies measured, including 
 results, with interactive models of the spike, dendritic spines and time cells. It is not
 medical or veterinary advice.
 
+**Live site: <https://aiku0212.github.io/neuro-site/>**
+
 ## Pages
 
 The published site is nine static pages: `index` (Evidence), `app` (Explore and Analyze),
 `spike`, `synapse` (Spines), `pharma`, `comparative`, `timecells`, `references` (Sources)
-and `about`. Shared styles are in `assets/atlas.css`. `explore.html` and `morphometry.html`
+and `about`. Shared styles are in `assets/atlas.css`; `assets/favicon.svg` and
+`assets/og.png` (the link-preview image) are published with them. `explore.html` and `morphometry.html`
 are older versions kept in the repository but not published.
 
 ## Sources and checks
