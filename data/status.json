@@ -1,8 +1,12 @@
 {
   "last_run": "2026-11-19",
+  "checked": "2026-11-19",
+  "lookup_failed": {},
   "references": 100,
   "alerts": 0,
+  "open_alerts": 0,
   "new_papers": 0,
   "pending_review": 5,
+  "expired": 0,
   "errors": 0
 }

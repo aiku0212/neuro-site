@@ -1,15 +1,15 @@
 Last run: 2026-11-19
 
 ## New papers to review (5)
-Tick one box per paper. The next daily run applies it.
+Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources. Papers not reviewed within 90 days expire.
 
 **Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.**  
-Parkes et al., bioRxiv : the preprint server for biology, 2026 · group `cp` · https://doi.org/10.64898/2026.10.21.760719
+Parkes et al., bioRxiv : the preprint server for biology, 2026 · group `cp` · https://doi.org/10.64898/2026.10.21.760719 · **preprint, not peer reviewed**
 - [ ] Approve <!-- review:42996008:approve -->
 - [ ] Dismiss <!-- review:42996008:dismiss -->
 
 **Artificial selection diversifies birdsong through polygenic changes across sensory and motor systems.**  
-Gazda et al., bioRxiv : the preprint server for biology, 2026 · group `bird` · https://doi.org/10.64898/2026.10.18.759937
+Gazda et al., bioRxiv : the preprint server for biology, 2026 · group `bird` · https://doi.org/10.64898/2026.10.18.759937 · **preprint, not peer reviewed**
 - [ ] Approve <!-- review:42995877:approve -->
 - [ ] Dismiss <!-- review:42995877:dismiss -->
 
