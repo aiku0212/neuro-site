@@ -7,12 +7,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <meta name="theme-color" content="#f6f7f9">
-<meta name="description" content="Descend from the whole brain to a single receptor, and measure a generated neuron.">
+<meta name="description" content="Zoom from the whole brain down to a single receptor, and measure a computer-generated neuron.">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Neuroscope">
 <meta property="og:title" content="Explore the Brain · Neuroscope">
-<meta property="og:description" content="Descend from the whole brain to a single receptor, and measure a generated neuron.">
+<meta property="og:description" content="Zoom from the whole brain down to a single receptor, and measure a computer-generated neuron.">
 <meta property="og:url" content="https://aiku0212.github.io/neuro-site/app.html">
 <meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
 <meta property="og:image:width" content="1200">
@@ -187,7 +187,7 @@
 
 <div class="stage" role="main">
   <h1 class="sr-only">Explore the brain, from the whole organ to a single receptor</h1>
-  <canvas id="gl" role="img" aria-label="Interactive 3D view. In Explore it zooms from the whole brain through a cortical column, one neuron and a dendritic spine to the membrane; in Analyze it shows a generated neuron to measure. Drag to rotate."></canvas>
+  <canvas id="gl" role="img" aria-label="Interactive 3D view. In Explore it zooms from the whole brain through a cortical column, one neuron and a dendritic spine to the cell membrane. In Analyze it shows a computer-generated neuron to measure. Drag to rotate."></canvas>
   <div class="overlay">
 
     <!-- explore -->
@@ -204,7 +204,7 @@
       <button class="handoff" id="handoff">Measure this neuron &rarr;</button>
     </aside>
     <p class="howto explore-only mono"><span class="fig-kind" data-kind="illustrative">Illustrative model</span>
-      Scroll to descend &middot; drag to rotate &middot; not medical advice</p>
+      Scroll to zoom &middot; drag to rotate &middot; not medical advice</p>
 
     <!-- analyze -->
     <div class="tools analyze-only" id="tools"></div>
@@ -213,23 +213,24 @@
     <aside class="side analyze-only">
       <h3>Morphometrics</h3>
       <div class="big">
-        <div><b class="mono" id="m-len">0</b><span>Length &micro;m</span></div>
+        <div><b class="mono" id="m-len">0</b><span>Total length &micro;m</span></div>
         <div><b class="mono" id="m-spines">0</b><span>Spines</span></div>
       </div>
       <div class="kv"><span>Segments</span><b class="mono" id="m-seg">0</b></div>
       <div class="kv"><span>Branch points</span><b class="mono" id="m-bp">0</b></div>
       <div class="kv"><span>Terminal tips</span><b class="mono" id="m-tip">0</b></div>
       <div class="kv"><span>Max branch order</span><b class="mono" id="m-ord">0</b></div>
-      <div class="kv"><span>Mean segment</span><b class="mono" id="m-mean">0</b></div>
-      <div class="kv"><span>Radial extent</span><b class="mono" id="m-ext">0</b></div>
+      <div class="kv"><span>Mean segment length</span><b class="mono" id="m-mean">0</b></div>
+      <div class="kv"><span>Max distance from soma</span><b class="mono" id="m-ext">0</b></div>
       <div class="kv"><span>Spine density</span><b class="mono" id="m-dens">0</b></div>
+      <p class="cn">Morphometrics are measurements of a neuron&rsquo;s shape. Branch order counts how many times the path from the soma has forked before it reaches a segment.</p>
       <h3>Sholl analysis</h3>
-      <canvas id="sholl" role="img" aria-label="Sholl analysis chart: number of branch intersections with shells every 10 micrometres from the cell body, with the peak marked."></canvas>
-      <p class="cn">Intersections with shells every 10&nbsp;&micro;m from the soma. Peak marked.</p>
+      <canvas id="sholl" role="img" aria-label="Sholl analysis chart showing the number of branch intersections with shells every 10 micrometres from the cell body, with the peak marked."></canvas>
+      <p class="cn">Sholl analysis counts how many branches cross imaginary spheres (shells) drawn every 10&nbsp;&micro;m from the soma. The peak is marked.</p>
       <h3>Selection</h3>
-      <div class="pick" id="pick"><p class="none">Click a filament or spine.</p></div>
-      <p class="cn" style="margin-top:18px">Same neuron as Explore level 3. Grown from a
-        seeded branching model, so every figure is computed from this arbor.</p>
+      <div class="pick" id="pick"><p class="none">Click a dendrite segment or a spine.</p></div>
+      <p class="cn" style="margin-top:18px">This is the same neuron as Explore level 3. A computer
+        model grew it by repeatable random branching, so every number here is computed from this arbor.</p>
     </aside>
 
   </div>
@@ -373,22 +374,22 @@ function fade(c,w){return Math.max(0,1-Math.abs(z-c)/Math.min(w,1));}
 var LEVELS=[
  {tag:'Whole brain',unit:'~140 mm',title:'Eighty-six billion neurons',
   parts:[['Cerebrum','pale'],['Cerebellum','rose'],['Brainstem','sky']],
-  body:'Everything below happens inside this. The cerebral cortex alone holds roughly 16 billion neurons.',cite:'Azevedo et al., <em>J. Comp. Neurol.</em> 2009 &middot; Scale approximate'},
+  body:'Every level after this one zooms further into this brain. The cerebral cortex alone holds roughly 16 billion neurons.',cite:'Azevedo et al., <em>J. Comp. Neurol.</em> 2009 &middot; Scale approximate'},
  {tag:'Cortical network',unit:'~1 mm',title:'A column of the cortex',
   parts:[['Pyramidal cells','amber'],['Interneurons','teal'],['Axons','pale']],
-  body:'Excitatory pyramidal cells wired through inhibitory interneurons. Perineuronal nets form mostly around the parvalbumin interneurons as the juvenile critical period ends, and help limit later rewiring. Removing them in adult rat visual cortex restored juvenile-like plasticity.',
+  body:'Excitatory pyramidal cells are wired together through inhibitory interneurons. The juvenile critical period is a window early in life when the cortex has high plasticity, meaning experience rewires it easily. As that period ends, perineuronal nets (mesh-like coats of protein and sugar) form mostly around parvalbumin interneurons, which are one type of inhibitory cell. The nets help limit later rewiring. Removing them in adult rat visual cortex restored juvenile-like plasticity.',
   cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013 &middot; Lensj&oslash; et al., <em>J. Neurosci.</em> 2017'},
- {tag:'Single neuron',unit:'~100 &micro;m',title:'One cell, tens of thousands of inputs',
+ {tag:'Single neuron',unit:'~100 &micro;m',title:'A single neuron with tens of thousands of inputs',
   parts:[['Dendrites','violet'],['Soma','amber'],['Axon','sky']],
-  body:'Dendrites collect input, the soma integrates it, the axon carries the result away. This is the arbor you can measure in Analyze. For comparison, a single pyramidal cell in the CA1 region of the rat hippocampus receives about 30,000 excitatory and 1,700 inhibitory inputs.',
+  body:'Dendrites collect input, the soma (cell body) combines it, and the axon carries the result to other cells. The branching tree of dendrites is called the arbor, and you can measure this one in Analyze. For comparison, a single pyramidal cell in the CA1 region of the rat hippocampus receives about 30,000 excitatory and 1,700 inhibitory inputs.',
   cite:'Meg&iacute;as et al., <em>Neuroscience</em> 2001'},
- {tag:'Dendritic spine',unit:'~1 &micro;m',title:'The unit that actually changes',
+ {tag:'Dendritic spine',unit:'~1 &micro;m',title:'Spines change in size and number',
   parts:[['Spine head','violet'],['Neck','rose'],['Shaft','pale']],
-  body:'Each bump is one synapse. In mice, a single dose of psilocybin raised spine size and density about 10% within 24 hours, still present a month later.',
+  body:'Each bump on the branch is a spine, and most spines hold a single synapse (a connection from another neuron). In mice, a single dose of psilocybin (the psychedelic in magic mushrooms) increased spine size and density by about 10% within 24 hours, and the increase was still present a month later.',
   cite:'Shao et al., <em>Neuron</em> 2021'},
- {tag:'Membrane',unit:'~10 nm',title:'Where the drug meets the cell',
+ {tag:'Membrane',unit:'~10 nm',title:'Receptors where drugs act',
   parts:[['TrkB','amber'],['p75NTR','rose'],['5-HT2A','violet'],['NMDA','sky']],
-  body:'TrkB builds the synapse, p75NTR dismantles it. In cell and mouse studies, LSD and psilocin bound TrkB about a thousand times more tightly than the antidepressants tested. Another group found that psychedelics instead act on 5-HT2A receptors inside the cell, which serotonin cannot reach. The two groups disagree on which route matters.',
+  body:'TrkB and p75NTR are receptors with opposite effects. TrkB builds the synapse, and p75NTR dismantles it. In cell and mouse studies, LSD and psilocin (the active form of psilocybin) bound TrkB about a thousand times more tightly than the antidepressants tested. Another group found that psychedelics instead act on 5-HT2A serotonin receptors inside the cell, which serotonin itself cannot reach. The two groups disagree on which route matters.',
   cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023'}
 ];
 
@@ -548,7 +549,7 @@ function drawSholl(){
   SX.textAlign='right';SX.fillText(Math.round(STATS.ext)+' µm',w-pad,h-2*D);
   SX.textAlign='center';SX.fillStyle='#D9A05B';
   SX.fillText('peak '+peak.n+' @ '+peak.r+' µm',w/2,11*D);
-  SH.setAttribute('aria-label','Sholl analysis chart: branch intersections with shells every 10 micrometres from the cell body. Peak: '+peak.n+' intersections at '+peak.r+' micrometres.');
+  SH.setAttribute('aria-label','Sholl analysis chart showing branch intersections with shells every 10 micrometres from the cell body. The peak is '+peak.n+' intersections at '+peak.r+' micrometres.');
 }
 function paintStats(){
   document.getElementById('m-len').textContent=fmt(STATS.len);
@@ -589,7 +590,7 @@ addEventListener('wheel',function(e){ if(mode!=='explore')return;
   e.preventDefault(); setZ(zT+e.deltaY*0.0022);},{passive:false});
 
 /* ---------- analyze controls ---------- */
-var MB=[['fil','Filament'],['spn','Spines'],['soma','Soma'],['re','Regrow']];
+var MB=[['fil','Dendrites'],['spn','Spines'],['soma','Soma'],['re','Regrow']];
 var MW=document.getElementById('tools');
 MB.forEach(function(m){var b=document.createElement('button');
   b.className='tool';b.textContent=m[1];
@@ -605,19 +606,19 @@ ORDER_COL.forEach(function(c){var i=document.createElement('i');
 
 function showPick(){
   var el=document.getElementById('pick');
-  if(!sel){el.innerHTML='<p class="none">Click a filament or spine.</p>';return;}
+  if(!sel){el.innerHTML='<p class="none">Click a dendrite segment or a spine.</p>';return;}
   if(sel.kind==='seg'){var s=SEG[sel.i];
     el.innerHTML='<p class="tag mono">Segment #'+sel.i+'</p>'+
       '<div class="kv"><span>Branch order</span><b class="mono">'+s.o+'</b></div>'+
       '<div class="kv"><span>Length</span><b class="mono">'+fmt(s.len,2)+'<u>&micro;m</u></b></div>'+
-      '<div class="kv"><span>Children</span><b class="mono">'+s.kids+'</b></div>'+
+      '<div class="kv"><span>Child branches</span><b class="mono">'+s.kids+'</b></div>'+
       '<div class="kv"><span>Type</span><b class="mono">'+(s.kids?'internal':'terminal')+'</b></div>';
   } else {var p=SPN[sel.i],ho=SEG[p.seg];
     el.innerHTML='<p class="tag mono">Spine #'+sel.i+'</p>'+
       '<div class="kv"><span>On segment</span><b class="mono">#'+p.seg+'</b></div>'+
-      '<div class="kv"><span>Host order</span><b class="mono">'+ho.o+'</b></div>'+
+      '<div class="kv"><span>Segment branch order</span><b class="mono">'+ho.o+'</b></div>'+
       '<div class="kv"><span>Head radius</span><b class="mono">'+fmt(p.head,2)+'<u>&micro;m</u></b></div>'+
-      '<div class="kv"><span>Along shaft</span><b class="mono">'+fmt(p.t*100)+'<u>%</u></b></div>';}
+      '<div class="kv"><span>Position along segment</span><b class="mono">'+fmt(p.t*100)+'<u>%</u></b></div>';}
 }
 function hit(ev){
   var b=C.getBoundingClientRect();

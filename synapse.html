@@ -144,7 +144,7 @@
   <canvas id="gl" role="img" aria-label="Rotatable 3D model of a dendrite segment covered in spines. Drag to rotate, scroll to zoom, click a spine to inspect it."></canvas>
   <div class="mast">
     <p class="eyebrow mono">Dendrite segment &middot; 20 microns</p>
-    <h1 class="serif">Memory has a <em>shape</em>, and this is it</h1>
+    <h1 class="serif">Dendritic spine <em>shape</em> and memory</h1>
     <p class="fig-note"><span class="fig-kind" data-kind="illustrative">Illustrative model</span>
       The four spine classes are drawn to typical proportions, not traced from one cell.</p>
   </div>
@@ -162,7 +162,7 @@
     <div class="inspect" id="inspect">
       <b>Click a spine</b>
       <p id="plastNote">Strengthening a synapse can make the head of a small, thin spine
-        grow, moving it toward the mushroom shape. The slider runs that change.</p>
+        grow, moving it toward the mushroom shape. Move the slider to see that change.</p>
     </div>
   </div>
 
@@ -174,17 +174,20 @@
 </section>
 
 <div class="prose" style="padding-bottom:0">
-  <h2 class="serif">Why the shape is the whole story</h2>
-  <p>A spine is not decoration on a dendrite. It is a chemical compartment with a deliberately
-    narrow neck, and that neck is a resistor. It isolates whatever happens in the head from the rest
-    of the cell, so one synapse can change its own strength without dragging its neighbors with it.
-    Widen the neck and the compartment leaks. Grow the head and the synapse gets stronger, because
-    in rat hippocampus, the bigger the head, the more working AMPA receptors it tends to carry.</p>
+  <h2 class="serif">How a spine's neck and head affect its synapse</h2>
+  <p>A dendritic spine is a small protrusion on a dendrite, one of the branches of a neuron that receive
+    signals from other neurons. A spine is a chemical compartment with a narrow neck. The neck
+    resists the flow of electrical current and molecules, so it keeps whatever happens in the head
+    separate from the rest of the cell. This lets one synapse change its own strength without
+    changing its neighbors. A wider neck weakens this isolation. A larger head makes the synapse
+    stronger, because in rat hippocampus, the bigger the head, the more working AMPA receptors it
+    tends to carry. AMPA receptors are the receptors that produce most of the fast electrical
+    response to glutamate, the chemical messenger at these synapses.</p>
 
   <div class="facts">
     <div class="fact"><b>0.5 to 2 &micro;m</b><span>Total spine length, base to top of head</span></div>
-    <div class="fact"><b>0.1 to 0.3 &micro;m</b><span>Neck diameter, the resistor</span></div>
-    <div class="fact"><b>1 to 3 per &micro;m</b><span>Density on a pyramidal apical dendrite</span></div>
+    <div class="fact"><b>0.1 to 0.3 &micro;m</b><span>Diameter of the neck, the narrow part that isolates the head</span></div>
+    <div class="fact"><b>1 to 3 per &micro;m</b><span>Density on the apical (top) dendrite of a pyramidal neuron, the main excitatory cell type in the cortex and hippocampus</span></div>
     <div class="fact"><b>8,000 to 15,000</b><span>Average spines per pyramidal cell in rat visual cortex, by cell type</span></div>
   </div>
   <p class="cite">Dimensions from serial reconstruction of rat CA1 dendrites, Harris and Stevens,
@@ -193,12 +196,14 @@
     slices, Matsuzaki et al., <em>Nat. Neurosci.</em> 2001 and <em>Nature</em> 2004. Thin spines as
     learning spines, Bourne and Harris, <em>Curr. Opin. Neurobiol.</em> 2007.</p>
 
-  <h2 class="serif">The four shapes are four life stages</h2>
-  <p>Classifying spines by shape sounds like taxonomy for its own sake until you watch them over
-    days. Thin spines appear and vanish within hours. Mushroom spines persist for months and carry
-    the large postsynaptic densities. The shape is a readout of how long a synapse has survived and
-    how much it currently matters, which is why a drug that shifts the population toward mushroom is
-    interesting and a drug that merely adds filopodia is not.</p>
+  <h2 class="serif">Spine shape and how long a spine lasts</h2>
+  <p>Sorting spines by shape can look like labeling for its own sake, but watching the same spines
+    over days shows why it matters. Thin spines appear and vanish within hours. Mushroom spines
+    persist for months and carry large postsynaptic densities, the dense patches of protein on
+    the receiving side of the synapse that anchor its receptors. A spine's shape shows how long its synapse has survived
+    and how much that synapse currently matters. That is why a drug that shifts the population
+    toward mushroom spines is interesting and a drug that only adds filopodia is not. Filopodia are
+    long, thin protrusions with no head and no synapse yet.</p>
   <p class="cite">Stability by class, Holtmaat and Svoboda, <em>Nat. Rev. Neurosci.</em> 2009.
     Psilocybin raising mouse spine size and density about 10% within 24 hours, persisting a month,
     Shao et al., <em>Neuron</em> 2021.</p>
@@ -224,7 +229,7 @@
   var host = document.getElementById("gl");
   if (!window.THREE){
     host.outerHTML = '<div class="fallback">The 3D library did not load, so the model is not '
-      + 'showing. Everything below still reads fine without it.</div>';
+      + 'showing. You can still read everything below.</div>';
     return;
   }
 
@@ -238,7 +243,7 @@
                  head:[0.55,0.95], neck:[0.35,0.75], neckW:[0.12,0.20],
                  psd:true,
                  note:"Large head, constricted neck, big postsynaptic density. "
-                    + "Stable for months. These hold what you already learned." },
+                    + "Stable for months. They are thought to help store long-lasting memories." },
     thin:      { label:"Thin", color:0x3f7fbf, share:0.35,
                  head:[0.26,0.46], neck:[0.5,1.0], neckW:[0.09,0.14],
                  psd:false,
@@ -253,8 +258,8 @@
     filopodium:{ label:"Filopodium", color:0xc0414b, share:0.06,
                  head:[0.09,0.14], neck:[1.6,3.0], neckW:[0.07,0.10],
                  psd:false,
-                 note:"Long, headless, motile. Not a synapse yet. It is hunting "
-                    + "for an axon to touch." }
+                 note:"Long and headless. Not a synapse yet. It moves around "
+                    + "and can form a synapse if it touches an axon." }
   };
   var ORDER = ["mushroom","thin","stubby","filopodium"];
 
@@ -481,7 +486,7 @@
     var box = document.getElementById("inspect");
     if (!g){
       box.innerHTML = '<b>Click a spine</b><p>Strengthening a synapse can make the head of a small, '
-        + 'thin spine grow, moving it toward the mushroom shape. The slider runs that change.</p>';
+        + 'thin spine grow, moving it toward the mushroom shape. Move the slider to see that change.</p>';
       return;
     }
     g.userData.mat.emissiveIntensity = 0.85;
@@ -491,7 +496,7 @@
       + '<div class="row"><span>head diameter</span><span>' + hd.toFixed(2) + ' &micro;m</span></div>'
       + '<div class="row"><span>neck length</span><span>' + g.userData.neckLen.toFixed(2) + ' &micro;m</span></div>'
       + '<div class="row"><span>neck diameter</span><span>' + g.userData.neckW.toFixed(2) + ' &micro;m</span></div>'
-      + '<div class="row"><span>PSD</span><span>' + (c.psd ? "present" : "none") + '</span></div>'
+      + '<div class="row"><span>postsynaptic density</span><span>' + (c.psd ? "present" : "none") + '</span></div>'
       + '<p>' + c.note + '</p>';
   }
 

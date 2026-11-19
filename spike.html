@@ -143,11 +143,13 @@
 <main>
   <div class="mast">
     <p class="eyebrow mono">Membrane &middot; Hodgkin and Huxley, 1952</p>
-    <h1 class="serif">A neuron does not <em>send</em> a signal. It lets one happen.</h1>
-    <p class="lede">The membrane sits at rest holding a voltage it paid for with ATP. Push it past
-      about -55 mV and sodium channels open faster than the membrane can resist, which opens more of
-      them. That runaway is the spike. Everything below runs the real 1952 equations in your browser,
-      integrated live, so the trace responds to what you change rather than replaying a picture.</p>
+    <h1 class="serif">How a neuron fires an <em>action potential</em></h1>
+    <p class="lede">At rest, the membrane holds a voltage that the cell maintains by spending ATP. Raise
+      the voltage past about -55 mV and sodium channels open faster than the membrane can return to
+      rest. Sodium flows in, which raises the voltage further and opens more sodium channels. That
+      runaway feedback is the spike. Everything below runs the original 1952 equations in your
+      browser. The simulator's traces are recomputed every time you change a setting, rather than
+      replayed from a stored picture.</p>
     <p class="fig-note"><span class="fig-kind" data-kind="simulation">Simulation</span>
       Every trace is computed from the 1952 squid-axon equations, not recorded from a neuron.</p>
   </div>
@@ -157,7 +159,7 @@
       <div class="scope">
         <span class="scopelabel mono">Membrane potential, mV</span>
         <canvas id="scopeV" role="img" width="1400" height="560"
-          aria-label="Membrane voltage over time. When the membrane fires, threshold and peak are marked."></canvas>
+          aria-label="Membrane voltage over time. When the membrane fires, the chart marks the threshold and the peak."></canvas>
       </div>
       <div class="legend mono">
         <span><i style="background:var(--na)"></i>m, sodium activation</span>
@@ -165,7 +167,7 @@
         <span><i style="background:var(--k)"></i>n, potassium activation</span>
       </div>
       <div class="scope">
-        <span class="scopelabel mono">Gates open, 0 to 1</span>
+        <span class="scopelabel mono">Fraction of gates open, 0 to 1</span>
         <canvas id="scopeG" role="img" width="1400" height="300"
           aria-label="Gating variables m, h and n over time."></canvas>
       </div>
@@ -198,8 +200,8 @@
         <input id="gk" type="range" min="0" max="80" step="1" value="36">
       </div>
 
-      <button class="btn" id="ttx" aria-pressed="false">Apply TTX, block sodium</button>
-      <button class="btn" id="tea" aria-pressed="false">Apply TEA, block potassium</button>
+      <button class="btn" id="ttx" aria-pressed="false">Apply TTX to block sodium</button>
+      <button class="btn" id="tea" aria-pressed="false">Apply TEA to block potassium</button>
       <button class="btn" id="reset">Reset to squid axon</button>
 
       <div class="readout mono" aria-live="polite">
@@ -209,86 +211,94 @@
         <div><span>width at half height</span><b id="rWidth">0</b></div>
         <div><span>after-hyperpolarization</span><b id="rAhp">0</b></div>
       </div>
-      <div class="verdict" id="verdict">Adjust anything. The trace recomputes.</div>
+      <div class="verdict" id="verdict">Change any setting to recompute the trace.</div>
     </div>
   </section>
 
   <div class="phases">
     <div class="phase"><b>1. Rest</b><span>Potassium, sodium and leak currents balance at about
-      -65 mV. The model has no pump; it treats the ion gradients as fixed. The h gate sits
-      mostly open, waiting, which is the part people forget.</span></div>
-    <div class="phase"><b>2. Upstroke</b><span>m opens in tenths of a millisecond. Sodium enters,
-      depolarizing further, opening more m. Positive feedback with no brake yet.</span></div>
-    <div class="phase"><b>3. Repolarization</b><span>h closes and n opens, both slower than m.
-      Sodium shuts off while potassium leaves. The membrane falls.</span></div>
-    <div class="phase"><b>4. Undershoot</b><span>n is still open past rest, so the membrane
-      overshoots downward toward E_K before settling. The refractory period overlaps this dip but
-      is not the same thing: it starts earlier, during the spike itself.</span></div>
+      -65 mV. The model has no pump. It treats the ion gradients as fixed. The h gate, which later
+      shuts the sodium channels, sits mostly open at rest. This is the part people forget.</span></div>
+    <div class="phase"><b>2. Upstroke</b><span>The m gate opens in tenths of a millisecond. Sodium
+      flows in and makes the inside even less negative (depolarizes it further), which opens more m gates. This is
+      positive feedback, and the slower gates that end it have not acted yet.</span></div>
+    <div class="phase"><b>3. Repolarization</b><span>The h gate closes and the n gate opens, both
+      more slowly than m. The sodium current shuts off while potassium flows out. The membrane
+      voltage falls.</span></div>
+    <div class="phase"><b>4. Undershoot (after-hyperpolarization)</b><span>The n gates are still open
+      when the voltage gets back to rest, so the membrane drops below rest toward E_K, the voltage at
+      which potassium has no net flow, before settling. The refractory period overlaps this dip but
+      is not the same thing. It starts earlier, during the spike itself.</span></div>
   </div>
 
-  <h2 class="serif">Three experiments that make the point</h2>
+  <h2 class="serif">Three classic experiments in the model</h2>
   <p>Each one runs the same equations with one thing changed. They are the classic demonstrations
-    because they are the ones that falsify the obvious intuition.</p>
+    because each one disproves what most people would first expect.</p>
 
   <div class="exp">
     <div class="card">
       <h3>All or none</h3>
       <div class="scope"><canvas id="expAON" role="img" width="900" height="480"
-        aria-label="Six traces at increasing stimulus strength. Below threshold nothing happens; above it every spike reaches nearly the same height."></canvas></div>
-      <p>Six stimulus strengths straddling the model's threshold, about 13.3 uA/cm&sup2; for a half
-        millisecond pulse. Below it the membrane sags back. Above it every pulse gives a full spike of nearly
-        the same height: 35 uA/cm&sup2; buys a peak of about 41 mV where 13.5 buys about 36. Pushing
-        much harder adds only a few millivolts; mostly it makes the spike come earlier. Intensity is
-        carried by rate, not amplitude.</p>
+        aria-label="Six traces at increasing stimulus strength. Below threshold nothing happens. Above it, every spike reaches nearly the same height."></canvas></div>
+      <p>The chart shows six stimulus strengths on either side of the model's threshold, which is
+        about 13.3 uA/cm&sup2; for a half millisecond pulse. Below threshold the membrane returns to
+        rest. Above it, every pulse gives a full spike of nearly the same height. A 35 uA/cm&sup2;
+        pulse gives a peak of about 41 mV, and a 13.5 uA/cm&sup2; pulse gives about 36 mV. A much
+        stronger stimulus adds only a few millivolts. Mostly it makes the spike come earlier. Neurons
+        signal intensity by how often they fire, not by spike height.</p>
     </div>
     <div class="card">
       <h3>Refractory period</h3>
       <div class="scope"><canvas id="expREF" role="img" width="900" height="480"
-        aria-label="Paired pulses at 8, 14, 17 and 22 milliseconds showing the second response blocked then returning at full height."></canvas></div>
-      <p>Two identical pulses, separated by 8, 14, 17 and 22 ms. In this model the second
-        pulse fails until the gap reaches about 15 ms. Near that limit the cause is potassium: its
-        channels are still slightly open and the membrane is still about 3 mV below rest. At shorter
-        gaps, sodium channels are also still recovering from inactivation (the h gate). By 17 ms the second spike is back at full height. There is no half sized spike
-        anywhere in between, which is the all or none rule seen from a second angle. The block is not
-        total, though: a much stronger second pulse, 80 uA/cm&sup2;, fires a slightly smaller spike
-        at an 11 ms gap. The refractory period sets the ceiling on firing rate, and it is why a
-        spike cannot run backwards down the axon.</p>
+        aria-label="Paired pulses with gaps of 8, 14, 17 and 22 milliseconds. At the shorter gaps the second response is blocked. At the longer gaps it returns at full height."></canvas></div>
+      <p>The chart shows two identical pulses, separated by 8, 14, 17 and 22 ms. In this model the
+        second pulse fails until the gap reaches about 15 ms. Near that limit the cause is potassium.
+        Its channels are still slightly open, and the membrane is still about 3 mV below rest. At
+        shorter gaps, sodium channels are also still recovering from inactivation (the h gate). By
+        17 ms the second spike is back at full height. No gap in between gives a half sized spike.
+        This is the all or none rule again, seen in a second experiment. The block is not total, though. A much
+        stronger second pulse, 80 uA/cm&sup2;, fires a slightly smaller spike at an 11 ms gap. The
+        refractory period sets the upper limit on firing rate. It is also why a spike cannot travel
+        backward along the axon.</p>
     </div>
     <div class="card">
       <h3>Temperature</h3>
       <div class="scope"><canvas id="expTMP" role="img" width="900" height="480"
         aria-label="Traces at 6.3, 10, 14 and 17 degrees showing faster, smaller spikes when warm, and no spike at 17 for this stimulus strength."></canvas></div>
-      <p>The same axon at 6.3, 10, 14 and 17 C. Rates scale by a Q10 of 3, so warming makes the
-        spike faster and smaller: the peak falls from 38 mV to 29 mV between 6.3 and 14 C. At 17 C
-        this 15 uA/cm&sup2; stimulus no longer fires. Potassium now opens, and sodium inactivates,
-        fast enough to stop the runaway. That is a raised threshold, not heat block: it has gone from
-        about 13.3 to about 15.3 uA/cm&sup2;, and a slightly stronger pulse still fires. Real squid
-        axons keep firing far warmer than this: Hodgkin and Katz (1949) found a reversible heat block
-        between 35 and 40 C.</p>
+      <p>The chart shows the same axon at 6.3, 10, 14 and 17 C. The gate rates have a Q10 of 3,
+        which means they triple for every 10 C of warming. Warming therefore makes the spike faster
+        and smaller. The peak falls from 38 mV to 29 mV between 6.3 and 14 C. At 17 C this
+        15 uA/cm&sup2; stimulus no longer triggers a spike. Potassium channels now open, and sodium
+        channels inactivate, fast enough to stop the runaway feedback. This is a raised threshold,
+        not heat block. In heat block the axon stops firing altogether. Here the threshold has gone
+        from about 13.3 to about 15.3 uA/cm&sup2;, and a slightly stronger pulse still fires. Real squid axons
+        keep firing at much higher temperatures than this. Hodgkin and Katz (1949) found a
+        reversible heat block between 35 and 40 C.</p>
     </div>
   </div>
 
-  <h2 class="serif">What is actually being integrated</h2>
-  <p>Four coupled differential equations, stepped forward in time. The membrane is a capacitor with
-    three leaky resistors across it, and two of those resistors change their own resistance
-    depending on the voltage they see.</p>
+  <h2 class="serif">The equations the simulator solves</h2>
+  <p>The simulator steps four linked differential equations forward in time. The model treats the
+    membrane as a capacitor with three resistors across it, one each for sodium, potassium and leak
+    current. The sodium and potassium resistors change their conductance (how easily current passes
+    through them) with the membrane voltage.</p>
 
   <div class="eq"><code>C dV/dt = I  <span class="c">-</span>  gNa m&sup3;h (V - E_Na)  <span class="c">-</span>  gK n&#8308; (V - E_K)  <span class="c">-</span>  gL (V - E_L)
 
 dm/dt = &alpha;m(V)(1 - m) - &beta;m(V) m     <span class="c">// opens fast, closes fast</span>
-dh/dt = &alpha;h(V)(1 - h) - &beta;h(V) h     <span class="c">// closes slow, the brake</span>
-dn/dt = &alpha;n(V)(1 - n) - &beta;n(V) n     <span class="c">// opens slow, the repolarizer</span>
+dh/dt = &alpha;h(V)(1 - h) - &beta;h(V) h     <span class="c">// closes slowly, shuts off sodium</span>
+dn/dt = &alpha;n(V)(1 - n) - &beta;n(V) n     <span class="c">// opens slowly, repolarizes</span>
 
 <span class="c">C = 1 &micro;F/cm&sup2;   E_Na = +50 mV   E_K = -77 mV   E_L = -54.4 mV
 forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div>
 
-  <p>The exponent on m is the whole trick. Three gates must open together for one channel to pass
+  <p>The exponent on m is the key detail. Three gates must open together for one channel to pass
     current, so conductance rises as the cube of a probability. That is what makes the upstroke
     steeper than anything else in the cell.</p>
 
   <footer>
     <a href="app.html">Back to the explorer</a>
-    <a href="timecells.html">Up a level: populations keeping time</a>
+    <a href="timecells.html">Up a level to how populations of neurons keep time</a>
     <a href="references.html">Sources</a>
     <span>Hodgkin AL, Huxley AF. J Physiol 117:500-544, 1952.</span>
     <span>Hodgkin AL, Katz B. J Physiol 109:240-249, 1949.</span>
@@ -531,10 +541,10 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
 
     var v = el("verdict");
     v.classList.toggle("fired", m.fired);
-    if (state.ttx) v.textContent = "With sodium blocked the membrane can only charge passively. This is what tetrodotoxin does, and why pufferfish poisoning stops nerves rather than muscles specifically.";
-    else if (state.tea) v.textContent = "With potassium blocked there is nothing to bring the membrane back down quickly. The spike broadens badly. TEA was the original tool for showing that the falling phase is a separate conductance.";
-    else if (!m.fired) v.textContent = "Below threshold. The membrane charges, leaks the charge back out, and nothing happens. Push the stimulus up.";
-    else v.textContent = "Fired. Near 6.3 C the peak stays near " + m.peak.toFixed(0) + " mV even when you push much harder; warm the axon and spike size starts to depend on the stimulus.";
+    if (state.ttx) v.textContent = "With sodium channels blocked, the membrane can only charge passively. This is what tetrodotoxin (TTX), the toxin in pufferfish, does.";
+    else if (state.tea) v.textContent = "With potassium channels blocked, nothing brings the membrane back down quickly, so the spike becomes much wider. TEA (tetraethylammonium) blocks many potassium channels and is still used in the lab to separate the two currents.";
+    else if (!m.fired) v.textContent = "The stimulus is below threshold. The membrane charges, the charge leaks back out, and no spike fires. Raise the stimulus.";
+    else v.textContent = "The membrane fired. Near 6.3 C the peak stays near " + m.peak.toFixed(0) + " mV even with a much stronger stimulus. Warm the axon and spike size starts to depend on the stimulus.";
   }
 
   // ---------------------------------------------------------- experiments

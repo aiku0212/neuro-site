@@ -122,10 +122,11 @@
 </div>
 
 <main>
-  <h1 class="serif">Everything this site claims, and where it came from</h1>
-  <p class="lede">Retrieved from Consensus, PubMed and ClinicalTrials.gov. Null
-    results are listed alongside positive ones and marked, because a source that
-    found nothing is doing more work here than one that found something.</p>
+  <h1 class="serif">Sources for the claims on this site</h1>
+  <p class="lede">These sources come from searches of Consensus, PubMed and
+    ClinicalTrials.gov. Null results, from studies that found no effect, are listed
+    alongside positive ones and marked. On this site they count for more than
+    positive results, because they show where a claimed effect did not appear when tested.</p>
 
   <div class="counts">
     <div><b class="mono" id="k-total">0</b><span>Sources</span></div>
@@ -137,14 +138,16 @@
   <div class="caveat">
     <h3>Where the citations are weakest</h3>
     <p>Each drug class on the pharmacology page now cites a primary paper or review, and
-      lists its main harms. Harm sources without a DOI (FDA labels and safety
-      communications, CDC, NIDA and DEA pages) are linked on that page, not listed here.
+      lists its main harms. Some harm sources have no DOI, the permanent ID given to a
+      published paper. These are FDA labels, FDA safety communications and pages from the
+      CDC, NIDA and DEA, and they are linked on that page, not listed here.
       Most of the mechanism papers are rat, mouse or cell studies, and each mechanism card
       was compared with its source's abstract, not the full text.</p>
     <p>Several statements are models, not settled facts. Ketamine's antidepressant
       mechanism is contested, and the site shows the leading model alongside a competing one.</p>
-    <p>Even there, the mechanism is disputed: Moliner et al. report psychedelic plasticity
-      independent of 5-HT2A, while Vargas et al. and Shao et al. 2025 find 5-HT2A necessary.
+    <p>How psychedelics increase plasticity is also disputed. Moliner et al. report that
+      psychedelics increase plasticity without needing the serotonin 2A receptor (5-HT2A),
+      while Vargas et al. and Shao et al. 2025 find that 5-HT2A is necessary.
       Most of the cellular evidence comes from mice and cell models, not people.</p>
   </div>
 
@@ -1167,21 +1170,21 @@ var REFS=/*refs:start*/[
 
 var GROUPS=[
  {id:'bdnf', name:'BDNF signalling and its measurement',
-  note:'The distinction the rest of the site depends on: signalling at TrkB versus concentration in blood.'},
+  note:'BDNF (brain-derived neurotrophic factor) is a protein that helps neurons grow and change their connections. The rest of the site depends on the difference between BDNF signalling at its main receptor, TrkB, and the concentration of BDNF in blood.'},
  {id:'psy', name:'Psychedelics and structural plasticity',
-  note:'Cellular, animal and human imaging evidence. The strongest-evidenced section here.'},
+  note:'These sources include cellular, animal and human imaging evidence. This section has the strongest evidence on this page.'},
  {id:'cp', name:'Critical periods and perineuronal nets',
-  note:'Why plasticity closes, and what it costs to reopen it.'},
- {id:'bird', name:'Songbirds and comparative learning',
-  note:'Species that learn once versus species that learn for life, and the structural difference between them.'},
- {id:'int', name:'Interventions: exercise, diet, meditation',
-  note:'Exercise has pooled randomized evidence. Evidence for fasting and meditation is mixed or weak, and these reviews did not pool it.'},
+  note:'A critical period is a window, usually early in life, when some brain circuits change easily with experience. Perineuronal nets are mesh-like structures around some neurons that help close critical periods. These sources cover why critical periods close and what it costs to reopen them.'},
+ {id:'bird', name:'Songbirds and learning across species',
+  note:'These sources cover species that learn once versus species that learn for life, and the structural difference between them.'},
+ {id:'int', name:'Exercise, diet and meditation',
+  note:'For exercise, the sources include meta-analyses that combine the results of randomized trials into one estimate. Evidence for fasting and meditation is mixed or weak, and the reviews here did not combine it.'},
  {id:'gen', name:'Genotype and stimulation-based measurement',
-  note:'Val66Met, and the TMS-EEG methods proposed as an alternative to blood biomarkers.'},
+  note:'These sources cover the common Val66Met variant of the BDNF gene and the TMS-EEG methods proposed as an alternative to blood biomarkers. TMS-EEG stimulates the brain with a magnetic pulse and records the response with electrodes on the scalp.'},
  {id:'harm', name:'Drug harms and safety',
-  note:'Overdose, dependence and risk data behind the Pharmacology page. FDA labels and safety communications, CDC, NIDA and DEA pages have no DOI, so they are linked on that page directly.'},
+  note:'These are the sources for the overdose, dependence and risk data on the Pharmacology page. FDA labels, FDA safety communications and pages from the CDC, NIDA and DEA have no DOI, so they are linked on that page directly.'},
  {id:'found', name:'Foundations and methods',
-  note:'Primary sources and methods behind the Explore, Spike, Spines, Time and Comparative pages.'}
+  note:'These are the primary sources and methods behind the Explore, Spike, Spines, Time and Comparative pages.'}
 ];
 
 var filter='all';
@@ -1201,7 +1204,7 @@ function render(){
     items.forEach(function(r){
       var tag = r.tag==='null' ? '<span class="tagline null">null</span>'
               : r.tag==='mixed' ? '<span class="tagline null">mixed or weak</span>'
-              : r.tag==='key'  ? '<span class="tagline key">load-bearing</span>' : '';
+              : r.tag==='key'  ? '<span class="tagline key">key source</span>' : '';
       if((r.upd||[]).some(function(u){return /retract|withdraw/i.test(u.type);})){
         tag+='<span class="tagline null">retracted</span>';
       }
@@ -1218,7 +1221,7 @@ function render(){
     d.innerHTML=html; box.appendChild(d);
   });
 }
-var F=[['all','All'],['key','Load-bearing'],['null','Null and mixed'],['meta','Meta-analyses']];
+var F=[['all','All'],['key','Key sources'],['null','Null and mixed'],['meta','Meta-analyses']];
 var FW=document.getElementById('filters');
 F.forEach(function(f){
   var b=document.createElement('button'); b.className='f'; b.textContent=f[1];
