@@ -81,7 +81,10 @@
     text-transform:none}
 
   .cap{position:absolute; right:clamp(14px,2.5vw,34px); top:50%;
-    transform:translateY(-50%); width:min(320px,42vw)}
+    transform:translateY(-50%); width:min(340px,42vw); padding:18px 20px;
+    background:rgba(255,255,255,.9); border:1px solid var(--rule); border-radius:14px;
+    -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px)}
+  .cap .sb .u{text-transform:none; letter-spacing:.06em}
   .cap .sb{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;
     color:var(--amber); margin:0 0 9px}
   .cap h2{font-size:clamp(20px,2.6vw,28px); line-height:1.15; margin:0 0 11px;
@@ -154,7 +157,13 @@
       width:auto;padding:0 18px;
       background:linear-gradient(transparent,rgba(255,255,255,.94) 26%)}
     .side{width:100%;top:auto;height:46%;border-left:0;border-top:1px solid var(--rule)}
-    .ramp{display:none} .rail{left:10px}
+    .ramp{display:none}
+    .rail{left:0; right:0; top:10px; transform:none; padding:0 14px; overflow-x:auto;
+      scrollbar-width:none}
+    .rail::-webkit-scrollbar{display:none}
+    .track{display:none}
+    .ticks{flex-direction:row; height:auto; gap:18px; white-space:nowrap}
+    .cap{border:0; border-radius:0; -webkit-backdrop-filter:none; backdrop-filter:none}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -358,7 +367,7 @@ function proj(p,S,cx,cy,oy){
   var y=yy*cB-z2*sB; z2=yy*sB+z2*cB;
   return {X:cx+x*S,Y:cy+y*S,Z:z2};
 }
-function fade(c,w){return Math.max(0,1-Math.abs(z-c)/w);}
+function fade(c,w){return Math.max(0,1-Math.abs(z-c)/Math.min(w,1));}
 
 /* ---------- explore levels ---------- */
 var LEVELS=[
@@ -448,14 +457,28 @@ function drawShaft(a,S,cx,cy){
     X.globalAlpha=a*.95;X.fillStyle=COL.violet;
     X.beginPath();X.arc(P1.X,P1.Y,S*s.head*0.35,0,6.283);X.fill();}
 }
+// The part of the canvas not covered by the level rail or the caption, in canvas px.
+function freeSpan(){
+  var c=C.getBoundingClientRect(), l=0, r=c.width;
+  if(innerWidth>900){
+    var rl=document.querySelector('.rail'), cp=document.querySelector('.cap');
+    if(rl) l=Math.max(l, rl.getBoundingClientRect().right-c.left+28);
+    if(cp) r=Math.min(r, cp.getBoundingClientRect().left-c.left-28);
+  }
+  if(r-l<200){l=0;r=c.width;}
+  return [l*D, r*D];
+}
 function drawMembrane(a,S,cx,cy){
-  var w=C.width,top=C.height*0.44,gap=S*11;
-  X.globalAlpha=a*.55;X.fillStyle=COL.pale;
+  var span=freeSpan(), x0=span[0], x1=span[1], fade=S*26;
+  var top=C.height*(innerWidth>900?0.44:0.30),gap=S*11;
+  X.fillStyle=COL.pale;
   for(var row=0;row<2;row++){var yy=top+row*gap;
-    for(var x2=-20;x2<w+20;x2+=S*5.2){
+    for(var x2=x0;x2<=x1;x2+=S*5.2){
+      var edge=Math.min(1,(x2-x0)/fade,(x1-x2)/fade);
+      X.globalAlpha=a*.55*Math.max(0,edge);
       X.beginPath();X.arc(x2,yy,S*2,0,6.283);X.fill();}}
-  var R=[['amber','TrkB',.2],['rose','p75NTR',.4],['violet','5-HT2A',.6],['sky','NMDA',.8]];
-  for(var i=0;i<R.length;i++){var rx2=w*R[i][2];
+  var R=[['amber','TrkB',.16],['rose','p75NTR',.39],['violet','5-HT2A',.62],['sky','NMDA',.85]];
+  for(var i=0;i<R.length;i++){var rx2=x0+(x1-x0)*R[i][2];
     X.globalAlpha=a;X.fillStyle=COL[R[i][0]];
     X.beginPath();X.roundRect(rx2-S*3.2,top-S*5.5,S*6.4,gap+S*11,S*2);X.fill();
     X.globalAlpha=a*.16;X.beginPath();X.arc(rx2,top+gap/2,S*13,0,6.283);X.fill();
@@ -465,7 +488,7 @@ function drawMembrane(a,S,cx,cy){
   if(!reduce){var tt=performance.now()/1000;
     for(var m=0;m<30;m++){var ph=((m*0.163)+tt*0.16)%1;
       X.globalAlpha=a*(1-ph)*0.75;X.fillStyle=m%3===0?COL.violet:COL.amber;
-      X.beginPath();X.arc((m*137.5)%w,top-S*46+ph*S*40,S*1.5,0,6.283);X.fill();}}
+      X.beginPath();X.arc(x0+(m*137.5)%Math.max(1,x1-x0),top-S*46+ph*S*40,S*1.5,0,6.283);X.fill();}}
 }
 
 /* ---------- paint ---------- */
@@ -544,7 +567,7 @@ paintStats(); drawSholl();
 function setZ(v){
   zT=Math.max(0,Math.min(LEVELS.length-1,v));
   var i=Math.round(zT),L=LEVELS[i];
-  document.getElementById('c-scale').innerHTML=L.tag+' &middot; '+L.unit;
+  document.getElementById('c-scale').innerHTML=L.tag+' &middot; <span class="u">'+L.unit+'</span>';
   document.getElementById('c-title').textContent=L.title;
   document.getElementById('c-body').textContent=L.body;
   document.getElementById('c-cite').innerHTML=L.cite;

@@ -160,7 +160,8 @@
   .scope{position:relative; border:1px solid var(--rule); border-radius:3px;
     background:var(--ground-2); overflow:hidden}
   #syn{display:block; width:100%; height:440px}
-  .scope-tag{position:absolute; top:12px; left:14px; font-size:10px;
+  .scope-tag{position:absolute; top:12px; left:14px; font-size:10px; z-index:1;
+    background:rgba(255,255,255,.88); padding:2px 6px; border-radius:4px;
     letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
     font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 
@@ -180,6 +181,7 @@
   .rlist li.up{color:var(--ink)} .rlist li.up .lvl{color:var(--amber)}
   .rlist li.down .lvl{color:var(--violet)}
 
+  @media (max-width:480px){ .scope-tag{position:static; display:block; margin:12px 14px 0; padding:0; background:none; letter-spacing:.1em} }
   @media (max-width:880px){
     .bench-grid{grid-template-columns:1fr}
     #syn{height:340px}
@@ -742,26 +744,26 @@
     var STATE={
       base:{label:'Baseline', spine:1, title:'A ratio, not a total',
         rec:[['trkb','TrkB',.45],['p75','p75NTR',.45],['ht2a','5-HT2A (surface)',.2],['nmda','NMDA',.35],['pnn','Perineuronal net',.6]],
-        body:'Mature BDNF binds TrkB and strengthens the synapse. proBDNF binds p75NTR and does the opposite, driving depression of the synapse and spine loss. Direction is set by the ratio between them, not by how much BDNF exists.',
+        body:'Mature BDNF binds TrkB and strengthens the synapse. proBDNF binds p75NTR and does the opposite, driving depression of the synapse and spine loss. Direction is set by the ratio between them, not by how much BDNF exists. The perineuronal net drawn around this synapse stands for the matrix that limits rewiring. In the brain these nets mostly wrap parvalbumin interneurons, and the drawing does not change it between states because the studies here did not measure it.',
         cite:'Woo et al., <em>Nat. Neurosci.</em> 2005 &middot; Yang et al., <em>Cell Reports</em> 2014'},
       psi:{label:'Psilocybin', spine:1.38, title:'Straight to the receptor',
-        rec:[['trkb','TrkB',1],['ht2a','5-HT2A (intracellular)',1],['ht2a','5-HT2A (surface)',.55],['p75','p75NTR',.3],['pnn','Perineuronal net',.25]],
+        rec:[['trkb','TrkB',1],['ht2a','5-HT2A (intracellular)',1],['ht2a','5-HT2A (surface)',.55],['p75','p75NTR',.3],['pnn','Perineuronal net',.6]],
         body:'In cell and mouse studies, psilocin binds TrkB with about a thousand times the affinity of the antidepressants tested, and it is lipophilic enough to cross the membrane and reach intracellular 5-HT2A receptors that serotonin itself cannot get to. Mouse spine density rises about 10% within 24 hours and holds for a month. Circulating BDNF does not change in people. The sources disagree on the route: Moliner reports effects independent of 5-HT2A, while Vargas and Shao 2025 find 5-HT2A necessary.',
-        cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023 &middot; Shao et al., <em>Neuron</em> 2021'},
+        cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023 &middot; Shao et al., <em>Neuron</em> 2021 &middot; Shao et al., <em>Nature</em> 2025'},
       ssri:{label:'SSRI', spine:1.1, title:'The same door, a weaker key',
-        rec:[['trkb','TrkB',.55],['ht2a','5-HT2A (surface)',.3],['p75','p75NTR',.35],['pnn','Perineuronal net',.5]],
+        rec:[['trkb','TrkB',.55],['ht2a','5-HT2A (surface)',.3],['p75','p75NTR',.35],['pnn','Perineuronal net',.6]],
         body:'Fluoxetine binds a partly overlapping TrkB site, far more weakly. Signaling only shifts after the drug accumulates over weeks, which may explain why the clinical response is slow rather than immediate.',
         cite:'Casarotto et al., <em>Cell</em> 2021 &middot; Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
       ket:{label:'Ketamine', spine:1.3, title:'Disinhibition, then a burst',
-        rec:[['nmda','NMDA (blocked)',.1],['glu','Glutamate surge',.9],['trkb','TrkB',.8],['pnn','Perineuronal net',.35]],
+        rec:[['nmda','NMDA (blocked)',.1],['glu','Glutamate surge',.9],['trkb','TrkB',.8],['pnn','Perineuronal net',.6]],
         body:'In one leading model, built mostly on rat studies, ketamine blocks NMDA receptors that drive inhibitory interneurons, releasing the brake on pyramidal cells. The signalling that follows activates mTOR and adds new spine synapses in prefrontal cortex within hours. Other mechanisms are proposed, including a metabolite that acts without blocking NMDA receptors. In a small trial, depression improved within about two hours of one infusion, against weeks for standard antidepressants.',
         cite:'Homayoun &amp; Moghaddam, <em>J. Neurosci.</em> 2007 &middot; Li et al., <em>Science</em> 2010 &middot; Zanos et al., <em>Nature</em> 2016 &middot; Zarate et al., <em>Arch. Gen. Psychiatry</em> 2006'},
       ex:{label:'Exercise', spine:1.18, title:'Peaks at fifteen minutes, fading by sixty',
-        rec:[['bdnf','Circulating BDNF',1],['trkb','TrkB',.75],['p75','p75NTR',.3],['pnn','Perineuronal net',.5]],
+        rec:[['bdnf','Circulating BDNF',1],['trkb','TrkB',.75],['p75','p75NTR',.3],['pnn','Perineuronal net',.6]],
         body:'In one study of 12 young men, high-intensity intervals raised serum BDNF well above moderate and low intensity, which did not differ from each other. BDNF peaked at fifteen minutes and was no longer clearly above baseline by sixty minutes. Of the interventions here, exercise has the strongest pooled evidence for moving the blood measure, though serum is a noisy readout: platelets store BDNF and release it when activated, so serum BDNF is not a direct measure of the brain.',
         cite:'Birinci et al., <em>Scientific Reports</em> 2026 &middot; Gholami et al., <em>Exp. Gerontology</em> 2024 &middot; Fujimura et al., <em>Thromb. Haemost.</em> 2002'},
       dep:{label:'Depression', spine:.62, title:'Signalling withdrawn',
-        rec:[['trkb','TrkB',.18],['p75','p75NTR',.85],['bdnf','Circulating BDNF',.25],['pnn','Perineuronal net',.85]],
+        rec:[['trkb','TrkB',.18],['p75','p75NTR',.85],['bdnf','Circulating BDNF',.25],['pnn','Perineuronal net',.6]],
         body:'Postmortem prefrontal cortex from people with major depression has fewer synapses, and in rats the same molecular change removes dendritic spines. Serum BDNF is lower during acute episodes and recovers with successful treatment in responders but not non-responders, making this one of the few places the blood measure actually behaves like a biomarker.',
         cite:'Kang et al., <em>Nat. Med.</em> 2012 &middot; Polyakova et al., <em>J. Affective Disorders</em> 2015'}
     };
@@ -776,85 +778,175 @@
     function pill(x,y,w,h,c,a){G.globalAlpha=a; G.fillStyle=c;
       G.beginPath(); G.roundRect(x-w/2,y-h/2,w,h,h/2); G.fill();}
 
+    // Vesicle places, in head radii from the active zone centre: [across, up].
+    var VES=[[-0.45,0.11],[0,0.1],[0.45,0.11],[-0.7,0.34],[-0.24,0.33],[0.22,0.35],[0.68,0.32],
+             [-0.5,0.57],[-0.05,0.58],[0.42,0.56],[-0.62,0.8],[-0.2,0.81],[0.25,0.82],[0.62,0.78]];
+    // Small deterministic jitter for the molecules crossing the cleft.
+    function hsh(i,k){var x=Math.sin(i*127.1+k*311.7)*43758.5453; return x-Math.floor(x);}
+
     function render(now){
-      var w=S.width,h=S.height,u=Math.min(w,h)/D; G.clearRect(0,0,w,h);
+      var w=S.width,h=S.height; G.clearRect(0,0,w,h);
       var st=STATE[cur], tt=(now-t0)/1000;
       spine+=(st.spine-spine)*0.07;
 
-      var cx=w/2, top=h*0.13, cleft=h*0.46, post=h*0.56;
-      var sc=D*(u<400?0.72:1);
+      // One unit (R0, the baseline spine-head radius) sets every size, so the
+      // terminal, cleft and spine keep their proportions at any screen width.
+      var cx=w/2, yPre=h*0.36, gap=h*0.065, yPost=yPre+gap, yShaft=h*0.86;
+      var R0=Math.min((yShaft-yPost)/3.9, w*0.16), R=R0*spine;
+      var rx=R*1.05, ry=R*0.9, yC=yPost+ry;           // spine head (an ellipse)
+      var neckW=R0*0.26*(0.8+0.2*spine), yJ=yC+ry*1.25, fil=R0*0.35;
+      var B=R0*1.45, ax=R0*0.32, az=Math.min(R*0.95, B*0.82);           // bouton half-width, axon, active zone
+      var ink='#8693a1', fill='#e4e9ef', dens='#7f8c9a';
 
-      // ---- presynaptic bouton ----
-      G.globalAlpha=1; G.fillStyle='#e4e9ef'; G.strokeStyle='#b9c3ce';
-      G.lineWidth=D; G.beginPath();
-      G.moveTo(w*0.16,0); G.lineTo(w*0.84,0);
-      G.bezierCurveTo(w*0.86,top, w*0.80,cleft*0.9, cx+w*0.16,cleft*0.92);
-      G.lineTo(cx-w*0.16,cleft*0.92);
-      G.bezierCurveTo(w*0.20,cleft*0.9, w*0.14,top, w*0.16,0);
-      G.closePath(); G.fill(); G.stroke();
+      // ---- presynaptic bouton, arriving from an axon above ----
+      G.globalAlpha=1; G.fillStyle=fill; G.strokeStyle=ink; G.lineWidth=D*1.2;
+      G.beginPath();
+      G.moveTo(cx-ax,0);
+      G.bezierCurveTo(cx-ax,yPre*0.22, cx-B,yPre*0.30, cx-B,yPre*0.62);
+      G.bezierCurveTo(cx-B,yPre*0.93, cx-B*0.86,yPre, cx-az,yPre);
+      G.lineTo(cx+az,yPre);
+      G.bezierCurveTo(cx+B*0.86,yPre, cx+B,yPre*0.93, cx+B,yPre*0.62);
+      G.bezierCurveTo(cx+B,yPre*0.30, cx+ax,yPre*0.22, cx+ax,0);
+      G.fill(); G.stroke();
+      // active zone: the thickened membrane where vesicles release
+      G.strokeStyle=dens; G.lineWidth=R0*0.07; G.lineCap='round'; G.globalAlpha=.75;
+      G.beginPath(); G.moveTo(cx-az*0.8,yPre-R0*0.04); G.lineTo(cx+az*0.8,yPre-R0*0.04); G.stroke();
 
-      // vesicles
-      for(var v=0; v<11; v++){
-        var vp=(v*0.37+ (reduce2?0:tt*0.06))%1;
-        var vx=cx+Math.sin(v*2.1)*w*0.11, vy=top*0.5+vp*(cleft*0.36);
-        G.globalAlpha=.5; G.fillStyle=COL.bdnf;
-        G.beginPath(); G.arc(vx,vy,4.5*sc,0,6.284); G.fill();
+      // synaptic vesicles, packed toward the active zone, a few docked on it
+      G.lineWidth=D; G.strokeStyle=ink;
+      VES.forEach(function(q,v){
+        var vx=cx+q[0]*az/0.95, vy=yPre-q[1]*R0;
+        if(!reduce2 && q[1]>0.2) vy+=Math.sin(tt*0.9+v*1.7)*R0*0.02;
+        G.globalAlpha=.9; G.fillStyle='#f6f7f9';
+        G.beginPath(); G.arc(vx,vy,R0*0.085,0,6.284); G.fill(); G.stroke();
+      });
+
+      // ---- dendrite shaft with a mushroom spine growing from it ----
+      function outline(){
+        G.moveTo(0,yShaft); G.lineTo(cx-neckW-fil,yShaft);
+        G.quadraticCurveTo(cx-neckW,yShaft, cx-neckW,yShaft-fil);
+        G.lineTo(cx-neckW,yJ);
+        G.bezierCurveTo(cx-neckW,yJ-(yJ-yC)*0.35, cx-rx*0.45,yC+ry*0.95, cx+Math.cos(Math.PI*0.72)*rx,yC+Math.sin(Math.PI*0.72)*ry);
+        G.ellipse(cx,yC,rx,ry,0,Math.PI*0.72,Math.PI*2.28,false);
+        G.bezierCurveTo(cx+rx*0.45,yC+ry*0.95, cx+neckW,yJ-(yJ-yC)*0.35, cx+neckW,yJ);
+        G.lineTo(cx+neckW,yShaft-fil);
+        G.quadraticCurveTo(cx+neckW,yShaft, cx+neckW+fil,yShaft);
+        G.lineTo(w,yShaft);
       }
+      G.globalAlpha=1; G.fillStyle=fill;
+      G.beginPath(); outline(); G.lineTo(w,h); G.lineTo(0,h); G.closePath(); G.fill();
+      G.strokeStyle=ink; G.lineWidth=D*1.2; G.beginPath(); outline(); G.stroke();
+      // postsynaptic density: grows with the head, as it does in real spines
+      G.strokeStyle=dens; G.lineWidth=R0*0.08; G.globalAlpha=.75;
+      G.beginPath(); G.ellipse(cx,yC,rx-R0*0.05,ry-R0*0.05,0,Math.PI*1.22,Math.PI*1.78,false); G.stroke();
+      G.lineCap='butt';
 
-      // ---- postsynaptic spine (mushroom) ----
-      var headR=42*sc*spine, neckW=17*sc;
-      G.globalAlpha=1; G.fillStyle='#e4e9ef'; G.beginPath();
-      G.moveTo(cx-neckW,h);
-      G.lineTo(cx-neckW,post+headR*0.85);
-      G.arc(cx,post+headR*0.5,headR,Math.PI*0.86,Math.PI*0.14,true);
-      G.lineTo(cx+neckW,h); G.closePath(); G.fill();
-      G.strokeStyle='#b9c3ce'; G.stroke();
-
-      // perineuronal net: dashed arc round the spine base
+      // perineuronal net: a dashed sleeve round the spine and along the dendrite
       var pnnLvl=0; st.rec.forEach(function(r){if(r[0]==='pnn')pnnLvl=r[2];});
       if(pnnLvl>0){
-        G.globalAlpha=pnnLvl*0.8; G.strokeStyle=COL.pnn; G.lineWidth=D*1.6;
-        G.setLineDash([5*sc,6*sc]);
-        for(var a2=0;a2<3;a2++){
+        G.globalAlpha=pnnLvl*0.85; G.strokeStyle=COL.pnn; G.lineWidth=D*0.9; G.lineJoin='round';
+        var o1=R0*0.14, o2=R0*0.32;
+        [-1,1].forEach(function(sd){ [0,1].forEach(function(ph){
+          var a0=sd<0?0.62:1.88, n=14, j, oo=function(j){return (j+ph)%2?o2:o1;};
           G.beginPath();
-          G.arc(cx,post+headR*0.5,headR+(10+a2*9)*sc,Math.PI*0.1,Math.PI*0.9);
+          for(j=0;j<=n;j++){ var a=Math.PI*(a0+0.5*j/n), o=oo(j);
+            G.lineTo(cx+Math.cos(a)*(rx+o), yC+Math.sin(a)*(ry+o)); }
+          var y0n=yJ+R0*0.1, y1n=yShaft-fil-R0*0.1, m=Math.max(2,Math.round((y1n-y0n)/(R0*0.2)));
+          G.moveTo(cx+sd*(neckW+oo(0)), y0n);
+          for(j=1;j<=m;j++) G.lineTo(cx+sd*(neckW+oo(j)), y0n+(y1n-y0n)*j/m);
+          var x0d=cx+sd*(neckW+fil+o2), x1d=cx+sd*(neckW+fil+R0*2.2), q=12;
+          G.moveTo(x0d, yShaft-oo(0));
+          for(j=1;j<=q;j++) G.lineTo(x0d+(x1d-x0d)*j/q, yShaft-oo(j));
           G.stroke();
-        }
-        G.setLineDash([]);
+        }); });
       }
 
-      // ---- receptors on the spine head ----
-      var seen={}, slot=0;
+      // ---- receptors set into the spine-head membrane ----
+      var surf=[], inner=[];
       st.rec.forEach(function(r){
-        var kind=r[0], lvl=r[2];
-        if(kind==='pnn'||kind==='bdnf'||kind==='glu') return;
-        var inside = /intracellular/.test(r[1]);
-        var ang = Math.PI*(0.90 - slot*0.20); slot++;
-        var rr = inside ? headR*0.45 : headR;
-        var rxp=cx+Math.cos(ang)*rr, ryp=post+headR*0.5+Math.sin(ang)*rr*-1;
-        G.globalAlpha=0.25+lvl*0.75; G.fillStyle=COL[kind];
-        G.beginPath(); G.roundRect(rxp-6*sc, ryp-11*sc, 12*sc, 22*sc, 3*sc); G.fill();
-        if(lvl>0.6){ G.globalAlpha=0.16*lvl;
-          G.beginPath(); G.arc(rxp,ryp,20*sc,0,6.284); G.fill(); }
+        if(r[0]==='pnn'||r[0]==='bdnf'||r[0]==='glu') return;
+        (/intracellular/.test(r[1])?inner:surf).push(r);
+      });
+      function capsule(x,y,ang,c,lvl,inside){
+        var u=R0*Math.min(1,0.45+0.55*spine);
+        G.save(); G.translate(x,y); G.rotate(ang);
+        if(lvl>0.6 && !inside){ G.globalAlpha=0.12*lvl; G.fillStyle=c;
+          G.beginPath(); G.arc(0,0,u*0.27,0,6.284); G.fill(); }
+        G.globalAlpha=0.3+lvl*0.7; G.fillStyle=c;
+        G.beginPath(); G.roundRect(-u*0.075,-u*0.17,u*0.15,u*0.34,u*0.075); G.fill();
+        G.restore();
+      }
+      // Each receptor keeps one place in every state; one a state does not list stays at baseline.
+      var SLOT=['trkb','p75','ht2a','nmda'], b0={}, lv={};
+      STATE.base.rec.forEach(function(r){b0[r[0]]=lv[r[0]]=r[2];});
+      surf.forEach(function(r){lv[r[0]]=r[2];});
+      SLOT.forEach(function(k,i){
+        var ang=Math.PI*(1.24+i/(SLOT.length-1)*0.52), px=cx+Math.cos(ang)*rx, py=yC+Math.sin(ang)*ry;
+        var blk=st.rec.some(function(r){return r[0]===k && /blocked/.test(r[1]);});
+        capsule(px, py, ang+Math.PI/2, COL[k], blk? b0[k] : lv[k], false);
+        if(blk){ G.globalAlpha=1; G.fillStyle='#26303a';
+          G.beginPath(); G.arc(px+Math.cos(ang)*R0*0.1, py+Math.sin(ang)*R0*0.1, R0*0.055, 0, 6.284); G.fill(); }
+      });
+      inner.forEach(function(r,i){
+        var ex=cx+(i-(inner.length-1)/2)*R0*0.5, ey=yC+ry*0.25, er=R0*0.2;
+        G.globalAlpha=.9; G.fillStyle='#f4f1f9'; G.strokeStyle=COL.ht2a; G.lineWidth=D*1.2;
+        G.beginPath(); G.arc(ex,ey,er,0,6.284); G.fill(); G.stroke();
+        capsule(ex, ey-er, 0, COL[r[0]], r[2], true);
       });
 
-      // ---- ligands crossing the cleft ----
-      var flux=[]; st.rec.forEach(function(r){
-        if(r[0]==='bdnf'||r[0]==='glu'||r[0]==='trkb'||r[0]==='ht2a') flux.push(r);
-      });
-      for(var m=0;m<26;m++){
-        var f=flux[m%Math.max(flux.length,1)]; if(!f) break;
+      // ---- signalling molecules crossing the cleft ----
+      // This is a glutamate synapse: glutamate crosses in every state, with the TrkB ligand.
+      var glu=['glu','',.35], flux=[];
+      st.rec.forEach(function(r){ if(r[0]==='glu') glu=r; });
+      flux.push(glu);
+      st.rec.forEach(function(r){ if(r[0]==='trkb') flux.push(r); });
+      // 5-HT and psilocin are not released by this terminal: they drift in from the side.
+      // Psilocin (an intracellular target is listed) crosses the membrane; serotonin stops at it.
+      var sideL=null; st.rec.forEach(function(r){ if(r[0]==='ht2a' && !sideL) sideL=r; });
+      for(var n=0;n<9 && sideL;n++){
+        var p2=(n*0.113+(reduce2?0.5:tt*0.1))%1, sy0=yC-ry*(1.3-hsh(n,5)*1.4);
+        var stopX=cx-rx*Math.sqrt(Math.max(0,1-Math.pow((sy0-yC)/ry,2)))-R0*0.1;
+        var tx=inner.length? cx-R0*0.05 : stopX, ty=inner.length? yC+ry*0.25-R0*0.2 : sy0;
+        var sx0=R0*(0.3+hsh(n,2)*1.4), sx=sx0+p2*(tx-sx0), sy=sy0+p2*(ty-sy0)+(reduce2?0:Math.sin(tt*1.3+n*2.1)*R0*0.07);
+        G.globalAlpha=Math.min(1,(1-p2)*4,p2*4)*(0.3+sideL[2]*0.6);
+        G.fillStyle=COL.ht2a; G.beginPath(); G.arc(sx,sy,R0*0.05,0,6.284); G.fill();
+      }
+      var circ=0; st.rec.forEach(function(r){ if(r[0]==='bdnf') circ=r[2]; });
+      if(circ>0){
+        var vx0=R0*0.5, vh=R0*0.7, vy0=yShaft-R0*1.9, vw=R0*2.2;
+        G.globalAlpha=1; G.fillStyle='#f7ece9'; G.strokeStyle='#d9b6ae'; G.lineWidth=D*1.2;
+        G.beginPath(); G.roundRect(vx0,vy0,vw,vh,vh/2); G.fill(); G.stroke();
+        for(var c2=0;c2<Math.round(3+circ*9);c2++){ G.globalAlpha=.85; G.fillStyle=COL.bdnf;
+          G.beginPath(); G.arc(vx0+vh*0.4+hsh(c2,9)*(vw-vh*0.8), vy0+vh*0.3+hsh(c2,4)*vh*0.4, R0*0.05,0,6.284); G.fill(); }
+        G.globalAlpha=1; G.fillStyle='#8a6d66'; G.textAlign='left'; G.textBaseline='bottom';
+        G.font='500 '+Math.round(10*D)+'px Figtree, system-ui, sans-serif';
+        G.fillText('Blood', vx0+vh*0.3, vy0-R0*0.08);
+      }
+      for(var m=0;m<18 && flux.length;m++){
+        var f=flux[m%flux.length];
         var ph=(m*0.191 + (reduce2?0.5:tt*0.22))%1;
-        var mx=cx+Math.sin(m*3.3)*w*0.19;
-        var my=cleft*0.94+ph*(post+headR*0.2-cleft*0.94);
-        G.globalAlpha=(1-Math.abs(ph-0.5)*1.3)*(0.3+f[2]*0.7);
+        var mx=cx+(hsh(m,3)-0.5)*az*1.7;
+        var my=yPre+R0*0.06+ph*(yPost-yPre-R0*0.1);
+        G.globalAlpha=(1-Math.abs(ph-0.5)*1.4)*(0.35+f[2]*0.65);
         G.fillStyle=COL[f[0]]||COL.bdnf;
-        G.beginPath(); G.arc(mx,my,3.4*sc,0,6.284); G.fill();
+        G.beginPath(); G.arc(mx,my,R0*0.055,0,6.284); G.fill();
       }
 
-      // membrane hairlines
-      G.globalAlpha=.5; G.strokeStyle='#9aa6b2'; G.lineWidth=D;
-      G.beginPath(); G.moveTo(0,cleft*0.93); G.lineTo(w,cleft*0.93); G.stroke();
+      // ---- part names, where there is room beside the drawing ----
+      if(w/D>=280){
+        var nar=w/D<560;
+        G.globalAlpha=1; G.fillStyle='#5f6d7b'; G.textBaseline='middle'; G.textAlign='left';
+        G.font='500 '+Math.round((nar?10.5:12)*D)+'px Figtree, system-ui, sans-serif';
+        var lx=cx+B+R0*0.45;
+        if(nar){ G.fillText('Presynaptic', lx, yPre*0.62-7*D); G.fillText('terminal', lx, yPre*0.62+7*D); }
+        else G.fillText('Presynaptic terminal', lx, yPre*0.62);
+        G.strokeStyle='#c3cbd3'; G.lineWidth=D; G.beginPath();
+        G.moveTo(lx-R0*0.12, yPre+gap*0.5); G.lineTo(cx+az*0.85, yPre+gap*0.5); G.stroke();
+        G.fillText('Cleft', lx, yPre+gap*0.5);
+        G.fillText('Spine head', cx+rx+R0*0.55, yC);
+        G.fillText('Neck', cx+neckW+R0*0.55, (yJ+yShaft-fil)/2);
+        G.fillText('Dendrite', cx+R0*2.6, yShaft+(h-yShaft)*0.5);
+      }
       G.globalAlpha=1;
       requestAnimationFrame(render);
     }
