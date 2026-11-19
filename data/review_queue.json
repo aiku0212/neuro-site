@@ -35,6 +35,15 @@
       "authors": "Azizi et al.",
       "journal": "Life sciences",
       "year": 2026
+    },
+    {
+      "pmid": "43054774",
+      "doi": "10.65801/pcp.3606",
+      "group": "psy",
+      "title": "Psychedelics and Sleep: Preclinical and Human Studies-A Systematic Review.",
+      "authors": "Supit et al.",
+      "journal": "Psychiatry and clinical psychopharmacology",
+      "year": 2026
     }
   ],
   "seen": [
@@ -57,6 +66,7 @@
     "43028252",
     "43034011",
     "43044894",
-    "43045009"
+    "43045009",
+    "43054774"
   ]
 }

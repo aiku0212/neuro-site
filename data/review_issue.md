@@ -1,6 +1,6 @@
-Last run: 2026-11-18
+Last run: 2026-11-19
 
-## New papers to review (4)
+## New papers to review (5)
 Tick one box per paper. The next daily run applies it.
 
 **Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.**  
@@ -22,4 +22,9 @@ Wielińska et al., Experimental gerontology, 2026 · group `bdnf` · https://doi
 Azizi et al., Life sciences, 2026 · group `cp` · https://doi.org/10.1016/j.lfs.2026.124789
 - [ ] Approve <!-- review:43045009:approve -->
 - [ ] Dismiss <!-- review:43045009:dismiss -->
+
+**Psychedelics and Sleep: Preclinical and Human Studies-A Systematic Review.**  
+Supit et al., Psychiatry and clinical psychopharmacology, 2026 · group `psy` · https://doi.org/10.65801/pcp.3606
+- [ ] Approve <!-- review:43054774:approve -->
+- [ ] Dismiss <!-- review:43054774:dismiss -->
 
