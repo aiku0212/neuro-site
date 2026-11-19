@@ -417,7 +417,8 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     ctx.clearRect(0, 0, W, H);
 
-    var padL = 44, padR = 12, padT = 16, padB = 22;
+    // padT leaves room for the chart's title, so the top tick never sits under it.
+    var padL = 44, padR = 12, padT = opts.padT || 16, padB = 22;
     var x0 = padL, x1 = W - padR, y0 = padT, y1 = H - padB;
     var tMin = 0, tMax = opts.tMax, vMin = opts.yMin, vMax = opts.yMax;
     var X = function(t){ return x0 + (t - tMin) / (tMax - tMin) * (x1 - x0); };
@@ -440,6 +441,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     ctx.beginPath(); ctx.moveTo(x0, y1); ctx.lineTo(x1, y1); ctx.stroke();
     ctx.fillStyle = muted; ctx.textAlign = "center";
     for (var t = 0; t <= tMax; t += opts.tStep || 10){
+      ctx.textAlign = t === 0 ? "left" : "center";
       ctx.fillText(t + (t === 0 ? " ms" : ""), X(t), H - 7);
       ctx.globalAlpha = .35; ctx.beginPath();
       ctx.moveTo(X(t), y0); ctx.lineTo(X(t), y1); ctx.stroke(); ctx.globalAlpha = 1;
@@ -495,7 +497,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     }
 
     plot(el("scopeV"), {
-      height: 230, tMax: T_END, tStep: 5, yMin: -90, yMax: 60,
+      height: 244, padT: 30, tMax: T_END, tStep: 5, yMin: -90, yMax: 60,
       ticks: [ {at:50, label:"E_Na", color:na, dash:true},
                {at:-55, label:"-55", color:vio, dash:true},
                {at:-65, label:"rest", dash:true},
@@ -506,7 +508,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
     });
 
     plot(el("scopeG"), {
-      height: 130, tMax: T_END, tStep: 5, yMin: 0, yMax: 1,
+      height: 144, padT: 30, tMax: T_END, tStep: 5, yMin: 0, yMax: 1,
       ticks: [ {at:1, label:"1"}, {at:0.5, label:"0.5", dash:true}, {at:0, label:"0"} ],
       series: [ {x:tr.t, y:tr.m, color:na, width:1.8},
                 {x:tr.t, y:tr.h, color:vio, width:1.8},
@@ -515,7 +517,7 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
 
     var gmax = Math.max(10, Math.max.apply(null, tr.gNa), Math.max.apply(null, tr.gK));
     plot(el("scopeC"), {
-      height: 130, tMax: T_END, tStep: 5, yMin: 0, yMax: gmax * 1.1,
+      height: 144, padT: 30, tMax: T_END, tStep: 5, yMin: 0, yMax: gmax * 1.1,
       ticks: [ {at:gmax, label:gmax.toFixed(0)}, {at:0, label:"0"} ],
       series: [ {x:tr.t, y:tr.gNa, color:na, width:1.8},
                 {x:tr.t, y:tr.gK, color:k, width:1.8} ]
