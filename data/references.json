@@ -216,7 +216,7 @@
     "authors": "Shao et al.",
     "year": 2021,
     "journal": "Neuron",
-    "citations": 637,
+    "citations": 638,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -236,7 +236,7 @@
     "site_year": 2021,
     "citations_at_compile": 458,
     "doi": "10.1016/j.neuron.2021.06.008",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2021
   },
@@ -302,7 +302,7 @@
     "authors": "Siegel et al.",
     "year": 2024,
     "journal": "Nature",
-    "citations": 307,
+    "citations": 308,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -320,7 +320,7 @@
     "site_title": "Psilocybin desynchronizes the human brain",
     "site_year": 2024,
     "citations_at_compile": 213,
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2024
   },
@@ -356,7 +356,7 @@
     "authors": "de Vos et al.",
     "year": 2021,
     "journal": "Frontiers in Psychiatry",
-    "citations": 250,
+    "citations": 251,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
@@ -374,7 +374,7 @@
     "site_title": "Psychedelics and neuroplasticity: a systematic review unraveling the biological underpinnings",
     "site_year": 2021,
     "citations_at_compile": 237,
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2021
   },
@@ -384,7 +384,7 @@
     "authors": "Nardou et al.",
     "year": 2023,
     "journal": "Nature",
-    "citations": 360,
+    "citations": 362,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -404,7 +404,7 @@
     "site_title": "Psychedelics reopen the social reward learning critical period",
     "site_year": 2023,
     "citations_at_compile": 281,
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2023
   },
@@ -442,7 +442,7 @@
     "authors": "Zhang et al.",
     "year": 2026,
     "journal": "Biological Psychiatry",
-    "citations": 3,
+    "citations": 4,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
@@ -453,7 +453,7 @@
     "site_year": 2026,
     "citations_at_compile": 1,
     "doi": "10.1016/j.biopsych.2026.02.011",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2026
   },
@@ -1201,7 +1201,7 @@
     "authors": "Zrenner et al.",
     "year": 2017,
     "journal": "Brain Stimulation",
-    "citations": 511,
+    "citations": 512,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -1220,7 +1220,7 @@
     "site_title": "Real-time EEG-defined excitability states determine efficacy of TMS-induced plasticity in human motor cortex",
     "site_year": 2017,
     "citations_at_compile": 411,
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2018
   },
@@ -1292,8 +1292,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 18507,
-    "citations_checked": "2026-11-19"
+    "citations": 18514,
+    "citations_checked": "2026-11-20"
   },
   {
     "group": "found",
@@ -1360,8 +1360,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 1790,
-    "citations_checked": "2026-11-19"
+    "citations": 1791,
+    "citations_checked": "2026-11-20"
   },
   {
     "group": "found",
@@ -1390,7 +1390,7 @@
     "authors": "Howard & Kahana",
     "year": 2002,
     "journal": "Journal of Mathematical Psychology",
-    "citations": 909,
+    "citations": 910,
     "tag": null,
     "meta_analysis": false,
     "note": "Temporal context model: context changes as earlier contexts are retrieved, which can explain recency and contiguity effects in free recall",
@@ -1403,7 +1403,7 @@
     "site_year": 2002,
     "citations_at_compile": 908,
     "doi": "10.1006/jmps.2001.1388",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2002
   },
@@ -1926,7 +1926,7 @@
     "authors": "Di Forti et al.",
     "year": 2019,
     "journal": "The Lancet Psychiatry",
-    "citations": 798,
+    "citations": 799,
     "tag": null,
     "meta_analysis": false,
     "note": "Multi-country case-control: daily high-potency cannabis and psychotic disorder (association)",
@@ -1939,7 +1939,7 @@
     "site_year": 2019,
     "citations_at_compile": 798,
     "doi": "10.1016/S2215-0366(19)30048-3",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2019
   },
@@ -2507,8 +2507,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 1588,
-    "citations_checked": "2026-11-19"
+    "citations": 1589,
+    "citations_checked": "2026-11-20"
   },
   {
     "group": "learn",

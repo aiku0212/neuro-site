@@ -1,4 +1,4 @@
-Last run: 2026-11-19
+Last run: 2026-11-20
 
 ## New papers to review (5)
 Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources. Papers not reviewed within 90 days expire.
