@@ -126,6 +126,17 @@ class PublicPages(unittest.TestCase):
         self.assertTrue((ROOT / "docs" / "open-problem-register.md").exists())
         self.assertTrue((ROOT / "docs" / "time-model-research-plan.md").exists())
 
+    def test_time_page_defines_k_and_draws_a_smooth_chart(self):
+        page = read("timecells")
+        # The slider says what k does, and the text defines k where it first appears.
+        self.assertIn("sharpness k <input", page)
+        self.assertIn('aria-describedby="k-def"', page)
+        self.assertRegex(page, r'id="k-def">[^<]*<span class="mono">sharpness k</span> sets how sharply')
+        self.assertIn("k is a whole number that sets how many times F is differentiated", page)
+        # The activity chart is computed per pixel, not on the old fixed 240 by 36 grid.
+        self.assertNotIn("COLS = 240", page)
+        self.assertIn("rowTS[r] = TMIN * Math.exp(", page)
+
     def test_pharmacology_lists_sourced_harms_for_every_class(self):
         page = read("pharma")
         for cid in ["psy", "dis", "stim", "op", "benzo", "cb"]:
