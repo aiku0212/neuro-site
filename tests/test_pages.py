@@ -111,7 +111,7 @@ class PublicPages(unittest.TestCase):
     def test_visuals_say_what_they_are(self):
         for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning"]:
             with self.subTest(page=name):
-                self.assertRegex(read(name), r'class="fig-kind" data-kind="(schematic|simulation|illustrative|measured)"')
+                self.assertRegex(read(name), r'class="fig-kind" data-kind="(schematic|simulation|drawing|measured)"')
 
     def test_about_names_author_corrections_and_license(self):
         about = read("about")
