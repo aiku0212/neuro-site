@@ -68,10 +68,12 @@
     <a class="tab" href="index.html">Evidence</a>
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="learn.html">Learn</a>
     <a class="tab" href="references.html">Sources</a>
     <a class="tab" href="about.html" aria-current="true">About</a>
   </nav>
 </div>
+<script src="assets/nav.js" defer></script>
 
 <main>
   <h1 class="serif">About this site</h1>
@@ -86,17 +88,19 @@
   </div>
 
   <h2 class="serif">How far the claims have been checked</h2>
-  <p>Each source's DOI was confirmed with Crossref. The figures on the Evidence and Comparative pages were then compared with their sources, and errors were corrected. That check has limits:</p>
+  <p>A DOI is the permanent ID given to a published paper. Each source's DOI was confirmed with Crossref, an organization that registers DOIs. The figures on the Evidence and Comparative pages were then compared with their sources, and errors were corrected. That check has limits:</p>
   <ul>
     <li>Most papers were compared by abstract, not full text.</li>
     <li>The Time page and the spine dimensions on the Spines page have not been checked this way. On the Spike page, only the refractory, resting-state, all-or-none and temperature passages have been checked, against the page's own model and Hodgkin and Huxley's paper. The Pharmacology page was checked in a separate pass in November 2026.</li>
+    <li>The Conditioning page was written in November 2026. Each claim on it was checked against its source in a separate AI-assisted pass, mostly from abstracts. No outside expert has reviewed it.</li>
+    <li>The Neuroscience news page lists headlines from outside sources. Neuroscope has not checked those articles.</li>
     <li>A few statements still need a primary source.</li>
     <li>The three bridge sections on the Comparative page are hypotheses, not sourced findings.</li>
     <li>No outside clinician or veterinarian has reviewed this site yet.</li>
   </ul>
 
   <h2 class="serif">What the adverse-event data can show</h2>
-  <p>The Comparative page uses public FDA adverse-event reports through openFDA. These are spontaneous reports. They cannot show that a drug caused an event, and they have no denominator, so they cannot give the rate at which an event happens. Reporting also varies by drug, species and time, so a higher share of reports is not a higher risk.</p>
+  <p>The Comparative page uses public FDA adverse-event reports through openFDA. These are spontaneous reports, sent in when someone notices a possible problem with a drug rather than collected by a study. They cannot show that a drug caused an event, and they have no denominator (the number of people or animals given the drug), so they cannot give the rate at which an event happens. Reporting also varies by drug, species and time, so a higher share of reports is not a higher risk.</p>
   <p>This site is not affiliated with or endorsed by the FDA.</p>
 
   <h2 class="serif">What the interactive models are</h2>
@@ -111,8 +115,8 @@
     <a href="https://github.com/aiku0212/neuro-site/blob/main/docs/claim-check.md">claim-check log</a>.</p>
 
   <h2 class="serif">License</h2>
-  <p>Text and original figures are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>:
-    you may reuse them with credit. The code is under the
+  <p>Text and original figures are licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>,
+    which means you may reuse them with credit. The code is under the
     <a href="https://github.com/aiku0212/neuro-site/blob/main/LICENSE">MIT License</a>. Cited papers belong to their
     publishers. three.js (MIT) and the Source Serif 4 and Figtree fonts (SIL Open Font License) keep their own licenses.</p>
 

@@ -43,7 +43,7 @@
   /* ---------- stage ---------- */
   .stage{position:relative; height:min(94vh,860px); min-height:600px;
     display:grid; grid-template-rows:auto 1fr; border-bottom:1px solid var(--rule)}
-  #brain{grid-row:2; width:100%; height:100%; display:block; cursor:grab;
+  #brain{grid-row:2; grid-column:1; width:100%; height:100%; display:block; cursor:grab;
     touch-action:none; min-height:0}
   #brain.dragging{cursor:grabbing}
 
@@ -81,13 +81,16 @@
     font-size:13px; color:var(--muted)}
 
   /* ---------- readout ---------- */
-  .readout{position:absolute; right:clamp(14px,3vw,32px); top:50%;
-    transform:translateY(-50%); width:min(360px,calc(100vw - 40px));
+  .readout{grid-row:2; grid-column:1; justify-self:end; align-self:center; position:relative;
+    margin-right:clamp(14px,3vw,32px); max-height:calc(100% - 28px); overflow-y:auto;
+    width:min(360px,calc(100vw - 40px));
     background:color-mix(in srgb,var(--ground-2) 92%,transparent);
     border:1px solid var(--rule); border-radius:3px; padding:24px;
     box-shadow:var(--shadow); backdrop-filter:blur(12px); z-index:3;
-    opacity:0; visibility:hidden; transition:opacity .28s ease, transform .28s ease}
+    opacity:0; visibility:hidden; transition:opacity .28s ease}
   .readout.on{opacity:1; visibility:visible}
+  /* The lobe names are drawn on the brain, so the color key can give way to an open card. */
+  .stage:has(.readout.on) .lobes{visibility:hidden}
   .readout .region{font-size:10.5px; letter-spacing:.2em; text-transform:uppercase;
     color:var(--amber); margin:0 0 10px}
   .readout h2{font-size:23px; line-height:1.2; margin:0 0 12px; font-weight:400;
@@ -160,8 +163,7 @@
   .scope{position:relative; border:1px solid var(--rule); border-radius:3px;
     background:var(--ground-2); overflow:hidden}
   #syn{display:block; width:100%; height:440px}
-  .scope-tag{position:absolute; top:12px; left:14px; font-size:10px; z-index:1;
-    background:rgba(255,255,255,.88); padding:2px 6px; border-radius:4px;
+  .scope-tag{position:absolute; bottom:12px; left:14px; font-size:10px; z-index:1;
     letter-spacing:.18em; text-transform:uppercase; color:var(--muted);
     font-family:ui-monospace,SFMono-Regular,Menlo,monospace}
 
@@ -202,9 +204,10 @@
     text-align:center; color:var(--muted); font-size:12.5px}
 
   @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
-  @media (max-width:820px){
-    .readout{position:static; transform:none; width:auto; margin:0 auto;
-      border-radius:0; border-left:0; border-right:0}
+  @media (max-width:1023px){
+    .readout{grid-row:auto; grid-column:auto; justify-self:stretch; position:static; width:auto;
+      max-height:none; overflow:visible; margin:0 auto; border-radius:0; border-left:0; border-right:0}
+    .stage:has(.readout.on) .lobes{visibility:visible}
     .readout:not(.on){display:none}
     .legend{position:static; flex-direction:row; flex-wrap:wrap; gap:12px;
       justify-content:center; padding:16px 20px}
@@ -228,22 +231,24 @@
     <a class="tab" href="index.html" aria-current="true">Evidence</a>
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="learn.html">Learn</a>
     <a class="tab" href="references.html">Sources</a>
     <a class="tab" href="about.html">About</a>
   </nav>
 </div>
+<script src="assets/nav.js" defer></script>
 
 <div class="wrap">
 <main>
 
   <section class="stage">
-    <canvas id="brain" role="img" aria-label="Point-cloud drawing of a brain that turns slowly unless reduced motion is on; drag to rotate. Colors and names mark the frontal, parietal, temporal and occipital lobes, the cerebellum and the brainstem. Choosing one of the five findings measured in a region highlights that region."></canvas>
+    <canvas id="brain" role="img" aria-label="Point-cloud drawing of a brain that turns slowly unless reduced motion is on. Drag to rotate. Colors and names mark the frontal, parietal, temporal and occipital lobes, the cerebellum and the brainstem. Choosing one of the five findings measured in a region highlights that region."></canvas>
 
     <div class="masthead">
       <p class="eyebrow mono">Neuroplasticity &middot; Evidence Review</p>
-      <h1 class="serif">The brain works<br>to stop <em>learning</em></h1>
-      <p class="dek">Ten findings on how plasticity opens, what writes into it,
-        and why closing the window is a feature. Colors and labels show the lobes. Pick a
+      <h1 class="serif">The brain actively limits<br>its own <em>plasticity</em></h1>
+      <p class="dek">Ten findings on how the brain's ability to rewire (its plasticity) increases,
+        what drives the rewiring, and why limiting it later is useful. Colors and labels show the lobes. Pick a
         finding to see where it was measured.</p>
     </div>
 
@@ -276,10 +281,11 @@
     <div class="bench-in">
       <div class="bench-hd">
         <p class="eyebrow mono">The Synapse &middot; Receptor Level</p>
-        <h2 class="serif">What each thing actually binds</h2>
-        <p>Interventions are usually described by how they feel. Here they are
-          described by what they touch. Switch between them and watch the receptors,
-          the cleft, and the spine.</p>
+        <h2 class="serif">What each intervention acts on at the synapse</h2>
+        <p>People usually describe these interventions by how they feel. This model
+          shows what each one acts on instead. Switch between them to see changes in the receptors,
+          the cleft (the gap between the two neurons) and the spine (the small bump on a dendrite
+          that receives the signal).</p>
         <p class="fig-note"><span class="fig-kind" data-kind="schematic">Schematic</span>
           Receptor levels and spine size are drawn to show direction, not measured amounts.</p>
       </div>
@@ -303,13 +309,13 @@
 
   <div class="prose">
     <p class="lede serif">Blood BDNF is the measure most often used to sell these
-      interventions. <strong>Exercise has the strongest evidence for moving it.</strong>
+      interventions. <strong>Exercise has the strongest evidence for raising it.</strong>
       Yoga and meditation trend upward in small or uncontrolled studies, fasting results
       conflict, and psychedelics leave it unchanged. This is a result about one blood
       marker, not about whether each intervention changes the brain.</p>
 
     <div class="sec">
-      <h3 class="mono">What moves blood BDNF</h3>
+      <h3 class="mono">What changes blood BDNF</h3>
       <div class="scroller">
         <table class="ledger">
           <thead><tr><th>Intervention</th><th>Evidence</th><th>Result</th></tr></thead>
@@ -321,21 +327,22 @@
           </tbody>
         </table>
       </div>
-      <p>Exercise is the only one of these with pooled randomized evidence of a rise. Intensity seems to matter: in a 12-person crossover study, high-intensity intervals raised serum BDNF more than moderate or low intensity, which did not differ from each other.</p>
+      <p>In the table, an RCT is a randomized controlled trial, and SMD (standardized mean difference) gives the size of an effect in standard deviations, where 0 means no effect. Exercise is the only one of these with pooled randomized evidence of a rise. Intensity seems to matter. In a 12-person crossover study, in which each person exercised at every intensity, high-intensity intervals raised serum BDNF more than moderate or low intensity, which did not differ from each other.</p>
     </div>
 
     <div class="sec">
-      <h3 class="mono">The distinction almost everyone misses</h3>
-      <p>BDNF <strong>signaling</strong> and BDNF <strong>concentration</strong> are
-        different quantities in different compartments. In cell and mouse studies, LSD and psilocin bound the TrkB receptor about a thousand times more tightly than the antidepressants tested and enhanced signalling from existing BDNF. In people, they do not raise the amount circulating in blood.</p>
-      <p class="pull serif">A drug can transform how a receptor behaves without
-        changing how much protein floats past it.</p>
+      <h3 class="mono">BDNF signalling versus BDNF concentration</h3>
+      <p>BDNF <strong>signaling</strong> (what the protein does at its receptor) and BDNF
+        <strong>concentration</strong> (how much of it is present) are different quantities,
+        measured in different places. In cell and mouse studies, LSD and psilocin bound the TrkB receptor about a thousand times more tightly than the antidepressants tested and enhanced signalling from existing BDNF. In people, they do not raise the amount circulating in blood.</p>
+      <p class="pull serif">A drug can change how a receptor works without
+        changing how much BDNF is present.</p>
       <figure class="figure" aria-labelledby="fig-bdnf-h">
         <div class="fig-head"><h4 id="fig-bdnf-h">Where BDNF is measured</h4>
           <span class="fig-kind" data-kind="schematic">Schematic, not to scale</span></div>
         <div class="fig-pair">
           <div class="fig-panel">
-            <svg viewBox="0 0 300 180" role="img" aria-label="A synapse: BDNF in the cleft binds TrkB receptors on the dendritic spine.">
+            <svg viewBox="0 0 300 180" role="img" aria-label="A synapse, where BDNF in the cleft binds TrkB receptors on the dendritic spine.">
               <path d="M60 0H240V38Q240 70 208 74H92Q60 70 60 38Z" fill="#e4e9ef" stroke="#b9c3ce"/>
               <g fill="none" stroke="#b9c3ce"><circle cx="112" cy="30" r="8"/><circle cx="140" cy="46" r="8"/><circle cx="168" cy="26" r="8"/><circle cx="192" cy="46" r="8"/></g>
               <g fill="#c98a2b"><circle cx="112" cy="30" r="2.4"/><circle cx="140" cy="46" r="2.4"/><circle cx="168" cy="26" r="2.4"/><circle cx="192" cy="46" r="2.4"/>
@@ -345,12 +352,12 @@
               <text x="214" y="93" font-size="13" fill="#7a5418">BDNF</text>
               <text x="222" y="128" font-size="13" fill="#9a3f28">TrkB</text>
             </svg>
-            <h5>In the brain: signalling</h5>
+            <h5>Signalling in the brain</h5>
             <p>BDNF acts by binding TrkB receptors at synapses. In cell and mouse studies,
               psychedelics change this binding without raising BDNF levels.</p>
           </div>
           <div class="fig-panel">
-            <svg viewBox="0 0 300 180" role="img" aria-label="Blood: platelets store BDNF; when a sample clots into serum they release it.">
+            <svg viewBox="0 0 300 180" role="img" aria-label="In blood, platelets store BDNF and release it when a sample clots into serum.">
               <rect x="14" y="44" width="160" height="92" rx="46" fill="#f8e7e1" stroke="#e3b5a8"/>
               <g fill="#fff" stroke="#c0573a"><ellipse cx="58" cy="76" rx="15" ry="8"/><ellipse cx="104" cy="104" rx="15" ry="8"/><ellipse cx="136" cy="70" rx="15" ry="8"/></g>
               <g fill="#c98a2b"><circle cx="53" cy="76" r="2"/><circle cx="60" cy="74" r="2"/><circle cx="65" cy="78" r="2"/>
@@ -365,24 +372,26 @@
                 <circle cx="247" cy="130" r="2.6"/><circle cx="260" cy="140" r="2.6"/><circle cx="254" cy="152" r="2.6"/><circle cx="266" cy="80" r="2.6"/></g>
               <text x="236" y="16" font-size="13" fill="#3f4c59">Serum</text>
             </svg>
-            <h5>In a blood sample: concentration</h5>
-            <p>Plasma carries little BDNF. Platelets store it and release it when activated,
-              as happens when a sample clots into serum. Most human studies measure serum.</p>
+            <h5>Concentration in a blood sample</h5>
+            <p>Plasma, the fluid part of blood, carries little BDNF. Platelets store it and release
+              it when activated, as happens when a blood sample clots. The fluid left after clotting
+              is serum, and most human studies measure serum.</p>
           </div>
         </div>
         <figcaption>A change in serum BDNF is not a direct measure of signalling in the brain.
           Sources: Moliner et al. 2023; Fujimura et al. 2002; Calder et al. 2024.</figcaption>
       </figure>
-      <p>That may be why a meta-analysis of 29 studies found no change while cellular studies find large effects. Its authors raise a second explanation: the animal findings may not fully carry over to humans. The current data cannot separate the two. </p>
+      <p>That may be why a meta-analysis of 29 studies found no change while cellular studies find large effects. Its authors raise a second explanation, that the animal findings may not fully carry over to humans. The current data cannot separate the two. </p>
     </div>
 
     <div class="sec">
-      <h3 class="mono">Why closing matters</h3>
-      <p>Critical periods do not fade. They are <strong>actively shut</strong> by
-        molecular brakes — perineuronal nets
-        that wrap inhibitory interneurons and lock the circuit down.</p>
+      <h3 class="mono">How and why critical periods close</h3>
+      <p>Critical periods are times early in life when experience changes brain circuits
+        most easily. They do not fade away. Molecular brakes <strong>actively shut</strong>
+        them. These brakes include perineuronal nets, mesh-like coatings that wrap inhibitory
+        interneurons and limit further rewiring of the circuit.</p>
       <figure class="figure" aria-labelledby="fig-cp-h">
-        <div class="fig-head"><h4 id="fig-cp-h">How a learning window closes</h4>
+        <div class="fig-head"><h4 id="fig-cp-h">How a critical period closes</h4>
           <span class="fig-kind" data-kind="schematic">Schematic, no measured values</span></div>
         <svg viewBox="0 0 640 230" role="img" aria-label="Capacity for experience-driven rewiring rises early in life, falls as molecular brakes form, and stays lower but above zero in adulthood. In animal studies, removing brakes can partly reopen it.">
           <rect x="120" y="20" width="170" height="170" fill="#e6eef5"/>
@@ -400,19 +409,19 @@
           </g>
         </svg>
         <ol class="fig-keys">
-          <li>The window opens as inhibitory circuits mature.</li>
+          <li>The critical period opens as inhibitory circuits mature.</li>
           <li>Molecular brakes form, including perineuronal nets around inhibitory neurons, and actively close it.</li>
           <li>Adult plasticity is lower, not zero.</li>
-          <li>In animal studies, removing a brake can partly reopen the window.</li>
+          <li>In animal studies, removing a brake can partly reopen the critical period.</li>
         </ol>
         <figcaption>The curve's shape is conceptual and its timing differs by species and brain area.
           Sources: Takesian &amp; Hensch 2013; Cornez et al. 2017.</figcaption>
       </figure>
-      <p>That closure helps stabilize what the circuit has learned. Songbirds show the range:
-        zebra finches close hard and their song crystallizes; starlings stay open and
-        learn new songs every year. Both strategies survived evolution. Neither is
-        the upgrade.</p>
-      <p>Which reframes the goal. Not maximum plasticity — <strong>plasticity you can
+      <p>That closure helps stabilize what the circuit has learned. Songbird species show how much this varies.
+        Zebra finches close their learning period firmly, and their song becomes fixed, a step
+        called crystallization. Starlings keep their learning period open and learn new songs every year. Both
+        strategies have persisted through evolution, and neither is simply better.</p>
+      <p>So the goal is not maximum plasticity. It is <strong>plasticity you can
         open and close on purpose.</strong></p>
     </div>
   </div>
@@ -420,7 +429,7 @@
 
   <footer class="mono">
     Compiled from Consensus, PubMed &amp; ClinicalTrials.gov &middot; August 2026, updated November 2026<br>
-    Figures are sourced on the <a href="references.html" style="color:inherit">Sources page</a>. Nulls included.<br>
+    Figures are sourced on the <a href="references.html" style="color:inherit">Sources page</a>. Null results are included.<br>
     Educational only. Not medical or veterinary advice. <a href="about.html" style="color:inherit">About and limits</a>
   </footer>
 </div>
@@ -434,63 +443,63 @@
   var REG=[
     {id:'pfc', loc:true, name:'Prefrontal cortex', ev:'Mouse study',
      where:'Frontal cortex, in mice. The human region shown is the closest equivalent.',
-     title:'A single dose, ten percent more spines',
+     title:'One psilocybin dose raised mouse spine density by ten percent',
      stat:'10%', statlabel:'spine density, within 24 hours',
-     body:'One dose of psilocybin increased dendritic spine size and density in mouse frontal cortex within a day. The change was still there a month later, alongside elevated excitatory transmission.',
+     body:'One dose of psilocybin increased dendritic spine size and density in mouse frontal cortex within a day. The change was still there a month later, and excitatory transmission was also elevated.',
      cite:'Shao et al., <em>Neuron</em> 2021'},
     {id:'dmn', loc:true, name:'Default mode network', ev:'Human imaging, small sample',
-     where:'A network of medial frontal, medial parietal and lateral parietal cortex. Highlight is approximate.',
+     where:'A network of medial frontal, medial parietal and lateral parietal cortex that is most active at rest. Highlight is approximate.',
      title:'Psilocybin desynchronizes the brain',
      stat:'3×', statlabel:'vs. methylphenidate control',
-     body:'About eighteen MRI scans per person, tracked before, during and three weeks after. Network distinctions dissolved. The decoupling between anterior hippocampus and the default mode network persisted for weeks.',
+     body:'Each person had about eighteen MRI scans, taken before, during and three weeks after the dose. Brain networks became less distinct from one another. Reduced connectivity between the anterior hippocampus and the default mode network lasted for weeks.',
      cite:'Siegel et al., <em>Nature</em> 2024'},
     {id:'hip', loc:true, name:'Hippocampus', ev:'Human randomized trial',
      where:'Hippocampus, deep in the temporal lobe.',
-     title:'Exercise four hours later, not right after',
+     title:'Exercise helped memory when done four hours after learning, not right after',
      stat:'4 h', statlabel:'better than exercising right away',
      body:'Three groups learned the same associations. Exercising four hours afterward improved retention. Exercising immediately did not. Only those two timings were tested.',
      cite:'van Dongen et al., <em>Current Biology</em> 2016'},
     {id:'vis', loc:true, name:'Visual cortex', ev:'Review, mostly animal studies',
      where:'Visual cortex, the classic model for critical periods.',
-     title:'The brain works to stop learning',
+     title:'The brain actively closes critical periods',
      stat:'n/a', statlabel:'plasticity is actively dampened',
-     body:'Critical periods are not lost through decay. Molecular brakes shut them, reversibly limiting excessive rewiring. The transition to a fixed state is what allows complex functions to consolidate.',
+     body:'Critical periods are times early in life when experience changes brain circuits most easily. They do not end through decay. Molecular brakes shut them, which reversibly limits excessive rewiring. The shift to a fixed state allows complex functions to consolidate.',
      cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013'},
     {id:'mot', loc:true, name:'Motor cortex', ev:'Retrospective human study',
-     where:'Motor cortex, measured with TMS-EEG. Highlight is approximate.',
-     title:'One letter of DNA, triple the plasticity',
+     where:'Motor cortex, measured with TMS-EEG, which stimulates the brain with magnetic pulses through the scalp and records its electrical response. Highlight is approximate.',
+     title:'Plasticity varied threefold across BDNF genotypes',
      stat:'3×', statlabel:'spread across Val66Met genotypes',
-     body:'Measured with TMS-EEG in a retrospective study of 200 stroke patients: Val/Val 0.22, Val/Met 0.12, Met/Met 0.07. Clinical recovery tracked genotype. This is one study and has not been replicated in the sources here.',
+     body:'Val66Met is a one-letter DNA difference in the BDNF gene. A retrospective study of 200 stroke patients measured plasticity with TMS-EEG and found values of 0.22 for Val/Val, 0.12 for Val/Met and 0.07 for Met/Met. Clinical recovery tracked genotype. This is one study and has not been replicated in the sources here.',
      cite:'Lin, <em>Neurological Sciences</em> 2026'},
     {id:'pnn', loc:false, name:'Perineuronal nets', ev:'Review of songbird studies',
-     where:'Not tied to one region: these nets wrap inhibitory neurons in many areas.',
-     title:'Nets that set the length of a lifetime',
+     where:'These nets wrap inhibitory neurons in many areas, so they are not tied to one region.',
+     title:'Songbirds that stop learning early have denser nets',
      stat:'3', statlabel:'species, one gradient',
-     body:'Perineuronal nets are dense in zebra finches, which learn one song and stop. Intermediate in canaries. Sparse in starlings, which learn new songs every year. Evolution tuned the same structure to set how long learning stays possible.',
+     body:'Perineuronal nets are dense in zebra finches, which learn one song and stop. They are intermediate in canaries and sparse in starlings, which learn new songs every year. Evolution adjusted the same structure to set how long learning stays possible.',
      cite:'Cornez et al., <em>Dev. Neurobiol.</em> 2017'},
     {id:'trkb', loc:false, name:'TrkB receptor', ev:'Cell and mouse studies',
-     where:'Not tied to one region: a receptor found throughout the brain.',
-     title:'A thousand times tighter',
+     where:'TrkB, the main receptor for BDNF, is found throughout the brain, so it is not tied to one region.',
+     title:'LSD and psilocin bind TrkB far more tightly than the antidepressants tested',
      stat:'1000×', statlabel:'affinity vs. other antidepressants',
-     body:'In cell and mouse studies, LSD and psilocin bind TrkB directly, at a site overlapping where antidepressants bind. The plasticity effects depend on that binding and on promoting endogenous BDNF, not on making more of it.',
+     body:'In cell and mouse studies, LSD and psilocin bind TrkB directly, at a site overlapping where antidepressants bind. The plasticity effects depend on that binding and on strengthening signalling by the BDNF already present, not on making more of it.',
      cite:'Moliner et al., <em>Nature Neuroscience</em> 2023'},
     {id:'mol', loc:false, name:'BDNF and proBDNF', ev:'Cell and mouse studies',
-     where:'Not tied to one region: a signalling molecule.',
-     title:'The same gene, opposite directions',
+     where:'These are signalling molecules and are not tied to one region.',
+     title:'BDNF and proBDNF have opposite effects on synapses',
      stat:'2', statlabel:'forms, inverse effects',
-     body:'Mature BDNF signals through TrkB and builds synapses. proBDNF signals through p75NTR and dismantles them. A cleavage-resistant knockin mouse showed reduced spine density and impaired LTP. "More BDNF" is an underspecified instruction.',
+     body:'Mature BDNF signals through TrkB and builds synapses. proBDNF, the uncut precursor, signals through p75NTR and dismantles them. In a knockin mouse whose proBDNF cannot be cut into mature BDNF, spine density was reduced and LTP (long-term potentiation, a lasting strengthening of synapses) was impaired. So a call for "more BDNF" is incomplete unless it says which form.',
      cite:'Woo et al., <em>Nat. Neurosci.</em> 2005 · Yang et al., <em>Cell Reports</em> 2014'},
     {id:'cbl', loc:false, name:'Blood, after exercise', ev:'Human crossover study, 12 men',
      where:'Measured in blood, not in the brain.',
-     title:'A rise that fades within the hour',
+     title:'Serum BDNF rose after exercise and faded within an hour',
      stat:'15 min', statlabel:'peak, fading by 60',
      body:'In 12 young men, high-intensity intervals raised serum BDNF above moderate and low intensity, which did not differ from each other. The rise peaked at fifteen minutes and by sixty minutes was no longer clearly above baseline.',
      cite:'Birinci et al., <em>Scientific Reports</em> 2026'},
     {id:'stem', loc:false, name:'Blood, after psychedelics', ev:'Human meta-analysis, 29 studies',
      where:'Measured in blood, not in the brain.',
-     title:'The measurement that fails',
+     title:'Blood BDNF shows no change after psychedelics',
      stat:'0.02', statlabel:'effect size, 29 pooled studies',
-     body:'Ketamine, LSD, psilocybin, ayahuasca, DMT, MDMA. No change in peripheral BDNF. Better-controlled studies reported smaller effects.',
+     body:'The 29 studies covered ketamine, LSD, psilocybin, ayahuasca, DMT and MDMA. Pooled together, they showed no change in BDNF in the blood. Better-controlled studies reported smaller effects.',
      cite:'Calder et al., <em>Molecular Psychiatry</em> 2024'}
   ];
 
@@ -610,7 +619,8 @@
   var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
   // Without rotation, start side-on, where all six lobe names are visible.
   var rx=0.16, ry=reduce?1.25:0.5, vx=0, vy=0.0022, drag=false, px=0, py=0, moved=0;
-  var active=null, hot=null, t0=performance.now();
+  var active=null, hot=null, t0=performance.now(), viewX=null, viewK=1;
+  var LEG=document.getElementById('legend');
 
   function size(){
     var b=C.getBoundingClientRect();
@@ -627,8 +637,19 @@
   }
 
   function draw(now){
-    var w=C.width, h=C.height, cx=w/2, cy=h/2;
-    var scale=Math.min(w,h)/DPR<520 ? Math.min(w,h)/185 : Math.min(w,h)/152;
+    var w=C.width, h=C.height, cy=h/2;
+    var base=Math.min(w,h)/DPR<520 ? Math.min(w,h)/185 : Math.min(w,h)/152;
+    // With a card open on a wide screen, fit the brain between the list and the card,
+    // so the card never hides the region it describes.
+    var wantX=w/2, wantK=1;
+    if(active && innerWidth>1023 && RO){
+      var cb=C.getBoundingClientRect();
+      var L0=LEG.getBoundingClientRect().right-cb.left+18, R0=RO.getBoundingClientRect().left-cb.left-18;
+      if(R0-L0>120){ wantX=(L0+R0)/2*DPR; wantK=Math.min(1,(R0-L0)*DPR/(base*140)); }
+    }
+    if(viewX===null) viewX=wantX;
+    viewX+=(wantX-viewX)*(reduce?1:0.12); viewK+=(wantK-viewK)*(reduce?1:0.12);
+    var cx=viewX, scale=base*viewK;
     X.clearRect(0,0,w,h);
 
     if(!drag && !reduce) ry+=vy;
@@ -687,8 +708,8 @@
   function pick(ev){
     var b=C.getBoundingClientRect();
     var mx=(ev.clientX-b.left)*DPR, my=(ev.clientY-b.top)*DPR;
-    var w=C.width,h=C.height,cx=w/2,cy=h/2;
-    var scale=Math.min(w,h)/DPR<520 ? Math.min(w,h)/185 : Math.min(w,h)/152;
+    var w=C.width,h=C.height,cx=(viewX===null?w/2:viewX),cy=h/2;
+    var scale=(Math.min(w,h)/DPR<520 ? Math.min(w,h)/185 : Math.min(w,h)/152)*viewK;
     var best=null,bd=28*DPR;
     for(var k=0;k<P.length;k++){
       var q=project(P[k]);
@@ -724,6 +745,7 @@
     document.getElementById('r-body').textContent=r.body;
     document.getElementById('r-cite').innerHTML=r.cite;
     RO.classList.add('on');
+    if(innerWidth<=1023) RO.scrollIntoView({block:'nearest', behavior:reduce?'auto':'smooth'});
     document.querySelectorAll('.lg').forEach(function(b){
       b.setAttribute('aria-pressed', b.dataset.id===id ? 'true' : 'false');
     });
@@ -742,29 +764,29 @@
              nmda:'#2f6fa8', pnn:'#2b8273', bdnf:'#c98a2b', glu:'#3d8a4a'};
 
     var STATE={
-      base:{label:'Baseline', spine:1, title:'A ratio, not a total',
+      base:{label:'Baseline', spine:1, title:'The ratio of BDNF to proBDNF sets the direction of change',
         rec:[['trkb','TrkB',.45],['p75','p75NTR',.45],['ht2a','5-HT2A (surface)',.2],['nmda','NMDA',.35],['pnn','Perineuronal net',.6]],
-        body:'Mature BDNF binds TrkB and strengthens the synapse. proBDNF binds p75NTR and does the opposite, driving depression of the synapse and spine loss. Direction is set by the ratio between them, not by how much BDNF exists. The perineuronal net drawn around this synapse stands for the matrix that limits rewiring. In the brain these nets mostly wrap parvalbumin interneurons, and the drawing does not change it between states because the studies here did not measure it.',
+        body:'BDNF (brain-derived neurotrophic factor) is a protein that helps neurons survive, grow and form synapses. Its mature form binds the receptor TrkB and strengthens the synapse. Its precursor, proBDNF, binds a different receptor, p75NTR, and does the opposite, weakening the synapse and causing spine loss. The ratio between the two forms sets the direction of change, not the total amount of BDNF. The perineuronal net drawn around this synapse stands for the mesh outside the cells that limits rewiring. In the brain these nets mostly wrap parvalbumin interneurons, a type of inhibitory neuron. The drawing does not change the net between states because the studies here did not measure it.',
         cite:'Woo et al., <em>Nat. Neurosci.</em> 2005 &middot; Yang et al., <em>Cell Reports</em> 2014'},
-      psi:{label:'Psilocybin', spine:1.38, title:'Straight to the receptor',
+      psi:{label:'Psilocybin', spine:1.38, title:'Psilocin acts directly on TrkB and 5-HT2A receptors',
         rec:[['trkb','TrkB',1],['ht2a','5-HT2A (intracellular)',1],['ht2a','5-HT2A (surface)',.55],['p75','p75NTR',.3],['pnn','Perineuronal net',.6]],
-        body:'In cell and mouse studies, psilocin binds TrkB with about a thousand times the affinity of the antidepressants tested, and it is lipophilic enough to cross the membrane and reach intracellular 5-HT2A receptors that serotonin itself cannot get to. Mouse spine density rises about 10% within 24 hours and holds for a month. Circulating BDNF does not change in people. The sources disagree on the route: Moliner reports effects independent of 5-HT2A, while Vargas and Shao 2025 find 5-HT2A necessary.',
+        body:'In cell and mouse studies, psilocin, the active form of psilocybin, binds TrkB about a thousand times more tightly than the antidepressants tested. It is also fat-soluble enough to cross the cell membrane and reach 5-HT2A serotonin receptors inside the cell, which serotonin itself cannot get to. Mouse spine density rises about 10% within 24 hours, and the increase lasts for a month. Circulating BDNF does not change in people. The sources disagree on the route. Moliner reports effects independent of 5-HT2A, while Vargas and Shao 2025 find 5-HT2A necessary.',
         cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023 &middot; Shao et al., <em>Neuron</em> 2021 &middot; Shao et al., <em>Nature</em> 2025'},
-      ssri:{label:'SSRI', spine:1.1, title:'The same door, a weaker key',
+      ssri:{label:'SSRI', spine:1.1, title:'Fluoxetine binds a partly overlapping TrkB site, but far more weakly',
         rec:[['trkb','TrkB',.55],['ht2a','5-HT2A (surface)',.3],['p75','p75NTR',.35],['pnn','Perineuronal net',.6]],
-        body:'Fluoxetine binds a partly overlapping TrkB site, far more weakly. Signaling only shifts after the drug accumulates over weeks, which may explain why the clinical response is slow rather than immediate.',
+        body:'Fluoxetine, a common SSRI antidepressant, binds a partly overlapping TrkB site, far more weakly. Signaling only shifts after the drug accumulates over weeks, which may explain why the clinical response is slow rather than immediate.',
         cite:'Casarotto et al., <em>Cell</em> 2021 &middot; Brunello, Cannarozzo &amp; Castr&eacute;n, <em>Trends Neurosci.</em> 2024'},
-      ket:{label:'Ketamine', spine:1.3, title:'Disinhibition, then a burst',
+      ket:{label:'Ketamine', spine:1.3, title:'Ketamine may reduce inhibition and trigger a glutamate surge',
         rec:[['nmda','NMDA (blocked)',.1],['glu','Glutamate surge',.9],['trkb','TrkB',.8],['pnn','Perineuronal net',.6]],
-        body:'In one leading model, built mostly on rat studies, ketamine blocks NMDA receptors that drive inhibitory interneurons, releasing the brake on pyramidal cells. The signalling that follows activates mTOR and adds new spine synapses in prefrontal cortex within hours. Other mechanisms are proposed, including a metabolite that acts without blocking NMDA receptors. In a small trial, depression improved within about two hours of one infusion, against weeks for standard antidepressants.',
+        body:'In one leading model, built mostly on rat studies, ketamine blocks the NMDA receptors (a type of glutamate receptor) that keep inhibitory interneurons active. That reduces inhibition of pyramidal cells, the main excitatory neurons. The signalling that follows activates mTOR, an enzyme that controls protein production, and adds new spine synapses in prefrontal cortex within hours. Researchers have proposed other mechanisms, including a metabolite that acts without blocking NMDA receptors. In a small trial, depression improved within about two hours of one infusion, compared with weeks for standard antidepressants.',
         cite:'Homayoun &amp; Moghaddam, <em>J. Neurosci.</em> 2007 &middot; Li et al., <em>Science</em> 2010 &middot; Zanos et al., <em>Nature</em> 2016 &middot; Zarate et al., <em>Arch. Gen. Psychiatry</em> 2006'},
-      ex:{label:'Exercise', spine:1.18, title:'Peaks at fifteen minutes, fading by sixty',
+      ex:{label:'Exercise', spine:1.18, title:'Serum BDNF peaked at fifteen minutes and faded by sixty minutes',
         rec:[['bdnf','Circulating BDNF',1],['trkb','TrkB',.75],['p75','p75NTR',.3],['pnn','Perineuronal net',.6]],
-        body:'In one study of 12 young men, high-intensity intervals raised serum BDNF well above moderate and low intensity, which did not differ from each other. BDNF peaked at fifteen minutes and was no longer clearly above baseline by sixty minutes. Of the interventions here, exercise has the strongest pooled evidence for moving the blood measure, though serum is a noisy readout: platelets store BDNF and release it when activated, so serum BDNF is not a direct measure of the brain.',
+        body:'In one study of 12 young men, high-intensity intervals raised serum BDNF well above moderate and low intensity, which did not differ from each other. BDNF peaked at fifteen minutes and was no longer clearly above baseline by sixty minutes. Of the interventions here, exercise has the strongest pooled evidence for raising the blood measure. Serum is a noisy readout, though. Platelets store BDNF and release it when activated, so serum BDNF is not a direct measure of the brain.',
         cite:'Birinci et al., <em>Scientific Reports</em> 2026 &middot; Gholami et al., <em>Exp. Gerontology</em> 2024 &middot; Fujimura et al., <em>Thromb. Haemost.</em> 2002'},
-      dep:{label:'Depression', spine:.62, title:'Signalling withdrawn',
+      dep:{label:'Depression', spine:.62, title:'Fewer synapses and lower serum BDNF in depression',
         rec:[['trkb','TrkB',.18],['p75','p75NTR',.85],['bdnf','Circulating BDNF',.25],['pnn','Perineuronal net',.6]],
-        body:'Postmortem prefrontal cortex from people with major depression has fewer synapses, and in rats the same molecular change removes dendritic spines. Serum BDNF is lower during acute episodes and recovers with successful treatment in responders but not non-responders, making this one of the few places the blood measure actually behaves like a biomarker.',
+        body:'Postmortem prefrontal cortex from people with major depression has fewer synapses, and in rats the same molecular change found in those brains removes dendritic spines. Serum BDNF is lower during acute episodes and recovers with successful treatment in responders but not non-responders. This is one of the few cases where the blood measure behaves like a biomarker.',
         cite:'Kang et al., <em>Nat. Med.</em> 2012 &middot; Polyakova et al., <em>J. Affective Disorders</em> 2015'}
     };
 

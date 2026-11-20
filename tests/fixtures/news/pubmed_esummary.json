@@ -1,0 +1,21 @@
+{"header": {"type": "esummary", "version": "0.3"},
+ "result": {
+  "uids": ["90000001", "90000002", "90000003", "90000004", "90000005", "90000006"],
+  "90000001": {"uid": "90000001", "source": "Neuron", "title": "A made-up review of <i>place</i> cells.",
+               "pubtype": ["Journal Article", "Review"],
+               "history": [{"pubstatus": "entrez", "date": "2026/11/17 06:01"}]},
+  "90000002": {"uid": "90000002", "source": "Nat Rev Neurosci", "title": "A made-up review of glia.",
+               "pubtype": ["Journal Article", "Review"],
+               "history": [{"pubstatus": "pubmed", "date": "2026/11/09 06:00"}, {"pubstatus": "entrez", "date": "2026/11/09 06:00"}]},
+  "90000003": {"uid": "90000003", "source": "Trends Cogn Sci", "title": "An off-topic review from a dropped journal.",
+               "pubtype": ["Journal Article", "Review"],
+               "history": [{"pubstatus": "entrez", "date": "2026/11/16 06:00"}]},
+  "90000004": {"uid": "90000004", "source": "Trends Neurosci", "title": "A made-up preprint that slipped through.",
+               "pubtype": ["Preprint", "Review"],
+               "history": [{"pubstatus": "entrez", "date": "2026/11/16 06:00"}]},
+  "90000005": {"uid": "90000005", "source": "Curr Opin Neurobiol", "title": "A review with no entry date.",
+               "pubtype": ["Journal Article", "Review"], "history": []},
+  "90000006": {"uid": "90000006", "source": "Annu Rev Neurosci", "title": "A made-up annual review of memory.",
+               "pubtype": ["Journal Article", "Review"],
+               "history": [{"pubstatus": "entrez", "date": "2026/10/28 06:00"}]}
+ }}

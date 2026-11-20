@@ -2421,5 +2421,269 @@
     },
     "citations": 0,
     "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Rescorla-Wagner model",
+    "authors": "Rescorla",
+    "year": 2008,
+    "journal": "Scholarpedia",
+    "doi": "10.4249/scholarpedia.2237",
+    "pmid": null,
+    "meta_analysis": false,
+    "site_title": "Rescorla-Wagner model",
+    "site_year": 2008,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read full article on scholarpedia.org; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 17,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Probability of shock in the presence and absence of CS in fear conditioning",
+    "authors": "Rescorla",
+    "year": 1968,
+    "journal": "Journal of Comparative and Physiological Psychology",
+    "doi": "10.1037/h0025984",
+    "pmid": "5672628",
+    "meta_analysis": false,
+    "site_title": "Probability of shock in the presence and absence of CS in fear conditioning",
+    "site_year": 1968,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read publisher abstract and opening text via OpenAlex; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 768,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Pavlovian conditioning: It's not what you think it is",
+    "authors": "Rescorla",
+    "year": 1988,
+    "journal": "American Psychologist",
+    "doi": "10.1037/0003-066X.43.3.151",
+    "pmid": "3364852",
+    "meta_analysis": false,
+    "site_title": "Pavlovian conditioning: It's not what you think it is",
+    "site_year": 1988,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read publisher abstract via OpenAlex; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 1112,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Context and behavioral processes in extinction",
+    "authors": "Bouton",
+    "year": 2004,
+    "journal": "Learning & Memory",
+    "doi": "10.1101/lm.78804",
+    "pmid": "15466298",
+    "meta_analysis": false,
+    "site_title": "Context and behavioral processes in extinction",
+    "site_year": 2004,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read abstract on PubMed/Europe PMC; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 1588,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Behavioral and neurobiological mechanisms of pavlovian and instrumental extinction learning",
+    "authors": "Bouton et al.",
+    "year": 2021,
+    "journal": "Physiological Reviews",
+    "doi": "10.1152/physrev.00016.2020",
+    "pmid": "32970967",
+    "meta_analysis": false,
+    "site_title": "Behavioral and neurobiological mechanisms of pavlovian and instrumental extinction learning",
+    "site_year": 2021,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read full text on PMC (PMC8428921); Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 396,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Neurons in medial prefrontal cortex signal memory for fear extinction",
+    "authors": "Milad & Quirk",
+    "year": 2002,
+    "journal": "Nature",
+    "doi": "10.1038/nature01138",
+    "pmid": "12422216",
+    "meta_analysis": false,
+    "site_title": "Neurons in medial prefrontal cortex signal memory for fear extinction",
+    "site_year": 2002,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read abstract on PubMed; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 1622,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Dopamine responses comply with basic assumptions of formal learning theory",
+    "authors": "Waelti et al.",
+    "year": 2001,
+    "journal": "Nature",
+    "doi": "10.1038/35083500",
+    "pmid": "11452299",
+    "meta_analysis": false,
+    "site_title": "Dopamine responses comply with basic assumptions of formal learning theory",
+    "site_year": 2001,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read abstract on PubMed; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 812,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Dogs are more pessimistic if their owners use two or more aversive training methods",
+    "authors": "Casey et al.",
+    "year": 2021,
+    "journal": "Scientific Reports",
+    "doi": "10.1038/s41598-021-97743-0",
+    "pmid": "34561478",
+    "meta_analysis": false,
+    "site_title": "Dogs are more pessimistic if their owners use two or more aversive training methods",
+    "site_year": 2021,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read full text on nature.com; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 28,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Positive and negative reinforcement: Should the distinction be preserved?",
+    "authors": "Baron & Galizio",
+    "year": 2005,
+    "journal": "The Behavior Analyst",
+    "doi": "10.1007/BF03392107",
+    "pmid": "22478443",
+    "meta_analysis": false,
+    "site_title": "Positive and negative reinforcement: Should the distinction be preserved?",
+    "site_year": 2005,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read abstract on PubMed; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 64,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Heroin \"overdose\" death: contribution of drug-associated environmental cues",
+    "authors": "Siegel et al.",
+    "year": 1982,
+    "journal": "Science",
+    "doi": "10.1126/science.7200260",
+    "pmid": "7200260",
+    "meta_analysis": false,
+    "site_title": "Heroin \"overdose\" death: contribution of drug-associated environmental cues",
+    "site_year": 1982,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read abstract on PubMed; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 232,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Habituation revisited: An updated and revised description of the behavioral characteristics of habituation",
+    "authors": "Rankin et al.",
+    "year": 2009,
+    "journal": "Neurobiology of Learning and Memory",
+    "doi": "10.1016/j.nlm.2008.09.012",
+    "pmid": "18854219",
+    "meta_analysis": false,
+    "site_title": "Habituation revisited: An updated and revised description of the behavioral characteristics of habituation",
+    "site_year": 2009,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read full text on PMC (PMC2754195); Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 1562,
+    "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Neuronal mechanisms of habituation and dishabituation of the gill-withdrawal reflex in Aplysia",
+    "authors": "Castellucci et al.",
+    "year": 1970,
+    "journal": "Science",
+    "doi": "10.1126/science.167.3926.1745",
+    "pmid": "5416543",
+    "meta_analysis": false,
+    "site_title": "Neuronal mechanisms of habituation and dishabituation of the gill-withdrawal reflex in Aplysia",
+    "site_year": 1970,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for conditioning page; Read abstract on PubMed; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-19"
+    },
+    "citations": 477,
+    "citations_checked": "2026-11-19"
   }
 ]

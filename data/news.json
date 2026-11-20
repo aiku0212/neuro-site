@@ -1,0 +1,296 @@
+{
+  "updated": "2026-11-19",
+  "sources": [
+    {
+      "id": "nat-rev-neurosci",
+      "name": "Nature Reviews Neuroscience",
+      "kind": "Review article",
+      "last_ok": "2026-11-19",
+      "status": "ok"
+    },
+    {
+      "id": "annu-rev-neurosci",
+      "name": "Annual Review of Neuroscience",
+      "kind": "Review article",
+      "last_ok": "2026-11-19",
+      "status": "ok"
+    },
+    {
+      "id": "trends-neurosci",
+      "name": "Trends in Neurosciences",
+      "kind": "Review article",
+      "last_ok": "2026-11-19",
+      "status": "ok"
+    },
+    {
+      "id": "neuron",
+      "name": "Neuron",
+      "kind": "Review article",
+      "last_ok": "2026-11-19",
+      "status": "ok"
+    },
+    {
+      "id": "curr-opin-neurobiol",
+      "name": "Current Opinion in Neurobiology",
+      "kind": "Review article",
+      "last_ok": "2026-11-19",
+      "status": "ok"
+    },
+    {
+      "id": "elife",
+      "name": "eLife",
+      "kind": "Research paper (eLife reviewed preprint)",
+      "last_ok": "2026-11-19",
+      "status": "ok"
+    },
+    {
+      "id": "mit-news",
+      "name": "MIT News",
+      "kind": "University news office",
+      "last_ok": "2026-11-19",
+      "status": "ok"
+    }
+  ],
+  "items": [
+    {
+      "source": "mit-news",
+      "title": "Scientists create the first whole-body single-cell atlas of an adult vertebrate",
+      "url": "https://news.mit.edu/2026/first-whole-body-single-cell-atlas-adult-vertebrate-1119",
+      "date": "2026-11-19"
+    },
+    {
+      "source": "elife",
+      "title": "Decreased astrocytic CCL5 by Mir324 ameliorates ischemic stroke injury via the CCR5/ERK/CREB pathway",
+      "url": "https://elifesciences.org/articles/101719",
+      "date": "2026-11-19"
+    },
+    {
+      "source": "elife",
+      "title": "Rhodopsin 7 is an ancestral non-canonical photoreceptor that shapes light-responsive behavior",
+      "url": "https://elifesciences.org/articles/109811",
+      "date": "2026-11-18"
+    },
+    {
+      "source": "elife",
+      "title": "Perceptual glimpses are locally accumulated and globally maintained at distinct processing levels",
+      "url": "https://elifesciences.org/articles/107980",
+      "date": "2026-11-18"
+    },
+    {
+      "source": "curr-opin-neurobiol",
+      "title": "Astrocytes regulate synapse development and plasticity across the lifespan",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43050792/",
+      "date": "2026-11-18"
+    },
+    {
+      "source": "elife",
+      "title": "WNK-SPAK/OSR1 signaling pathway facilitates ictal activity via reduced neuronal chloride extrusion rate",
+      "url": "https://elifesciences.org/articles/112181",
+      "date": "2026-11-17"
+    },
+    {
+      "source": "elife",
+      "title": "Transposons contribute to splice-isoform diversity in the Drosophila brain",
+      "url": "https://elifesciences.org/articles/110625",
+      "date": "2026-11-17"
+    },
+    {
+      "source": "mit-news",
+      "title": "Putting a spotlight on AI, society, and humanity",
+      "url": "https://news.mit.edu/2026/putting-spotlight-ai-society-humanity-1117",
+      "date": "2026-11-17"
+    },
+    {
+      "source": "trends-neurosci",
+      "title": "Beyond memory strengthening: noradrenergic control of memory specificity",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43045599/",
+      "date": "2026-11-17"
+    },
+    {
+      "source": "nat-rev-neurosci",
+      "title": "Extracellular vesicles and their role in neurodegenerative diseases",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43040089/",
+      "date": "2026-11-16"
+    },
+    {
+      "source": "nat-rev-neurosci",
+      "title": "The neuroscience of delirium: a perfect storm for acute brain dysfunction",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43026343/",
+      "date": "2026-11-13"
+    },
+    {
+      "source": "nat-rev-neurosci",
+      "title": "The many facets of human brain asymmetry",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43026342/",
+      "date": "2026-11-13"
+    },
+    {
+      "source": "curr-opin-neurobiol",
+      "title": "Altered ER-mitochondria contact sites in neurons: Mechanisms and functional implications",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43025014/",
+      "date": "2026-11-13"
+    },
+    {
+      "source": "elife",
+      "title": "Synthetic torpor in the rat protects the heart from ischaemia-reperfusion injury",
+      "url": "https://elifesciences.org/articles/110559",
+      "date": "2026-11-12"
+    },
+    {
+      "source": "curr-opin-neurobiol",
+      "title": "Mitochondria on the move: Mitochondrial release and transfer in nervous system health and disease",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43019692/",
+      "date": "2026-11-12"
+    },
+    {
+      "source": "elife",
+      "title": "Learning-associated flexibility of cortical taste coding is impaired in Shank3 knockout mice",
+      "url": "https://elifesciences.org/articles/108988",
+      "date": "2026-11-12"
+    },
+    {
+      "source": "neuron",
+      "title": "Unbundling the ethical and social issues in human neural organoid research",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43014281/",
+      "date": "2026-11-11"
+    },
+    {
+      "source": "neuron",
+      "title": "Neural organoid models of human brain evolution",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43014285/",
+      "date": "2026-11-11"
+    },
+    {
+      "source": "neuron",
+      "title": "Cognitive evaluation of brain organoids and assembloids",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43014282/",
+      "date": "2026-11-11"
+    },
+    {
+      "source": "elife",
+      "title": "Cholinergic blockade reveals a role for human hippocampal theta in memory encoding but not retrieval",
+      "url": "https://elifesciences.org/articles/108972",
+      "date": "2026-11-11"
+    },
+    {
+      "source": "neuron",
+      "title": "Brain organoids: Experimental access to human-specific brain development",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43014284/",
+      "date": "2026-11-11"
+    },
+    {
+      "source": "neuron",
+      "title": "Advancing brain organoids from disease phenotypes to mechanisms and translation across developmental, infectious, and neurodegenerative diseases",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43014286/",
+      "date": "2026-11-11"
+    },
+    {
+      "source": "nat-rev-neurosci",
+      "title": "The cortico-basal ganglia-thalamic network: a connectomic framework",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43009606/",
+      "date": "2026-11-10"
+    },
+    {
+      "source": "nat-rev-neurosci",
+      "title": "Network approaches to community detection in nanoscale connectomics",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43009607/",
+      "date": "2026-11-10"
+    },
+    {
+      "source": "elife",
+      "title": "Midbrain somatostatin-expressing cells control pain-suppression during defensive states",
+      "url": "https://elifesciences.org/articles/106826",
+      "date": "2026-11-10"
+    },
+    {
+      "source": "trends-neurosci",
+      "title": "Functional brain signatures of successful cognitive aging",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43009411/",
+      "date": "2026-11-10"
+    },
+    {
+      "source": "elife",
+      "title": "Dual-feature selectivity enables bidirectional coding in visual cortical neurons",
+      "url": "https://elifesciences.org/articles/109861",
+      "date": "2026-11-09"
+    },
+    {
+      "source": "elife",
+      "title": "The resource elasticity of control",
+      "url": "https://elifesciences.org/articles/105507",
+      "date": "2026-11-06"
+    },
+    {
+      "source": "elife",
+      "title": "The hypoxic response extends lifespan through a bioaminergic and peptidergic neural circuit",
+      "url": "https://elifesciences.org/articles/107651",
+      "date": "2026-11-06"
+    },
+    {
+      "source": "nat-rev-neurosci",
+      "title": "Single-cell and spatial transcriptomics of cellular heterogeneity in Alzheimer disease",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42995230/",
+      "date": "2026-11-06"
+    },
+    {
+      "source": "elife",
+      "title": "Simple methods to acutely measure multiple timing metrics among the sexual repertoire of male Drosophila",
+      "url": "https://elifesciences.org/articles/109742",
+      "date": "2026-11-06"
+    },
+    {
+      "source": "elife",
+      "title": "Expectation-driven gain modulation of preparatory spatial attention",
+      "url": "https://elifesciences.org/articles/110315",
+      "date": "2026-11-06"
+    },
+    {
+      "source": "trends-neurosci",
+      "title": "Constructing events across perception, action, and thought",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42995135/",
+      "date": "2026-11-06"
+    },
+    {
+      "source": "elife",
+      "title": "Spectraplakin is required for dendritic microtubule organization via a tip-based mechanism in Drosophila",
+      "url": "https://elifesciences.org/articles/108055",
+      "date": "2026-11-05"
+    },
+    {
+      "source": "mit-news",
+      "title": "Mentees, colleagues, friends share remembrances of Susumu Tonegawa",
+      "url": "https://news.mit.edu/2026/sharing-remembrances-susumu-tonegawa-1104",
+      "date": "2026-11-04"
+    },
+    {
+      "source": "neuron",
+      "title": "Hypothalamus-driven brain health through metabolic flexibility",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42976852/",
+      "date": "2026-11-03"
+    },
+    {
+      "source": "trends-neurosci",
+      "title": "Evolving perspectives on cardiac innervation: from relay to a complex regulated network",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42977603/",
+      "date": "2026-11-03"
+    },
+    {
+      "source": "nat-rev-neurosci",
+      "title": "The nanotubular network as a new dimension of intercellular communication in the nervous system",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42972121/",
+      "date": "2026-11-02"
+    },
+    {
+      "source": "neuron",
+      "title": "The neurobiology of menopause: Implications for brain aging and Alzheimer's risk",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/42962664/",
+      "date": "2026-10-30"
+    },
+    {
+      "source": "elife",
+      "title": "Oxytocin neurons signal state-dependent transitions from rest to thermogenesis and behavioral arousal",
+      "url": "https://elifesciences.org/articles/108212",
+      "date": "2026-10-30"
+    }
+  ]
+}

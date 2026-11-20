@@ -1,0 +1,75 @@
+name: Weekly news update
+
+# Refreshes the News page: headlines, sources, kind labels, dates and links from PubMed
+# (new reviews in five review journals), eLife neuroscience and MIT News neuroscience.
+# No summaries are written. It commits only data/news.json and news.html and does not
+# deploy: the daily citation workflow publishes the site on its next run.
+# A source that fails keeps its last items. If every source fails, validation fails or
+# any step fails, nothing is committed, the last good page stays up, and the
+# report-failure job opens or comments on the "News update failed" issue.
+
+on:
+  schedule:
+    - cron: "43 8 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  # Shared with the daily workflow so the two never push to main at the same time.
+  group: daily-citations
+  cancel-in-progress: false
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write   # commit the refreshed list
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262  # v4
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065  # v5
+        with:
+          python-version: "3.12"
+
+      - name: Unit tests
+        # Offline: the news tests read fixture feeds and never touch the network.
+        run: python -m unittest discover -s tests
+
+      - name: Fetch the news
+        # Exits non-zero, changing nothing, if every source fails or the result is invalid.
+        run: python scripts/fetch_news.py
+
+      - name: Commit changes
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add data/news.json news.html
+          git diff --cached --quiet || git commit -m "Weekly news update"
+          git push
+
+  report-failure:
+    # A separate job, so it also runs when the update job fails before its first step.
+    needs: [update]
+    # A job that hits timeout-minutes is cancelled, which neither failure() nor
+    # cancelled() (the whole workflow) reports, so the needs result is checked too.
+    if: failure() || cancelled() || needs.update.result != 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      issues: write
+    env:
+      GH_TOKEN: ${{ github.token }}
+      GH_REPO: ${{ github.repository }}
+    steps:
+      - name: Open or update the failure issue
+        run: |
+          body="The weekly news update did not finish (update: ${{ needs.update.result }}), so the News page was not changed and the last good list stays up. Run: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          number=$(gh issue list --label news-failed --state open --json number --jq '.[0].number // empty')
+          if [ -n "$number" ]; then
+            gh issue comment "$number" --body "$body"
+          else
+            gh label create news-failed --color C0573A --force
+            gh issue create --title "News update failed" --label news-failed --body "$body"
+          fi

@@ -1,0 +1,68 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0">
+  <channel>
+    <title>Test feed shaped like eLife neuroscience</title>
+    <link>https://elifesciences.org</link>
+    <description>Made-up items for offline tests</description>
+    <item>
+      <title>Sleep spindles in &lt;i&gt;Mus musculus&lt;/i&gt; track a test variable</title>
+      <link>https://elifesciences.org/articles/900001?utm_source=rss&amp;utm_medium=feed</link>
+      <description>A long abstract that must never be stored.</description>
+      <pubDate>Wed, 18 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Correction: Sleep spindles in mice</title>
+      <link>https://elifesciences.org/articles/900002</link>
+      <pubDate>Wed, 18 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>A link that runs script</title>
+      <link>javascript:alert(1)</link>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>A link to another site</title>
+      <link>https://example.com/articles/900003</link>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>A plain http link</title>
+      <link>http://elifesciences.org/articles/900004</link>
+      <pubDate>Tue, 17 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Tricky &amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt; title &amp;amp; more</title>
+      <link>https://elifesciences.org/articles/900005</link>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>An item with no date</title>
+      <link>https://elifesciences.org/articles/900006</link>
+    </item>
+    <item>
+      <title>An item from the future</title>
+      <link>https://elifesciences.org/articles/900007</link>
+      <pubDate>Sat, 21 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Grid cells in a test arena</title>
+      <link>https://elifesciences.org/articles/900008</link>
+      <dc:date>2026-11-10T00:00:00Z</dc:date>
+    </item>
+    <item>
+      <title>Grid cells in a test arena</title>
+      <link>https://elifesciences.org/articles/900008</link>
+      <dc:date>2026-11-10T00:00:00Z</dc:date>
+    </item>
+    <item>
+      <title>An item older than four weeks</title>
+      <link>https://elifesciences.org/articles/900009</link>
+      <pubDate>Mon, 12 Oct 2026 00:00:00 +0000</pubDate>
+    </item>
+    <item>
+      <title>Author Correction: Grid cells</title>
+      <link>https://elifesciences.org/articles/900010</link>
+      <pubDate>Mon, 16 Nov 2026 00:00:00 +0000</pubDate>
+    </item>
+  </channel>
+</rss>

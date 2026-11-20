@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+  <title>Test Atom feed</title>
+  <id>urn:test:atom</id>
+  <updated>2026-11-18T09:00:00Z</updated>
+  <entry>
+    <title type="html">An Atom entry about &lt;em&gt;astrocytes&lt;/em&gt;</title>
+    <id>urn:test:1</id>
+    <link rel="self" href="https://news.mit.edu/self/1"/>
+    <link rel="alternate" href="https://news.mit.edu/2026/atom-entry-1118"/>
+    <published>2026-11-18T09:00:00Z</published>
+    <updated>2026-11-18T10:00:00Z</updated>
+  </entry>
+  <entry>
+    <title>An Atom entry with only an updated date</title>
+    <id>urn:test:2</id>
+    <link href="https://news.mit.edu/2026/atom-entry-1110"/>
+    <updated>2026-11-10T09:00:00+01:00</updated>
+  </entry>
+</feed>

@@ -124,15 +124,17 @@
 
   @media (max-width:900px){
     .readouts{grid-template-columns:1fr}
+    /* The heading and clock sit above the model, not on top of it. */
+    .stage{height:auto;min-height:0;display:flex;flex-direction:column}
+    .mast{position:static;order:-2;max-width:none;padding:16px 16px 0}
+    .clock{position:static;order:-1;text-align:left;padding:8px 16px 0}
+    .clock b{display:inline;font-size:20px;margin-right:8px}
+    #scene{position:relative;height:62vh;min-height:380px}
+    .controls{position:static;background:var(--bg);border-top:1px solid var(--rule)}
+    .pick{position:static;width:auto;margin:0 12px 12px}
   }
   @media (max-width:640px){
-    .stage{height:auto;min-height:0}
-    #scene{position:relative;height:62vh;min-height:380px}
-    .mast{max-width:22ch}
-    .clock b{font-size:20px}
-    .controls{position:static;background:var(--bg);border-top:1px solid var(--rule)}
     .sep{display:none}
-    .pick{position:static;width:auto;margin:0 12px 12px}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 </style>
@@ -149,14 +151,16 @@
     <a class="tab" href="index.html">Evidence</a>
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html" aria-current="true">Time</a>
+    <a class="tab" href="learn.html">Learn</a>
     <a class="tab" href="references.html">Sources</a>
     <a class="tab" href="about.html">About</a>
   </nav>
 </div>
+<script src="assets/nav.js" defer></script>
 
 <main>
 <section class="stage" aria-label="3D model of entorhinal Laplace cells and hippocampal time cells">
-  <canvas id="scene" role="img" aria-label="Rotatable 3D rendering of the model. Drag to rotate, click a cell to inspect it."></canvas>
+  <canvas id="scene" role="img" aria-label="Rotatable 3D rendering of the model. Drag to rotate it. Click a cell to inspect it."></canvas>
   <div class="mast">
     <p class="eyebrow mono">Model &middot; Medial temporal lobe</p>
     <h1 class="serif">How a brain could keep a <em>compressed</em> timeline of the past</h1>
@@ -200,30 +204,30 @@
       </div>
     </div>
     <canvas id="raster" role="img" aria-label="Raster plot of simulated cells sorted by preferred delay, short delays at the bottom." aria-describedby="raster-cap"></canvas>
-    <p class="cap" id="raster-cap">Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event a sweep of firing climbs the rows and slows down: that curve is the signature of a logarithmically compressed timeline.</p>
+    <p class="cap" id="raster-cap">Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event, firing moves up the rows and slows as it climbs, tracing a curve. That curve is what a logarithmically compressed timeline looks like.</p>
   </div>
   <div class="card">
-    <div class="card-hd"><h2>What the population says: when?</h2></div>
-    <canvas id="past" role="img" aria-label="Chart of the population's estimate of when each past event happened, on a logarithmic time axis. Each bump slides left as the event recedes and keeps the same width on this axis."></canvas>
-    <p class="cap">Each bump is the whole time-cell population's estimate of when one event happened, on a log axis. The bumps slide left and slow down but keep the same width: recent past is sharp, distant past is blurry in seconds but equally sharp in ratio.</p>
+    <div class="card-hd"><h2>Population estimate of when each event happened</h2></div>
+    <canvas id="past" role="img" aria-label="Chart of the population's estimate of when each past event happened, on a logarithmic time axis. Each bump slides left as the event gets older and keeps the same width on this axis."></canvas>
+    <p class="cap">Each bump is the whole time-cell population's estimate of when one event happened, on a log axis. The bumps slide left and slow down but keep the same width on this axis. The estimate for a recent event is precise in seconds. The estimate for an older event is less precise in seconds but just as precise relative to how long ago it happened.</p>
   </div>
 </section>
 
 <div class="prose">
   <section class="sec">
     <h2>What you are looking at</h2>
-    <p>The top sheet is a population of <strong>Laplace cells</strong>, the kind reported in lateral entorhinal cortex. Each one jumps when an event happens and then decays exponentially at its own rate. Left to right, they go from fast decay to slow decay. On their own they do not say when anything happened; together they hold the Laplace transform of the recent past.</p>
-    <p>The curved band below is a population of <strong>time cells</strong>, the kind reported in hippocampus. Each fires at a preferred delay after an event, and cells tuned to longer delays fire later and for longer. Each time cell reads only a few neighbouring Laplace cells (the thin wires), which is all the math needs. Four rows, one per event type, because many time cells respond to a particular stimulus.</p>
-    <p>Present a few events, then watch the raster and the timeline below. Push <span class="mono">k</span> up and every field gets sharper; the timeline stays log-compressed at every setting.</p>
+    <p>The top sheet is a population of <strong>Laplace cells</strong>, the kind reported in lateral entorhinal cortex. A Laplace cell is a neuron whose firing jumps when an event happens and then decays exponentially at its own rate. The term comes from Marc Howard's model of how the brain keeps track of time. Laplace cells are different from place cells, which encode location. Left to right, the sheet goes from fast decay to slow decay. No single Laplace cell says when anything happened. Together, their activity is the Laplace transform of the recent past. This is a mathematical recoding of the event history, and the timing of past events can be recovered from it.</p>
+    <p>The curved band below is a population of <strong>time cells</strong>, the kind reported in hippocampus. Each fires at a preferred delay after an event, and cells tuned to longer delays fire later and for longer. Each time cell takes input from only a few neighbouring Laplace cells (the thin wires), which is all the calculation needs. The model has four rows, one per event type, because many time cells respond to a particular stimulus.</p>
+    <p>Present a few events, then watch the two charts below the 3D model. Increase <span class="mono">k</span> and each time cell fires in a narrower window around its preferred delay. At every setting of <span class="mono">k</span>, the population's timeline of the past stays log-compressed.</p>
   </section>
 
   <section class="sec">
     <h2>The two equations</h2>
     <div class="eq"><small>Laplace cells, one per decay rate s</small>dF<sub>s</sub>/dt = &minus;s&thinsp;F<sub>s</sub> + f(t)</div>
     <div class="eq"><small>Time cells, Post's inverse at s = k / &tau;*</small>f&#771;(&tau;*) = ((&minus;1)<sup>k</sup> / k!) &middot; s<sup>k+1</sup> &middot; d<sup>k</sup>F / ds<sup>k</sup></div>
-    <p>After a single event &tau; seconds ago the time cell with preferred delay &tau;* responds as a gamma curve that peaks exactly at &tau;* and whose width grows in proportion to &tau;*. Every cell has the same coefficient of variation, 1/&radic;(k+1). With &tau;* spaced logarithmically, that is Weber&ndash;Fechner compression of the past: the same number of cells for 1 to 2 seconds ago as for 10 to 20.</p>
+    <p>Post's inverse is a standard formula that approximately recovers a signal from its Laplace transform, and larger k makes the approximation closer. After a single event &tau; seconds ago, the time cell with preferred delay &tau;* responds with a gamma curve (a lopsided bump) that peaks exactly at &tau;*. The width of that curve grows in proportion to &tau;*. Every cell has the same coefficient of variation (the spread of its response divided by its average delay), 1/&radic;(k+1). Because &tau;* is spaced logarithmically, the model uses the same number of cells for 1 to 2 seconds ago as for 10 to 20. This log spacing, combined with the equal coefficient of variation across cells, is Weber&ndash;Fechner compression of the past.</p>
     <div class="pull serif">The model predicts that judging which of two events came first depends on the ratio of their gap to their age, not on the gap in seconds.</div>
-    <p>That prediction is testable. In simulation, order-judgment accuracy curves for events 2, 8 and 32 seconds old sit far apart when plotted against the raw gap and fall onto one curve when plotted against gap divided by age.</p>
+    <p>That prediction is testable. In simulation, the accuracy of order judgments for events 2, 8 and 32 seconds old forms three curves. Plotted against the raw gap, the three curves sit far apart. Plotted against gap divided by age, they fall onto one curve.</p>
   </section>
 
   <section class="sec">
@@ -359,7 +363,7 @@
     var x = p[0] * cy + p[2] * sy, z = -p[0] * sy + p[2] * cy;
     var y = p[1] * cp - z * sp; z = p[1] * sp + z * cp;
     var den = Dcam + z; if (den < 0.25) return null;
-    var wide = W > 760, S = Math.min(wide ? W * 0.74 : W, H * 1.3) * (wide ? 0.34 : 0.36) * Dcam / den;
+    var wide = W > 1000, S = Math.min(wide ? W * 0.74 : W, H * 1.3) * (wide ? 0.34 : 0.36) * Dcam / den;
     return [W * (wide ? 0.58 : 0.5) + x * S, H * (wide ? 0.5 : 0.46) - y * S, den, S];
   }
 
@@ -437,7 +441,10 @@
   }
   function label(p, t, align){
     var q = proj(world(p, ease(zoom))); if (!q) return;
-    X.textAlign = align; X.fillText(t, q[0], q[1]); X.textAlign = 'left';
+    // Keep the whole label on the canvas.
+    var tw = X.measureText(t).width, x0 = align === 'right' ? q[0] - tw : q[0];
+    x0 = Math.max(4, Math.min(W - 4 - tw, x0));
+    X.textAlign = 'left'; X.fillText(t, x0, q[1]);
   }
 
   // ---------------- raster + timeline ----------------
@@ -477,10 +484,13 @@
     RX.font = '10px ui-monospace,Menlo,monospace'; RX.fillStyle = css['--muted'];
     RX.textAlign = 'right';
     [[0, TMIN], [Math.round((NT - 1) / 2), TS[Math.round((NT - 1) / 2)]], [NT - 1, TMAX]].forEach(function(t){
-      RX.fillText((t[1] < 1 ? t[1].toFixed(1) : Math.round(t[1])) + 's', padL - 6, ih - (t[0] + 0.5) / NT * ih + 3);
+      RX.fillText((t[1] < 1 ? t[1].toFixed(1) : Math.round(t[1])) + 's', padL - 6, Math.max(10, ih - (t[0] + 0.5) / NT * ih + 3));
     });
     RX.textAlign = 'center';
-    for (var s = 0; s <= WIN; s += 15) RX.fillText(s === WIN ? 'now' : '-' + (WIN - s) + 's', padL + s / WIN * iw, h - 5);
+    for (var s = 0; s <= WIN; s += 15){
+      RX.textAlign = s === WIN ? 'right' : (s === 0 ? 'left' : 'center');
+      RX.fillText(s === WIN ? 'now' : '-' + (WIN - s) + 's', padL + s / WIN * iw, h - 5);
+    }
     for (var e = 0; e < events.length; e++){
       var x = padL + (events[e].t0 - (T - WIN)) / WIN * iw; if (x < padL) continue;
       RX.fillStyle = rgb(css.ev[events[e].ch]); RX.fillRect(x - 1, ih + 1, 2, 5);
@@ -527,13 +537,13 @@
     if (c.kind === 'tc'){
       document.getElementById('pick-k').textContent = 'Hippocampus · time cell';
       document.getElementById('pick-h').textContent = 'Fires about ' + fmt(ts) + ' after event ' + ev;
-      document.getElementById('pick-p').textContent = 'Field width about ±' + fmt(ts / Math.sqrt(K + 1)) +
-        ' (it grows with the delay). Reads the ' + fmt(ts) + ' region of the Laplace sheet.';
+      document.getElementById('pick-p').textContent = 'Field width is about ±' + fmt(ts / Math.sqrt(K + 1)) +
+        ', and it grows with the delay. This cell takes input from the ' + fmt(ts) + ' region of the Laplace sheet.';
     } else {
       document.getElementById('pick-k').textContent = 'Entorhinal · Laplace cell';
       document.getElementById('pick-h').textContent = 'Decays with time constant ' + fmt(ts / K);
-      document.getElementById('pick-p').textContent = 'Jumps when event ' + ev +
-        ' happens, then fades exponentially (rate s = ' + (K / ts).toFixed(2) + ' per second). No peak of its own; time is in the pattern across cells.';
+      document.getElementById('pick-p').textContent = 'Its firing jumps when event ' + ev +
+        ' happens, then fades exponentially (rate s = ' + (K / ts).toFixed(2) + ' per second). It has no peak of its own. Only the pattern across cells shows when the event happened.';
     }
     pick.classList.add('on');
   }
@@ -590,8 +600,8 @@
     document.getElementById('m-tc').setAttribute('aria-pressed', String(m === 'tc'));
     document.getElementById('m-lp').setAttribute('aria-pressed', String(m === 'lp'));
     document.getElementById('raster-cap').textContent = m === 'tc'
-      ? 'Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event a sweep of firing climbs the rows and slows down: that curve is the signature of a logarithmically compressed timeline.'
-      : 'Same rows, Laplace layer instead. Every cell lights at once and fades at its own rate, fast ones at the bottom. No single cell knows when the event happened; the time cells above are computed from the pattern.';
+      ? 'Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event, firing moves up the rows and slows as it climbs, tracing a curve. That curve is what a logarithmically compressed timeline looks like.'
+      : 'The rows now show Laplace cells instead of time cells, in the same order. Every cell becomes active at the moment of the event and fades at its own rate, with the fastest-decaying cells at the bottom. No single cell shows when the event happened. The time cells are computed from the pattern of Laplace-cell activity.';
   }
   document.getElementById('m-tc').addEventListener('click', function(){ setMode('tc'); });
   document.getElementById('m-lp').addEventListener('click', function(){ setMode('lp'); });

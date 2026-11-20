@@ -7,12 +7,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
 <meta name="theme-color" content="#f6f7f9">
-<meta name="description" content="Descend from the whole brain to a single receptor, and measure a generated neuron.">
+<meta name="description" content="Zoom from the whole brain down to a single receptor, and measure a computer-generated neuron.">
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Neuroscope">
 <meta property="og:title" content="Explore the Brain · Neuroscope">
-<meta property="og:description" content="Descend from the whole brain to a single receptor, and measure a generated neuron.">
+<meta property="og:description" content="Zoom from the whole brain down to a single receptor, and measure a computer-generated neuron.">
 <meta property="og:url" content="https://aiku0212.github.io/neuro-site/app.html">
 <meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
 <meta property="og:image:width" content="1200">
@@ -77,7 +77,8 @@
     text-transform:uppercase; color:var(--muted)}
   .tick:hover{color:var(--ink-2)}
   .tick[aria-current="true"]{color:var(--ink)}
-  .tick small{display:block;font-size:9px;letter-spacing:.06em;opacity:.7;
+  /* full ink, not faded: 9px text needs the full 4.9:1 contrast of --muted */
+  .tick small{display:block;font-size:9px;letter-spacing:.06em;
     text-transform:none}
 
   .cap{position:absolute; right:clamp(14px,2.5vw,34px); top:50%;
@@ -144,6 +145,23 @@
     gap:7px;font-size:9.5px;letter-spacing:.1em;color:var(--muted)}
   .ramp .r{display:flex} .ramp .r i{width:15px;height:7px;display:block}
 
+  .big span.u{text-transform:none;letter-spacing:.04em}
+
+  /* pause and play for the rotation */
+  .spin{position:absolute; top:16px; right:clamp(14px,2.5vw,34px); display:inline-flex;
+    align-items:center; gap:7px; font:500 13px/1.2 var(--f-body,sans-serif); padding:7px 12px;
+    border-radius:8px; border:1px solid var(--rule); background:#fff; color:var(--ink); cursor:pointer}
+  .spin:hover{border-color:#b9c3ce}
+  .spin svg{width:10px; height:10px; fill:currentColor; flex:none}
+  .spin[aria-pressed="true"]{background:#e6eef5; color:#235673; border-color:#c3d4e3}
+  .spin[hidden]{display:none}
+  /* At the spine and membrane levels nothing turns, so the button steps out of view and
+     out of the tab order, but keeps its place so the layout does not jump. */
+  .spin.off{visibility:hidden}
+  body[data-mode="analyze"] .spin{right:342px}
+  .h-touch{display:none}
+  @media (hover:none) and (pointer:coarse){.h-ptr{display:none} .h-touch{display:inline}}
+
   .howto{position:absolute;bottom:14px;left:0;right:0;text-align:center;
     font-size:10px;letter-spacing:.15em;text-transform:uppercase;
     color:var(--muted);pointer-events:none}
@@ -157,13 +175,36 @@
       width:auto;padding:0 18px;
       background:linear-gradient(transparent,rgba(255,255,255,.94) 26%)}
     .side{width:100%;top:auto;height:46%;border-left:0;border-top:1px solid var(--rule)}
+    .scaleb{bottom:calc(46% + 12px)}
     .ramp{display:none}
     .rail{left:0; right:0; top:10px; transform:none; padding:0 14px; overflow-x:auto;
       scrollbar-width:none}
     .rail::-webkit-scrollbar{display:none}
+    /* when the level names run past the edge, the cut edge fades to show there is more */
+    .rail.fr{-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 30px),transparent);
+      mask-image:linear-gradient(to right,#000 calc(100% - 30px),transparent)}
+    .rail.fl{-webkit-mask-image:linear-gradient(to right,transparent,#000 30px);
+      mask-image:linear-gradient(to right,transparent,#000 30px)}
+    .rail.fl.fr{-webkit-mask-image:linear-gradient(to right,transparent,#000 30px,#000 calc(100% - 30px),transparent);
+      mask-image:linear-gradient(to right,transparent,#000 30px,#000 calc(100% - 30px),transparent)}
     .track{display:none}
     .ticks{flex-direction:row; height:auto; gap:18px; white-space:nowrap}
     .cap{border:0; border-radius:0; -webkit-backdrop-filter:none; backdrop-filter:none}
+    /* On narrow screens the button keeps its text for screen readers but shows only the icon,
+       so the drawing does not lose a band of height to it. */
+    .spin{top:46px; right:14px; width:36px; height:36px; padding:0; justify-content:center}
+    .spin svg{width:12px; height:12px}
+    .spin .spin-t{position:absolute; width:1px; height:1px; margin:-1px; padding:0;
+      overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0}
+    body[data-mode="analyze"] .spin{top:58px; right:14px}
+    .howto{padding:0 14px; line-height:1.7}
+  }
+  @media (max-width:600px){
+    /* A long caption scrolls inside itself so the drawing keeps most of the height. */
+    .cap{bottom:66px; max-height:42%; overflow-y:auto; overscroll-behavior:contain}
+    /* while more text sits below, the last lines fade out to show the caption scrolls */
+    .cap.more{-webkit-mask-image:linear-gradient(to bottom,#000 calc(100% - 44px),transparent);
+      mask-image:linear-gradient(to bottom,#000 calc(100% - 44px),transparent)}
   }
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
@@ -180,22 +221,26 @@
     <a class="tab" href="index.html">Evidence</a>
     <a class="tab" href="comparative.html">Comparative</a>
     <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="learn.html">Learn</a>
     <a class="tab" href="references.html">Sources</a>
     <a class="tab" href="about.html">About</a>
   </nav>
 </div>
+<script src="assets/nav.js" defer></script>
 
 <div class="stage" role="main">
   <h1 class="sr-only">Explore the brain, from the whole organ to a single receptor</h1>
-  <canvas id="gl" role="img" aria-label="Interactive 3D view. In Explore it zooms from the whole brain through a cortical column, one neuron and a dendritic spine to the membrane; in Analyze it shows a generated neuron to measure. Drag to rotate."></canvas>
+  <canvas id="gl" role="img" aria-label="Interactive 3D view. In Explore it zooms from the whole brain through a cortical column, one pyramidal neuron and a dendritic spine to the cell membrane and its receptors. In Analyze it shows a computer-generated neuron to measure. Drag to rotate."></canvas>
   <div class="overlay">
+
+    <button class="spin" id="spin" type="button" aria-pressed="false"><svg viewBox="0 0 10 10" aria-hidden="true" focusable="false"><path id="spin-ic" d="M1.5 0.5h2.6v9h-2.6zM5.9 0.5h2.6v9h-2.6z"/></svg><span class="spin-t">Pause rotation</span></button>
 
     <!-- explore -->
     <div class="rail explore-only">
       <div class="track"><div class="fill" id="fill"></div><div class="knob" id="knob"></div></div>
       <div class="ticks" id="ticks"></div>
     </div>
-    <aside class="cap explore-only">
+    <aside class="cap explore-only" tabindex="0" aria-label="About this level">
       <p class="sb mono" id="c-scale"></p>
       <h2 class="serif" id="c-title"></h2>
       <ul class="parts" id="c-parts"></ul>
@@ -204,7 +249,7 @@
       <button class="handoff" id="handoff">Measure this neuron &rarr;</button>
     </aside>
     <p class="howto explore-only mono"><span class="fig-kind" data-kind="illustrative">Illustrative model</span>
-      Scroll to descend &middot; drag to rotate &middot; not medical advice</p>
+      <span class="h-ptr">Scroll to zoom</span><span class="h-touch">Tap a level to zoom</span> &middot; drag to rotate &middot; not medical advice</p>
 
     <!-- analyze -->
     <div class="tools analyze-only" id="tools"></div>
@@ -213,23 +258,24 @@
     <aside class="side analyze-only">
       <h3>Morphometrics</h3>
       <div class="big">
-        <div><b class="mono" id="m-len">0</b><span>Length &micro;m</span></div>
+        <div><b class="mono" id="m-len">0</b><span>Total length <span class="u">&micro;m</span></span></div>
         <div><b class="mono" id="m-spines">0</b><span>Spines</span></div>
       </div>
       <div class="kv"><span>Segments</span><b class="mono" id="m-seg">0</b></div>
       <div class="kv"><span>Branch points</span><b class="mono" id="m-bp">0</b></div>
       <div class="kv"><span>Terminal tips</span><b class="mono" id="m-tip">0</b></div>
       <div class="kv"><span>Max branch order</span><b class="mono" id="m-ord">0</b></div>
-      <div class="kv"><span>Mean segment</span><b class="mono" id="m-mean">0</b></div>
-      <div class="kv"><span>Radial extent</span><b class="mono" id="m-ext">0</b></div>
+      <div class="kv"><span>Mean segment length</span><b class="mono" id="m-mean">0</b></div>
+      <div class="kv"><span>Max distance from soma</span><b class="mono" id="m-ext">0</b></div>
       <div class="kv"><span>Spine density</span><b class="mono" id="m-dens">0</b></div>
+      <p class="cn">Morphometrics are measurements of a neuron&rsquo;s shape. Branch order counts how many times the path from the soma has forked before it reaches a segment.</p>
       <h3>Sholl analysis</h3>
-      <canvas id="sholl" role="img" aria-label="Sholl analysis chart: number of branch intersections with shells every 10 micrometres from the cell body, with the peak marked."></canvas>
-      <p class="cn">Intersections with shells every 10&nbsp;&micro;m from the soma. Peak marked.</p>
+      <canvas id="sholl" role="img" aria-label="Sholl analysis chart showing the number of branch intersections with shells every 10 micrometres from the cell body, with the peak marked."></canvas>
+      <p class="cn">Sholl analysis counts how many branches cross imaginary spheres (shells) drawn every 10&nbsp;&micro;m from the soma. The peak is marked.</p>
       <h3>Selection</h3>
-      <div class="pick" id="pick"><p class="none">Click a filament or spine.</p></div>
-      <p class="cn" style="margin-top:18px">Same neuron as Explore level 3. Grown from a
-        seeded branching model, so every figure is computed from this arbor.</p>
+      <div class="pick" id="pick"><p class="none">Click a dendrite segment or a spine.</p></div>
+      <p class="cn" style="margin-top:18px">This is the same neuron as Explore level 3. A computer
+        model grew it by repeatable random branching, so every number here is computed from this arbor.</p>
     </aside>
 
   </div>
@@ -242,61 +288,160 @@ var SH=document.getElementById('sholl'), SX=SH.getContext('2d');
 var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
 
 var COL={violet:'#6a54a6',amber:'#c0573a',teal:'#2b8273',rose:'#a2477e',
-         sky:'#2f6fa8',pale:'#8fa0b3',green:'#3d8a4a'};
+         sky:'#2f6fa8',pale:'#8fa0b3',green:'#3d8a4a',ochre:'#b98a2a'};
 var ORDER_COL=['#c0573a','#d07a4a','#a2477e','#6a54a6','#2f6fa8','#2b8273','#3d8a4a'];
-// Atlas lobe colors, blended across boundaries (same scheme as the Evidence page).
-var LOBE={frontal:[221,145,120],parietal:[134,172,214],temporal:[160,197,133],occipital:[217,185,100]};
-var ANCH=[['frontal',30,-14,46],['parietal',30,-34,-10],['occipital',24,-12,-58],['temporal',44,22,6]];
-function lobeTint(q){
-  var ax=Math.abs(q.x),sw=0,c=[0,0,0];
-  ANCH.forEach(function(a){var dx=ax-a[1],dy=q.y-a[2],dz=q.z-a[3];
-    var w=Math.exp(-(dx*dx+dy*dy+dz*dz)/648);sw+=w;var l=LOBE[a[0]];
-    c[0]+=w*l[0];c[1]+=w*l[1];c[2]+=w*l[2];});
-  if(sw<1e-9) return COL.pale;
-  return 'rgb('+Math.round(c[0]/sw)+','+Math.round(c[1]/sw)+','+Math.round(c[2]/sw)+')';
-}
 
 /* ================= geometry ================= */
 var seed=20260812;
 function rnd(){seed=(seed*1664525+1013904223)>>>0; return seed/4294967296;}
+// Explore geometry has its own generator, so the seeded neuron that Analyze
+// measures (grown further down) never changes when Explore changes.
+function mulberry(a){return function(){a=(a+0x6D2B79F5)|0;var t=Math.imul(a^(a>>>15),1|a);
+  t=(t+Math.imul(t^(t>>>7),61|t))^t;return((t^(t>>>14))>>>0)/4294967296;};}
+var TAU=Math.PI*2;
 
-var BRAIN=[];
-(function(){
-  var s2=seed;
+/* Level 0: the Evidence page brain, built the same way (point cloud, lobe
+   colours blended across boundaries, neighbour links, lobe names). */
+var BR=(function(){
+  var R=mulberry(86),P=[],n,i,j;
+  function r2(){return R()*2-1;}
+  function push(x,y,z,r){P.push({x:x,y:y,z:z,r:r});}
+  function lobe(cx,cy,cz,rx,ry,rz,count,reg){
+    for(var k=0;k<count;k++){
+      var u=R()*TAU,v=Math.acos(r2());
+      var sx=Math.sin(v)*Math.cos(u),sy=Math.cos(v),sz=Math.sin(v)*Math.sin(u);
+      var g=1+0.055*Math.sin(sx*9)*Math.cos(sy*8)+0.045*Math.sin(sz*10);
+      push(cx+sx*rx*g,cy+sy*ry*g,cz+sz*rz*g,reg);
+    }
+  }
   [-1,1].forEach(function(s){
-    for(var n=0;n<1300;n++){
-      var u=rnd()*6.283, v=Math.acos(rnd()*2-1);
-      var sx=Math.sin(v)*Math.cos(u), sy=Math.cos(v), sz=Math.sin(v)*Math.sin(u);
-      var g=1+.06*Math.sin(sx*8+sz*3)*Math.cos(sy*9);
+    for(n=0;n<1500;n++){
+      var u=R()*TAU,v=Math.acos(r2());
+      var sx=Math.sin(v)*Math.cos(u),sy=Math.cos(v),sz=Math.sin(v)*Math.sin(u);
+      var g=1+0.06*Math.sin(sx*8+sz*3)*Math.cos(sy*9)+0.04*Math.sin(sz*11);
       var x=sx*52*g,y=sy*44*g,zz=sz*66*g;
       if(x*s<0) continue;
-      BRAIN.push({x:s*(6+Math.abs(x)*.92), y:y-6+(zz<0?zz*.14:0), z:zz, c:'pale'});
+      x=s*(6+Math.abs(x)*0.92); y-=6;
+      if(zz<0) y+=zz*0.14;
+      if(zz>28) y+=(zz-28)*0.10;
+      push(x,y,zz,'cortex');
     }
   });
-  [-1,1].forEach(function(s){for(var n=0;n<260;n++){
-    var u=rnd()*6.283,v=Math.acos(rnd()*2-1);
-    BRAIN.push({x:s*20+Math.sin(v)*Math.cos(u)*19,y:34+Math.cos(v)*14,
-      z:-52+Math.sin(v)*Math.sin(u)*15,c:'rose'});}});
-  for(var n=0;n<200;n++){var t=n/200,a=rnd()*6.283,r=8-t*3.4;
-    BRAIN.push({x:Math.cos(a)*r,y:22+t*44,z:-18+Math.sin(a)*r*.8,c:'sky'});}
-  BRAIN.forEach(function(p){
-    if(p.c==='pale') p.c=lobeTint(p);
-    else if(p.c==='rose') p.c='rgb(179,152,208)';   // cerebellum
-    else if(p.c==='sky') p.c='rgb(159,169,181)';    // brainstem
-  });
-  var sy2=0; BRAIN.forEach(function(p){sy2+=p.y;}); sy2/=BRAIN.length;
-  BRAIN.forEach(function(p){p.y-=sy2;});
-  seed=s2;
-})();
+  [-1,1].forEach(function(s){lobe(s*40,26,10,17,11,30,340,'temporal');});
+  [-1,1].forEach(function(s){lobe(s*20,22,2,6,5,20,140,'hip');});
+  lobe(0,6,14,10,9,12,160,'deep');
+  [-1,1].forEach(function(s){lobe(s*20,34,-52,19,14,15,420,'cerebellum');});
+  for(n=0;n<240;n++){var t=n/240,a=R()*TAU,rr=8-t*3.4;
+    push(Math.cos(a)*rr,22+t*46,-18+Math.sin(a)*rr*0.8,'brainstem');}
 
-var NET=[], NLINK=[];
-(function(){
-  for(var i=0;i<62;i++) NET.push({x:(rnd()*2-1)*95,y:(rnd()*2-1)*70,z:(rnd()*2-1)*70,
-    c: rnd()<0.26?'teal':'amber', r: 4.2});
-  for(i=0;i<NET.length;i++) for(var j=i+1;j<NET.length;j++){
-    var d=Math.hypot(NET[i].x-NET[j].x,NET[i].y-NET[j].y,NET[i].z-NET[j].z);
-    if(d<44) NLINK.push([i,j,rnd()]);
+  var link=[];
+  for(i=0;i<P.length;i+=6){
+    var best=-1,bd=1e9;
+    for(j=i+1;j<Math.min(i+70,P.length);j++){
+      var dx=P[i].x-P[j].x,dy=P[i].y-P[j].y,dz=P[i].z-P[j].z,d=dx*dx+dy*dy+dz*dz;
+      if(d<bd&&d>18){bd=d;best=j;}
+    }
+    if(best>-1&&bd<330) link.push(i,best);
   }
+  var LB={frontal:[221,145,120],parietal:[134,172,214],temporal:[160,197,133],
+          occipital:[217,185,100],cerebellum:[179,152,208],brainstem:[159,169,181],deep:[216,146,166]};
+  var AN=[['frontal',30,-14,46],['parietal',30,-34,-10],['occipital',24,-12,-58],['temporal',44,22,6]];
+  function tint(q){
+    if(q.r==='cerebellum'||q.r==='brainstem'||q.r==='deep') return LB[q.r];
+    if(q.r==='hip') return LB.deep;
+    var ax=Math.abs(q.x),sw=0,c=[0,0,0];
+    AN.forEach(function(a){
+      var dx=ax-a[1],dy=q.y-a[2],dz=q.z-a[3];
+      var w=Math.exp(-(dx*dx+dy*dy+dz*dz)/648);
+      if(q.r==='temporal'&&a[0]==='temporal') w*=3;
+      sw+=w; var lc=LB[a[0]];
+      c[0]+=w*lc[0];c[1]+=w*lc[1];c[2]+=w*lc[2];
+    });
+    return sw>1e-9?[c[0]/sw,c[1]/sw,c[2]/sw]:LB.parietal;
+  }
+  // recentre: cerebellum and brainstem pull the centroid down
+  var YC=0; P.forEach(function(q){YC+=q.y;}); YC/=P.length;
+  var N=P.length,o={n:N,x:new Float32Array(N),y:new Float32Array(N),z:new Float32Array(N),
+    col:new Array(N),link:new Uint16Array(link),YC:YC,ymin:1e9,ymax:-1e9,rxz:0,top:[-1,-1]};
+  var tb=[1e9,1e9];
+  for(i=0;i<N;i++){
+    var q=P[i],c=tint(q);
+    o.col[i]='rgb('+Math.round(c[0])+','+Math.round(c[1])+','+Math.round(c[2])+')';
+    o.x[i]=q.x; o.y[i]=q.y-YC; o.z[i]=q.z;
+    if(o.y[i]<o.ymin)o.ymin=o.y[i]; if(o.y[i]>o.ymax)o.ymax=o.y[i];
+    var rh=Math.hypot(q.x,q.z); if(rh>o.rxz)o.rxz=rh;
+    // anchor for the column: the top of the cortex, near the midline, one per hemisphere
+    if(q.r==='cortex'&&Math.abs(q.z)<9){var axx=Math.abs(q.x),h=q.x>0?1:0;
+      if(axx>9&&axx<24&&q.y<tb[h]){tb[h]=q.y;o.top[h]=i;}}
+  }
+  return o;
+})();
+// Lobe names, placed and shown as on the Evidence page.
+var NAMES=[['Frontal',30,-14,46],['Parietal',30,-34,-10],['Occipital',24,-12,-58],
+           ['Temporal',44,22,6],['Cerebellum',20,34,-52],['Brainstem',0,50,-18]];
+
+/* Level 1: a cortical column, pia at the top (y=-100) and white matter below
+   (y>100). Layer boundaries are fractions of cortical depth. Schematic. */
+var CO=(function(){
+  var R=mulberry(11),F=[0,.10,.18,.40,.50,.72,1],RAD=40,cells=[],seg=[],kd=[];
+  function yAt(f){return -100+200*f;}
+  function far(x,y,z,m){for(var i=0;i<cells.length;i++){var c=cells[i],dx=c.x-x,dy=c.y-y,dz=c.z-z;
+    if(dx*dx+dy*dy+dz*dz<m*m) return false;} return true;}
+  // types: 0 pyramidal (II/III), 1 large pyramidal (V), 2 pyramidal (VI), 3 granular (IV), 4 interneuron
+  function place(n,f0,f1,t,s,m){
+    for(var tries=0;n>0&&tries<6000;tries++){
+      var r=(RAD-2)*Math.sqrt(R()),th=R()*TAU,x=Math.cos(th)*r,zz=Math.sin(th)*r,
+          y=yAt(f0+(f1-f0)*(0.1+0.8*R()));
+      if(!far(x,y,zz,m)) continue;
+      cells.push({x:x,y:y,z:zz,t:t,s:s*(0.85+R()*0.3)}); n--;
+    }
+  }
+  cells.push({x:3,y:-74,z:8,t:0,s:2.3});   // the layer II cell that Level 2 zooms into
+  place(15,F[1],F[2],0,2.0,6);  place(34,F[2],F[3],0,2.4,6.5);
+  place(52,F[3],F[4],3,1.5,4.6); place(13,F[4],F[5],1,3.6,11);
+  place(40,F[5],F[6],2,2.0,6.5);
+  place(6,F[0],F[1],4,1.5,10);   place(4,F[1],F[2],4,1.8,7);  place(7,F[2],F[3],4,1.8,7);
+  place(3,F[3],F[4],4,1.7,6);    place(5,F[4],F[5],4,1.9,7);  place(5,F[5],F[6],4,1.8,7);
+  function S(x1,y1,z1,x2,y2,z2,k){
+    var r=Math.hypot(x2,z2); if(r>RAD+1){x2*=(RAD+1)/r; z2*=(RAD+1)/r;}
+    seg.push(x1,y1,z1,x2,y2,z2); kd.push(k);
+  }
+  // segment kinds: 0 dendrite, 1 thick apical dendrite, 2 axon, 3 fine link, 4 interneuron link
+  cells.forEach(function(c){
+    if(c.t>2) return;
+    var big=c.t===1, top=c.t===2?yAt(.42+R()*.1):yAt(.015+R()*.035);
+    var x=c.x,y=c.y-c.s*1.3,zz=c.z,y0=y,n=big?5:3,s,k,a,L;
+    for(s=1;s<=n;s++){
+      var ny=y0+(top-y0)*s/n,nx=x+(R()-.5)*2.2,nz=zz+(R()-.5)*2.2;
+      S(x,y,zz,nx,ny,nz,big?1:0);
+      if(big&&s===2){a=R()*TAU; S(nx,ny,nz,nx+Math.cos(a)*9,ny-3,nz+Math.sin(a)*9,0);}
+      x=nx;y=ny;zz=nz;
+    }
+    if(c.t!==2){            // tuft in layer I
+      var nt=big?4:3;
+      for(k=0;k<nt;k++){a=k/nt*TAU+R(); L=(big?11:7)+R()*4;
+        S(x,y,zz,x+Math.cos(a)*L,Math.max(-99.5,Math.min(yAt(.1),y+(R()-.6)*6)),zz+Math.sin(a)*L,0);}
+    }
+    for(k=0;k<(big?4:3);k++){a=R()*TAU; L=c.s*(big?3.2:2.6)*(0.8+R()*0.4);   // basal dendrites
+      S(c.x,c.y+c.s*0.6,c.z,c.x+Math.cos(a)*L,c.y+c.s*0.7+c.s*(0.5+R()*0.9),c.z+Math.sin(a)*L,0);}
+    if(big||R()<(c.t===2?0.4:0.25))   // axon into the white matter
+      S(c.x,c.y+c.s*0.8,c.z,c.x+(R()-.5)*6,100+R()*24,c.z+(R()-.5)*6,2);
+  });
+  cells.forEach(function(c,i){     // fine links between neighbours, as on the brain
+    var best=-1,bd=1e9,near=[];
+    cells.forEach(function(d,j){ if(i===j) return;
+      var dd=Math.hypot(c.x-d.x,c.y-d.y,c.z-d.z);
+      if(dd<bd){bd=dd;best=j;}
+      if(c.t===4&&dd<26) near.push([dd,j]);});
+    if(c.t===4){ near.sort(function(a,b){return a[0]-b[0];});
+      near.slice(0,3).forEach(function(p){var d=cells[p[1]]; S(c.x,c.y,c.z,d.x,d.y,d.z,4);}); }
+    else if(best>i&&bd<18){var d=cells[best]; S(c.x,c.y,c.z,d.x,d.y,d.z,3);}
+  });
+  var N=cells.length,o={n:N,F:F,RAD:RAD,yAt:yAt,anchor:0,x:new Float32Array(N),y:new Float32Array(N),
+    z:new Float32Array(N),s:new Float32Array(N),t:new Uint8Array(N),seg:new Float32Array(seg),
+    kind:new Uint8Array(kd),ns:kd.length};
+  cells.forEach(function(c,i){o.x[i]=c.x;o.y[i]=c.y;o.z[i]=c.z;o.s[i]=c.s;o.t[i]=c.t;});
+  return o;
 })();
 
 /* the neuron: shared by Explore level 3 and Analyze */
@@ -339,14 +484,74 @@ function measure(){
       if((a<r)!==(b<r))hits++;}
     SHOLL.push({r:r,n:hits});}
 }
+// The random state that the previous network generator left at this point, so
+// the measured neuron is the same arbor as before.
+seed=3416921139;
 grow(); measure();
 
-var SPINEBAR=[];
-(function(){for(var i=0;i<26;i++){SPINEBAR.push({t:((i/25)*2-1)*86,a:i*2.399,
-  len:11+rnd()*9,head:5.5+rnd()*3.4});}})();
+/* Level 2 extras: basal dendrites and an axon around the measured arbor.
+   Coordinates are relative to the soma. Analyze does not draw or measure these. */
+var NB=(function(){
+  var R=mulberry(23),seg=[],sp=[],k;
+  function br(x,y,z,dx,dy,dz,len,w,o){
+    var ex=x+dx*len,ey=y+dy*len,ez=z+dz*len; seg.push(x,y,z,ex,ey,ez,w);
+    if(o>=1){var n=Math.round(len*0.5);
+      for(var s=0;s<n;s++){var t=(s+0.5)/n,a=R()*TAU,l=(1.6+R()*1.4)*0.45;
+        sp.push(x+(ex-x)*t+Math.cos(a)*l,y+(ey-y)*t,z+(ez-z)*t+Math.sin(a)*l,0.55+R()*0.45);}}
+    if(o>=3||len<5) return;
+    for(var i=0;i<2;i++){
+      var nx=dx+(R()-.5)*0.9,ny=dy+(R()-.3)*0.5,nz=dz+(R()-.5)*0.9,m=Math.hypot(nx,ny,nz);
+      br(ex,ey,ez,nx/m,ny/m,nz/m,len*(0.72+R()*0.14),w*0.7,o+1);
+    }
+  }
+  for(k=0;k<6;k++){
+    var th=k/6*TAU+R()*0.5,el=0.15+R()*0.65,
+        dx=Math.cos(th)*Math.cos(el),dy=Math.sin(el),dz=Math.sin(th)*Math.cos(el);
+    br(dx*SOMA_R*0.8,SOMA_R*0.45+dy*2,dz*SOMA_R*0.8,dx,dy,dz,17+R()*5,2.4,0);
+  }
+  var ax=[0,SOMA_R*0.75,0],x=0,y=SOMA_R*0.75,z=0;
+  for(k=1;k<=24;k++){y+=4;x+=(R()-.5)*1.6;z+=(R()-.5)*1.6;ax.push(x,y,z);}
+  function coll(i,sx){var p=[ax[i*3],ax[i*3+1],ax[i*3+2]],cx=p[0],cy=p[1],cz=p[2];
+    for(var s=0;s<7;s++){cx+=sx*3.2;cy+=2.4+s*0.25;cz+=(R()-.5)*1.5;p.push(cx,cy,cz);} return new Float32Array(p);}
+  return {seg:new Float32Array(seg),ns:seg.length/7,sp:new Float32Array(sp),nsp:sp.length/4,
+          ax:new Float32Array(ax),na:ax.length/3,c1:coll(8,1),c2:coll(15,-1),AX:100};
+})();
+
+/* Level 3: a dendrite with spines, in local units, drawn flat like the Evidence
+   page synapse. The shaft runs between y=29 and y=51. */
+var SPL=(function(){
+  var X0=-170,X1=170;
+  var up=[{x:-105,nw:1.6,L:22,rx:5,ry:5.5,n:'Thin'},{x:-50,nw:7.5,L:0,rx:8.5,ry:9,n:'Stubby'},
+          {x:30,nw:2.6,L:15,rx:15,ry:11,n:'Mushroom'},{x:128,nw:1.5,L:26,rx:4.6,ry:5,n:''}];
+  var dn=[{x:-130,nw:1.5,L:18,rx:4.6,ry:5,n:''},{x:-10,nw:7,L:0,rx:8,ry:8,n:''},
+          {x:70,nw:2.2,L:14,rx:9,ry:7.5,n:''}];
+  function edge(y0,dir,list){
+    var p=[X0,y0];
+    list.forEach(function(s){
+      var b=Math.acos(Math.min(1,s.nw/s.rx)),hc=s.L+s.ry*Math.sin(b),j;
+      s.cy=y0+dir*hc; s.tip=y0+dir*(hc+s.ry);
+      p.push(s.x-s.nw-2.4,y0, s.x-s.nw-0.7,y0+dir*0.7);
+      if(s.L>2.4) p.push(s.x-s.nw,y0+dir*2.4);
+      // 72 steps keep the head outline round when the zoom to Level 4 magnifies it 30 times
+      for(j=0;j<=72;j++){var ph=Math.PI+b+(-b-(Math.PI+b))*j/72;
+        p.push(s.x+s.rx*Math.cos(ph),y0+dir*(hc+s.ry*Math.sin(ph)));}
+      if(s.L>2.4) p.push(s.x+s.nw,y0+dir*2.4);
+      p.push(s.x+s.nw+0.7,y0+dir*0.7, s.x+s.nw+2.4,y0);
+    });
+    p.push(X1,y0); return new Float32Array(p);
+  }
+  var top=edge(29,-1,up),bot=edge(51,1,dn),m=up[2];
+  var ang=-Math.PI/2-0.45;
+  return {X0:X0,X1:X1,top:top,bot:bot,heads:up.concat(dn),m:m,
+    yb:m.tip-1.3,                      // bottom of the bouton: a narrow cleft above the mushroom head
+    ax:m.x+m.rx*Math.cos(ang),ay:m.cy+m.ry*Math.sin(ang),   // the membrane patch Level 4 zooms into
+    ves:[[-8,2.6],[-2.6,2.6],[2.8,2.6],[8.2,2.6],[-10.5,8.4],[-5,8.2],[0.4,8.6],[6,8.2],[11,8.6],
+         [-7.6,14],[-2,14.4],[3.6,14],[9,14.6],[-4.6,19.8],[1.2,20],[6.8,19.6]]};
+})();
 
 /* ================= view ================= */
-var mode='explore', z=0, zT=0, ry=0.55, rx=0.13;
+// Without rotation, start side-on, where all six lobe names show (as on the Evidence page).
+var mode='explore', z=0, zT=0, ry=reduce?1.25:0.55, rx=0.13, paused=false;
 var drag=false,px=0,py=0,moved=0,sel=null;
 var tool={fil:true,spn:true,soma:true};
 
@@ -367,54 +572,49 @@ function proj(p,S,cx,cy,oy){
   var y=yy*cB-z2*sB; z2=yy*sB+z2*cB;
   return {X:cx+x*S,Y:cy+y*S,Z:z2};
 }
-function fade(c,w){return Math.max(0,1-Math.abs(z-c)/Math.min(w,1));}
+// Allocation-free projection for Explore: rot() once per frame, then P3 sets _x,_y,_z.
+var cA=1,sA=0,cB=1,sB=0,_x=0,_y=0,_z=0;
+function rot(){cA=Math.cos(ry);sA=Math.sin(ry);cB=Math.cos(rx);sB=Math.sin(rx);}
+function P3(x,y,z){var xx=x*cA-z*sA,z2=x*sA+z*cA;_x=xx;_y=y*cB-z2*sB;_z=y*sB+z2*cB;}
+function clamp01(v){return v<0?0:v>1?1:v;}
+function sm(v){v=clamp01(v);return v*v*(3-2*v);}
+var FONT='Figtree, system-ui, sans-serif';
+function label(txt,x,y,px,wt,col,al,align){
+  X.globalAlpha=al; X.font=wt+' '+Math.round(px*D)+'px '+FONT; X.textAlign=align||'center';
+  X.textBaseline='middle'; X.lineJoin='round'; X.lineWidth=3.5*D;
+  X.strokeStyle='rgba(246,247,249,.92)'; X.strokeText(txt,x,y);
+  X.fillStyle=col; X.fillText(txt,x,y);
+}
 
 /* ---------- explore levels ---------- */
 var LEVELS=[
  {tag:'Whole brain',unit:'~140 mm',title:'Eighty-six billion neurons',
-  parts:[['Cerebrum','pale'],['Cerebellum','rose'],['Brainstem','sky']],
-  body:'Everything below happens inside this. The cerebral cortex alone holds roughly 16 billion neurons.',cite:'Azevedo et al., <em>J. Comp. Neurol.</em> 2009 &middot; Scale approximate'},
- {tag:'Cortical network',unit:'~1 mm',title:'A column of the cortex',
-  parts:[['Pyramidal cells','amber'],['Interneurons','teal'],['Axons','pale']],
-  body:'Excitatory pyramidal cells wired through inhibitory interneurons. Perineuronal nets form mostly around the parvalbumin interneurons as the juvenile critical period ends, and help limit later rewiring. Removing them in adult rat visual cortex restored juvenile-like plasticity.',
-  cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013 &middot; Lensj&oslash; et al., <em>J. Neurosci.</em> 2017'},
- {tag:'Single neuron',unit:'~100 &micro;m',title:'One cell, tens of thousands of inputs',
+  parts:[['Cerebrum','linear-gradient(90deg,#dd9178,#86acd6,#a0c585,#d9b964)'],['Cerebellum','#b398d0'],['Brainstem','#9fa9b5']],
+  body:'Every level after this one zooms further into this brain. The cerebral cortex alone holds roughly 16 billion neurons.',cite:'Azevedo et al., <em>J. Comp. Neurol.</em> 2009 &middot; Scale approximate',
+  alt:'The whole brain as a slowly turning cloud of points coloured by lobe, with the frontal, parietal, temporal and occipital lobes, the cerebellum and the brainstem named.'},
+ {tag:'Cortical column',unit:'~1 mm',title:'A column of the cortex',
+  parts:[['Pyramidal cells','amber'],['Granular cells','ochre'],['Interneurons','teal'],['Axons','pale']],
+  body:'The six layers, numbered I to VI from the surface inward, hold different mixes of cells. Excitatory pyramidal cells connect directly to one another, and inhibitory interneurons keep that excitation in check. The juvenile critical period is a window early in life when the cortex has high plasticity, meaning experience rewires it easily. As that period ends, perineuronal nets (mesh-like coats of protein and sugar) form mostly around parvalbumin interneurons, which are one type of inhibitory cell. The nets help limit later rewiring. Removing them in adult rat visual cortex restored juvenile-like plasticity.',
+  cite:'Takesian &amp; Hensch, <em>Prog. Brain Res.</em> 2013 &middot; Lensj&oslash; et al., <em>J. Neurosci.</em> 2017',
+  alt:'A column of cortex drawn as dots and fine links, with layers labelled I to VI. Layer I is sparse. Small pyramidal cells fill layers II and III, small granular cells fill layer IV, large pyramidal cells in layer V send dendrites up to layer I, and layer VI holds smaller pyramidal cells. Inhibitory interneurons are scattered through the layers, and axons run down into the white matter.'},
+ {tag:'Single neuron',unit:'~100 &micro;m',title:'A single neuron with tens of thousands of inputs',
   parts:[['Dendrites','violet'],['Soma','amber'],['Axon','sky']],
-  body:'Dendrites collect input, the soma integrates it, the axon carries the result away. This is the arbor you can measure in Analyze. For comparison, a single pyramidal cell in the CA1 region of the rat hippocampus receives about 30,000 excitatory and 1,700 inhibitory inputs.',
-  cite:'Meg&iacute;as et al., <em>Neuroscience</em> 2001'},
- {tag:'Dendritic spine',unit:'~1 &micro;m',title:'The unit that actually changes',
-  parts:[['Spine head','violet'],['Neck','rose'],['Shaft','pale']],
-  body:'Each bump is one synapse. In mice, a single dose of psilocybin raised spine size and density about 10% within 24 hours, still present a month later.',
-  cite:'Shao et al., <em>Neuron</em> 2021'},
- {tag:'Membrane',unit:'~10 nm',title:'Where the drug meets the cell',
+  body:'Dendrites collect input, the soma (cell body) combines it, and the axon carries the result to other cells. The branching tree of dendrites is called the arbor. Analyze measures the upper part of this one, the apical dendrite and its tuft. For comparison, a single pyramidal cell in the CA1 region of the rat hippocampus receives about 30,000 excitatory and 1,700 inhibitory inputs.',
+  cite:'Meg&iacute;as et al., <em>Neuroscience</em> 2001',
+  alt:'One pyramidal neuron: a triangular cell body, an apical dendrite that rises and branches into a tuft, shorter basal dendrites around the cell body, spines as small dots along the dendrites, and an axon leaving downward.'},
+ {tag:'Dendritic spine',unit:'~1 &micro;m',title:'Spines change in size and number',
+  parts:[['Spine heads','violet'],['Axon bouton','amber'],['Dendrite','pale']],
+  body:'Each bump on the branch is a spine, and most spines hold a single synapse (a connection from another neuron). The drawing shows thin, stubby and mushroom spines, with an axon terminal (bouton) touching the mushroom spine. In mice, a single dose of psilocybin (the psychedelic in magic mushrooms) increased spine size and density by about 10% within 24 hours, and the increase was still present a month later.',
+  cite:'Shao et al., <em>Neuron</em> 2021',
+  alt:'A stretch of dendrite with thin, stubby and mushroom spines. An axon bouton filled with vesicles touches the mushroom spine across a narrow cleft.'},
+ {tag:'Membrane',unit:'~10 nm',title:'Receptors where drugs act',
   parts:[['TrkB','amber'],['p75NTR','rose'],['5-HT2A','violet'],['NMDA','sky']],
-  body:'TrkB builds the synapse, p75NTR dismantles it. In cell and mouse studies, LSD and psilocin bound TrkB about a thousand times more tightly than the antidepressants tested. Another group found that psychedelics instead act on 5-HT2A receptors inside the cell, which serotonin cannot reach. The two groups disagree on which route matters.',
-  cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023'}
+  body:'TrkB and p75NTR are receptors with opposite effects. TrkB signalling tends to strengthen synapses, and p75NTR signalling tends to weaken and prune them. In cell and mouse studies, LSD and psilocin (the active form of psilocybin) bound TrkB about a thousand times more tightly than the antidepressants tested. Another group found that psychedelics instead act on the 5-HT2A serotonin receptors that sit inside the cell, which serotonin itself cannot reach. The two groups disagree on which route matters.',
+  cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023',
+  alt:'A patch of cell membrane drawn as a lipid bilayer. TrkB crosses it once and is shown as a pair, p75NTR crosses it once, 5-HT2A crosses it seven times, and the NMDA receptor is a channel of four subunits around a central pore.'}
 ];
 
-function drawBrain(a,S,cx,cy){
-  var pts=BRAIN.map(function(p){var q=proj(p,S,cx,cy);q.c=p.c;return q;})
-               .sort(function(m,n){return m.Z-n.Z;});
-  for(var i=0;i<pts.length;i++){var p=pts[i],f=(p.Z+90)/180;
-    X.globalAlpha=a*(0.45+f*0.55);X.fillStyle=COL[p.c]||p.c;
-    X.beginPath();X.arc(p.X,p.Y,D*(1.1+f*1.6),0,6.283);X.fill();}
-}
-function drawNet(a,S,cx,cy){
-  var pts=NET.map(function(p){var q=proj(p,S,cx,cy);q.c=p.c;q.r=p.r;return q;});
-  var tt=performance.now()/1000;
-  for(var i=0;i<NLINK.length;i++){
-    var A=pts[NLINK[i][0]],B=pts[NLINK[i][1]];
-    X.globalAlpha=a*0.18;X.strokeStyle='#aab4bf';X.lineWidth=D*.7;
-    X.beginPath();X.moveTo(A.X,A.Y);X.lineTo(B.X,B.Y);X.stroke();
-    if(!reduce){var u=((tt*0.3+NLINK[i][2])%1);
-      X.globalAlpha=a*(0.55-Math.abs(u-.5))*.9;X.fillStyle=COL.amber;
-      X.beginPath();X.arc(A.X+(B.X-A.X)*u,A.Y+(B.Y-A.Y)*u,D*1.1,0,6.283);X.fill();}
-  }
-  pts.sort(function(m,n){return m.Z-n.Z;});
-  for(i=0;i<pts.length;i++){var p=pts[i],f=(p.Z+80)/160;
-    X.globalAlpha=a*(0.3+f*0.7);X.fillStyle=COL[p.c];
-    X.beginPath();X.arc(p.X,p.Y,D*p.r*(0.6+f*0.6),0,6.283);X.fill();}
-}
+/* Analyze drawing (unchanged) */
 function drawArbor(a,S,cx,cy,order){
   var list=SEG.map(function(s,i){
     var A=proj({x:s.x1,y:s.y1,z:s.z1},S,cx,cy,SOMA.y),
@@ -445,50 +645,386 @@ function drawSpineDots(a,S,cx,cy){
     X.globalAlpha=a*(on?1:(0.35+f*0.6));X.fillStyle=on?'#1f2a35':'#7a63b8';
     X.beginPath();X.arc(q.X,q.Y,Math.max(D*0.8,q.p.head*S*(on?2.6:1.35)),0,6.283);X.fill();}
 }
-function drawShaft(a,S,cx,cy){
-  var A=proj({x:-95,y:0,z:0},S,cx,cy),B=proj({x:95,y:0,z:0},S,cx,cy);
-  X.globalAlpha=a*.9;X.strokeStyle=COL.pale;X.lineWidth=D*S*0.30;X.lineCap='round';
-  X.beginPath();X.moveTo(A.X,A.Y);X.lineTo(B.X,B.Y);X.stroke();
-  for(var i=0;i<SPINEBAR.length;i++){var s=SPINEBAR[i];
-    var P0=proj({x:s.t,y:0,z:0},S,cx,cy),
-        P1=proj({x:s.t,y:-Math.cos(s.a)*s.len,z:Math.sin(s.a)*s.len},S,cx,cy);
-    X.globalAlpha=a*.8;X.strokeStyle=COL.rose;X.lineWidth=D*S*0.075;
-    X.beginPath();X.moveTo(P0.X,P0.Y);X.lineTo(P1.X,P1.Y);X.stroke();
-    X.globalAlpha=a*.95;X.fillStyle=COL.violet;
-    X.beginPath();X.arc(P1.X,P1.Y,S*s.head*0.35,0,6.283);X.fill();}
-}
-// The part of the canvas not covered by the level rail or the caption, in canvas px.
-function freeSpan(){
-  var c=C.getBoundingClientRect(), l=0, r=c.width;
-  if(innerWidth>900){
-    var rl=document.querySelector('.rail'), cp=document.querySelector('.cap');
-    if(rl) l=Math.max(l, rl.getBoundingClientRect().right-c.left+28);
-    if(cp) r=Math.min(r, cp.getBoundingClientRect().left-c.left-28);
+/* Level 0 */
+var BX=new Float32Array(BR.n),BY=new Float32Array(BR.n),BZ=new Float32Array(BR.n),BO=new Uint16Array(BR.n);
+for(var bi=0;bi<BR.n;bi++) BO[bi]=bi;
+function byBZ(a,b){return BZ[a]-BZ[b];}
+var brainSide=1;
+function drawBrain(a,S,ox,oy,lab,k){
+  var n=BR.n,i,w=C.width,h=C.height,m=8*D;
+  // The Evidence page draws this brain at about 2.3 CSS px per unit. Drawn larger here, the
+  // same 1-3 px dots would read as a sparse speckle, so dots and links grow gently with scale.
+  var g0=Math.max(1,Math.min(1.8,Math.sqrt(S/(k||1)/D/2.3)));
+  for(i=0;i<n;i++){P3(BR.x[i],BR.y[i],BR.z[i]);BX[i]=ox+_x*S;BY[i]=oy+_y*S;BZ[i]=_z;}
+  X.lineWidth=D*0.6*Math.sqrt(g0); X.strokeStyle='#aab4bf';
+  for(var b=0;b<3;b++){
+    X.globalAlpha=a*(0.06+(b+0.5)/3*0.12); X.beginPath();
+    for(i=0;i<BR.link.length;i+=2){var p=BR.link[i],q=BR.link[i+1],f=((BZ[p]+BZ[q])/2+90)/180;
+      if(Math.min(2,Math.max(0,Math.floor(f*3)))!==b) continue;
+      X.moveTo(BX[p],BY[p]); X.lineTo(BX[q],BY[q]);}
+    X.stroke();
   }
-  if(r-l<200){l=0;r=c.width;}
-  return [l*D, r*D];
+  BO.sort(byBZ);
+  var grow=g0*(1+0.3*Math.log(k||1));
+  for(i=0;i<n;i++){var j=BO[i],x=BX[j],y=BY[j];
+    if(x<-m||y<-m||x>w+m||y>h+m) continue;
+    var f=(BZ[j]+90)/180;
+    X.globalAlpha=a*(0.55+f*0.45); X.fillStyle=BR.col[j];
+    X.beginPath(); X.arc(x,y,D*(1.15+f*1.55)*grow,0,TAU); X.fill();}
+  if(lab>0.05){
+    var big=(Math.min(w,h)/D)>=520;
+    for(i=0;i<NAMES.length;i++){var nm=NAMES[i];
+      P3(nm[1],nm[2]-BR.YC,nm[3]); var nx=_x,ny=_y,nz=_z;
+      if(nm[1]){P3(-nm[1],nm[2]-BR.YC,nm[3]); if(_z>nz){nx=_x;ny=_y;nz=_z;}}
+      if((nz+45)/45<0.5) continue;
+      label(nm[0],ox+nx*S,oy+ny*S,big?13:11,'600','#1f2a35',lab);}
+  }
 }
-function drawMembrane(a,S,cx,cy){
-  var span=freeSpan(), x0=span[0], x1=span[1], fade=S*26;
-  var top=C.height*(innerWidth>900?0.44:0.30),gap=S*11;
-  X.fillStyle=COL.pale;
-  for(var row=0;row<2;row++){var yy=top+row*gap;
-    for(var x2=x0;x2<=x1;x2+=S*5.2){
-      var edge=Math.min(1,(x2-x0)/fade,(x1-x2)/fade);
-      X.globalAlpha=a*.55*Math.max(0,edge);
-      X.beginPath();X.arc(x2,yy,S*2,0,6.283);X.fill();}}
-  var R=[['amber','TrkB',.16],['rose','p75NTR',.39],['violet','5-HT2A',.62],['sky','NMDA',.85]];
-  for(var i=0;i<R.length;i++){var rx2=x0+(x1-x0)*R[i][2];
-    X.globalAlpha=a;X.fillStyle=COL[R[i][0]];
-    X.beginPath();X.roundRect(rx2-S*3.2,top-S*5.5,S*6.4,gap+S*11,S*2);X.fill();
-    X.globalAlpha=a*.16;X.beginPath();X.arc(rx2,top+gap/2,S*13,0,6.283);X.fill();
-    X.globalAlpha=a*.9;X.fillStyle=COL.pale;
-    X.font=(11*D)+'px ui-monospace,Menlo,monospace';X.textAlign='center';
-    X.fillText(R[i][1],rx2,top+gap+S*22);}
-  if(!reduce){var tt=performance.now()/1000;
-    for(var m=0;m<30;m++){var ph=((m*0.163)+tt*0.16)%1;
-      X.globalAlpha=a*(1-ph)*0.75;X.fillStyle=m%3===0?COL.violet:COL.amber;
-      X.beginPath();X.arc(x0+(m*137.5)%Math.max(1,x1-x0),top-S*46+ph*S*40,S*1.5,0,6.283);X.fill();}}
+
+/* Level 1 */
+var CX=new Float32Array(CO.n),CY=new Float32Array(CO.n),CZ=new Float32Array(CO.n),CQ=new Uint16Array(CO.n),
+    CS=new Float32Array(CO.ns*5);
+for(var ci=0;ci<CO.n;ci++) CQ[ci]=ci;
+function byCZ(a,b){return CZ[a]-CZ[b];}
+// [colour, width, alpha at the back, extra alpha toward the front] per segment kind.
+// Kept light, like the fine links of the brain, so the cells read first and the
+// hundreds of dendrites stay a soft texture instead of a tangle.
+var CSTY=[['#cf8a72',0.7,0.15,0.22],['#cf8a72',1.1,0.22,0.26],['#9aa7b5',0.6,0.12,0.16],
+          ['#aab4bf',0.6,0.10,0.16],['#2b8273',0.6,0.14,0.22]];
+var ROMAN=['I','II','III','IV','V','VI'];
+function drawColumn(a,S,ox,oy,lab){
+  var c=CO,i,b,R=c.RAD;
+  X.lineWidth=D*0.8; X.strokeStyle='#b9c3ce';
+  for(i=0;i<c.F.length;i++){P3(0,c.yAt(c.F[i]),0);
+    X.globalAlpha=a*(i===0?0.75:0.35); X.beginPath();
+    X.ellipse(ox+_x*S,oy+_y*S,R*S,Math.max(0.5*D,R*S*Math.abs(sB)),0,0,TAU); X.stroke();}
+  for(i=0;i<c.ns;i++){var o=i*6;
+    P3(c.seg[o],c.seg[o+1],c.seg[o+2]); CS[i*5]=ox+_x*S; CS[i*5+1]=oy+_y*S; var z1=_z;
+    P3(c.seg[o+3],c.seg[o+4],c.seg[o+5]); CS[i*5+2]=ox+_x*S; CS[i*5+3]=oy+_y*S;
+    CS[i*5+4]=clamp01(((z1+_z)/2+R)/(2*R));}
+  X.lineCap='round';
+  for(var k=0;k<5;k++){var st=CSTY[k]; X.strokeStyle=st[0]; X.lineWidth=D*st[1];
+    for(b=0;b<3;b++){
+      X.globalAlpha=a*(st[2]+st[3]*(b+0.5)/3); X.beginPath();
+      for(i=0;i<c.ns;i++){ if(c.kind[i]!==k) continue;
+        if(Math.min(2,Math.floor(CS[i*5+4]*3))!==b) continue;
+        X.moveTo(CS[i*5],CS[i*5+1]); X.lineTo(CS[i*5+2],CS[i*5+3]);}
+      X.stroke();}}
+  for(i=0;i<c.n;i++){P3(c.x[i],c.y[i],c.z[i]);CX[i]=ox+_x*S;CY[i]=oy+_y*S;CZ[i]=_z;}
+  CQ.sort(byCZ);
+  for(i=0;i<c.n;i++){var j=CQ[i],t=c.t[j],f=clamp01((CZ[j]+R)/(2*R)),r=Math.max(D*0.9,c.s[j]*S*0.75),x=CX[j],y=CY[j];
+    X.globalAlpha=a*(0.55+f*0.45);
+    X.fillStyle=t<=2?COL.amber:t===3?COL.ochre:COL.teal;
+    X.beginPath();
+    if(t<=2){X.moveTo(x,y-1.35*r);X.lineTo(x+r,y+0.75*r);X.lineTo(x-r,y+0.75*r);X.closePath();}
+    else X.arc(x,y,r*0.85,0,TAU);
+    X.fill();}
+  if(lab>0.05){
+    // layer numerals, skipping one that would crowd the one above on a small screen
+    var lastY=-1e9;
+    for(i=0;i<6;i++){P3(0,c.yAt((c.F[i]+c.F[i+1])/2),0);
+      if(oy+_y*S-lastY<11*D) continue; lastY=oy+_y*S;
+      label(ROMAN[i],ox-R*S-12*D,lastY,11,'600','#5f6d7b',lab,'right');}
+  }
+}
+
+/* Level 2 */
+var NEU={seg:null,sp:null,top:100,rxz:60,anch:0};
+function prepNeuron(){
+  var top=0,rxz=0,i,best=1e9;
+  for(i=0;i<SEG.length;i++){var s=SEG[i];
+    top=Math.max(top,SOMA.y-s.y2); rxz=Math.max(rxz,Math.hypot(s.x2-SOMA.x,s.z2-SOMA.z));}
+  for(i=0;i<NB.ns;i++){var o=i*7; rxz=Math.max(rxz,Math.hypot(NB.seg[o+3],NB.seg[o+5]));}
+  NEU.seg=SEG; NEU.top=top; NEU.rxz=rxz;
+  NEU.sp=new Float32Array(SPN.length*4);
+  for(i=0;i<SPN.length;i++){var p=SPN[i],l=p.len*0.45;
+    NEU.sp[i*4]=p.x-SOMA.x+Math.cos(p.a)*l; NEU.sp[i*4+1]=p.y-SOMA.y;
+    NEU.sp[i*4+2]=p.z-SOMA.z+Math.sin(p.a)*l; NEU.sp[i*4+3]=p.head;
+    // The spine that Level 3 zooms into: near the upper arbor, partway along a branch that
+    // runs mostly sideways, so the Level 3 dendrite (drawn level) lines up with it.
+    var sg=SEG[p.seg],o2=sg.o;
+    if(o2>=3&&o2<=4){var d=Math.hypot(NEU.sp[i*4]-22,NEU.sp[i*4+1]+62,NEU.sp[i*4+2]-10)
+        +60*Math.abs(sg.y2-sg.y1)/sg.len+12*Math.abs(p.t-0.5);
+      if(d<best){best=d;NEU.anch=i;}}}
+}
+function strokeSeg(x1,y1,x2,y2){X.beginPath();X.moveTo(x1,y1);X.lineTo(x2,y2);X.stroke();}
+function polyAxon(arr,a,S,ox,oy,fade0){
+  var n=arr.length/3;
+  for(var i=1;i<n;i++){
+    P3(arr[i*3-3],arr[i*3-2],arr[i*3-1]); var x1=ox+_x*S,y1=oy+_y*S;
+    P3(arr[i*3],arr[i*3+1],arr[i*3+2]);
+    X.globalAlpha=a*0.8*Math.pow(1-(fade0+(1-fade0)*i/n),0.6);
+    strokeSeg(x1,y1,ox+_x*S,oy+_y*S);}
+}
+function drawNeuron(a,S,ox,oy,lab){
+  if(NEU.seg!==SEG) prepNeuron();
+  var i,o,f,Rz=Math.max(NEU.top,NEU.rxz,60);
+  X.lineCap='round';
+  // axon: thin, leaving the base of the cell body and running down
+  X.strokeStyle=COL.sky; X.lineWidth=Math.max(D*0.9,S*0.6);
+  polyAxon(NB.ax,a,S,ox,oy,0); X.lineWidth=Math.max(D*0.7,S*0.4);
+  polyAxon(NB.c1,a*0.8,S,ox,oy,0.35); polyAxon(NB.c2,a*0.8,S,ox,oy,0.6);
+  X.strokeStyle=COL.violet;
+  for(i=0;i<NB.ns;i++){o=i*7;
+    P3(NB.seg[o],NB.seg[o+1],NB.seg[o+2]); var x1=ox+_x*S,y1=oy+_y*S,z1=_z;
+    P3(NB.seg[o+3],NB.seg[o+4],NB.seg[o+5]); f=clamp01(((z1+_z)/2+Rz)/(2*Rz));
+    X.globalAlpha=a*(0.35+f*0.55); X.lineWidth=Math.max(D*0.6,NB.seg[o+6]*S*0.3);
+    strokeSeg(x1,y1,ox+_x*S,oy+_y*S);}
+  for(i=0;i<SEG.length;i++){var s=SEG[i];
+    P3(s.x1-SOMA.x,s.y1-SOMA.y,s.z1-SOMA.z); var X1=ox+_x*S,Y1=oy+_y*S,Z1=_z;
+    P3(s.x2-SOMA.x,s.y2-SOMA.y,s.z2-SOMA.z); f=clamp01(((Z1+_z)/2+Rz)/(2*Rz));
+    X.globalAlpha=a*(0.35+f*0.55); X.lineWidth=Math.max(D*0.6,s.w*S*0.28);
+    strokeSeg(X1,Y1,ox+_x*S,oy+_y*S);}
+  // spines: small dots along the dendrites, in three depth bands
+  X.fillStyle='#7a63b8';
+  for(var b=0;b<3;b++){X.globalAlpha=a*(0.35+(b+0.5)/3*0.55); X.beginPath();
+    for(var pass=0;pass<2;pass++){var arr=pass?NB.sp:NEU.sp,n=arr.length/4;
+      for(i=0;i<n;i++){P3(arr[i*4],arr[i*4+1],arr[i*4+2]); f=clamp01((_z+Rz)/(2*Rz));
+        if(Math.min(2,Math.floor(f*3))!==b) continue;
+        var x=ox+_x*S,y=oy+_y*S,r=Math.max(D*0.55,arr[i*4+3]*S*0.42);
+        X.moveTo(x+r,y); X.arc(x,y,r,0,TAU);}}
+    X.fill();}
+  // the triangular cell body of a pyramidal neuron, apex into the apical dendrite
+  var r=SOMA_R*S; X.globalAlpha=a; X.fillStyle=COL.amber; X.beginPath();
+  X.moveTo(ox,oy+0.75*r); X.arcTo(ox+1.05*r,oy+0.75*r,ox,oy-1.55*r,r*0.28);
+  X.arcTo(ox,oy-1.55*r,ox-1.05*r,oy+0.75*r,r*0.2); X.arcTo(ox-1.05*r,oy+0.75*r,ox,oy+0.75*r,r*0.28);
+  X.closePath(); X.fill();
+}
+
+/* Level 3 */
+var GCACHE={ox:NaN,S:NaN,fill:null,line:null,bout:null};
+function hgrad(x0,x1,rgb,al){var g=X.createLinearGradient(x0,0,x1,0);
+  g.addColorStop(0,'rgba('+rgb+',0)'); g.addColorStop(0.12,'rgba('+rgb+','+al+')');
+  g.addColorStop(0.88,'rgba('+rgb+','+al+')'); g.addColorStop(1,'rgba('+rgb+',0)'); return g;}
+function drawSpine(a,S,ox,oy,lab){
+  var P=SPL,i,x0=ox+P.X0*S,x1=ox+P.X1*S;
+  if(GCACHE.ox!==ox||GCACHE.S!==S){GCACHE.ox=ox;GCACHE.S=S;
+    GCACHE.fill=hgrad(x0,x1,'228,233,239',1); GCACHE.line=hgrad(x0,x1,'134,147,161',1);
+    GCACHE.bout=hgrad(x0,x1,'244,228,220',1);}
+  function path(){var t=P.top,b=P.bot;X.beginPath();X.moveTo(ox+t[0]*S,oy+t[1]*S);
+    for(i=2;i<t.length;i+=2) X.lineTo(ox+t[i]*S,oy+t[i+1]*S);
+    for(i=b.length-2;i>=0;i-=2) X.lineTo(ox+b[i]*S,oy+b[i+1]*S);
+    X.closePath();}
+  X.lineJoin='round'; X.lineCap='round';
+  X.globalAlpha=a; X.fillStyle=GCACHE.fill; path(); X.fill();
+  X.fillStyle='#e6dff3';            // spine heads, tinted
+  for(i=0;i<P.heads.length;i++){var h=P.heads[i]; X.beginPath();
+    X.ellipse(ox+h.x*S,oy+h.cy*S,Math.max(0.5,(h.rx-0.9)*S),Math.max(0.5,(h.ry-0.9)*S),0,0,TAU); X.fill();}
+  X.strokeStyle=GCACHE.line; X.lineWidth=Math.max(D*1.1,S*0.45); path(); X.stroke();
+  // presynaptic axon with a bouton resting on the mushroom spine
+  var m=P.m,bx=m.x,yb=P.yb,az=11;
+  function ya(x){return -58+0.03*x;}
+  X.beginPath(); X.moveTo(x0,oy+(ya(P.X0)-3)*S); X.lineTo(x1,oy+(ya(P.X1)-3)*S);
+  X.lineTo(x1,oy+(ya(P.X1)+3)*S); X.lineTo(ox+(bx+23)*S,oy+(ya(bx+23)+3)*S);
+  X.bezierCurveTo(ox+(bx+25)*S,oy+(-34)*S, ox+(bx+22)*S,oy+yb*S, ox+(bx+az)*S,oy+yb*S);
+  X.lineTo(ox+(bx-az)*S,oy+yb*S);
+  X.bezierCurveTo(ox+(bx-22)*S,oy+yb*S, ox+(bx-25)*S,oy+(-34)*S, ox+(bx-23)*S,oy+(ya(bx-23)+3)*S);
+  X.lineTo(x0,oy+(ya(P.X0)+3)*S); X.closePath();
+  X.fillStyle=GCACHE.bout; X.fill(); X.stroke();
+  // vesicles, packed toward the active zone
+  X.fillStyle='#f6f7f9'; X.strokeStyle='#8693a1'; X.lineWidth=Math.max(D*0.8,S*0.3);
+  for(i=0;i<P.ves.length;i++){var v=P.ves[i]; X.beginPath();
+    X.arc(ox+(bx+v[0])*S,oy+(yb-v[1])*S,2.3*S,0,TAU); X.fill(); X.stroke();}
+  // active zone and postsynaptic density across the cleft
+  X.strokeStyle='#7f8c9a'; X.globalAlpha=a*0.85; X.lineWidth=Math.max(D,S*1.4);
+  strokeSeg(ox+(bx-az*0.82)*S,oy+(yb-0.8)*S,ox+(bx+az*0.82)*S,oy+(yb-0.8)*S);
+  X.beginPath(); X.ellipse(ox+m.x*S,oy+m.cy*S,(m.rx-1.3)*S,(m.ry-1.3)*S,0,-Math.PI/2-0.6,-Math.PI/2+0.6); X.stroke();
+  X.lineCap='butt';
+  if(lab>0.05){
+    var hs=P.heads;
+    label('Thin',ox+hs[0].x*S,oy+hs[0].tip*S-12*D,12,'600','#3f4c59',lab);
+    label('Stubby',ox+hs[1].x*S,oy+hs[1].tip*S-12*D,12,'600','#3f4c59',lab);
+    label('Mushroom',ox+(m.x+m.rx)*S+8*D,oy+(m.cy+3)*S,12,'600','#3f4c59',lab,'left');
+    label('Axon bouton',ox+(bx-25)*S-8*D,oy+(-36)*S,12,'600','#3f4c59',lab,'right');
+    label('Dendrite',ox+(-70)*S,oy+62*S+8*D,12,'600','#3f4c59',lab);
+  }
+}
+
+/* Level 4 */
+var MEM={hw:150};
+// receptor centres as fractions of the span, and the half-width each one takes
+var REC=[['amber','TrkB','one helix each',0.16,13],['rose','p75NTR','one helix',0.39,8.5],
+         ['violet','5-HT2A','seven helices',0.62,21],['sky','NMDA','four subunits',0.86,20]];
+function rr(x,y,w,h,r){X.beginPath();X.roundRect(x,y,w,h,r);X.fill();}
+function ell(x,y,a,b){X.beginPath();X.ellipse(x,y,Math.max(0.3,a),Math.max(0.3,b),0,0,TAU);X.fill();}
+function drawMembrane(a,S,ox,oy,lab){
+  var hw=MEM.hw,i,k,x,e,RX=[];
+  function L(v){return ox+v*S;} function T(v){return oy+v*S;}
+  for(k=0;k<REC.length;k++) RX[k]=-hw+2*hw*REC[k][3];
+  // lipids: head groups in two leaflets, each with a pair of tails pointing inward
+  X.lineCap='round'; X.lineWidth=Math.max(D*0.6,S*0.7);
+  for(x=-hw+3;x<=hw-3;x+=6.2){
+    var skip=false; for(k=0;k<REC.length;k++) if(Math.abs(x-RX[k])<REC[k][4]+2) skip=true;
+    if(skip) continue;
+    e=Math.min(1,(x+hw)/22,(hw-x)/22); if(e<=0) continue;
+    X.globalAlpha=a*0.9*e; X.strokeStyle='#b4bfcb'; X.beginPath();
+    for(var s=-1;s<=1;s+=2){
+      X.moveTo(L(x-1.1),T(s*9.4)); X.lineTo(L(x-1.3),T(s*1.8));
+      X.moveTo(L(x+1.1),T(s*9.4)); X.lineTo(L(x+1.9),T(s*5.6)); X.lineTo(L(x+1.1),T(s*1.8));}
+    X.stroke();
+    X.fillStyle='#93a6ba'; ell(L(x),T(-12),2.7*S,2.7*S); ell(L(x),T(12),2.7*S,2.7*S);
+  }
+  X.lineWidth=Math.max(D,S*1.1);
+  // TrkB: one membrane-spanning helix per receptor, drawn as a pair
+  var cx=RX[0],c=COL.amber; X.fillStyle=c; X.strokeStyle=c;
+  for(var sd=-1;sd<=1;sd+=2){var mx=cx+sd*3.2;
+    X.globalAlpha=a; rr(L(mx-2),T(-14),4*S,28*S,2*S);
+    X.globalAlpha=a*0.8; X.beginPath(); X.moveTo(L(mx),T(-14)); X.lineTo(L(mx+sd*2),T(-19)); X.stroke();
+    ell(L(mx+sd*3),T(-23.5),4.2*S,4.2*S); ell(L(mx+sd*3.6),T(-32.2),4.4*S,4.4*S); ell(L(mx+sd*3.2),T(-42.6),5*S,6*S);
+    X.beginPath(); X.moveTo(L(mx),T(14)); X.lineTo(L(mx+sd*3),T(19)); X.stroke();
+    ell(L(mx+sd*4.6),T(26),5.8*S,6.4*S);}
+  // p75NTR: one helix, four small cysteine-rich domains outside, a death domain inside
+  cx=RX[1]; c=COL.rose; X.fillStyle=c; X.strokeStyle=c;
+  X.globalAlpha=a; rr(L(cx-2),T(-14),4*S,28*S,2*S);
+  X.globalAlpha=a*0.8; X.beginPath(); X.moveTo(L(cx),T(-14)); X.lineTo(L(cx),T(-19)); X.stroke();
+  for(k=0;k<4;k++) ell(L(cx+(k%2?1:-1)*0.8),T(-22.4-k*6.4),3.2*S,3.2*S);
+  X.beginPath(); X.moveTo(L(cx),T(14)); X.lineTo(L(cx+2),T(21)); X.stroke();
+  ell(L(cx+3),T(27.5),6.4*S,5.4*S);
+  // 5-HT2A: seven helices joined by loops, N-terminus outside, C-terminus inside
+  cx=RX[2]; c=COL.violet; X.fillStyle=c; X.strokeStyle=c;
+  var hx=[],dep=[0,7,6,7,11,15,6];
+  for(k=0;k<7;k++){hx[k]=cx-15.6+k*5.2; X.globalAlpha=a; rr(L(hx[k]-2),T(-15),4*S,30*S,2*S);}
+  X.globalAlpha=a*0.85; X.beginPath();
+  for(k=0;k<6;k++){var yS=k%2?-15:15,dd=dep[k+1]*(k%2?-1:1);
+    X.moveTo(L(hx[k]),T(yS)); X.quadraticCurveTo(L((hx[k]+hx[k+1])/2),T(yS+dd*1.6),L(hx[k+1]),T(yS));}
+  X.moveTo(L(hx[0]),T(-15)); X.quadraticCurveTo(L(hx[0]-2),T(-24),L(hx[0]-7),T(-28));
+  X.moveTo(L(hx[6]),T(15)); X.quadraticCurveTo(L(hx[6]+2),T(24),L(hx[6]+8),T(27));
+  X.stroke();
+  // NMDA: four subunits around a central pore (two in front, two behind)
+  cx=RX[3]; c=COL.sky; X.fillStyle=c; X.strokeStyle=c;
+  var SU=[[-13.5,0.4],[13.5,0.4],[-6,1],[6,1]];
+  for(k=0;k<4;k++){var sx=cx+SU[k][0],sg=SU[k][0]<0?-1:1; X.globalAlpha=a*SU[k][1];
+    rr(L(sx-3.5),T(-14),7*S,28*S,2.4*S);
+    ell(L(sx),T(-22.5),5.4*S,5*S); ell(L(sx+sg*0.6),T(-34.5),5.6*S,6.6*S);
+    X.beginPath(); X.moveTo(L(sx),T(14)); X.lineTo(L(sx+sg*1.2),T(25)); X.stroke();}
+  X.globalAlpha=a*0.9; X.fillStyle='#f6f7f9'; rr(L(cx-1.6),T(-15),3.2*S,30*S,1.6*S);
+  X.lineCap='butt';
+  if(lab>0.05){
+    // On the narrowest screens neighbouring sub-labels would touch, so every other one drops a line.
+    X.font='400 '+Math.round(11*D)+'px '+FONT; var stag=false;
+    for(k=0;k<REC.length-1;k++) if((X.measureText(REC[k][2]).width+X.measureText(REC[k+1][2]).width)/2+8*D>L(RX[k+1])-L(RX[k])) stag=true;
+    for(k=0;k<REC.length;k++){
+      label(REC[k][1],L(RX[k]),T(46),12,'600','#1f2a35',lab);
+      label(REC[k][2],L(RX[k]),T(46)+(stag&&k%2?30:16)*D,11,'400','#5f6d7b',lab);}
+    // On a narrow screen "Outside" would run into TrkB's outer domains, so it moves above them.
+    X.font='600 '+Math.round(11*D)+'px '+FONT;
+    var oy2=X.measureText('Outside').width+6*D>L(RX[0]-15)-L(-hw)?T(-49)-9*D:T(-34);
+    label('Outside',L(-hw)+2*D,oy2,11,'600','#5f6d7b',lab,'left');
+    label('Inside',L(-hw)+2*D,T(32),11,'600','#5f6d7b',lab,'left');
+  }
+}
+
+/* ---------- layout: the part of the canvas clear of the rail, caption and button ---------- */
+var RAIL=document.querySelector('.rail'),CAP=document.querySelector('.cap'),SPIN=document.getElementById('spin');
+// VEIL is the drawable area in CSS px: anything outside it is erased each frame, and a
+// FADE-wide band inside its edges softens the cut, so a zoom never runs under the rail,
+// the caption, the button or the footer line. BOX (and on narrow screens BOX2, which sits
+// beside the button instead of below it) is where a level is laid out at rest, inside the fade.
+var FADE=16,BOX={w:0,h:0,cx:0,cy:0},BOX2={w:0,h:0,cx:0,cy:0,on:false},VEIL={l:0,r:0,t:0,b:0,s:null},spinOff=false;
+function setBox(o,l,r,t,b){
+  if(r-l<120){var m=(l+r)/2; l=m-60; r=m+60;}
+  if(b-t<120) b=t+120;
+  o.w=(r-l)*D; o.h=(b-t)*D; o.cx=(l+r)/2*D; o.cy=(t+b)/2*D;
+}
+function freeBox(){
+  var c=C.getBoundingClientRect(),W=c.width,H=c.height,l=0,r=W,t=0,b=H-50,s=null,g=FADE+6;
+  if(innerWidth>900){
+    l=RAIL.getBoundingClientRect().right-c.left+8;
+    r=CAP.getBoundingClientRect().left-c.left-8;
+    if(r-l<240){l=0;r=W;}
+  } else {
+    t=RAIL.getBoundingClientRect().bottom-c.top+2;
+    b=CAP.getBoundingClientRect().top-c.top-2;
+    if(!SPIN.hidden){var q=SPIN.getBoundingClientRect();
+      s=[q.left-c.left-6,q.top-c.top-6,q.right-c.left+6,q.bottom-c.top+6];}
+  }
+  VEIL.l=l; VEIL.r=r; VEIL.t=t; VEIL.b=b; VEIL.s=s;
+  BOX2.on=!!s;
+  if(s){
+    setBox(BOX,l+g,r-g,Math.max(t+g,s[3]+4),b-g);
+    var inset=W-s[0]+4; setBox(BOX2,Math.max(l+g,inset),Math.min(r-g,W-inset),t+g,b-g);
+  } else setBox(BOX,l+g,r-g,t+g,b-g);
+  return BOX;
+}
+function edgeGrad(x0,y0,x1,y1){var g=X.createLinearGradient(x0,y0,x1,y1);
+  g.addColorStop(0,'rgba(0,0,0,1)'); g.addColorStop(1,'rgba(0,0,0,0)'); return g;}
+var VG={k:'',g:null};
+function veil(){
+  var w=C.width,h=C.height,F=FADE*D,l=VEIL.l*D,r=VEIL.r*D,t=VEIL.t*D,b=VEIL.b*D;
+  X.save(); X.globalAlpha=1; X.globalCompositeOperation='destination-out'; X.fillStyle='#000';
+  if(t>0) X.fillRect(0,0,w,t);
+  if(b<h) X.fillRect(0,b,w,h-b);
+  if(l>0) X.fillRect(0,t,l,b-t);
+  if(r<w) X.fillRect(r,t,w-r,b-t);
+  var key=l+','+r+','+t+','+b+','+F;
+  if(VG.k!==key){VG.k=key; VG.g=[edgeGrad(0,t,0,t+F),edgeGrad(0,b,0,b-F),edgeGrad(l,0,l+F,0),edgeGrad(r,0,r-F,0)];}
+  X.fillStyle=VG.g[0]; X.fillRect(l,t,r-l,F);
+  X.fillStyle=VG.g[1]; X.fillRect(l,b-F,r-l,F);
+  X.fillStyle=VG.g[2]; X.fillRect(l,t,F,b-t);
+  X.fillStyle=VG.g[3]; X.fillRect(r-F,t,F,b-t);
+  if(VEIL.s&&!spinOff){var s=VEIL.s; X.fillStyle='#000'; X.fillRect(s[0]*D,s[1]*D,(s[2]-s[0])*D,(s[3]-s[1])*D);}
+  X.restore();
+}
+// Where each level sits at rest: scale S and the screen position of its origin.
+var RST=[{},{},{},{},{}];
+function fitS(l,B){
+  if(l===0) return Math.min(B.w/(2*BR.rxz*1.04),B.h/((BR.ymax-BR.ymin)*1.08));
+  if(l===1) return Math.min((B.w-72*D)/(2*CO.RAD),B.h/236);
+  if(l===2){if(NEU.seg!==SEG) prepNeuron();
+    return Math.min(B.w/(2*NEU.rxz*1.06),B.h/((NEU.top+NB.AX)*1.06));}
+  if(l===3) return Math.min(B.w/345,B.h/178);
+  return Math.min(B.w/300,B.h/215);
+}
+function rest(l){
+  var r=RST[l],B=BOX,S=fitS(l,BOX);
+  if(BOX2.on){var S2=fitS(l,BOX2); if(S2>S*1.02){S=S2;B=BOX2;}}
+  S=Math.max(S,0.01); r.ox=B.cx; r.oy=B.cy;
+  if(l===0) r.oy-=(BR.ymin+BR.ymax)/2*S;
+  else if(l===1) r.oy-=12.5*S;
+  else if(l===2) r.oy-=((NB.AX-NEU.top)/2)*S;
+  else if(l===3) r.oy-=6*S;
+  else {MEM.hw=B.w/2/S-1; r.oy-=6*S;}
+  r.S=S; return r;
+}
+// The spot in level l that level l+1 zooms into (unscaled offset from the origin).
+function anchorOff(l){
+  if(l===0){var i=BR.top[brainSide]; P3(BR.x[i],BR.y[i],BR.z[i]);}
+  else if(l===1){var a=CO.anchor; P3(CO.x[a],CO.y[a],CO.z[a]);}
+  else if(l===2){var s=NEU.anch*4; P3(NEU.sp[s],NEU.sp[s+1],NEU.sp[s+2]);}
+  else {_x=SPL.ax;_y=SPL.ay;}
+}
+// The point of level l that sits where the previous level's anchor was.
+function entryOff(l){
+  if(l===1) P3(0,-100,0);
+  else if(l===3){_x=SPL.m.x;_y=SPL.m.cy;}
+  else {_x=0;_y=0;}
+}
+// How much the parent level grows across a step, from the sizes the two levels share.
+function zoomFor(l,P,Q){
+  var k=l===0?Q.S*225/(P.S*12):l===1?Q.S*NEU.top/(P.S*28):l===2?Q.S*30/(P.S*1.6):Q.S*2*MEM.hw/(P.S*10);
+  return Math.max(l===1?3:6,Math.min(l===1?12:30,k));
+}
+// How far level l+1 is turned, in level l's frame, at the spot it grows from: the camera
+// rolls by this much across the step, so the child starts lined up with what it came from
+// and ends level. Level 3's dendrite lies along the branch the anchor spine sits on, and the
+// Level 4 membrane lies along the mushroom head's surface at the anchor.
+function rollFor(l){
+  var a=0;
+  if(l===2){var g=SEG[SPN[NEU.anch].seg];
+    P3(g.x1,g.y1,g.z1); var x1=_x,y1=_y; P3(g.x2,g.y2,g.z2);
+    var dx=_x-x1,dy=_y-y1,f=Math.hypot(dx,dy)/g.len;
+    a=Math.atan2(dy,dx); if(a>Math.PI/2) a-=Math.PI; else if(a<=-Math.PI/2) a+=Math.PI;
+    a*=clamp01((f-0.25)/0.35);       // a branch seen end-on has no clear direction
+  } else if(l===3){var m=SPL.m,ph=-Math.PI/2-0.45;
+    a=Math.atan2(m.ry*Math.cos(ph),-m.rx*Math.sin(ph));}
+  return a;
+}
+function turnAbout(x,y,a){X.save(); if(a){X.translate(x,y); X.rotate(a); X.translate(-x,-y);}}
+var FEAT=[0,60,24,24,40];
+var DRAW=[drawBrain,drawColumn,drawNeuron,drawSpine,drawMembrane];
+function latchSide(){
+  P3(BR.x[BR.top[0]],BR.y[BR.top[0]],BR.z[BR.top[0]]); var z0=_z;
+  P3(BR.x[BR.top[1]],BR.y[BR.top[1]],BR.z[BR.top[1]]); brainSide=_z>=z0?1:0;
 }
 
 /* ---------- paint ---------- */
@@ -507,23 +1043,39 @@ function paint(){
     X.globalAlpha=1; return true;
   }
 
-  var cx2=w/2, cy2=h/2, base=Math.min(w,h);
-  function SC(l,ref){return Math.max(0.02, base/ref*Math.pow(2.7,z-l));}
-  var a;
-  a=fade(0,1.05); if(a>0) drawBrain(a,SC(0,175),cx2,cy2);
-  a=fade(1,1.05); if(a>0) drawNet(a,SC(1,230),cx2,cy2);
-  a=fade(2,1.05); if(a>0) drawArbor(a,SC(2,300),cx2,cy2,false);
-  a=fade(3,1.05); if(a>0) drawShaft(a,SC(3,260),cx2,cy2);
-  a=fade(4,1.05); if(a>0) drawMembrane(a,SC(4,300),cx2,cy2);
-  X.globalAlpha=1; return true;
+  freeBox(); rot();
+  if(Math.abs(z-Math.round(z))<0.01) latchSide();
+  var l=Math.min(LEVELS.length-1,Math.floor(z+1e-4)), t=z-l;
+  if(l===LEVELS.length-1||t<1e-3){
+    var r=rest(Math.round(z)); DRAW[Math.round(z)](1,r.S,r.ox,r.oy,1,1);
+    veil(); X.globalAlpha=1; return true;
+  }
+  // Between levels: zoom the parent about its anchor while the child grows out of it.
+  var P=rest(l),Q=rest(l+1),e=t*t*(3-2*t),th=rollFor(l);
+  anchorOff(l); var A0x=P.ox+_x*P.S,A0y=P.oy+_y*P.S;
+  entryOff(l+1); var Ex=_x,Ey=_y,Enx=Q.ox+Ex*Q.S,Eny=Q.oy+Ey*Q.S;
+  var K=zoomFor(l,P,Q),k=Math.pow(K,e);
+  var Ax=A0x+(Enx-A0x)*e,Ay=A0y+(Eny-A0y)*e;
+  var aP=1-sm((t-0.3)/0.55),aC=sm((t-0.12)/0.6),cs=Q.S*k/K;
+  if(aP>0.003){turnAbout(Ax,Ay,-th*e);
+    DRAW[l](aP,P.S*k,Ax+(P.ox-A0x)*k,Ay+(P.oy-A0y)*k,aP*clamp01(1-(k-1)*1.5),k); X.restore();}
+  var ring=(1-aC)*aP;
+  if(ring>0.02){X.globalAlpha=ring*0.7; X.strokeStyle=COL.amber; X.lineWidth=1.5*D;
+    X.beginPath(); X.arc(Ax,Ay,Math.max(7*D,FEAT[l+1]*cs),0,TAU); X.stroke();}
+  if(aC>0.003){turnAbout(Ax,Ay,th*(1-e));
+    DRAW[l+1](aC,cs,Ax-Ex*cs,Ay-Ey*cs,aC*clamp01(1-(K/k-1)*1.5),1); X.restore();}
+  veil(); X.globalAlpha=1; return true;
 }
 function loop(){
-  if(!drag&&!reduce) ry+= (mode==='analyze'?0.0022:0.0018);
-  if(mode==='explore') z+=(zT-z)*0.09;
+  if(!drag&&!reduce) ry+= (paused?0:(mode==='analyze'?0.0022:0.0018));
+  if(mode==='explore'){
+    if(reduce) z=zT;                       // no animated zoom: levels jump
+    else {z+=(zT-z)*0.09; if(Math.abs(zT-z)<0.002) z=zT;}
+  }
   paint(); requestAnimationFrame(loop);
 }
 requestAnimationFrame(loop);
-window.__paint=function(m,d){ if(m){setMode(m);} if(d!=null){z=zT=d;} return paint(); };
+window.__paint=function(m,d){ if(m){setMode(m);} if(d!=null){ if(mode==='explore') setZ(d); z=zT=d; } return paint(); };
 
 /* ---------- sholl ---------- */
 function fmt(n,d){return n.toLocaleString(undefined,
@@ -534,21 +1086,21 @@ function drawSholl(){
       h=Math.max(100,Math.round(r.height)||120)*D;
   if(SH.width!==w||SH.height!==h){SH.width=w;SH.height=h;}
   SX.clearRect(0,0,w,h); if(!SHOLL.length) return;
-  var pad=10*D,bw=(w-pad*2)/SHOLL.length,mx=0;
+  var pad=10*D,top=pad+14*D,bw=(w-pad*2)/SHOLL.length,mx=0;
   SHOLL.forEach(function(p){if(p.n>mx)mx=p.n;});
   var peak=SHOLL.reduce(function(a,b){return b.n>a.n?b:a;},SHOLL[0]);
   SX.strokeStyle='#dde2e8';SX.lineWidth=D;
-  for(var g=0;g<=3;g++){var yy=pad+(h-pad*2)*g/3;
+  for(var g=0;g<=3;g++){var yy=top+(h-pad-top)*g/3;
     SX.beginPath();SX.moveTo(pad,yy);SX.lineTo(w-pad,yy);SX.stroke();}
-  SHOLL.forEach(function(p,i){var bh=(h-pad*2)*(p.n/mx);
+  SHOLL.forEach(function(p,i){var bh=(h-pad-top)*(p.n/mx);
     SX.fillStyle=p===peak?'#c0573a':'#b9c3ce';
     SX.fillRect(pad+i*bw+bw*0.16,h-pad-bh,bw*0.68,bh);});
   SX.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
   SX.fillStyle='#5f6d7b';SX.textAlign='left';SX.fillText('0',pad,h-2*D);
   SX.textAlign='right';SX.fillText(Math.round(STATS.ext)+' µm',w-pad,h-2*D);
-  SX.textAlign='center';SX.fillStyle='#D9A05B';
+  SX.textAlign='center';SX.fillStyle='#b24e33';
   SX.fillText('peak '+peak.n+' @ '+peak.r+' µm',w/2,11*D);
-  SH.setAttribute('aria-label','Sholl analysis chart: branch intersections with shells every 10 micrometres from the cell body. Peak: '+peak.n+' intersections at '+peak.r+' micrometres.');
+  SH.setAttribute('aria-label','Sholl analysis chart showing branch intersections with shells every 10 micrometres from the cell body. The peak is '+peak.n+' intersections at '+peak.r+' micrometres.');
 }
 function paintStats(){
   document.getElementById('m-len').textContent=fmt(STATS.len);
@@ -571,25 +1123,59 @@ function setZ(v){
   document.getElementById('c-title').textContent=L.title;
   document.getElementById('c-body').textContent=L.body;
   document.getElementById('c-cite').innerHTML=L.cite;
+  CAP.scrollTop=0;
   var ul=document.getElementById('c-parts');ul.innerHTML='';
   L.parts.forEach(function(p){var li=document.createElement('li');
-    li.innerHTML='<i style="background:'+COL[p[1]]+'"></i>'+p[0];ul.appendChild(li);});
+    li.innerHTML='<i style="background:'+(COL[p[1]]||p[1])+'"></i>'+p[0];ul.appendChild(li);});
   var pct=zT/(LEVELS.length-1)*100;
   document.getElementById('fill').style.height=pct+'%';
   document.getElementById('knob').style.top='calc('+pct+'% - 5px)';
   document.querySelectorAll('.tick').forEach(function(b,k){
     b.setAttribute('aria-current',k===i?'true':'false');});
   document.getElementById('handoff').classList.toggle('on', i===2);
+  // Only the brain, the column and the neuron turn. At the flat levels the Pause button
+  // steps aside, and if it had keyboard focus, focus moves to the current level instead.
+  spinOff=i>=3; SPIN.classList.toggle('off',spinOff);
+  var tk=document.querySelectorAll('.tick')[i];
+  if(spinOff&&document.activeElement===SPIN&&tk) tk.focus();
+  if(tk&&RAIL.scrollWidth>RAIL.clientWidth+1){     // narrow screens: keep the current level in view
+    var rr=RAIL.getBoundingClientRect(),tr=tk.getBoundingClientRect(),pad=34;
+    if(tr.left<rr.left+pad) RAIL.scrollLeft-=rr.left+pad-tr.left;
+    else if(tr.right>rr.right-pad) RAIL.scrollLeft+=tr.right-(rr.right-pad);
+  }
+  edges();
+  describe();
+}
+// Fades on the edges of whatever is cut off: the level names on a narrow rail, and the
+// last lines of a caption that scrolls inside itself on a phone.
+function edges(){
+  var sc=RAIL.scrollWidth>RAIL.clientWidth+1;
+  RAIL.classList.toggle('fl',sc&&RAIL.scrollLeft>2);
+  RAIL.classList.toggle('fr',sc&&RAIL.scrollLeft+RAIL.clientWidth<RAIL.scrollWidth-2);
+  CAP.classList.toggle('more',CAP.scrollTop+CAP.clientHeight<CAP.scrollHeight-2);
+}
+// The canvas label says what the current view shows.
+function describe(){
+  C.setAttribute('aria-label', mode==='analyze'
+    ? 'Interactive 3D view of a computer-generated neuron to measure. Drag to rotate. Click a dendrite segment or a spine to select it.'
+    : 'Interactive view, Explore level '+(Math.round(zT)+1)+' of '+LEVELS.length+'. '+LEVELS[Math.round(zT)].alt+
+      ' Drag to rotate. Scroll, use the arrow keys or pick a level to zoom in or out.');
 }
 var T=document.getElementById('ticks');
 LEVELS.forEach(function(L,i){var b=document.createElement('button');
   b.className='tick';b.innerHTML=L.tag+'<small>'+L.unit+'</small>';
   b.addEventListener('click',function(){setZ(i);});T.appendChild(b);});
+RAIL.addEventListener('scroll',edges,{passive:true});
+CAP.addEventListener('scroll',edges,{passive:true});
+addEventListener('resize',edges);
+if(document.fonts&&document.fonts.ready) document.fonts.ready.then(edges);
 addEventListener('wheel',function(e){ if(mode!=='explore')return;
+  // a caption that scrolls on a small screen keeps the wheel for its own text
+  if(CAP.contains(e.target)&&CAP.scrollHeight>CAP.clientHeight+1) return;
   e.preventDefault(); setZ(zT+e.deltaY*0.0022);},{passive:false});
 
 /* ---------- analyze controls ---------- */
-var MB=[['fil','Filament'],['spn','Spines'],['soma','Soma'],['re','Regrow']];
+var MB=[['fil','Dendrites'],['spn','Spines'],['soma','Soma'],['re','Regrow']];
 var MW=document.getElementById('tools');
 MB.forEach(function(m){var b=document.createElement('button');
   b.className='tool';b.textContent=m[1];
@@ -605,19 +1191,19 @@ ORDER_COL.forEach(function(c){var i=document.createElement('i');
 
 function showPick(){
   var el=document.getElementById('pick');
-  if(!sel){el.innerHTML='<p class="none">Click a filament or spine.</p>';return;}
+  if(!sel){el.innerHTML='<p class="none">Click a dendrite segment or a spine.</p>';return;}
   if(sel.kind==='seg'){var s=SEG[sel.i];
     el.innerHTML='<p class="tag mono">Segment #'+sel.i+'</p>'+
       '<div class="kv"><span>Branch order</span><b class="mono">'+s.o+'</b></div>'+
       '<div class="kv"><span>Length</span><b class="mono">'+fmt(s.len,2)+'<u>&micro;m</u></b></div>'+
-      '<div class="kv"><span>Children</span><b class="mono">'+s.kids+'</b></div>'+
+      '<div class="kv"><span>Child branches</span><b class="mono">'+s.kids+'</b></div>'+
       '<div class="kv"><span>Type</span><b class="mono">'+(s.kids?'internal':'terminal')+'</b></div>';
   } else {var p=SPN[sel.i],ho=SEG[p.seg];
     el.innerHTML='<p class="tag mono">Spine #'+sel.i+'</p>'+
       '<div class="kv"><span>On segment</span><b class="mono">#'+p.seg+'</b></div>'+
-      '<div class="kv"><span>Host order</span><b class="mono">'+ho.o+'</b></div>'+
+      '<div class="kv"><span>Segment branch order</span><b class="mono">'+ho.o+'</b></div>'+
       '<div class="kv"><span>Head radius</span><b class="mono">'+fmt(p.head,2)+'<u>&micro;m</u></b></div>'+
-      '<div class="kv"><span>Along shaft</span><b class="mono">'+fmt(p.t*100)+'<u>%</u></b></div>';}
+      '<div class="kv"><span>Position along segment</span><b class="mono">'+fmt(p.t*100)+'<u>%</u></b></div>';}
 }
 function hit(ev){
   var b=C.getBoundingClientRect();
@@ -656,6 +1242,7 @@ function setMode(m){
   document.getElementById('t-explore').setAttribute('aria-current',m==='explore');
   document.getElementById('t-analyze').setAttribute('aria-current',m==='analyze');
   if(m==='analyze'){ rx=0.13; drawSholl(); }
+  describe();
 }
 document.getElementById('t-explore').addEventListener('click',function(){setMode('explore');});
 document.getElementById('t-analyze').addEventListener('click',function(){setMode('analyze');});
@@ -664,6 +1251,14 @@ addEventListener('keydown',function(e){
   if(mode!=='explore')return;
   if(e.key==='ArrowDown'||e.key==='ArrowRight'){e.preventDefault();setZ(Math.round(zT)+1);}
   if(e.key==='ArrowUp'||e.key==='ArrowLeft'){e.preventDefault();setZ(Math.round(zT)-1);}
+});
+
+/* ---------- pause and play the rotation (WCAG 2.2.2) ---------- */
+// Without motion (prefers-reduced-motion) nothing turns, so the button is hidden.
+if(reduce) SPIN.hidden=true;
+SPIN.addEventListener('click',function(){
+  paused=!paused; SPIN.setAttribute('aria-pressed',paused?'true':'false');
+  document.getElementById('spin-ic').setAttribute('d',paused?'M2 0.5L9.5 5L2 9.5Z':'M1.5 0.5h2.6v9h-2.6zM5.9 0.5h2.6v9h-2.6z');
 });
 
 document.body.dataset.mode='explore';

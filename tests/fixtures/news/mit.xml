@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss xmlns:dc="http://purl.org/dc/elements/1.1/" version="2.0" xml:base="https://news.mit.edu">
+  <channel>
+    <title>Test feed shaped like MIT News neuroscience</title>
+    <link>https://news.mit.edu/topic/mitneuroscience-rss.xml</link>
+    <description>Made-up items for offline tests</description>
+    <item>
+      <title>Researchers map a made-up circuit</title>
+      <link>https://news.mit.edu/2026/made-up-circuit-1118</link>
+      <description>A short teaser that must never be stored.</description>
+      <pubDate>Wed, 18 Nov 2026 12:00:00 -0500</pubDate>
+    </item>
+    <item>
+      <title>A second made-up story</title>
+      <link>https://news.mit.edu/2026/second-story-1104</link>
+      <pubDate>Wed, 04 Nov 2026 10:00:00 -0500</pubDate>
+    </item>
+  </channel>
+</rss>
