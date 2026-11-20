@@ -102,7 +102,9 @@ Each change below was drafted in one AI-assisted pass from the source or the pag
 | Explore | The figures of 86 billion neurons and 16 billion in the cerebral cortex are now cited. The uncited "thousands of synapses" clause was removed | Azevedo et al. 2009 |
 | Explore | Single-neuron caption cited Yang 2014, a proBDNF paper. It now cites rat CA1 input counts | Megías et al. 2001 |
 | Explore | TrkB binding now says "in cell and mouse studies" | Moliner et al. 2023 |
+| Explore | The membrane level showed four drug-related receptors (TrkB, p75NTR, 5-HT2A, NMDA). It now shows the three glutamate receptors of a spine synapse (AMPA, NMDA, mGluR), which replaces the TrkB line above. Checked from the two reviews' abstracts and standard textbook facts, not by an expert | Traynelis et al. 2010; Niswender & Conn 2010 |
 | Explore | Perineuronal-net line toned down to what the source shows | Lensjø et al. 2017 |
+| Pharmacology | New receptor card for psilocin and 5-HT2A. Method, resolution, chains, the ligand and the modelled residues (79 to 393, with 264 to 312 and 350 to 353 missing) were read from the PDB entry and its coordinate file. The membrane position is an estimate from UniProt's membrane-spanning segments. The caption has not been checked by a structural biologist | PDB 9AS8; Gumpper et al. 2025; UniProt P28223 |
 | Spines | Species named (rat). "~10,000 spines per cortical cell" is 8,000 to 15,000 by cell type in rat visual cortex | Larkman 1991 |
 | Spines | The "almost linear" AMPA claim was softened, "thin spines grow into mushroom spines" is "can grow toward", and "the learning spine" is described as a proposal | Matsuzaki et al. 2001, 2004; Bourne & Harris 2007 |
 | Evidence | Schematic bars no longer print "100%". They say high, medium or low | The page's own values are hand-set |
