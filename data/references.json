@@ -144,7 +144,7 @@
     "authors": "Polyakova et al.",
     "year": 2015,
     "journal": "Journal of Affective Disorders",
-    "citations": 462,
+    "citations": 463,
     "meta_analysis": true,
     "verification": {
       "status": "confirmed",
@@ -164,7 +164,7 @@
     "site_title": "BDNF as a biomarker for successful treatment of mood disorders: a systematic & quantitative meta-analysis",
     "site_year": 2015,
     "citations_at_compile": 468,
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2015
   },
@@ -1271,8 +1271,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 690,
-    "citations_checked": "2026-11-19"
+    "citations": 692,
+    "citations_checked": "2026-11-20"
   },
   {
     "group": "found",
@@ -1627,7 +1627,7 @@
     "authors": "Zarate et al.",
     "year": 2006,
     "journal": "Archives of General Psychiatry",
-    "citations": 3180,
+    "citations": 3181,
     "tag": null,
     "meta_analysis": false,
     "note": "18 patients, crossover: improvement within 110 minutes, significant for a week",
@@ -1640,7 +1640,7 @@
     "site_year": 2006,
     "citations_at_compile": 3166,
     "doi": "10.1001/archpsyc.63.8.856",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2006
   },
@@ -1834,7 +1834,7 @@
     "authors": "Wilson & Nicoll",
     "year": 2001,
     "journal": "Nature",
-    "citations": 1371,
+    "citations": 1372,
     "tag": null,
     "meta_analysis": false,
     "note": "Rat hippocampus: endocannabinoids mediate retrograde suppression of inhibition via CB1",
@@ -1847,7 +1847,7 @@
     "site_year": 2001,
     "citations_at_compile": 1371,
     "doi": "10.1038/35069076",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2001
   },
@@ -2698,7 +2698,7 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 1589,
+    "citations": 1590,
     "citations_checked": "2026-11-20"
   },
   {
