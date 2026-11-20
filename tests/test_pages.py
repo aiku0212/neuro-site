@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "references", "about",
-          "learn", "conditioning", "news"]
+          "learn", "conditioning", "news", "scans"]
 NOT_PUBLISHED = ["explore", "morphometry"]
 
 
@@ -92,9 +92,9 @@ class PublicPages(unittest.TestCase):
 
     def test_learn_hub_links_every_learn_page(self):
         hub = read("learn")
-        for name in ["conditioning", "news"]:
+        for name in ["conditioning", "news", "scans"]:
             self.assertIn(f'href="{name}.html"', hub)
-        for name in ["learn", "conditioning", "news"]:
+        for name in ["learn", "conditioning", "news", "scans"]:
             nav = re.search(r'<nav class="tabs".*?</nav>', read(name), re.S).group(0)
             self.assertIn('<a class="tab" href="learn.html" aria-current="true">Learn</a>', nav)
 
@@ -109,7 +109,7 @@ class PublicPages(unittest.TestCase):
         self.assertIn("cp -R assets _site/", workflow)
 
     def test_visuals_say_what_they_are(self):
-        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning"]:
+        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning", "scans"]:
             with self.subTest(page=name):
                 self.assertRegex(read(name), r'class="fig-kind" data-kind="(schematic|simulation|drawing|measured)"')
 
@@ -138,6 +138,44 @@ class PublicPages(unittest.TestCase):
         # The activity chart is computed per pixel, not on the old fixed 240 by 36 grid.
         self.assertNotIn("COLS = 240", page)
         self.assertIn("rowTS[r] = TMIN * Math.exp(", page)
+
+    def test_scans_page_uses_local_data_and_checked_landmarks(self):
+        import gzip, struct
+        page = read("scans")
+        # The viewer is vendored at a fixed version and matches the published npm build.
+        viewer = (ROOT / "assets" / "vendor" / "niivue-0.69.0" / "niivue.umd.js").read_bytes()
+        self.assertEqual(base64.b64encode(hashlib.sha384(viewer).digest()).decode(), "Oyof6MyzZMH1tvMLLYFRQLWZtk9Y/WbiL3wkdXzwaCS82xRXXy9U+kRrkDDAVq6E")
+        self.assertIn("BSD 2-Clause License", (ROOT / "assets" / "vendor" / "niivue-0.69.0" / "LICENSE").read_text(encoding="utf8"))
+        self.assertIn('s.src = "assets/vendor/niivue-0.69.0/niivue.umd.js";', page)
+        self.assertNotRegex(page, r'src="https?://')
+        # The template's copyright notice ships with the data and appears on the page.
+        notice = (ROOT / "assets" / "scans" / "COPYING-ICBM152").read_text(encoding="utf8")
+        self.assertIn("Louis Collins", notice)
+        self.assertIn("provided that the above copyright notice appear in all copies", " ".join(notice.split()))
+        self.assertIn("provided that the above copyright notice appear in all copies", page)
+        self.assertTrue((ROOT / "tools" / "scans" / "prep_icbm.py").is_file())
+        vols = {}
+        for name in ("icbm152-t1-brain", "icbm152-tissue"):
+            path = ROOT / "assets" / "scans" / (name + ".nii.gz")
+            self.assertLess(path.stat().st_size, 2_500_000)
+            raw = gzip.decompress(path.read_bytes())
+            dims = struct.unpack("<8h", raw[40:56])[1:4]
+            origin = [struct.unpack("<f", raw[292 + 16 * i:296 + 16 * i])[0] for i in range(3)]
+            self.assertEqual(struct.unpack("<h", raw[70:72])[0], 2)   # uint8
+            vols[name] = (raw[352:], dims, origin)
+        self.assertEqual(vols["icbm152-t1-brain"][1:], vols["icbm152-tissue"][1:])
+        # Every landmark sits in the tissue its caption describes.
+        want = {"Corpus callosum": 2, "Left lateral ventricle": 3, "Left thalamus": 1, "Left putamen": 1,
+                "Left hippocampus": 1, "Pons": 2, "Left cerebellum": 2}
+        stops = re.findall(r'\{ name: "([^"]+)", at: \[(-?\d+), (-?\d+), (-?\d+)\]', page)
+        self.assertEqual([s[0] for s in stops], list(want))
+        data, (nx, ny, nz), origin = vols["icbm152-tissue"]
+        for name, x, y, z in stops:
+            i, j, k = (round(float(v) - o) for v, o in zip((x, y, z), origin))
+            with self.subTest(landmark=name):
+                self.assertEqual(data[i + nx * (j + ny * k)], want[name])
+        self.assertIn('data-kind="measured">Measured, averaged', page)
+        self.assertIn("cannot be used to read or diagnose", page)
 
     def test_explore_membrane_shows_basic_glutamate_receptors(self):
         page = read("app")

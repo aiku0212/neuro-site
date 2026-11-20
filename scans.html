@@ -1,0 +1,417 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brain Scans · Neuroscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="Slice through a real MRI brain template in three directions and in 3D, and learn to read a T1 scan.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neuroscope">
+<meta property="og:title" content="Brain Scans · Neuroscope">
+<meta property="og:description" content="Slice through a real MRI brain template in three directions and in 3D, and learn to read a T1 scan.">
+<meta property="og:url" content="https://aiku0212.github.io/neuro-site/scans.html">
+<meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Neuroscope: interactive models of the brain, neurons and synapses, and an evidence review of neuroplasticity.">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root{
+    --ground:#f6f7f9; --ground-2:#ffffff; --ground-3:#eceff3;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --violet:#6a54a6; --amber:#b24e33;
+    --gm:#c98a5a; --wm:#7fa7cf; --csf:#5bb3a6;
+    --rule:#dde2e8;
+    --shadow:0 18px 40px -22px rgba(31,42,53,.22);
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--ground)}
+  .wrap{background:var(--ground); color:var(--ink); min-height:100vh;
+    font:400 16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; overflow-x:clip}
+  .bar{position:sticky; top:0}
+  @media (max-width:640px){.bar{position:static}}
+
+  main{max-width:1080px; margin:0 auto; padding:0 16px 90px}
+  .mast{padding:52px 0 26px; border-bottom:1px solid var(--rule); margin-bottom:30px}
+  .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--amber); margin:0 0 14px}
+  h1{font-size:clamp(30px,5.2vw,52px); line-height:1.08; margin:0 0 16px; font-weight:400}
+  .lede{font-size:clamp(16px,2vw,18px); color:var(--ink-2); max-width:62ch; margin:0}
+  .mast .fig-note{margin-top:14px; max-width:66ch}
+  h2{font-size:24px; font-weight:400; margin:46px 0 6px}
+  h3{font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); margin:0 0 10px; font-weight:600}
+  p{max-width:66ch; color:var(--ink-2)}
+
+  .lab{display:grid; grid-template-columns:minmax(0,1fr) 290px; gap:18px;
+    background:var(--ground-2); border:1px solid var(--rule); border-radius:14px;
+    padding:16px; box-shadow:var(--shadow)}
+  @media (max-width:860px){ .lab{grid-template-columns:minmax(0,1fr)} }
+  .stage{position:relative; background:#0f141a; border-radius:10px; overflow:hidden;
+    height:min(560px,72vh); min-height:320px}
+  @media (max-width:860px){ .stage{height:auto; aspect-ratio:1/1; max-height:70vh; min-height:280px} }
+  .stage canvas{display:block; width:100%; height:100%; outline:none}
+  .stage .msg{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
+    padding:24px; text-align:center; color:#c9d2dc; font-size:14px; line-height:1.5; pointer-events:none}
+  [hidden]{display:none !important}
+  .views{display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 0}
+  .hint{font-size:12.5px; color:var(--muted); margin:8px 0 0}
+
+  .panel{display:flex; flex-direction:column; gap:14px; min-width:0}
+  .group > span{display:block; font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin-bottom:6px}
+  .readout{border:1px solid var(--rule); padding:10px 12px; font-size:13px}
+  .readout div{display:flex; justify-content:space-between; gap:10px; padding:3px 0}
+  .readout b{font-weight:600; color:var(--ink); text-align:right; font-variant-numeric:tabular-nums}
+  .swatches{display:flex; flex-wrap:wrap; gap:4px 14px; font-size:12.5px; color:var(--ink-2); margin-top:8px}
+  .swatches i{display:inline-block; width:10px; height:10px; border-radius:3px; margin-right:6px; vertical-align:-1px}
+  .tour{display:flex; flex-direction:column; gap:6px}
+  .tour .btn{text-align:left}
+  .stop{background:var(--ground-3); border-radius:10px; padding:10px 12px; font-size:13.5px; line-height:1.55; color:var(--ink-2); min-height:4.6em}
+  .stop b{color:var(--ink)}
+  .stepper{display:flex; gap:6px; align-items:center}
+  .stepper span{font-size:12px; color:var(--muted); margin-left:auto}
+
+  .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:16px; margin-top:16px}
+  .card{background:var(--ground-2); border:1px solid var(--rule); padding:16px 18px}
+  .card p{font-size:14.5px; margin:0}
+  .card p + p{margin-top:10px}
+  .contrast{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:10px; margin-top:16px; max-width:640px}
+  .contrast div{border-radius:10px; padding:12px; font-size:13px; line-height:1.45}
+  .contrast b{display:block; font-size:14px; margin-bottom:2px}
+  .refs{padding-left:20px; max-width:80ch}
+  .refs li{font-size:14px; color:var(--ink-2); margin:0 0 8px; overflow-wrap:anywhere}
+  .notice{font-size:12.5px; color:var(--muted); white-space:pre-wrap; background:var(--ground-3);
+    border-radius:10px; padding:12px 14px; max-width:80ch; overflow-wrap:anywhere}
+  footer{border-top:1px solid var(--rule); margin-top:60px; padding:22px 0;
+    font-size:12px; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
+  footer a{color:var(--ink-2)}
+</style>
+<link rel="stylesheet" href="assets/atlas.css">
+
+<div class="wrap">
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="learn.html" aria-current="true">Learn</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
+  </nav>
+</div>
+<script src="assets/nav.js" defer></script>
+
+<main>
+  <div class="mast">
+    <p class="eyebrow mono">Brain imaging · Magnetic resonance imaging</p>
+    <h1 class="serif">A real brain scan, <em>slice by slice</em></h1>
+    <p class="lede">This is an MRI of the human brain that you can cut in any direction. It is not
+      one person. It is the MNI ICBM152 template, made by aligning the scans of 152 adults and averaging
+      them. Brain imaging researchers use it as a shared map, so a position given in millimetres means
+      the same place in every study.</p>
+    <p class="fig-note"><span class="fig-kind" data-kind="measured">Measured, averaged</span>
+      Real MRI scans from 152 people, averaged into one brain. The skull has been removed and the
+      brightness rescaled for display.</p>
+  </div>
+
+  <section class="lab" aria-label="Brain scan viewer">
+    <div>
+      <div class="stage" id="stage">
+        <canvas id="gl" role="img" tabindex="0"
+          aria-label="MRI of an average adult human brain, shown as three slices (from the side, from the front and from above) and a 3D view. A crosshair marks one point, and its position and tissue are listed beside the viewer."></canvas>
+        <p class="msg" id="msg">Loading the scan (1.9 MB)…</p>
+      </div>
+      <div class="views" role="group" aria-label="View">
+        <button class="btn" data-view="all" aria-pressed="true">All views</button>
+        <button class="btn" data-view="sag" aria-pressed="false">Side</button>
+        <button class="btn" data-view="cor" aria-pressed="false">Front</button>
+        <button class="btn" data-view="axi" aria-pressed="false">Top</button>
+        <button class="btn" data-view="3d" aria-pressed="false">3D</button>
+        <button class="btn" id="cut" aria-pressed="false" hidden>Cut down the middle</button>
+      </div>
+      <p class="hint" id="hint">Click or drag on a slice to move the crosshair. Scroll over a slice to step
+        through it after clicking it once. Left is on the left, as if you were facing the same way as the person.</p>
+    </div>
+
+    <div class="panel">
+      <div class="group">
+        <span>At the crosshair</span>
+        <div class="readout" aria-live="polite">
+          <div>Left–right <b id="rx">0 mm</b></div>
+          <div>Back–front <b id="ry">0 mm</b></div>
+          <div>Down–up <b id="rz">0 mm</b></div>
+          <div>Tissue <b id="rt">–</b></div>
+        </div>
+      </div>
+      <div class="group">
+        <span>Tissue colours</span>
+        <button class="btn" id="tissue" aria-pressed="false">Show tissue colours</button>
+        <div class="swatches" aria-hidden="true">
+          <span><i style="background:var(--gm)"></i>Grey matter</span>
+          <span><i style="background:var(--wm)"></i>White matter</span>
+          <span><i style="background:var(--csf)"></i>Fluid</span>
+        </div>
+      </div>
+      <div class="group">
+        <span>Landmarks</span>
+        <div class="stop" id="stop" aria-live="polite">Step through seven structures you can find
+          on any brain MRI. The crosshair jumps to each one.</div>
+        <div class="stepper" style="margin-top:8px">
+          <button class="btn" id="prev" disabled>Back</button>
+          <button class="btn" id="next">Start</button>
+          <span id="count"></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <h2 class="serif">Reading a T1 scan</h2>
+  <p>MRI can be tuned to show different tissue properties. This scan is T1-weighted, the kind used most
+    often to show anatomy. Tissue that recovers its signal quickly between radio pulses looks bright, and
+    tissue that recovers slowly looks dark.</p>
+  <div class="contrast" aria-label="How tissues look on a T1 scan">
+    <div style="background:#eef0f3"><b>White matter</b>Brightest. Bundles of nerve fibres wrapped in fatty myelin.</div>
+    <div style="background:#b9bec4"><b>Grey matter</b>Mid-grey. Cell bodies of neurons, on the surface and in deep nuclei.</div>
+    <div style="background:#2c333b; color:#e6e9ed"><b>Fluid</b>Darkest. Cerebrospinal fluid in the ventricles and around the brain.</div>
+  </div>
+  <p>Turn on <b>Show tissue colours</b> to see the same three classes painted in. Each colour marks
+    voxels (3D pixels, 1 mm on a side) where the template's own tissue maps give that tissue a probability
+    of at least one half. Voxels where no tissue reaches one half are left unpainted. They sit mostly
+    at boundaries.</p>
+
+  <h2 class="serif">How MRI makes the picture</h2>
+  <div class="cols">
+    <div class="card">
+      <h3>Line up</h3>
+      <p>The scanner's magnet is tens of thousands of times stronger than Earth's field. Hydrogen nuclei
+        in the body's water and fat behave like tiny magnets, and slightly more of them line up with the field
+        than against it.</p>
+    </div>
+    <div class="card">
+      <h3>Tip and listen</h3>
+      <p>A radio pulse tips them out of line. As they relax back, they give off a faint radio signal. How
+        fast they relax depends on the tissue around them. That difference is the contrast you see.</p>
+    </div>
+    <div class="card">
+      <h3>Find the place</h3>
+      <p>Extra magnetic fields that change across the scanner, called gradients, make the signal's
+        frequency depend on position. A computer turns those frequencies back into an image, slice by slice.
+        MRI uses no X-rays.</p>
+    </div>
+  </div>
+
+  <h2 class="serif">Why it looks smoother than a real brain</h2>
+  <p>The template was built in rounds. In each round every one of the 152 scans was warped to fit the
+    average from the round before, and a new average was taken. The result is much sharper than a plain average, but
+    no two people fold their cortex the same way, so the smallest folds still blur. Large features such as the
+    ventricles, the deep nuclei and the main folds line up well across people and stay sharp.</p>
+  <p>The numbers beside the viewer are in MNI space, the coordinate system this template defines. Zero
+    is near the anterior commissure, a small bundle of fibres that crosses the midline. Positive numbers mean
+    right, front and up.</p>
+
+  <h2 class="serif">Limits</h2>
+  <div class="cols">
+    <div class="card"><p>This is an average, not a person. It has no lesions, no individual folding pattern
+      and no age-related changes. Real scans vary a great deal.</p></div>
+    <div class="card"><p>The skull was removed with the brain mask that comes with the template. Brightness
+      was rescaled for display, so the grey levels are not the scanner's raw values.</p></div>
+    <div class="card"><p>Tissue colours come from probability maps, not from looking at cells. Grey matter
+      in the deep nuclei and the brainstem is partly mixed with white matter and is easy to misclassify.</p></div>
+    <div class="card"><p>This page is for learning anatomy. It cannot be used to read or diagnose anyone's
+      scan. Only a radiologist or doctor can interpret a medical image.</p></div>
+  </div>
+
+  <h2 class="serif">Data, software and sources</h2>
+  <p>Data: ICBM 2009c Nonlinear Asymmetric template, from the McConnell Brain Imaging Centre, Montreal
+    Neurological Institute. It is used under the notice below, which must go with every copy. Viewer:
+    <a href="https://github.com/niivue/niivue">NiiVue</a> 0.69.0, BSD 2-Clause License, served from this site.
+    The script that prepared the files is <code>tools/scans/prep_icbm.py</code> in this site's repository.</p>
+  <p class="notice">Copyright (C) 1993-2004 Louis Collins, McConnell Brain Imaging Centre, Montreal Neurological Institute, McGill University. Permission to use, copy, modify, and distribute this software and its documentation for any purpose and without fee is hereby granted, provided that the above copyright notice appear in all copies. The authors and McGill University make no representations about the suitability of this software for any purpose. It is provided "as is" without express or implied warranty. The authors are not responsible for any data loss, equipment damage, property loss, or injury to subjects or patients resulting from the use or misuse of this software package.</p>
+  <ol class="refs">
+    <li>Fonov V, Evans AC, Botteron K, Almli CR, McKinstry RC, Collins DL (2011). Unbiased average
+      age-appropriate atlases for pediatric studies. <em>NeuroImage</em> 54:313-327.
+      <a href="https://doi.org/10.1016/j.neuroimage.2010.07.033">doi.org/10.1016/j.neuroimage.2010.07.033</a></li>
+    <li>Fonov VS, Evans AC, McKinstry RC, Almli CR, Collins DL (2009). Unbiased nonlinear average
+      age-appropriate brain templates from birth to adulthood. <em>NeuroImage</em> 47:S102.
+      <a href="https://doi.org/10.1016/S1053-8119(09)70884-5">doi.org/10.1016/S1053-8119(09)70884-5</a></li>
+    <li>Mazziotta J and 22 others (2001). A probabilistic atlas and reference system for the human brain:
+      International Consortium for Brain Mapping (ICBM). <em>Philosophical Transactions of the Royal Society B</em>
+      356:1293-1322. <a href="https://doi.org/10.1098/rstb.2001.0915">doi.org/10.1098/rstb.2001.0915</a></li>
+    <li>Plewes DB, Kucharczyk W (2012). Physics of MRI: a primer. <em>Journal of Magnetic Resonance
+      Imaging</em> 35:1038-1054. <a href="https://doi.org/10.1002/jmri.23642">doi.org/10.1002/jmri.23642</a></li>
+    <li>Azevedo FAC and 8 others (2009). Equal numbers of neuronal and nonneuronal cells make the human
+      brain an isometrically scaled-up primate brain. <em>Journal of Comparative Neurology</em> 513:532-541.
+      <a href="https://doi.org/10.1002/cne.21974">doi.org/10.1002/cne.21974</a></li>
+  </ol>
+
+  <footer>
+    <a href="learn.html">More to learn</a>
+    <a href="app.html">Explore the brain</a>
+    <a href="timecells.html">Time</a>
+    <a href="references.html">All sources</a>
+    <span>Educational only. Not medical or veterinary advice.</span>
+    <a href="about.html">About and limits</a>
+  </footer>
+</main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var el = function(id){ return document.getElementById(id); };
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // Landmarks, in MNI millimetres. Each point was checked on this template's slices.
+  var STOPS = [
+    { name: "Corpus callosum", at: [0, -5, 24],
+      text: "The largest bundle of fibres joining the left and right hemispheres. It is white matter, so it is bright." },
+    { name: "Left lateral ventricle", at: [-10, -11, 20],
+      text: "A space filled with cerebrospinal fluid, deep in each hemisphere. Fluid is dark on a T1 scan." },
+    { name: "Left thalamus", at: [-11, -18, 7],
+      text: "A mass of grey matter beside the midline. It relays signals between the cortex and the rest of the brain." },
+    { name: "Left putamen", at: [-25, 3, 3],
+      text: "Part of the basal ganglia, deep nuclei involved in movement and in learning habits." },
+    { name: "Left hippocampus", at: [-28, -22, -14],
+      text: "A curled strip of cortex inside the temporal lobe. It is needed to form new memories of events." },
+    { name: "Pons", at: [0, -28, -32],
+      text: "Part of the brainstem. Its fibres carry signals between the cerebral cortex and the cerebellum." },
+    { name: "Left cerebellum", at: [-25, -65, -35],
+      text: "Its white core branches like a tree. The thin folded grey matter around it holds about four in five of the brain's neurons." }
+  ];
+  var TISSUE = ["Outside the brain", "Grey matter", "White matter", "Fluid", "Mixed"];
+
+  var nv = null, stop = -1, view = "all", tissueOn = false, cutOn = false, ready = false;
+
+  function fmt(v){ var r = Math.round(v); return (r < 0 ? "−" + (-r) : String(r)) + " mm"; }
+
+  function readout(mm, tissue){
+    el("rx").textContent = fmt(mm[0]); el("ry").textContent = fmt(mm[1]); el("rz").textContent = fmt(mm[2]);
+    el("rt").textContent = tissue;
+  }
+
+  function tissueAt(mm){
+    var vol = nv.volumes[1]; if (!vol) return "–";
+    var v = vol.mm2vox(mm), d = vol.hdr.dims;
+    var i = Math.round(v[0]), j = Math.round(v[1]), k = Math.round(v[2]);
+    if (i < 0 || j < 0 || k < 0 || i >= d[1] || j >= d[2] || k >= d[3]) return TISSUE[0];
+    var brain = nv.volumes[0].img[i + d[1] * (j + d[2] * k)] > 0;
+    var t = vol.img[i + d[1] * (j + d[2] * k)];
+    return brain ? (t ? TISSUE[t] : TISSUE[4]) : TISSUE[0];
+  }
+
+  function setView(name){
+    view = name;
+    document.querySelectorAll("[data-view]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.view === name)); });
+    el("cut").hidden = name !== "3d" && name !== "all";
+    if (!ready) return;
+    var T = nv.sliceTypeMultiplanar;
+    if (name === "sag") T = nv.sliceTypeSagittal;
+    else if (name === "cor") T = nv.sliceTypeCoronal;
+    else if (name === "axi") T = nv.sliceTypeAxial;
+    else if (name === "3d") T = nv.sliceTypeRender;
+    nv.setSliceType(T);
+    el("hint").textContent = name === "3d"
+      ? "Drag to turn the brain. Pinch or scroll to zoom after clicking it once. Cut down the middle to see the inner face of the right hemisphere."
+      : "Click or drag on a slice to move the crosshair. Scroll over a slice to step through it after clicking it once. Left is on the left, as if you were facing the same way as the person.";
+  }
+
+  function applyCut(){
+    if (!ready) return;
+    // Depth 0 is the middle of the volume, which is the midline (x = 0). Azimuth 90 removes the
+    // left half, so the 3D view shows the inner face of the right hemisphere. Depth 2 means no cut.
+    nv.setClipPlane(cutOn ? [0, 90, 0] : [2, 0, 0]);
+  }
+
+  function goTo(i){
+    stop = i;
+    var s = STOPS[i];
+    el("stop").innerHTML = "<b>" + s.name + ".</b> " + s.text;
+    el("count").textContent = (i + 1) + " of " + STOPS.length;
+    el("prev").disabled = i <= 0;
+    el("next").disabled = i >= STOPS.length - 1;
+    el("next").textContent = "Next";
+    if (!ready) return;
+    nv.scene.crosshairPos = nv.mm2frac(s.at);
+    nv.updateGLVolume();
+    readout(s.at, tissueAt(s.at));
+  }
+
+  document.querySelectorAll("[data-view]").forEach(function(b){
+    b.addEventListener("click", function(){ setView(b.dataset.view); });
+  });
+  el("tissue").addEventListener("click", function(){
+    tissueOn = !tissueOn; this.setAttribute("aria-pressed", String(tissueOn));
+    this.textContent = tissueOn ? "Hide tissue colours" : "Show tissue colours";
+    if (ready){ nv.setOpacity(1, tissueOn ? 0.55 : 0); }
+  });
+  el("cut").addEventListener("click", function(){
+    cutOn = !cutOn; this.setAttribute("aria-pressed", String(cutOn)); applyCut();
+  });
+  el("next").addEventListener("click", function(){ goTo(Math.min(STOPS.length - 1, stop + 1)); });
+  el("prev").addEventListener("click", function(){ goTo(Math.max(0, stop - 1)); });
+
+  function fail(text){ el("msg").hidden = false; el("msg").textContent = text; }
+
+  var probe = document.createElement("canvas");
+  if (!probe.getContext("webgl2")){
+    fail("This viewer needs WebGL 2, which this browser does not offer. The text below still explains the scan.");
+    return;
+  }
+
+  // NiiVue's self-contained build, served from this site. It defines window.niivue.
+  new Promise(function(resolve, reject){
+    var s = document.createElement("script");
+    s.src = "assets/vendor/niivue-0.69.0/niivue.umd.js";
+    s.onload = function(){ window.niivue ? resolve(window.niivue) : reject(new Error("The viewer did not start.")); };
+    s.onerror = function(){ reject(new Error("The viewer file did not load.")); };
+    document.head.appendChild(s);
+  }).then(async function(mod){
+    nv = new mod.Niivue({
+      backColor: [0.059, 0.078, 0.102, 1],
+      crosshairColor: [0.86, 0.42, 0.26, 1],
+      crosshairWidth: 1,
+      show3Dcrosshair: true,
+      fontColor: [0.78, 0.82, 0.86, 1],
+      isOrientationTextVisible: true,
+      isRadiologicalConvention: false,
+      dragAndDropEnabled: false,
+      scrollRequiresFocus: true,
+      multiplanarShowRender: 2,
+      logLevel: "error",
+      loadingText: ""
+    });
+    await nv.attachToCanvas(el("gl"));
+    await nv.loadVolumes([
+      { url: "assets/scans/icbm152-t1-brain.nii.gz", colormap: "gray", cal_min: 70, cal_max: 250 },
+      { url: "assets/scans/icbm152-tissue.nii.gz", opacity: 0 }
+    ]);
+    var lab = nv.volumes[1];
+    lab.setColormapLabel({
+      R: [0, 201, 127, 91], G: [0, 138, 167, 179], B: [0, 90, 207, 166], A: [0, 255, 255, 255],
+      I: [0, 1, 2, 3], labels: ["", "Grey matter", "White matter", "Fluid"]
+    });
+    nv.setOpacity(1, 0);
+    nv.setClipPlaneColor([0, 0, 0, 0]);
+    nv.setRenderAzimuthElevation(250, 15);
+    nv.onLocationChange = function(d){ if (d && d.mm) readout(d.mm, tissueAt(d.mm)); };
+    ready = true;
+    el("msg").hidden = true;
+    setView(view);
+    applyCut();
+    if (stop >= 0) goTo(stop); else readout([0, 0, 0], tissueAt([0, 0, 0]));
+    nv.scene.crosshairPos = nv.mm2frac(stop >= 0 ? STOPS[stop].at : [0, 0, 0]); nv.updateGLVolume();
+    window.__scans = { nv: nv, stops: STOPS, goTo: goTo, tissueAt: tissueAt, reduce: reduce };   // exposed for checks
+  }).catch(function(err){
+    fail("The scan could not be loaded. " + (err && err.message ? err.message : ""));
+  });
+})();
+</script>
