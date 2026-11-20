@@ -54,6 +54,16 @@
       "year": 2026,
       "queued": "2026-11-19",
       "announced": "2026-11-19"
+    },
+    {
+      "pmid": "43056435",
+      "doi": "10.1159/nps/adyag001",
+      "group": "bdnf",
+      "title": "Brain-Derived Neurotrophic Factor Levels in Dependence and Withdrawal Phases of Morphine Addiction: A Systematic Review and Meta-Analysis of Rodent Studies.",
+      "authors": "Deng et al.",
+      "journal": "Neuropsychobiology",
+      "year": 2026,
+      "queued": "2026-11-20"
     }
   ],
   "seen": [
@@ -77,6 +87,7 @@
     "43034011",
     "43044894",
     "43045009",
-    "43054774"
+    "43054774",
+    "43056435"
   ]
 }

@@ -1,6 +1,6 @@
 Last run: 2026-11-20
 
-## New papers to review (5)
+## New papers to review (6)
 Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources. Papers not reviewed within 90 days expire.
 
 **Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.**  
@@ -27,4 +27,9 @@ Azizi et al., Life sciences, 2026 · group `cp` · https://doi.org/10.1016/j.lfs
 Supit et al., Psychiatry and clinical psychopharmacology, 2026 · group `psy` · https://doi.org/10.65801/pcp.3606
 - [ ] Approve <!-- review:43054774:approve -->
 - [ ] Dismiss <!-- review:43054774:dismiss -->
+
+**Brain-Derived Neurotrophic Factor Levels in Dependence and Withdrawal Phases of Morphine Addiction: A Systematic Review and Meta-Analysis of Rodent Studies.**  
+Deng et al., Neuropsychobiology, 2026 · group `bdnf` · https://doi.org/10.1159/nps/adyag001
+- [ ] Approve <!-- review:43056435:approve -->
+- [ ] Dismiss <!-- review:43056435:dismiss -->
 
