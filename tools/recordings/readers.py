@@ -77,3 +77,25 @@ def welch(x, fs, seg):
     p = np.mean([np.abs(np.fft.rfft(s)) ** 2 for s in parts], 0) / (fs * (w ** 2).sum())
     p[1:-1] *= 2
     return np.fft.rfftfreq(seg, 1 / fs), p
+
+def read_edf_annotations(path):
+    """EDF+ annotations (time-stamped annotation lists, TALs). Returns [(onset s, duration s, text)]."""
+    b = open(path, 'rb').read()
+    ns = int(b[252:256]); n_rec = int(b[236:244])
+    h = b[256:256 + ns * 256]
+    labels = [h[i * 16:(i + 1) * 16].decode('ascii').strip() for i in range(ns)]
+    off = ns * (16 + 80 + 8 * 5 + 80)
+    nsamp = [int(h[off + i * 8:off + (i + 1) * 8]) for i in range(ns)]
+    per_rec = sum(nsamp) * 2
+    ai = labels.index('EDF Annotations'); start = sum(nsamp[:ai]) * 2; size = nsamp[ai] * 2
+    out = []
+    for r in range(n_rec):
+        blk = b[256 + ns * 256 + r * per_rec + start:256 + ns * 256 + r * per_rec + start + size]
+        for tal in blk.split(b'\x00'):
+            if not tal: continue
+            parts = tal.split(b'\x14')
+            head = parts[0].split(b'\x15')
+            onset = float(head[0]); dur = float(head[1]) if len(head) > 1 and head[1] else 0.0
+            for text in parts[1:]:
+                if text: out.append((onset, dur, text.decode('latin-1')))
+    return out

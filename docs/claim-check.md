@@ -157,3 +157,22 @@ Several items are still open from this pass. On the Comparative page, gabapentin
 | Premature ventricular complexes come early, lack a preceding P wave, are wide, are often followed by a pause, and are common and often benign | Marcus 2020 |
 | Lead II lies roughly along the heart's main axis | Standard: lead II is at +60°, near the normal mean axis. MIT-BIH uses a modified lead II |
 | Wave positions on the average beat (P −175, Q −25, R 0, S 22, T 356 ms) | Peak search in fixed windows on the average of 2,169 normal beats. Checked by eye on the plot |
+
+## Sleep page (2026-11-20)
+
+Every sentence in the stage notes and the evidence section came from a two-pass check. One researcher per topic drafted claims from abstracts they opened. An independent skeptic then re-fetched each source on Crossref and PubMed and kept, reworded or dropped each claim. The run's full output is not in the repository. Points worth knowing:
+
+| Claim | Basis and caveat |
+|---|---|
+| N3 rule: slow waves of 0.5-2 Hz, >75 µV, over frontal leads, taking up 20% or more of an epoch | Corrected after the final review: the first wording ("more than 20%", no frequency band) was slightly off, and it cited the inter-scorer study, which does not define the rule. Now cited to Silber 2007 (the task force) and Berry 2017 (manual v2.4). Rests on the AASM manual, which is not open access. Moderate support |
+| Spindles about 11-16 Hz, >0.5 s | Durka 2015, a methods paper quoting standard definitions, not the AASM manual. The page says "commonly defined" |
+| "Deep sleep is concentrated early in the night" | Dropped as a general claim, because no opened abstract states it. The page gives this night's own numbers instead: 173 of 220 deep-sleep epochs in the first half, and REM 67 of 125 in the second half |
+| Sleep benefit g = 0.44, bias-corrected 0.28 | Berres & Erdfelder 2021 abstract. The page says moderate, shrinking to small |
+| Spindle-memory link, and its reanalysis | Kumral 2023 vs Ujma 2024. The Ujma commentary has no abstract and was checked from its OSF preprint abstract. Labelled contested |
+| Closed-loop sound stimulation | Ngo 2013; Henin 2019 (failed double-blind repeat, n = 19); Wunderlin 2021 (g = 0.25, p = 0.07); Harlow 2023 (benefit falls with publication year). Labelled "did not hold up reliably" |
+| TMR g = 0.29; NREM yes, REM and wake no | Hu 2020 abstract. Null studies are cited alongside |
+| REM-memory debate | Siegel 2001, Rasch 2009, Goerke 2014 (mixed), Boyce 2016 (mice, pro-REM). Labelled contested |
+| Sleep loss before learning: medium effect, after learning smaller, publication bias | Newbury 2021; Crowley 2024 for restriction |
+| Sleep-EDF volunteers: home recordings 1987-1991, healthy, no sleep medication, all described as white | PhysioNet sleep-edfx page |
+| Age of this volunteer | Not stated, because the subject table could not be downloaded |
+| Final review fixes | Merger criticism dated to Grigg-Damberger 2012, not "still". Fpz-Cz described as forehead-to-crown, compared with the standard C4-A1 lead. Staresina 2015 hippocampal recordings described as coming from people with epilepsy |

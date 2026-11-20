@@ -3128,5 +3128,969 @@
     },
     "citations": 271,
     "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Sleep-EDF Database Expanded (version 1.0.0)",
+    "authors": "Kemp et al.",
+    "year": 2018,
+    "journal": "PhysioNet",
+    "doi": "10.13026/C2X676",
+    "meta_analysis": false,
+    "site_title": "Sleep-EDF Database Expanded (version 1.0.0)",
+    "site_year": 2018,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    }
+  },
+  {
+    "group": "learn",
+    "title": "The Visual Scoring of Sleep in Adults",
+    "authors": "Silber et al.",
+    "year": 2007,
+    "journal": "Journal of Clinical Sleep Medicine",
+    "doi": "10.5664/jcsm.26814",
+    "meta_analysis": false,
+    "site_title": "The Visual Scoring of Sleep in Adults",
+    "site_year": 2007,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 898,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "The AASM Scoring Manual Four Years Later",
+    "authors": "Grigg-Damberger",
+    "year": 2012,
+    "journal": "Journal of Clinical Sleep Medicine",
+    "doi": "10.5664/jcsm.1928",
+    "meta_analysis": false,
+    "site_title": "The AASM Scoring Manual Four Years Later",
+    "site_year": 2012,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 141,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Sleep classification according to AASM and Rechtschaffen & Kales: effects on sleep scoring parameters",
+    "authors": "Moser et al.",
+    "year": 2009,
+    "journal": "Sleep",
+    "doi": "10.1093/sleep/32.2.139",
+    "meta_analysis": false,
+    "site_title": "Sleep classification according to AASM and Rechtschaffen & Kales: effects on sleep scoring parameters",
+    "site_year": 2009,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 373,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "The American Academy of Sleep Medicine Inter-scorer Reliability Program: Sleep Stage Scoring",
+    "authors": "Rosenberg and Van Hout",
+    "year": 2013,
+    "journal": "Journal of Clinical Sleep Medicine",
+    "doi": "10.5664/jcsm.2350",
+    "meta_analysis": false,
+    "site_title": "The American Academy of Sleep Medicine Inter-scorer Reliability Program: Sleep Stage Scoring",
+    "site_year": 2013,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 447,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Ultradian sleep cycles: Frequency, duration, and associations with individual and environmental factors-A retrospective study",
+    "authors": "Cajochen et al.",
+    "year": 2024,
+    "journal": "Sleep Health",
+    "doi": "10.1016/j.sleh.2023.09.002",
+    "meta_analysis": false,
+    "site_title": "Ultradian sleep cycles: Frequency, duration, and associations with individual and environmental factors-A retrospective study",
+    "site_year": 2024,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 23,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Alternative electrode placement in (automatic) sleep scoring (Fpz-Cz/Pz-Oz versus C4-A1)",
+    "authors": "van et al.",
+    "year": 1990,
+    "journal": "Sleep",
+    "doi": "10.1093/sleep/13.3.279",
+    "meta_analysis": false,
+    "site_title": "Alternative electrode placement in (automatic) sleep scoring (Fpz-Cz/Pz-Oz versus C4-A1)",
+    "site_year": 1990,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 62,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Meta-analysis of quantitative sleep parameters from childhood to old age in healthy individuals: developing normative sleep values across the human lifespan",
+    "authors": "Ohayon et al.",
+    "year": 2004,
+    "journal": "Sleep",
+    "doi": "10.1093/sleep/27.7.1255",
+    "meta_analysis": true,
+    "site_title": "Meta-analysis of quantitative sleep parameters from childhood to old age in healthy individuals: developing normative sleep values across the human lifespan",
+    "site_year": 2004,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 2925,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Obliviscence during Sleep and Waking",
+    "authors": "Jenkins and Dallenbach",
+    "year": 1924,
+    "journal": "The American Journal of Psychology",
+    "doi": "10.2307/1414040",
+    "meta_analysis": false,
+    "site_title": "Obliviscence during Sleep and Waking",
+    "site_year": 1924,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 556,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "The sleep benefit in episodic memory: An integrative review and a meta-analysis",
+    "authors": "Berres and Erdfelder",
+    "year": 2021,
+    "journal": "Psychological Bulletin",
+    "doi": "10.1037/bul0000350",
+    "meta_analysis": true,
+    "site_title": "The sleep benefit in episodic memory: An integrative review and a meta-analysis",
+    "site_year": 2021,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 77,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Systematic review and meta-analyses on the effects of afternoon napping on cognition",
+    "authors": "Leong et al.",
+    "year": 2022,
+    "journal": "Sleep Medicine Reviews",
+    "doi": "10.1016/j.smrv.2022.101666",
+    "meta_analysis": true,
+    "site_title": "Systematic review and meta-analyses on the effects of afternoon napping on cognition",
+    "site_year": 2022,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 49,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "About sleep's role in memory",
+    "authors": "Rasch and Born",
+    "year": 2013,
+    "journal": "Physiological Reviews",
+    "doi": "10.1152/physrev.00032.2012",
+    "meta_analysis": false,
+    "site_title": "About sleep's role in memory",
+    "site_year": 2013,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 2652,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Mechanisms of systems memory consolidation during sleep",
+    "authors": "Klinzing et al.",
+    "year": 2019,
+    "journal": "Nature Neuroscience",
+    "doi": "10.1038/s41593-019-0467-3",
+    "meta_analysis": false,
+    "site_title": "Mechanisms of systems memory consolidation during sleep",
+    "site_year": 2019,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 1178,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Hierarchical nesting of slow oscillations, spindles and ripples in the human hippocampus during sleep",
+    "authors": "Staresina et al.",
+    "year": 2015,
+    "journal": "Nature Neuroscience",
+    "doi": "10.1038/nn.4119",
+    "meta_analysis": false,
+    "site_title": "Hierarchical nesting of slow oscillations, spindles and ripples in the human hippocampus during sleep",
+    "site_year": 2015,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 916,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Selective suppression of hippocampal ripples impairs spatial memory",
+    "authors": "Girardeau et al.",
+    "year": 2009,
+    "journal": "Nature Neuroscience",
+    "doi": "10.1038/nn.2384",
+    "meta_analysis": false,
+    "site_title": "Selective suppression of hippocampal ripples impairs spatial memory",
+    "site_year": 2009,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 1542,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Hippocampo-cortical coupling mediates memory consolidation during sleep",
+    "authors": "Maingret et al.",
+    "year": 2016,
+    "journal": "Nature Neuroscience",
+    "doi": "10.1038/nn.4304",
+    "meta_analysis": false,
+    "site_title": "Hippocampo-cortical coupling mediates memory consolidation during sleep",
+    "site_year": 2016,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 713,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Thalamic Spindles Promote Memory Formation during Sleep through Triple Phase-Locking of Cortical, Thalamic, and Hippocampal Rhythms",
+    "authors": "Latchoumane et al.",
+    "year": 2017,
+    "journal": "Neuron",
+    "doi": "10.1016/j.neuron.2017.06.025",
+    "meta_analysis": false,
+    "site_title": "Thalamic Spindles Promote Memory Formation during Sleep through Triple Phase-Locking of Cortical, Thalamic, and Hippocampal Rhythms",
+    "site_year": 2017,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 588,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Spindle-dependent memory consolidation in healthy adults: A meta-analysis",
+    "authors": "Kumral et al.",
+    "year": 2023,
+    "journal": "Neuropsychologia",
+    "doi": "10.1016/j.neuropsychologia.2023.108661",
+    "meta_analysis": true,
+    "site_title": "Spindle-dependent memory consolidation in healthy adults: A meta-analysis",
+    "site_year": 2023,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 34,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Meta-analytic evidence suggests no correlation between sleep spindles and memory",
+    "authors": "Ujma",
+    "year": 2024,
+    "journal": "Neuropsychologia",
+    "doi": "10.1016/j.neuropsychologia.2024.108886",
+    "meta_analysis": true,
+    "site_title": "Meta-analytic evidence suggests no correlation between sleep spindles and memory",
+    "site_year": 2024,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 1,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Bayesian meta-analysis reveals the mechanistic role of slow oscillation-spindle coupling in sleep-dependent memory consolidation",
+    "authors": "Ng et al.",
+    "year": 2025,
+    "journal": "eLife",
+    "doi": "10.7554/eLife.101992",
+    "meta_analysis": true,
+    "site_title": "Bayesian meta-analysis reveals the mechanistic role of slow oscillation-spindle coupling in sleep-dependent memory consolidation",
+    "site_year": 2025,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 11,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Multivariate prediction of cognitive performance from the sleep electroencephalogram",
+    "authors": "Ujma et al.",
+    "year": 2023,
+    "journal": "NeuroImage",
+    "doi": "10.1016/j.neuroimage.2023.120319",
+    "meta_analysis": false,
+    "site_title": "Multivariate prediction of cognitive performance from the sleep electroencephalogram",
+    "site_year": 2023,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 17,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Auditory Closed-Loop Stimulation of the Sleep Slow Oscillation Enhances Memory",
+    "authors": "Ngo et al.",
+    "year": 2013,
+    "journal": "Neuron",
+    "doi": "10.1016/j.neuron.2013.03.006",
+    "meta_analysis": false,
+    "site_title": "Auditory Closed-Loop Stimulation of the Sleep Slow Oscillation Enhances Memory",
+    "site_year": 2013,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 931,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Closed-Loop Acoustic Stimulation Enhances Sleep Oscillations But Not Memory Performance",
+    "authors": "Henin et al.",
+    "year": 2019,
+    "journal": "eNeuro",
+    "doi": "10.1523/ENEURO.0306-19.2019",
+    "meta_analysis": false,
+    "site_title": "Closed-Loop Acoustic Stimulation Enhances Sleep Oscillations But Not Memory Performance",
+    "site_year": 2019,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 87,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Modulating overnight memory consolidation by acoustic stimulation during slow-wave sleep: a systematic review and meta-analysis",
+    "authors": "Wunderlin et al.",
+    "year": 2021,
+    "journal": "Sleep",
+    "doi": "10.1093/sleep/zsaa296",
+    "meta_analysis": true,
+    "site_title": "Modulating overnight memory consolidation by acoustic stimulation during slow-wave sleep: a systematic review and meta-analysis",
+    "site_year": 2021,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 72,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Memory retention following acoustic stimulation in slow-wave sleep: a meta-analytic review of replicability and measurement quality",
+    "authors": "Harlow et al.",
+    "year": 2023,
+    "journal": "Frontiers in Sleep",
+    "doi": "10.3389/frsle.2023.1082253",
+    "meta_analysis": true,
+    "site_title": "Memory retention following acoustic stimulation in slow-wave sleep: a meta-analytic review of replicability and measurement quality",
+    "site_year": 2023,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 9,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Odor cues during slow-wave sleep prompt declarative memory consolidation",
+    "authors": "Rasch et al.",
+    "year": 2007,
+    "journal": "Science",
+    "doi": "10.1126/science.1138581",
+    "meta_analysis": false,
+    "site_title": "Odor cues during slow-wave sleep prompt declarative memory consolidation",
+    "site_year": 2007,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 1081,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Strengthening individual memories by reactivating them during sleep",
+    "authors": "Rudoy et al.",
+    "year": 2009,
+    "journal": "Science",
+    "doi": "10.1126/science.1179013",
+    "meta_analysis": false,
+    "site_title": "Strengthening individual memories by reactivating them during sleep",
+    "site_year": 2009,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 492,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Promoting memory consolidation during sleep: A meta-analysis of targeted memory reactivation",
+    "authors": "Hu et al.",
+    "year": 2020,
+    "journal": "Psychological Bulletin",
+    "doi": "10.1037/bul0000223",
+    "meta_analysis": true,
+    "site_title": "Promoting memory consolidation during sleep: A meta-analysis of targeted memory reactivation",
+    "site_year": 2020,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 252,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "No effect of targeted memory reactivation during sleep on retention of vocabulary in adolescents",
+    "authors": "Wilhelm et al.",
+    "year": 2020,
+    "journal": "Scientific Reports",
+    "doi": "10.1038/s41598-020-61183-z",
+    "meta_analysis": false,
+    "site_title": "No effect of targeted memory reactivation during sleep on retention of vocabulary in adolescents",
+    "site_year": 2020,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 15,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "No effect of vocabulary reactivation in older adults",
+    "authors": "Cordi et al.",
+    "year": 2018,
+    "journal": "Neuropsychologia",
+    "doi": "10.1016/j.neuropsychologia.2018.08.021",
+    "meta_analysis": false,
+    "site_title": "No effect of vocabulary reactivation in older adults",
+    "site_year": 2018,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 21,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Targeted memory reactivation during slow-wave sleep vs. sleep stage N2: no significant differences in a vocabulary task",
+    "authors": "Wick and Rasch",
+    "year": 2023,
+    "journal": "Learning & Memory",
+    "doi": "10.1101/lm.053683.122",
+    "meta_analysis": false,
+    "site_title": "Targeted memory reactivation during slow-wave sleep vs. sleep stage N2: no significant differences in a vocabulary task",
+    "site_year": 2023,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 14,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "The REM sleep-memory consolidation hypothesis",
+    "authors": "Siegel",
+    "year": 2001,
+    "journal": "Science",
+    "doi": "10.1126/science.1063049",
+    "meta_analysis": false,
+    "site_title": "The REM sleep-memory consolidation hypothesis",
+    "site_year": 2001,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 415,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Pharmacological REM sleep suppression paradoxically improves rather than impairs skill memory",
+    "authors": "Rasch et al.",
+    "year": 2009,
+    "journal": "Nature Neuroscience",
+    "doi": "10.1038/nn.2206",
+    "meta_analysis": false,
+    "site_title": "Pharmacological REM sleep suppression paradoxically improves rather than impairs skill memory",
+    "site_year": 2009,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 213,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Differential effect of an anticholinergic antidepressant on sleep-dependent memory consolidation",
+    "authors": "Goerke et al.",
+    "year": 2014,
+    "journal": "Sleep",
+    "doi": "10.5665/sleep.3674",
+    "meta_analysis": false,
+    "site_title": "Differential effect of an anticholinergic antidepressant on sleep-dependent memory consolidation",
+    "site_year": 2014,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 15,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Causal evidence for the role of REM sleep theta rhythm in contextual memory consolidation",
+    "authors": "Boyce et al.",
+    "year": 2016,
+    "journal": "Science",
+    "doi": "10.1126/science.aad5252",
+    "meta_analysis": false,
+    "site_title": "Causal evidence for the role of REM sleep theta rhythm in contextual memory consolidation",
+    "site_year": 2016,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 701,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Sleep's impact on emotional recognition memory: A meta-analysis of whole-night, nap, and REM sleep effects",
+    "authors": "Schäfer et al.",
+    "year": 2020,
+    "journal": "Sleep Medicine Reviews",
+    "doi": "10.1016/j.smrv.2020.101280",
+    "meta_analysis": true,
+    "site_title": "Sleep's impact on emotional recognition memory: A meta-analysis of whole-night, nap, and REM sleep effects",
+    "site_year": 2020,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 81,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Preferential Consolidation of Emotional Memory During Sleep: A Meta-Analysis",
+    "authors": "Lipinska et al.",
+    "year": 2019,
+    "journal": "Frontiers in Psychology",
+    "doi": "10.3389/fpsyg.2019.01014",
+    "meta_analysis": true,
+    "site_title": "Preferential Consolidation of Emotional Memory During Sleep: A Meta-Analysis",
+    "site_year": 2019,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 86,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Sleep and motor learning: Is there room for consolidation?",
+    "authors": "Pan and Rickard",
+    "year": 2015,
+    "journal": "Psychological Bulletin",
+    "doi": "10.1037/bul0000009",
+    "meta_analysis": false,
+    "site_title": "Sleep and motor learning: Is there room for consolidation?",
+    "site_year": 2015,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 161,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Time for considering constraints on procedural memory consolidation processes: Comment on Pan and Rickard (2015) with specific reference to developmental changes",
+    "authors": "Adi-Japha and Karni",
+    "year": 2016,
+    "journal": "Psychological Bulletin",
+    "doi": "10.1037/bul0000048",
+    "meta_analysis": false,
+    "site_title": "Time for considering constraints on procedural memory consolidation processes: Comment on Pan and Rickard (2015) with specific reference to developmental changes",
+    "site_year": 2016,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 23,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Time for considering the possibility that sleep plays no unique role in motor memory consolidation: Reply to Adi-Japha and Karni (2016)",
+    "authors": "Rickard and Pan",
+    "year": 2017,
+    "journal": "Psychological Bulletin",
+    "doi": "10.1037/bul0000094",
+    "meta_analysis": false,
+    "site_title": "Time for considering the possibility that sleep plays no unique role in motor memory consolidation: Reply to Adi-Japha and Karni (2016)",
+    "site_year": 2017,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 12,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "A deficit in the ability to form new human memories without sleep",
+    "authors": "Yoo et al.",
+    "year": 2007,
+    "journal": "Nature Neuroscience",
+    "doi": "10.1038/nn1851",
+    "meta_analysis": false,
+    "site_title": "A deficit in the ability to form new human memories without sleep",
+    "site_year": 2007,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 502,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Sleep deprivation and memory: Meta-analytic reviews of studies on sleep deprivation before and after learning",
+    "authors": "Newbury et al.",
+    "year": 2021,
+    "journal": "Psychological Bulletin",
+    "doi": "10.1037/bul0000348",
+    "meta_analysis": true,
+    "site_title": "Sleep deprivation and memory: Meta-analytic reviews of studies on sleep deprivation before and after learning",
+    "site_year": 2021,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 109,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "A systematic and meta-analytic review of the impact of sleep restriction on memory formation",
+    "authors": "Crowley et al.",
+    "year": 2024,
+    "journal": "Neuroscience & Biobehavioral Reviews",
+    "doi": "10.1016/j.neubiorev.2024.105929",
+    "meta_analysis": true,
+    "site_title": "A systematic and meta-analytic review of the impact of sleep restriction on memory formation",
+    "site_year": 2024,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 41,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "How robust are sleep-mediated memory benefits?",
+    "authors": "Cordi and Rasch",
+    "year": 2021,
+    "journal": "Current Opinion in Neurobiology",
+    "doi": "10.1016/j.conb.2020.06.002",
+    "meta_analysis": false,
+    "site_title": "How robust are sleep-mediated memory benefits?",
+    "site_year": 2021,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 82,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Spindles in Svarog: framework and software for parametrization of EEG transients",
+    "authors": "Durka et al.",
+    "year": 2015,
+    "journal": "Frontiers in Human Neuroscience",
+    "doi": "10.3389/fnhum.2015.00258",
+    "meta_analysis": false,
+    "site_title": "Spindles in Svarog: framework and software for parametrization of EEG transients",
+    "site_year": 2015,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 18,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "AASM Scoring Manual Updates for 2017 (Version 2.4)",
+    "authors": "Berry et al.",
+    "year": 2017,
+    "journal": "Journal of Clinical Sleep Medicine",
+    "doi": "10.5664/jcsm.6576",
+    "meta_analysis": false,
+    "site_title": "AASM Scoring Manual Updates for 2017 (Version 2.4)",
+    "site_year": 2017,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for sleep page; Crossref and abstract checked by two independent passes, no retraction"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 1524,
+    "citations_checked": "2026-11-20"
   }
 ]
