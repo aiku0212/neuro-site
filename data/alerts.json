@@ -1,3 +1,13 @@
 {
-  "open": []
+  "open": [
+    {
+      "type": "erratum",
+      "doi": "10.1124/pr.109.002451",
+      "title": "Glutamate receptor ion channels: structure, regulation, and function",
+      "notice_doi": "10.1124/pr.113.002451err",
+      "pmid": null,
+      "id": "9282d59ecb",
+      "found": "2026-11-20"
+    }
+  ]
 }

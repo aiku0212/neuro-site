@@ -2323,7 +2323,12 @@
     "meta_analysis": false,
     "site_title": "Glutamate receptor ion channels: structure, regulation, and function",
     "site_year": 2010,
-    "updates": [],
+    "updates": [
+      {
+        "type": "erratum",
+        "notice_doi": "10.1124/pr.113.002451err"
+      }
+    ],
     "verification": {
       "status": "confirmed",
       "reasons": [

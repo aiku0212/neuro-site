@@ -1,5 +1,12 @@
 Last run: 2026-11-20
 
+## Correction and retraction notices (1)
+Review any claims that rely on these papers. Each notice stays here until you tick Dismiss.
+
+**erratum**: Glutamate receptor ion channels: structure, regulation, and function  
+found 2026-11-20 · https://doi.org/10.1124/pr.109.002451 · [notice](https://doi.org/10.1124/pr.113.002451err)
+- [ ] Dismiss <!-- alert:9282d59ecb:dismiss -->
+
 ## New papers to review (6)
 Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources. Papers not reviewed within 90 days expire.
 
