@@ -184,7 +184,7 @@
     </div>
     <button class="btn" id="seq">Play a sequence</button>
     <span class="sep"></span>
-    <label class="ctl">k <input type="range" id="k" min="2" max="16" step="1" value="4"><span id="kv">4</span></label>
+    <label class="ctl" title="k sets how sharply each time cell is tuned. Higher k gives a narrower firing window.">sharpness k <input type="range" id="k" min="2" max="16" step="1" value="4" aria-describedby="k-def"><span id="kv">4</span></label>
     <label class="ctl">speed
       <select id="speed"><option value="1">1&times;</option><option value="3" selected>3&times;</option><option value="10">10&times;</option></select>
     </label>
@@ -203,8 +203,8 @@
         <button class="btn" id="m-lp" aria-pressed="false">Laplace cells</button>
       </div>
     </div>
-    <canvas id="raster" role="img" aria-label="Raster plot of simulated cells sorted by preferred delay, short delays at the bottom." aria-describedby="raster-cap"></canvas>
-    <p class="cap" id="raster-cap">Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event, firing moves up the rows and slows as it climbs, tracing a curve. That curve is what a logarithmically compressed timeline looks like.</p>
+    <canvas id="raster" role="img" aria-label="Heat map of simulated cell firing over the last 45 seconds, arranged by preferred delay with short delays at the bottom." aria-describedby="raster-cap"></canvas>
+    <p class="cap" id="raster-cap">The vertical axis is each cell's preferred delay, short at the bottom and log-spaced. After each event, firing moves up the chart and slows as it climbs, tracing a curve. That curve is what a logarithmically compressed timeline looks like. Each colour marks one event. Where two responses overlap, the stronger one shows.</p>
   </div>
   <div class="card">
     <div class="card-hd"><h2>Population estimate of when each event happened</h2></div>
@@ -218,13 +218,14 @@
     <h2>What you are looking at</h2>
     <p>The top sheet is a population of <strong>Laplace cells</strong>, the kind reported in lateral entorhinal cortex. A Laplace cell is a neuron whose firing jumps when an event happens and then decays exponentially at its own rate. The term comes from Marc Howard's model of how the brain keeps track of time. Laplace cells are different from place cells, which encode location. Left to right, the sheet goes from fast decay to slow decay. No single Laplace cell says when anything happened. Together, their activity is the Laplace transform of the recent past. This is a mathematical recoding of the event history, and the timing of past events can be recovered from it.</p>
     <p>The curved band below is a population of <strong>time cells</strong>, the kind reported in hippocampus. Each fires at a preferred delay after an event, and cells tuned to longer delays fire later and for longer. Each time cell takes input from only a few neighbouring Laplace cells (the thin wires), which is all the calculation needs. The model has four rows, one per event type, because many time cells respond to a particular stimulus.</p>
-    <p>Present a few events, then watch the two charts below the 3D model. Increase <span class="mono">k</span> and each time cell fires in a narrower window around its preferred delay. At every setting of <span class="mono">k</span>, the population's timeline of the past stays log-compressed.</p>
+    <p>Present a few events, then watch the two charts below the 3D model. <span id="k-def">The slider marked <span class="mono">sharpness k</span> sets how sharply each time cell is tuned. <span class="mono">k</span> is a whole number that comes from the model's second equation, shown below.</span> At higher <span class="mono">k</span>, each time cell fires in a narrower window around its preferred delay. At every setting of <span class="mono">k</span>, the population's timeline of the past stays log-compressed.</p>
   </section>
 
   <section class="sec">
     <h2>The two equations</h2>
     <div class="eq"><small>Laplace cells, one per decay rate s</small>dF<sub>s</sub>/dt = &minus;s&thinsp;F<sub>s</sub> + f(t)</div>
     <div class="eq"><small>Time cells, Post's inverse at s = k / &tau;*</small>f&#771;(&tau;*) = ((&minus;1)<sup>k</sup> / k!) &middot; s<sup>k+1</sup> &middot; d<sup>k</sup>F / ds<sup>k</sup></div>
+    <p>In these equations, f(t) is the incoming signal, a brief pulse each time an event happens. F<sub>s</sub> is the firing of the Laplace cell with decay rate s. f&#771;(&tau;*) is the firing of the time cell with preferred delay &tau;*. k is a whole number that sets how many times F is differentiated with respect to s. The slider above changes k from 2 to 16.</p>
     <p>Post's inverse is a standard formula that approximately recovers a signal from its Laplace transform, and larger k makes the approximation closer. After a single event &tau; seconds ago, the time cell with preferred delay &tau;* responds with a gamma curve (a lopsided bump) that peaks exactly at &tau;*. The width of that curve grows in proportion to &tau;*. Every cell has the same coefficient of variation (the spread of its response divided by its average delay), 1/&radic;(k+1). Because &tau;* is spaced logarithmically, the model uses the same number of cells for 1 to 2 seconds ago as for 10 to 20. This log spacing, combined with the equal coefficient of variation across cells, is Weber&ndash;Fechner compression of the past.</p>
     <div class="pull serif">The model predicts that judging which of two events came first depends on the ratio of their gap to their age, not on the gap in seconds.</div>
     <p>That prediction is testable. In simulation, the accuracy of order judgments for events 2, 8 and 32 seconds old forms three curves. Plotted against the raw gap, the three curves sit far apart. Plotted against gap divided by age, they fall onto one curve.</p>
@@ -450,50 +451,123 @@
   // ---------------- raster + timeline ----------------
   var R = document.getElementById('raster'), RX = R.getContext('2d');
   var Pc = document.getElementById('past'), PX = Pc.getContext('2d');
-  var mode = 'tc', WIN = 45, COLS = 240;
-  var off = document.createElement('canvas'); off.width = COLS; off.height = NT;
-  var OX = off.getContext('2d'), img = OX.createImageData(COLS, NT);
+  var mode = 'tc', WIN = 45;
+  // The activity chart is computed per pixel. Preferred delay varies smoothly up the
+  // vertical axis, so the chart shows the continuous model and has no visible grid.
+  var off = document.createElement('canvas'), OX = off.getContext('2d');
+  var GW = 0, GH = 0, img = null, img32 = null, rowTS = null, rI = null, rW = null, rR = null, rG = null, rB = null;
+  var PIX_MAX = 130000, pixCap = PIX_MAX, drawMs = 0;   // pixel budget, lowered on slow devices
+  var CUT = 0.003, LUT_N = 2048, lut = new Float32Array(LUT_N + 2), lutKey = '', lutLo = 0, lutHi = 1;
+  var rasterKey = '';
+  var px4 = new Uint8Array(4), px32 = new Uint32Array(px4.buffer), ec0 = new Int32Array(16), ec1 = new Int32Array(16);
+  // Activity as a function of x = age / tau*, tabulated between the points where it drops below CUT.
+  function buildLut(){
+    var f = mode === 'tc' ? tcAct : lpAct, x;
+    if (mode === 'tc'){
+      for (x = 1; x > 0 && f(x, 1) >= CUT; x -= 0.005){} lutLo = Math.max(0, x);
+      for (x = 1; f(x, 1) >= CUT; x += 0.01){} lutHi = x;
+    } else { lutLo = 0; lutHi = Math.log(1 / CUT) / K; }
+    for (var i = 0; i <= LUT_N; i++) lut[i] = f(lutLo + (lutHi - lutLo) * i / LUT_N, 1);
+    lut[LUT_N + 1] = lut[LUT_N];
+  }
+  function gridFor(iw, ih){
+    var d = Math.min(2, window.devicePixelRatio || 1);
+    var gw = Math.max(8, Math.round(iw * d)), gh = Math.max(8, Math.round(ih * d));
+    var sc = Math.sqrt(Math.min(1, pixCap / (gw * gh)));
+    gw = Math.max(8, Math.round(gw * sc)); gh = Math.max(8, Math.round(gh * sc));
+    if (gw === GW && gh === GH) return;
+    GW = gw; GH = gh; off.width = gw; off.height = gh;
+    img = OX.createImageData(gw, gh); img32 = new Uint32Array(img.data.buffer);
+    rI = new Float64Array(gw); rW = new Float64Array(gw);
+    rR = new Float64Array(gw); rG = new Float64Array(gw); rB = new Float64Array(gw);
+    rowTS = new Float64Array(gh);
+    var ratio = Math.log(TMAX / TMIN);
+    for (var r = 0; r < gh; r++) rowTS[r] = TMIN * Math.exp(ratio * (1 - (r + 0.5) / gh));
+  }
   function fit(cv, ctx){
     var r = cv.getBoundingClientRect(), d = Math.min(2, window.devicePixelRatio || 1);
     cv.width = Math.round(r.width * d); cv.height = Math.round(r.height * d);
     ctx.setTransform(d, 0, 0, d, 0, 0); return [r.width, r.height];
   }
   var RS = [0, 0], PS = [0, 0];
-  function sizeAll(){ size(); RS = fit(R, RX); PS = fit(Pc, PX); }
+  function sizeAll(){ size(); RS = fit(R, RX); PS = fit(Pc, PX); rasterKey = ''; }
 
   function drawRaster(){
     var w = RS[0], h = RS[1], padL = 34, padB = 20, iw = w - padL, ih = h - padB;
-    var f = mode === 'tc' ? tcAct : lpAct, bg = css.bgRGB, d = img.data;
-    for (var col = 0; col < COLS; col++){
-      var tc = T - WIN + WIN * col / (COLS - 1);
-      for (var row = 0; row < NT; row++){
-        var sum = 0, best = 0, c = bg;
-        for (var e = 0; e < events.length; e++){
-          var a = f(tc - events[e].t0, TS[row]); if (a < 0.003) continue;
-          sum += a; if (a > best){ best = a; c = css.ev[events[e].ch]; }
+    if (iw < 8 || ih < 8) return;
+    gridFor(iw, ih);
+    // Skip the work when nothing has changed, for example while paused.
+    var sig = 0, e;
+    for (e = 0; e < events.length; e++) sig += events[e].t0 * (events[e].ch + 1);
+    var key = [T, K, mode, events.length, sig, GW, GH, w, h, css['--panel'], css['--ev-a']].join('|');
+    if (key === rasterKey) return;
+    rasterKey = key;
+    if (lutKey !== mode + K){ lutKey = mode + K; buildLut(); }
+
+    var t0 = performance.now();
+    var gw = GW, gh = GH, bg = css.bgRGB, d = img.data, nE = events.length;
+    var left = T - WIN, cps = (gw - 1) / WIN, lutScale = LUT_N / (lutHi - lutLo), p, q, col;
+    // Start from the panel colour, then work row by row over the columns that events reach.
+    px4[0] = bg[0]; px4[1] = bg[1]; px4[2] = bg[2]; px4[3] = 255;
+    img32.fill(px32[0]);
+    if (ec0.length < nE){ ec0 = new Int32Array(nE * 2); ec1 = new Int32Array(nE * 2); }
+    for (var row = 0; row < gh; row++){
+      var ts = rowTS[row], lo = gw, hi = -1;
+      for (e = 0; e < nE; e++){
+        var rel = events[e].t0 - left;
+        var c0 = Math.ceil((rel + lutLo * ts) * cps), c1 = Math.floor((rel + lutHi * ts) * cps);
+        if (c0 < 0) c0 = 0; if (c1 > gw - 1) c1 = gw - 1;
+        ec0[e] = c0; ec1[e] = c1;
+        if (c0 <= c1){ if (c0 < lo) lo = c0; if (c1 > hi) hi = c1; }
+      }
+      if (hi < lo) continue;
+      rI.fill(1, lo, hi + 1); rW.fill(0, lo, hi + 1); rR.fill(0, lo, hi + 1); rG.fill(0, lo, hi + 1); rB.fill(0, lo, hi + 1);
+      var du = lutScale / (cps * ts);
+      for (e = 0; e < nE; e++){
+        if (ec0[e] > ec1[e]) continue;
+        var c = css.ev[events[e].ch], cr = c[0], cg = c[1], cb = c[2], end = ec1[e];
+        var u = ((ec0[e] / cps - (events[e].t0 - left)) / ts - lutLo) * lutScale;
+        for (col = ec0[e]; col <= end; col++, u += du){
+          var i0 = u < 0 ? 0 : (u >= LUT_N ? LUT_N : u | 0);
+          var a = lut[i0] + (lut[i0 + 1] - lut[i0]) * (u - i0);
+          if (a <= 0) continue;
+          rI[col] *= 1 - (a > 1 ? 1 : a);
+          // The strongest response sets the colour, and a high power keeps the edge soft but narrow.
+          var wt = a * a; wt *= wt; wt *= wt; wt *= wt;
+          rW[col] += wt; rR[col] += wt * cr; rG[col] += wt * cg; rB[col] += wt * cb;
         }
-        var A = Math.min(1, sum), k = ((NT - 1 - row) * COLS + col) * 4;
-        d[k] = bg[0] + (c[0] - bg[0]) * A; d[k + 1] = bg[1] + (c[1] - bg[1]) * A;
-        d[k + 2] = bg[2] + (c[2] - bg[2]) * A; d[k + 3] = 255;
+      }
+      for (col = lo, q = (row * gw + lo) * 4; col <= hi; col++, q += 4){
+        var wsum = rW[col]; if (wsum <= 0) continue;
+        var A = 1 - rI[col];
+        d[q] = bg[0] + (rR[col] / wsum - bg[0]) * A;
+        d[q + 1] = bg[1] + (rG[col] / wsum - bg[1]) * A;
+        d[q + 2] = bg[2] + (rB[col] / wsum - bg[2]) * A;
       }
     }
+    // Keep the chart cheap to draw. Use a coarser grid when a frame runs long, and a finer one when there is room.
+    drawMs += (performance.now() - t0 - drawMs) * 0.2;
+    if (drawMs > 7 && pixCap > 24000){ pixCap *= 0.7; drawMs = 0; }
+    else if (drawMs < 2 && pixCap < PIX_MAX){ pixCap = Math.min(PIX_MAX, pixCap * 1.25); }
     OX.putImageData(img, 0, 0);
     RX.clearRect(0, 0, w, h);
-    RX.imageSmoothingEnabled = true;
+    RX.imageSmoothingEnabled = true; RX.imageSmoothingQuality = 'high';
     RX.drawImage(off, padL, 0, iw, ih);
+    RX.fillStyle = css['--rule']; RX.fillRect(padL, ih, iw, 1);
     RX.font = '10px ui-monospace,Menlo,monospace'; RX.fillStyle = css['--muted'];
     RX.textAlign = 'right';
-    [[0, TMIN], [Math.round((NT - 1) / 2), TS[Math.round((NT - 1) / 2)]], [NT - 1, TMAX]].forEach(function(t){
-      RX.fillText((t[1] < 1 ? t[1].toFixed(1) : Math.round(t[1])) + 's', padL - 6, Math.max(10, ih - (t[0] + 0.5) / NT * ih + 3));
+    // The axis runs from TMIN at the bottom edge to TMAX at the top edge, on a log scale.
+    [[0, TMIN], [0.5, Math.sqrt(TMIN * TMAX)], [1, TMAX]].forEach(function(t){
+      RX.fillText((t[1] < 1 ? t[1].toFixed(1) : Math.round(t[1])) + 's', padL - 6, Math.min(ih - 2, Math.max(10, ih - t[0] * ih + 3)));
     });
     RX.textAlign = 'center';
     for (var s = 0; s <= WIN; s += 15){
       RX.textAlign = s === WIN ? 'right' : (s === 0 ? 'left' : 'center');
       RX.fillText(s === WIN ? 'now' : '-' + (WIN - s) + 's', padL + s / WIN * iw, h - 5);
     }
-    for (var e = 0; e < events.length; e++){
+    for (e = 0; e < events.length; e++){
       var x = padL + (events[e].t0 - (T - WIN)) / WIN * iw; if (x < padL) continue;
-      RX.fillStyle = rgb(css.ev[events[e].ch]); RX.fillRect(x - 1, ih + 1, 2, 5);
+      RX.fillStyle = rgb(css.ev[events[e].ch]); RX.fillRect(x - 1, ih + 2, 2, 5);
     }
     RX.textAlign = 'left';
   }
@@ -511,20 +585,33 @@
     });
     PX.textAlign = 'right'; PX.fillText('now', 10 + iw, padT + 10); PX.textAlign = 'left';
     PX.fillText('past', 10, padT + 10);
-    var recent = events.slice(-8);
+    // Each curve is sampled finely along the log axis so it stays smooth at any k.
+    var recent = events.slice(-8), NP = 160, placed = [];
     for (var e = 0; e < recent.length; e++){
       var age = T - recent[e].t0; if (age <= 0.02) continue;
       var col = css.ev[recent[e].ch], peak = -1, px = 0;
-      PX.beginPath(); PX.moveTo(xOf(TS[0]), padT + ih);
-      for (var i = 0; i < NT; i++){
-        var v = tcAct(age, TS[i]); var y = padT + ih - v * ih * 0.82;
-        PX.lineTo(xOf(TS[i]), y); if (v > peak){ peak = v; px = xOf(TS[i]); }
+      PX.beginPath(); PX.moveTo(xOf(TMIN), padT + ih);
+      for (var i = 0; i <= NP; i++){
+        var tau = Math.exp(lo + (hi - lo) * i / NP), v = tcAct(age, tau), y = padT + ih - v * ih * 0.82;
+        PX.lineTo(xOf(tau), y); if (v > peak){ peak = v; px = xOf(tau); }
       }
-      PX.lineTo(xOf(TS[NT - 1]), padT + ih); PX.closePath();
+      PX.lineTo(xOf(TMAX), padT + ih); PX.closePath();
       PX.fillStyle = rgb(col, 0.22); PX.fill();
-      PX.strokeStyle = rgb(col); PX.lineWidth = 1.4; PX.stroke();
-      if (peak > 0.2){ PX.fillStyle = rgb(col); PX.textAlign = 'center';
-        PX.fillText('ABCD'[recent[e].ch], px, padT + ih - peak * ih * 0.82 - 6); PX.textAlign = 'left'; }
+      PX.strokeStyle = rgb(col); PX.lineWidth = 1.4; PX.lineJoin = 'round'; PX.stroke();
+      if (peak > 0.2){
+        // Old events bunch together on a log axis, so stack their letters instead of overprinting them.
+        var ly = padT + ih - peak * ih * 0.82 - 6, moved = true;
+        while (moved){
+          moved = false;
+          for (var j = 0; j < placed.length; j++)
+            if (Math.abs(placed[j][0] - px) < 9 && Math.abs(placed[j][1] - ly) < 10){ ly = placed[j][1] - 11; moved = true; }
+        }
+        if (ly >= 8){
+          placed.push([px, ly]);
+          PX.fillStyle = rgb(col); PX.textAlign = 'center';
+          PX.fillText('ABCD'[recent[e].ch], px, ly); PX.textAlign = 'left';
+        }
+      }
     }
   }
 
@@ -600,8 +687,8 @@
     document.getElementById('m-tc').setAttribute('aria-pressed', String(m === 'tc'));
     document.getElementById('m-lp').setAttribute('aria-pressed', String(m === 'lp'));
     document.getElementById('raster-cap').textContent = m === 'tc'
-      ? 'Rows are cells sorted by preferred delay (short at the bottom, log-spaced). After each event, firing moves up the rows and slows as it climbs, tracing a curve. That curve is what a logarithmically compressed timeline looks like.'
-      : 'The rows now show Laplace cells instead of time cells, in the same order. Every cell becomes active at the moment of the event and fades at its own rate, with the fastest-decaying cells at the bottom. No single cell shows when the event happened. The time cells are computed from the pattern of Laplace-cell activity.';
+      ? 'The vertical axis is each cell\'s preferred delay, short at the bottom and log-spaced. After each event, firing moves up the chart and slows as it climbs, tracing a curve. That curve is what a logarithmically compressed timeline looks like. Each colour marks one event. Where two responses overlap, the stronger one shows.'
+      : 'The chart now shows Laplace cells instead of time cells, in the same order. Every cell becomes active at the moment of the event and fades at its own rate, with the fastest-decaying cells at the bottom. No single cell shows when the event happened. The time cells are computed from the pattern of Laplace-cell activity.';
   }
   document.getElementById('m-tc').addEventListener('click', function(){ setMode('tc'); });
   document.getElementById('m-lp').addEventListener('click', function(){ setMode('lp'); });
