@@ -1,0 +1,506 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Brain and Heart Recordings · Neuroscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="Real EEG and ECG recordings from PhysioNet: watch the alpha rhythm appear when the eyes close, and learn to read the waves of a heartbeat.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neuroscope">
+<meta property="og:title" content="Brain and Heart Recordings · Neuroscope">
+<meta property="og:description" content="Real EEG and ECG recordings from PhysioNet: watch the alpha rhythm appear when the eyes close, and learn to read the waves of a heartbeat.">
+<meta property="og:url" content="https://aiku0212.github.io/neuro-site/recordings.html">
+<meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Neuroscope: interactive models of the brain, neurons and synapses, and an evidence review of neuroplasticity.">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root{
+    --ground:#f6f7f9; --ground-2:#ffffff; --ground-3:#eceff3;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --violet:#5a47a0; --amber:#b24e33; --teal:#2d6a8f;
+    --rule:#dde2e8;
+    --shadow:0 18px 40px -22px rgba(31,42,53,.22);
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--ground)}
+  .wrap{background:var(--ground); color:var(--ink); min-height:100vh;
+    font:400 16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; overflow-x:clip}
+  .bar{position:sticky; top:0}
+  @media (max-width:640px){.bar{position:static}}
+  [hidden]{display:none !important}
+
+  main{max-width:1080px; margin:0 auto; padding:0 16px 90px}
+  .mast{padding:52px 0 26px; border-bottom:1px solid var(--rule); margin-bottom:30px}
+  .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--amber); margin:0 0 14px}
+  h1{font-size:clamp(30px,5.2vw,52px); line-height:1.08; margin:0 0 16px; font-weight:400}
+  .lede{font-size:clamp(16px,2vw,18px); color:var(--ink-2); max-width:62ch; margin:0}
+  .mast .fig-note{margin-top:14px; max-width:66ch}
+  h2{font-size:28px; font-weight:400; margin:56px 0 6px}
+  h2.first{margin-top:10px}
+  h3{font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); margin:0 0 10px; font-weight:600}
+  p{max-width:66ch; color:var(--ink-2)}
+
+  .lab{background:var(--ground-2); border:1px solid var(--rule); border-radius:14px; padding:16px;
+    box-shadow:var(--shadow); margin-top:18px}
+  .monitor{position:relative; background:#0f1a17; border-radius:10px; overflow:hidden}
+  .monitor canvas{display:block; width:100%; height:220px}
+  @media (max-width:640px){ .monitor canvas{height:180px} }
+  .tag{position:absolute; top:9px; left:12px; font-size:11px; letter-spacing:.12em; text-transform:uppercase;
+    color:#9fd3bf; pointer-events:none}
+  .tag.r{left:auto; right:12px; text-align:right}
+  .ctls{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:12px}
+  .ctls .sp{flex:1}
+  .note{font-size:12.5px; color:var(--muted); margin:10px 0 0; max-width:none}
+  .two{display:grid; grid-template-columns:minmax(0,1.25fr) minmax(0,1fr); gap:16px; margin-top:16px}
+  @media (max-width:860px){ .two{grid-template-columns:minmax(0,1fr)} }
+  .plot{background:var(--ground); border:1px solid var(--rule); border-radius:10px; padding:10px}
+  .plot canvas{display:block; width:100%; height:220px}
+  .plot .cap{font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--muted); margin:0 0 6px}
+  .readout{border:1px solid var(--rule); border-radius:10px; padding:12px 14px; font-size:14px; background:var(--ground-2)}
+  .readout div{display:flex; justify-content:space-between; gap:10px; padding:4px 0}
+  .readout b{font-weight:600; color:var(--ink); font-variant-numeric:tabular-nums}
+  .key{display:flex; flex-wrap:wrap; gap:4px 16px; font-size:12.5px; color:var(--ink-2); margin-top:8px}
+  .key i{display:inline-block; width:16px; height:0; border-top:2px solid; vertical-align:middle; margin-right:6px}
+  .say{background:var(--ground-3); border-radius:10px; padding:12px 14px; font-size:14px; line-height:1.55; color:var(--ink-2); margin-top:12px; min-height:5.2em}
+  .say b{color:var(--ink)}
+
+  .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:16px; margin-top:16px}
+  .card{background:var(--ground-2); border:1px solid var(--rule); padding:16px 18px}
+  .card p{font-size:14.5px; margin:0}
+  .card p + p{margin-top:10px}
+  .caveat{background:#fbf1ec; border:1px solid #efd3c6; border-left:3px solid var(--amber); padding:14px 16px; margin-top:18px; font-size:14.5px; color:var(--ink-2)}
+  .refs{padding-left:20px; max-width:80ch}
+  .refs li{font-size:14px; color:var(--ink-2); margin:0 0 8px; overflow-wrap:anywhere}
+  footer{border-top:1px solid var(--rule); margin-top:60px; padding:22px 0;
+    font-size:12px; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
+  footer a{color:var(--ink-2)}
+</style>
+<link rel="stylesheet" href="assets/atlas.css">
+
+<div class="wrap">
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="learn.html" aria-current="true">Learn</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
+  </nav>
+</div>
+<script src="assets/nav.js" defer></script>
+
+<main>
+  <div class="mast">
+    <p class="eyebrow mono">Electrophysiology · EEG and ECG</p>
+    <h1 class="serif">Reading the body's <em>electrical signals</em></h1>
+    <p class="lede">Neurons and heart cells both work by moving charged ions across their membranes. When
+      millions of cells do it together, the voltage change is large enough to pick up through the skin.
+      Electroencephalography (EEG) records it from the scalp. Electrocardiography (ECG) records it from the chest.
+      Everything below is a real recording from PhysioNet, a free public archive of research recordings.</p>
+    <p class="fig-note"><span class="fig-kind" data-kind="measured">Measured</span>
+      Real recordings, filtered to remove slow drift and electrical noise. Nothing here is simulated.</p>
+  </div>
+
+  <h2 class="serif first">EEG: the alpha rhythm</h2>
+  <p>In 1929 Hans Berger reported a rhythm of about ten waves a second over the back of the head. It
+    grows when a person relaxes with their eyes closed and shrinks when they open them. It is now called
+    the alpha rhythm, and it is still the first thing people learn to see in an EEG.</p>
+
+  <section class="lab" aria-label="EEG recording">
+    <div class="monitor">
+      <canvas id="eeg" role="img" aria-label="EEG trace from electrode Oz over the back of the head, sweeping across the screen. With the eyes closed it shows a regular rhythm of about ten waves a second. With the eyes open it is smaller and irregular."></canvas>
+      <span class="tag" id="eeg-tag">Oz · eyes open</span>
+    </div>
+    <div class="ctls">
+      <button class="btn" id="e-open" aria-pressed="true">Eyes open</button>
+      <button class="btn" id="e-closed" aria-pressed="false">Eyes closed</button>
+      <span class="sp"></span>
+      <button class="btn" id="e-play">Pause</button>
+    </div>
+    <div class="two">
+      <div class="plot">
+        <p class="cap">Power at each frequency, O1, Oz and O2</p>
+        <canvas id="psd" role="img" aria-label="Power spectrum of the back-of-head EEG for both runs. With the eyes closed there is a tall peak at about 10 hertz, inside the 8 to 12 hertz alpha band. With the eyes open the peak is much lower."></canvas>
+        <div class="key"><span><i style="border-color:#8a96a3"></i>Eyes open</span><span><i style="border-color:var(--violet)"></i>Eyes closed</span><span><i style="border-color:#e8e2f6; border-top-width:8px"></i>Alpha band, 8–12 Hz</span></div>
+      </div>
+      <div>
+        <div class="readout" aria-live="polite">
+          <div>Alpha power, eyes open <b id="a-open">–</b></div>
+          <div>Alpha power, eyes closed <b id="a-closed">–</b></div>
+          <div>Closed compared with open <b id="a-ratio">–</b></div>
+          <div>Peak, eyes closed <b id="a-peak">–</b></div>
+        </div>
+        <p class="note">One adult, two one-minute recordings taken minutes apart: run 1 with eyes open, run 2 with
+          eyes closed. The size of alpha differs a lot between people. Some show very little.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="cols">
+    <div class="card">
+      <h3>What the electrode picks up</h3>
+      <p>Not single spikes. An EEG electrode sums the slow currents from synapses on millions of pyramidal
+        neurons in the cortex below. They line up in parallel, so their currents add up. Only when many fire
+        in rhythm does the signal grow this large.</p>
+    </div>
+    <div class="card">
+      <h3>Why closing the eyes changes it</h3>
+      <p>With the eyes closed, little visual information arrives, and large groups of neurons in the visual
+        cortex and thalamus fall into a shared rhythm near 10 Hz. Opening the eyes breaks it up into smaller,
+        faster, less regular activity. Studies that compare the two states find the largest alpha change over
+        the back of the head.</p>
+    </div>
+    <div class="card">
+      <h3>What EEG cannot do</h3>
+      <p>Its timing is precise to milliseconds, but it is poor at saying where a signal comes from. The skull
+        spreads the current out, and deep structures contribute little. For location, researchers use MRI or
+        recordings inside the brain.</p>
+    </div>
+  </div>
+
+  <h2 class="serif">ECG: reading a heartbeat</h2>
+  <p>Each heartbeat starts in a small patch of tissue in the right atrium, the sinoatrial node. An
+    electrical wave spreads from there across the atria, pauses briefly, then races through the ventricles. Each
+    part of that journey leaves its own wave on the ECG.</p>
+
+  <section class="lab" aria-label="ECG recording">
+    <div class="monitor">
+      <canvas id="ecg" role="img" aria-label="ECG trace, lead two, sweeping across the screen. Each heartbeat shows a small P wave, a tall narrow QRS spike and a rounded T wave. In the second recording some beats come early, have no P wave and look wide and different."></canvas>
+      <span class="tag" id="ecg-tag">Lead II · regular rhythm</span>
+    </div>
+    <div class="ctls">
+      <button class="btn" id="c-normal" aria-pressed="true">Regular rhythm</button>
+      <button class="btn" id="c-pvc" aria-pressed="false">Early beats</button>
+      <span class="sp"></span>
+      <b id="hr" style="font-size:14px; font-variant-numeric:tabular-nums"></b>
+      <button class="btn" id="c-play">Pause</button>
+    </div>
+    <p class="note" id="ecg-note">Record 100 of the MIT-BIH Arrhythmia Database. Ticks under the trace mark
+      each beat that cardiologists labelled normal.</p>
+
+    <div class="two">
+      <div class="plot">
+        <p class="cap" id="avg-cap">One heartbeat, averaged</p>
+        <canvas id="beat" role="img" aria-label="An averaged heartbeat with its waves marked: a small rounded P wave, then the sharp Q, R and S deflections of the QRS complex, then a broad T wave."></canvas>
+      </div>
+      <div>
+        <div class="ctls" role="group" aria-label="Wave">
+          <button class="btn" data-wave="P" aria-pressed="false">P wave</button>
+          <button class="btn" data-wave="QRS" aria-pressed="false">QRS complex</button>
+          <button class="btn" data-wave="T" aria-pressed="false">T wave</button>
+          <button class="btn" data-wave="PR" aria-pressed="false">The pause</button>
+        </div>
+        <div class="say" id="wave-say" aria-live="polite">Pick a part of the heartbeat to see what the heart is
+          doing at that moment.</div>
+      </div>
+    </div>
+  </section>
+
+  <div class="cols">
+    <div class="card">
+      <h3>Same physics as a neuron</h3>
+      <p>Heart muscle cells fire action potentials like the one on the <a href="spike.html">Spike</a> page,
+        but much longer. Each cell triggers its neighbours through direct electrical connections, so the wave
+        sweeps across the whole heart.</p>
+    </div>
+    <div class="card">
+      <h3>Early beats</h3>
+      <p>Switch to <b>Early beats</b>. In this recording some beats start in the ventricles instead of the
+        sinoatrial node. They are called premature ventricular complexes. They come early, have no P wave in front,
+        and are wide and oddly shaped, because the wave spreads slowly through muscle instead of the fast
+        wiring. A longer gap often follows.</p>
+    </div>
+    <div class="card">
+      <h3>What a single lead shows</h3>
+      <p>A clinical ECG uses twelve views (leads) of the same heartbeat. These recordings use one, a modified
+        lead II, which runs roughly along the heart's main axis and shows the P wave well.</p>
+    </div>
+  </div>
+
+  <div class="caveat"><b>Not a self-check.</b> These are textbook examples labelled by experts, not a way to
+    judge your own heart or brain. Early beats are common and often harmless in healthy people, but sometimes
+    they matter. Only a doctor who knows the person can say which. If you have symptoms such as fainting, chest
+    pain or a racing heart, seek medical care.</div>
+
+  <h2 class="serif">Data and sources</h2>
+  <p>Recordings: EEG Motor Movement/Imagery Dataset (subject 1, runs 1 and 2, electrode Oz; spectrum from
+    O1, Oz and O2) and MIT-BIH Arrhythmia Database (records 100 and 119, lead MLII), both from PhysioNet under the
+    <a href="https://opendatacommons.org/licenses/by/1-0/">Open Data Commons Attribution License v1.0</a>.
+    Processing: zero-phase band-pass filters (EEG 1–40 Hz, ECG 0.5–40 Hz). Spectra use Welch's method with
+    2-second windows. The averaged heartbeat lines up every normal beat of record 100 that has a normal beat on
+    either side, and each wave's peak was found by searching a time window around it. The script is
+    <code>tools/recordings/prep_recordings.py</code> in this site's repository.</p>
+  <ol class="refs">
+    <li>Schalk G (2009). EEG Motor Movement/Imagery Dataset (version 1.0.0). PhysioNet.
+      <a href="https://doi.org/10.13026/C28G6P">doi.org/10.13026/C28G6P</a></li>
+    <li>Schalk G, McFarland DJ, Hinterberger T, Birbaumer N, Wolpaw JR (2004). BCI2000: a general-purpose
+      brain-computer interface (BCI) system. <em>IEEE Transactions on Biomedical Engineering</em> 51:1034-1043.
+      <a href="https://doi.org/10.1109/TBME.2004.827072">doi.org/10.1109/TBME.2004.827072</a></li>
+    <li>Moody G, Mark R (2005). MIT-BIH Arrhythmia Database (version 1.0.0). PhysioNet.
+      <a href="https://doi.org/10.13026/C2F305">doi.org/10.13026/C2F305</a></li>
+    <li>Moody GB, Mark RG (2001). The impact of the MIT-BIH Arrhythmia Database. <em>IEEE Engineering in
+      Medicine and Biology Magazine</em> 20:45-50. <a href="https://doi.org/10.1109/51.932724">doi.org/10.1109/51.932724</a></li>
+    <li>Goldberger AL and 10 others (2000). PhysioBank, PhysioToolkit, and PhysioNet: components of a new
+      research resource for complex physiologic signals. <em>Circulation</em> 101:e215-e220.
+      <a href="https://doi.org/10.1161/01.CIR.101.23.e215">doi.org/10.1161/01.CIR.101.23.e215</a></li>
+    <li>Berger H (1929). Über das Elektrenkephalogramm des Menschen. <em>Archiv für Psychiatrie und
+      Nervenkrankheiten</em> 87:527-570. <a href="https://doi.org/10.1007/BF01797193">doi.org/10.1007/BF01797193</a></li>
+    <li>Barry RJ, Clarke AR, Johnstone SJ, Magee CA, Rushby JA (2007). EEG differences between eyes-closed and
+      eyes-open resting conditions. <em>Clinical Neurophysiology</em> 118:2765-2773.
+      <a href="https://doi.org/10.1016/j.clinph.2007.07.028">doi.org/10.1016/j.clinph.2007.07.028</a></li>
+    <li>Buzsáki G, Anastassiou CA, Koch C (2012). The origin of extracellular fields and currents: EEG, ECoG,
+      LFP and spikes. <em>Nature Reviews Neuroscience</em> 13:407-420.
+      <a href="https://doi.org/10.1038/nrn3241">doi.org/10.1038/nrn3241</a></li>
+    <li>Kligfield P and 12 others (2007). Recommendations for the standardization and interpretation of the
+      electrocardiogram: part I. <em>Circulation</em> 115:1306-1324.
+      <a href="https://doi.org/10.1161/CIRCULATIONAHA.106.180200">doi.org/10.1161/CIRCULATIONAHA.106.180200</a></li>
+    <li>Marcus GM (2020). Evaluation and management of premature ventricular complexes. <em>Circulation</em>
+      141:1404-1418. <a href="https://doi.org/10.1161/CIRCULATIONAHA.119.042434">doi.org/10.1161/CIRCULATIONAHA.119.042434</a></li>
+  </ol>
+
+  <footer>
+    <a href="learn.html">More to learn</a>
+    <a href="spike.html">Spike</a>
+    <a href="scans.html">Brain scans</a>
+    <a href="references.html">All sources</a>
+    <span>Educational only. Not medical or veterinary advice.</span>
+    <a href="about.html">About and limits</a>
+  </footer>
+</main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var el = function(id){ return document.getElementById(id); };
+  var D = null;
+
+  // ------------------------------------------------------------ canvas helpers
+  function fit(cv){
+    var r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+    var w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
+    if (cv.width !== w || cv.height !== h){ cv.width = w; cv.height = h; }
+    var x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { x: x, w: r.width, h: r.height };
+  }
+
+  // ------------------------------------------------------------ sweeping monitor
+  // Draws like a bedside monitor: the trace is written left to right; ahead of the
+  // cursor the previous sweep is still visible, with a short gap erased in front of it.
+  function Monitor(cv, opt){
+    this.cv = cv; this.o = opt; this.t = 0; this.data = null; this.marks = [];
+  }
+  Monitor.prototype.set = function(trace, fs, marks){ this.data = trace; this.fs = fs; this.marks = marks || []; };
+  Monitor.prototype.draw = function(){
+    var c = fit(this.cv), x = c.x, W = c.w, H = c.h, o = this.o, d = this.data;
+    o.win = W < 520 ? o.winSmall : o.winLarge;   // a shorter stretch on narrow screens, so waves stay readable
+    x.fillStyle = "#0f1a17"; x.fillRect(0, 0, W, H);
+    // grid: a line each second (EEG) or each 0.2 s (ECG)
+    x.strokeStyle = "rgba(159,211,191,.10)"; x.lineWidth = 1;
+    for (var g = 0; g <= o.win / o.grid + 0.001; g++){ var gx = Math.round(g * o.grid / o.win * W) + .5; x.beginPath(); x.moveTo(gx, 0); x.lineTo(gx, H); x.stroke(); }
+    for (var gy = 0; gy < H; gy += H / 6){ x.beginPath(); x.moveTo(0, Math.round(gy) + .5); x.lineTo(W, Math.round(gy) + .5); x.stroke(); }
+    function bar(){   // scale bars, bottom right, on a plate so the trace never hides them
+      var sb = o.bar, bx = W - 14, by = H - 22, bh = sb.v * H * o.yscale, bw = sb.t / o.win * W;
+      x.fillStyle = "rgba(15,26,23,.88)"; x.fillRect(bx - Math.max(bw, 48) - 8, by - bh - 10, Math.max(bw, 48) + 18, bh + 28);
+      x.strokeStyle = "rgba(159,211,191,.8)"; x.lineWidth = 1.5; x.beginPath();
+      x.moveTo(bx - bw, by); x.lineTo(bx, by); x.lineTo(bx, by - bh); x.stroke();
+      x.fillStyle = "rgba(159,211,191,.9)"; x.font = "11px Figtree, system-ui, sans-serif";
+      x.textAlign = "right"; x.fillText(sb.vl, bx - 5, by - bh + 4);
+      x.textAlign = "center"; x.fillText(sb.tl, bx - bw / 2, by + 13);
+    }
+    if (!d){ bar(); return; }
+    var n = d.length, fs = this.fs, total = n / fs;
+    var mid = H * o.mid, k = H * o.yscale;
+    var t = this.t % total, sweep = Math.floor(this.t / o.win), s0 = sweep * o.win;
+    var still = o.still;
+    function sampleAt(sec){ var i = Math.floor(((sec % total) + total) % total * fs); return d[i]; }
+    var px = Math.max(1, W / 900);
+    x.lineJoin = "round"; x.lineWidth = 1.6; x.strokeStyle = o.color;
+    function path(from, to){   // seconds of the trace from..to, placed by their position within a sweep
+      x.beginPath(); var first = true;
+      for (var X = 0; X <= W; X += px){
+        var sec = from + X / W * o.win; if (sec > to) break;
+        if (sec < from) continue;
+        var y = mid - sampleAt(sec) * k;
+        if (first){ x.moveTo(X, y); first = false; } else x.lineTo(X, y);
+      }
+      x.stroke();
+    }
+    if (still){ path(0, o.win); }
+    else {
+      var cur = this.t - s0, gap = o.win * 0.04;
+      path(s0, this.t);                                     // this sweep, up to the cursor
+      x.save(); x.beginPath(); x.rect((cur + gap) / o.win * W, 0, W, H); x.clip();
+      x.globalAlpha = 0.45; path(s0 - o.win, s0); x.restore();   // the previous sweep, ahead of the cursor
+      x.fillStyle = o.color; x.fillRect(cur / o.win * W - 1, 0, 2, H * 0.02 + 2);
+    }
+    // beat marks under the trace
+    var m = this.marks;
+    if (m.length){
+      x.font = "600 11px Figtree, system-ui, sans-serif"; x.textAlign = "center";
+      var tw = still ? [0, o.win] : null;
+      for (var j = 0; j < m.length; j++){
+        var ms = m[j][0] / fs;
+        for (var rep = -1; rep <= 1; rep++){
+          var abs = ms + (Math.floor((still ? 0 : (this.t - o.win)) / total) + rep) * total;
+          var inThis = still ? (abs >= 0 && abs < o.win) : (abs >= s0 && abs <= this.t);
+          var inPrev = !still && abs >= s0 - o.win && abs < s0 && (abs + o.win - s0) / o.win * W > (this.t - s0 + o.win * 0.04) / o.win * W;
+          if (!inThis && !inPrev) continue;
+          var mx = ((abs - (inThis ? (still ? 0 : s0) : s0 - o.win)) / o.win) * W;
+          var v = m[j][1] === "V";
+          x.globalAlpha = inPrev ? 0.45 : 1;
+          x.fillStyle = v ? "#f0a37f" : "rgba(159,211,191,.75)";
+          x.fillRect(mx - 1, H - 16, 2, 7);
+          if (v){ x.fillText("V", mx, H - 22); }
+          x.globalAlpha = 1;
+        }
+      }
+    }
+    bar();
+  };
+
+  // ------------------------------------------------------------ spectrum
+  function drawPsd(){
+    var c = fit(el("psd")), x = c.x, W = c.w, H = c.h, e = D.eeg, f = e.freqs;
+    var L = 38, R = 8, T = 10, B = 26, pw = W - L - R, ph = H - T - B;
+    x.clearRect(0, 0, W, H);
+    var top = 0; ["open", "closed"].forEach(function(k){ e[k].psd.forEach(function(v){ if (v > top) top = v; }); });
+    top *= 1.08;
+    var fx = function(hz){ return L + (hz - 1) / 29 * pw; }, fy = function(v){ return T + ph - v / top * ph; };
+    x.fillStyle = "#e8e2f6"; x.fillRect(fx(8), T, fx(12) - fx(8), ph);
+    x.strokeStyle = "#dde2e8"; x.lineWidth = 1; x.beginPath(); x.moveTo(L, T + ph + .5); x.lineTo(L + pw, T + ph + .5); x.moveTo(L + .5, T); x.lineTo(L + .5, T + ph); x.stroke();
+    x.fillStyle = "#5f6d7b"; x.font = "11px Figtree, system-ui, sans-serif"; x.textAlign = "center";
+    [1, 5, 10, 15, 20, 25].forEach(function(hz){ x.fillText(hz, fx(hz), H - 9); });
+    x.fillText("30 Hz", fx(30) - 10, H - 9);
+    x.save(); x.translate(12, T + ph / 2); x.rotate(-Math.PI / 2); x.textAlign = "center"; x.fillText("power, µV²/Hz", 0, 0); x.restore();
+    [["open", "#8a96a3"], ["closed", "#5a47a0"]].forEach(function(s){
+      var p = e[s[0]].psd; x.strokeStyle = s[1]; x.lineWidth = s[0] === active.eeg ? 2.4 : 1.4; x.beginPath();
+      for (var i = 0; i < f.length; i++){ var X = fx(f[i]), Y = fy(p[i]); if (i) x.lineTo(X, Y); else x.moveTo(X, Y); }
+      x.stroke();
+    });
+  }
+
+  // ------------------------------------------------------------ averaged heartbeat
+  var WAVES = {
+    P: { span: [-250, -90], text: "<b>P wave: the atria fire.</b> The wave from the sinoatrial node spreads across the two upper chambers, which then contract and top up the ventricles." },
+    QRS: { span: [-50, 60], text: "<b>QRS complex: the ventricles fire.</b> The wave races through fast-conducting fibres and across the thick ventricle walls, so it is large and quick. The atria recover at the same moment, hidden inside it." },
+    T: { span: [140, 460], text: "<b>T wave: the ventricles recover.</b> Ventricle cells return to their resting voltage, ready for the next beat. Recovery is slower than firing, so the wave is broad." },
+    PR: { span: [-90, -50], text: "<b>The pause: the AV node delays the wave.</b> Between the P wave and the QRS, the wave passes through the atrioventricular node, which holds it back for a fraction of a second so the ventricles fill before they contract." }
+  };
+  var wave = null;
+  function drawBeat(){
+    var c = fit(el("beat")), x = c.x, W = c.w, H = c.h, a = D.ecg.average, tr = a.trace;
+    var L = 10, R = 10, T = 22, B = 24, pw = W - L - R, ph = H - T - B;
+    var t0 = -a.pre_ms, t1 = t0 + tr.length / a.fs * 1000;
+    var lo = Math.min.apply(null, tr), hi = Math.max.apply(null, tr), pad = (hi - lo) * 0.08;
+    var fx = function(ms){ return L + (ms - t0) / (t1 - t0) * pw; }, fy = function(v){ return T + ph - (v - lo + pad) / (hi - lo + 2 * pad) * ph; };
+    x.clearRect(0, 0, W, H);
+    if (wave){ var s = WAVES[wave].span; x.fillStyle = "#fbeae2"; x.fillRect(fx(s[0]), T - 14, fx(s[1]) - fx(s[0]), ph + 14); }
+    x.strokeStyle = "#dde2e8"; x.lineWidth = 1; x.beginPath(); x.moveTo(L, fy(0) + .5); x.lineTo(L + pw, fy(0) + .5); x.stroke();
+    x.strokeStyle = "#1f2a35"; x.lineWidth = 2; x.lineJoin = "round"; x.beginPath();
+    for (var i = 0; i < tr.length; i++){ var X = fx(t0 + i / a.fs * 1000), Y = fy(tr[i]); if (i) x.lineTo(X, Y); else x.moveTo(X, Y); }
+    x.stroke();
+    var wm = a.waves_ms; x.font = "600 12px Figtree, system-ui, sans-serif"; x.textAlign = "center";
+    Object.keys(wm).forEach(function(k){
+      var ms = wm[k], i = Math.round((ms - t0) / 1000 * a.fs), v = tr[i], up = k !== "Q" && k !== "S";
+      x.fillStyle = "#b24e33"; x.beginPath(); x.arc(fx(ms), fy(v), 3, 0, 7); x.fill();
+      x.fillText(k, fx(ms), up ? fy(v) - 8 : fy(v) + 17);
+    });
+    x.fillStyle = "#5f6d7b"; x.font = "11px Figtree, system-ui, sans-serif";
+    x.textAlign = "left"; x.fillText("200 ms", fx(t1 - 230), H - 6);
+    x.strokeStyle = "#5f6d7b"; x.beginPath(); x.moveTo(fx(t1 - 230), H - 18); x.lineTo(fx(t1 - 30), H - 18); x.stroke();
+  }
+
+  // ------------------------------------------------------------ state and controls
+  var active = { eeg: "open", ecg: "normal" };
+  var eegMon = new Monitor(el("eeg"), { win: 10, winLarge: 10, winSmall: 5, grid: 1, mid: 0.5, yscale: 0.0019, color: "#7fe0bd", still: reduce, bar: { v: 50, vl: "50 µV", t: 1, tl: "1 s" } });
+  var ecgMon = new Monitor(el("ecg"), { win: 5, winLarge: 5, winSmall: 3, grid: 0.2, mid: 0.55, yscale: 0.17, color: "#7fe0bd", still: reduce, bar: { v: 1, vl: "1 mV", t: 0.2, tl: "0.2 s" } });
+  var playing = { eeg: !reduce, ecg: !reduce };
+
+  function press(ids, on){ ids.forEach(function(id){ el(id).setAttribute("aria-pressed", String(id === on)); }); }
+  function setEeg(k){
+    active.eeg = k; press(["e-open", "e-closed"], k === "open" ? "e-open" : "e-closed");
+    el("eeg-tag").textContent = "Oz · eyes " + k;
+    eegMon.set(D.eeg[k].trace, D.eeg.fs); eegMon.draw(); drawPsd();
+  }
+  function setEcg(k){
+    active.ecg = k; press(["c-normal", "c-pvc"], k === "normal" ? "c-normal" : "c-pvc");
+    var r = D.ecg[k];
+    ecgMon.set(r.trace, r.fs, r.beats); ecgMon.draw();
+    el("ecg-tag").textContent = "Lead II · " + (k === "normal" ? "regular rhythm" : "early beats");
+    el("ecg-note").textContent = k === "normal"
+      ? "Record 100 of the MIT-BIH Arrhythmia Database. Ticks under the trace mark each beat that cardiologists labelled normal."
+      : "Record 119 of the MIT-BIH Arrhythmia Database. Beats marked V were labelled by cardiologists as premature ventricular complexes. Unmarked ticks are normal beats.";
+    var b = r.beats, rr = (b[b.length - 1][0] - b[0][0]) / r.fs / (b.length - 1);
+    el("hr").textContent = Math.round(60 / rr) + " beats/min";
+  }
+  el("e-open").onclick = function(){ setEeg("open"); };
+  el("e-closed").onclick = function(){ setEeg("closed"); };
+  el("c-normal").onclick = function(){ setEcg("normal"); };
+  el("c-pvc").onclick = function(){ setEcg("pvc"); };
+  function playBtn(id, key, mon){
+    var b = el(id); b.textContent = playing[key] ? "Pause" : "Play";
+    b.onclick = function(){
+      playing[key] = !playing[key]; mon.o.still = false; b.textContent = playing[key] ? "Pause" : "Play"; wake();
+    };
+  }
+  playBtn("e-play", "eeg", eegMon); playBtn("c-play", "ecg", ecgMon);
+  document.querySelectorAll("[data-wave]").forEach(function(b){
+    b.addEventListener("click", function(){
+      wave = b.dataset.wave;
+      document.querySelectorAll("[data-wave]").forEach(function(o){ o.setAttribute("aria-pressed", String(o === b)); });
+      el("wave-say").innerHTML = WAVES[wave].text; drawBeat();
+    });
+  });
+
+  // ------------------------------------------------------------ animation, only while visible
+  var seen = { eeg: true, ecg: true }, raf = 0, last = 0;
+  function frame(now){
+    raf = 0;
+    var dt = last ? Math.min(0.1, (now - last) / 1000) : 0; last = now;
+    var any = false;
+    if (playing.eeg && seen.eeg && !document.hidden){ eegMon.t += dt; eegMon.draw(); any = true; }
+    if (playing.ecg && seen.ecg && !document.hidden){ ecgMon.t += dt; ecgMon.draw(); any = true; }
+    if (any) raf = requestAnimationFrame(frame); else last = 0;
+  }
+  function wake(){ if (!raf && D) raf = requestAnimationFrame(frame); }
+  if ("IntersectionObserver" in window){
+    var io = new IntersectionObserver(function(es){
+      es.forEach(function(e){ seen[e.target.id] = e.isIntersecting; }); wake();
+    });
+    io.observe(el("eeg")); io.observe(el("ecg"));
+  }
+  document.addEventListener("visibilitychange", wake);
+  var rt = null;
+  window.addEventListener("resize", function(){ clearTimeout(rt); rt = setTimeout(function(){ if (!D) return; eegMon.draw(); ecgMon.draw(); drawPsd(); drawBeat(); }, 120); });
+
+  fetch("assets/recordings/recordings.json").then(function(r){ return r.json(); }).then(function(d){
+    D = d;
+    var e = d.eeg;
+    el("a-open").textContent = e.open.alpha_power.toFixed(0) + " µV²";
+    el("a-closed").textContent = e.closed.alpha_power.toFixed(0) + " µV²";
+    el("a-ratio").textContent = e.ratio.toFixed(1) + " times";
+    el("a-peak").textContent = e.closed.peak_hz.toFixed(1) + " Hz";
+    el("avg-cap").textContent = "One heartbeat, the average of " + d.ecg.average.beats.toLocaleString("en-US") + " normal beats";
+    setEeg("open"); setEcg("normal"); drawBeat(); wake();
+    window.__rec = { data: d, eeg: eegMon, ecg: ecgMon, reduce: reduce };   // exposed for checks
+  }).catch(function(){
+    el("eeg-tag").textContent = "The recording could not be loaded.";
+  });
+})();
+</script>

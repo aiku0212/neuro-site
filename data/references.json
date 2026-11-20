@@ -2960,5 +2960,173 @@
     },
     "citations": 207,
     "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "BCI2000: a general-purpose brain-computer interface (BCI) system",
+    "authors": "Schalk et al.",
+    "year": 2004,
+    "journal": "IEEE Transactions on Biomedical Engineering",
+    "doi": "10.1109/TBME.2004.827072",
+    "meta_analysis": false,
+    "site_title": "BCI2000: a general-purpose brain-computer interface (BCI) system",
+    "site_year": 2004,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for recordings page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 2643,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "PhysioBank, PhysioToolkit, and PhysioNet: components of a new research resource for complex physiologic signals",
+    "authors": "Goldberger et al.",
+    "year": 2000,
+    "journal": "Circulation",
+    "doi": "10.1161/01.CIR.101.23.e215",
+    "meta_analysis": false,
+    "site_title": "PhysioBank, PhysioToolkit, and PhysioNet: components of a new research resource for complex physiologic signals",
+    "site_year": 2000,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for recordings page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 12705,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "The impact of the MIT-BIH Arrhythmia Database",
+    "authors": "Moody and Mark",
+    "year": 2001,
+    "journal": "IEEE Engineering in Medicine and Biology Magazine",
+    "doi": "10.1109/51.932724",
+    "meta_analysis": false,
+    "site_title": "The impact of the MIT-BIH Arrhythmia Database",
+    "site_year": 2001,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for recordings page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 4391,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "EEG differences between eyes-closed and eyes-open resting conditions",
+    "authors": "Barry et al.",
+    "year": 2007,
+    "journal": "Clinical Neurophysiology",
+    "doi": "10.1016/j.clinph.2007.07.028",
+    "meta_analysis": false,
+    "site_title": "EEG differences between eyes-closed and eyes-open resting conditions",
+    "site_year": 2007,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for recordings page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 1001,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Recommendations for the standardization and interpretation of the electrocardiogram: part I",
+    "authors": "Kligfield et al.",
+    "year": 2007,
+    "journal": "Circulation",
+    "doi": "10.1161/CIRCULATIONAHA.106.180200",
+    "meta_analysis": false,
+    "site_title": "Recommendations for the standardization and interpretation of the electrocardiogram: part I",
+    "site_year": 2007,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for recordings page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 686,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Über das Elektrenkephalogramm des Menschen",
+    "authors": "Berger",
+    "year": 1929,
+    "journal": "Archiv für Psychiatrie und Nervenkrankheiten",
+    "doi": "10.1007/BF01797193",
+    "meta_analysis": false,
+    "site_title": "Über das Elektrenkephalogramm des Menschen",
+    "site_year": 1929,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for recordings page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 3229,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "The origin of extracellular fields and currents: EEG, ECoG, LFP and spikes",
+    "authors": "Buzsáki et al.",
+    "year": 2012,
+    "journal": "Nature Reviews Neuroscience",
+    "doi": "10.1038/nrn3241",
+    "meta_analysis": false,
+    "site_title": "The origin of extracellular fields and currents: EEG, ECoG, LFP and spikes",
+    "site_year": 2012,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for recordings page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 4368,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Evaluation and management of premature ventricular complexes",
+    "authors": "Marcus",
+    "year": 2020,
+    "journal": "Circulation",
+    "doi": "10.1161/CIRCULATIONAHA.119.042434",
+    "meta_analysis": false,
+    "site_title": "Evaluation and management of premature ventricular complexes",
+    "site_year": 2020,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for recordings page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 271,
+    "citations_checked": "2026-11-20"
   }
 ]

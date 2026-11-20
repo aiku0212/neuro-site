@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "references", "about",
-          "learn", "conditioning", "news", "scans"]
+          "learn", "conditioning", "news", "scans", "recordings"]
 NOT_PUBLISHED = ["explore", "morphometry"]
 
 
@@ -92,9 +92,9 @@ class PublicPages(unittest.TestCase):
 
     def test_learn_hub_links_every_learn_page(self):
         hub = read("learn")
-        for name in ["conditioning", "news", "scans"]:
+        for name in ["conditioning", "news", "scans", "recordings"]:
             self.assertIn(f'href="{name}.html"', hub)
-        for name in ["learn", "conditioning", "news", "scans"]:
+        for name in ["learn", "conditioning", "news", "scans", "recordings"]:
             nav = re.search(r'<nav class="tabs".*?</nav>', read(name), re.S).group(0)
             self.assertIn('<a class="tab" href="learn.html" aria-current="true">Learn</a>', nav)
 
@@ -109,7 +109,7 @@ class PublicPages(unittest.TestCase):
         self.assertIn("cp -R assets _site/", workflow)
 
     def test_visuals_say_what_they_are(self):
-        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning", "scans"]:
+        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning", "scans", "recordings"]:
             with self.subTest(page=name):
                 self.assertRegex(read(name), r'class="fig-kind" data-kind="(schematic|simulation|drawing|measured)"')
 
@@ -176,6 +176,34 @@ class PublicPages(unittest.TestCase):
                 self.assertEqual(data[i + nx * (j + ny * k)], want[name])
         self.assertIn('data-kind="measured">Measured, averaged', page)
         self.assertIn("cannot be used to read or diagnose", page)
+
+    def test_recordings_page_shows_real_labelled_data(self):
+        page = read("recordings")
+        data = json.loads((ROOT / "assets" / "recordings" / "recordings.json").read_text(encoding="utf8"))
+        self.assertLess((ROOT / "assets" / "recordings" / "recordings.json").stat().st_size, 200_000)
+        for name in ("readers.py", "prep_recordings.py"):
+            self.assertTrue((ROOT / "tools" / "recordings" / name).is_file())
+        eeg, ecg = data["eeg"], data["ecg"]
+        # 20 s at 160 Hz from each run, and the eyes-closed spectrum peaks in the alpha band.
+        for k in ("open", "closed"):
+            self.assertEqual(len(eeg[k]["trace"]), 3200)
+        self.assertTrue(8 <= eeg["closed"]["peak_hz"] <= 12)
+        self.assertGreater(eeg["ratio"], 5)
+        # The ECG clips carry the cardiologists' own beat labels: all normal in record 100,
+        # and premature ventricular complexes in record 119.
+        self.assertEqual({b[1] for b in ecg["normal"]["beats"]}, {"N"})
+        self.assertGreaterEqual(sum(b[1] == "V" for b in ecg["pvc"]["beats"]), 3)
+        w = ecg["average"]["waves_ms"]
+        self.assertTrue(w["P"] < w["Q"] < w["R"] < w["S"] < w["T"])
+        self.assertGreater(ecg["average"]["beats"], 1000)
+        # Licence, dataset citations and the not-a-self-check notice are on the page.
+        self.assertIn("Open Data Commons Attribution License v1.0", page)
+        for doi in ("10.13026/C28G6P", "10.13026/C2F305", "10.1161/01.CIR.101.23.e215"):
+            self.assertIn(doi, page)
+        self.assertIn("Not a self-check.", page)
+        self.assertIn('fetch("assets/recordings/recordings.json")', page)
+        self.assertNotRegex(page, r'src="https?://')
+        self.assertIn("still: reduce", page)
 
     def test_explore_membrane_shows_basic_glutamate_receptors(self):
         page = read("app")
