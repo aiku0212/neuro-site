@@ -29,12 +29,35 @@ are older versions kept in the repository but not published.
   `python3 scripts/check_freshness.py` (or `CHECK_HEARTBEAT=1` with the tests) to check that
   the last run is recent, or watch it from outside.
 
+## News page
+
+`news.html` lists new neuroscience items from the last four weeks as headlines only: each
+entry is a headline, its source, a kind label, a date and a link to the original. Nothing is
+summarized. The sources are:
+
+- PubMed: new review articles in Nature Reviews Neuroscience, Annual Review of Neuroscience,
+  Trends in Neurosciences, Neuron and Current Opinion in Neurobiology, linked to their PubMed
+  records ("Review article").
+- eLife neuroscience RSS ("Research paper (eLife reviewed preprint)").
+- MIT News neuroscience RSS ("University news office").
+
+`.github/workflows/weekly-news.yml` runs every Monday at 08:43 UTC (and by hand). It runs the
+offline tests, then `scripts/fetch_news.py`, which writes `data/news.json` and the list between
+the `<!--news:start-->` and `<!--news:end-->` markers in `news.html`, and commits only those two
+files. It does not deploy: the daily workflow publishes them on its next run. The list keeps
+at most 5 items per source per week and 40 in all. A source that fails keeps its previous items
+and is marked as failed on the page. If every source fails, or the result does not pass
+validation, the script exits non-zero and changes nothing, and the workflow opens or comments
+on a "News update failed" issue. The tests in `tests/test_news.py` use fixture feeds in
+`tests/fixtures/news/` and never touch the network.
+
 ## Run it
 
 ```bash
 python3 -m http.server 8000        # then open http://localhost:8000
 python3 -m unittest discover -s tests
 python3 scripts/build_refs.py      # rebuild references.html after editing the data file
+python3 scripts/fetch_news.py      # refresh the News page (about four requests)
 ```
 
 ## License

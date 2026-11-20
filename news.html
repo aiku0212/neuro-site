@@ -1,0 +1,387 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Neuroscience News · Neuroscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="New neuroscience review articles, research papers and university news from the last four weeks, as headlines that link to the originals. Updated every Monday.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neuroscope">
+<meta property="og:title" content="Neuroscience News · Neuroscope">
+<meta property="og:description" content="New neuroscience review articles, research papers and university news from the last four weeks, as headlines that link to the originals. Updated every Monday.">
+<meta property="og:url" content="https://aiku0212.github.io/neuro-site/news.html">
+<meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Neuroscope: interactive models of the brain, neurons and synapses, and an evidence review of neuroplasticity.">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root{
+    --ground:#f6f7f9; --ground-2:#ffffff; --ground-3:#eceff3;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --rule:#dde2e8; --press:#235673; --warm:#c0573a;
+  }
+
+  *{box-sizing:border-box}
+  body{margin:0}
+  .wrap{background:var(--ground); color:var(--ink); min-height:100vh;
+    font:400 16px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif}
+
+  .bar{display:flex; align-items:center; gap:22px; padding:14px 20px;
+    border-bottom:1px solid var(--rule); background:var(--ground-2); position:sticky; top:0; z-index:20}
+  /* Keeps a link reached with the keyboard from scrolling under the sticky bar. */
+  html{scroll-padding-top:72px}
+  .brand{font:600 15px/1 Georgia,serif}
+  .tabs{display:flex; gap:16px}
+  .tab{font-size:13px; color:var(--ink-2); text-decoration:none}
+
+  main{max-width:1140px; margin:0 auto; padding:28px 16px 90px}
+
+  /* The page is a sheet of newsprint on the Atlas desk. */
+  .paper{background:var(--ground-2); border:1px solid var(--rule); border-radius:var(--radius,14px);
+    padding:22px clamp(16px,4vw,44px) 36px; box-shadow:0 18px 40px -28px rgba(31,42,53,.25)}
+
+  /* ---- masthead ---- */
+  .masthead{display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:18px;
+    text-align:center; padding:6px 0 12px}
+  .ear{justify-self:start; max-width:160px; border:1px solid var(--rule); padding:8px 10px;
+    font:500 11.5px/1.4 var(--f-body); color:var(--muted)}
+  .ear b{display:block; font:600 12px/1.3 var(--f-head); color:var(--ink); margin-bottom:2px}
+  .ear.right{justify-self:end}
+  .section-line{margin:0 0 6px; font:600 11px/1 var(--f-body); letter-spacing:.2em;
+    text-transform:uppercase; color:var(--press)}
+  .masthead h1{margin:0; font:600 clamp(32px,9.2vw,76px)/1.02 var(--f-head); letter-spacing:-.02em;
+    color:var(--ink); overflow-wrap:break-word; text-wrap:balance}
+  .edition{display:flex; justify-content:space-between; flex-wrap:wrap; gap:4px 18px; margin:0;
+    padding:8px 2px 7px; border-top:1px solid var(--ink); border-bottom:4px double var(--ink);
+    font:600 11.5px/1.4 var(--f-body); letter-spacing:.1em; text-transform:uppercase; color:var(--ink-2)}
+
+  /* ---- notice and key ---- */
+  .caveat{margin:22px 0 6px; background:var(--ground); border:1px solid var(--rule);
+    border-left:3px solid var(--warm); padding:13px 18px}
+  .caveat p{margin:0; font-size:14.5px; color:var(--ink-2); max-width:86ch}
+  .caveat strong{color:var(--ink)}
+
+  /* ---- front: newest review and the index ---- */
+  .front{display:grid; grid-template-columns:minmax(0,2.2fr) minmax(0,1fr); gap:0;
+    margin:26px 0 6px}
+  .lead{padding-right:28px}
+  .lead-hl{margin:6px 0 10px; font:600 clamp(25px,3.5vw,38px)/1.14 var(--f-head); letter-spacing:-.012em;
+    text-wrap:balance}
+  .lead .byline{font-size:15px}
+  .index{border-left:1px solid var(--rule); padding-left:24px}
+  .index h2{margin:0 0 8px; font:600 12px/1.2 var(--f-body); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink)}
+  .index ul{list-style:none; margin:0; padding:0}
+  .index li{display:flex; justify-content:space-between; align-items:baseline; gap:12px; padding:7px 0;
+    border-bottom:1px dotted #c6ced7; font:400 16px/1.3 var(--f-head)}
+  .index li b{font:600 15px/1.3 var(--f-body); font-variant-numeric:tabular-nums}
+  .index p{margin:10px 0 0; font-size:13px; color:var(--muted); text-wrap:pretty}
+
+  /* ---- weeks and desks ----
+     Each week flows like a newspaper page: the desks run down one column and
+     continue at the top of the next, so a busy desk never leaves the others
+     standing in white space. */
+  .week{margin-top:34px}
+  .week-head{display:flex; align-items:center; gap:14px; margin:0 0 6px;
+    font:600 12.5px/1.3 var(--f-body); letter-spacing:.14em; text-transform:uppercase; color:var(--ink)}
+  .week-head::before,.week-head::after{content:""; flex:1 0 24px; border-top:1px solid var(--ink)}
+  .cols{column-count:1; column-gap:44px; column-rule:1px solid var(--rule);
+    /* Hides the item rule that would otherwise sit on top of a continued column. */
+    clip-path:inset(2px -12px -12px -12px)}
+  .desk{padding:10px 0 0}
+  .desk + .desk{margin-top:8px}
+  .desk h3{margin:8px 0 2px; padding-bottom:5px; border-bottom:2px solid var(--ink);
+    font:600 19px/1.2 var(--f-head); font-variant-caps:small-caps; letter-spacing:.03em;
+    break-after:avoid}
+  .items{list-style:none; margin:0; padding:0}
+  .items li{padding:12px 0 13px; break-inside:avoid}
+  .items li + li{border-top:1px solid var(--rule)}
+  .kind{margin:0 0 4px; font:600 11px/1.3 var(--f-body); letter-spacing:.11em;
+    text-transform:uppercase; color:var(--press)}
+  .hl{margin:0 0 5px; font:600 17.5px/1.3 var(--f-head); letter-spacing:-.005em; text-wrap:pretty}
+  .hl,.lead-hl,.byline,.wire li{overflow-wrap:anywhere}
+  .hl a,.lead-hl a{color:var(--ink); text-decoration:underline; text-decoration-color:var(--rule);
+    text-decoration-thickness:1px; text-underline-offset:3px}
+  .hl a:hover,.lead-hl a:hover{color:var(--press); text-decoration-color:currentColor}
+  .byline{margin:0; font:italic 400 14px/1.4 var(--f-head); color:var(--muted)}
+  /* Source and date sit on one line when they fit. When the date has to wrap, it
+     starts the next line and its dot falls in the clipped strip on the left, so no
+     line starts or ends on a lone separator. */
+  .byline{display:flex; flex-wrap:wrap; align-items:baseline; margin-left:-.8em;
+    clip-path:inset(-6px -6px -6px .8em)}
+  .byline .src{margin-left:.8em; min-width:0}
+  .byline .sep{display:none}
+  .byline time{position:relative; margin-left:.8em; font-variant-numeric:tabular-nums; white-space:nowrap}
+  .byline time::before{content:"·"; content:"·" / ""; position:absolute; left:-.52em}
+  .empty{margin:28px 0; font:italic 400 17px/1.5 var(--f-head); color:var(--ink-2)}
+
+  /* ---- back page ---- */
+  .wire{margin-top:38px; padding-top:16px; border-top:4px double var(--ink)}
+  .wire h2,.key h2{margin:0 0 8px; font:600 12px/1.2 var(--f-body); letter-spacing:.14em;
+    text-transform:uppercase; color:var(--ink)}
+  .wire ul{margin:0; padding:0 0 0 18px; font-size:14px; color:var(--ink-2)}
+  .wire li{margin:5px 0; max-width:96ch}
+  .wire li.failed{color:#8a3f24}
+  .key{margin-top:22px}
+  .key dl{display:grid; grid-template-columns:minmax(0,1fr); gap:10px 44px; margin:0}
+  .key div{padding:0}
+  .key dt{font:600 15.5px/1.3 var(--f-head); color:var(--ink)}
+  .key dd{margin:2px 0 0; font-size:14px; color:var(--ink-2); max-width:75ch}
+
+  footer{border-top:1px solid var(--rule); margin-top:46px; padding:22px 0;
+    font-size:12px; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
+  footer a{color:var(--ink-2)}
+
+  /* Columns with hairline rules: two on tablets, three on wide screens. A week
+     never gets more columns than it has items (cols-1, cols-2), so a short week
+     does not leave an empty column. */
+  @media (min-width:700px){
+    .cols{column-count:2}
+    .cols.cols-1{column-count:1; max-width:44rem}
+  }
+  @media (min-width:1000px){
+    .cols{column-count:3}
+    .cols.cols-2{column-count:2}
+    /* A one-item week spans two of the three columns. */
+    .cols.cols-1{max-width:calc((200% - 44px) / 3)}
+    /* Same grid as the week columns, so the key's rules line up with theirs. */
+    .key dl{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .key dl div + div{position:relative}
+    .key dl div + div::before{content:""; position:absolute; top:0; bottom:0; left:-22.5px;
+      border-left:1px solid var(--rule)}
+  }
+  @media (max-width:640px){
+    /* Same as the other pages: on phones the bar scrolls away with the page. */
+    .bar{position:static}
+    html{scroll-padding-top:0}
+  }
+  /* The ears need room beside the title, so they only show on wide screens. */
+  @media (max-width:999px){
+    .masthead{grid-template-columns:minmax(0,1fr)}
+    .ear{display:none}
+  }
+  @media (max-width:760px){
+    .edition{justify-content:center; text-align:center}
+    .front{grid-template-columns:minmax(0,1fr)}
+    .lead{padding-right:0}
+    .index{border-left:0; padding-left:0; margin-top:18px; padding-top:14px; border-top:1px solid var(--rule)}
+  }
+  @media (max-width:560px){
+    /* Too narrow for rules on both sides of the week name, so it becomes a ruled strip. */
+    .week-head{display:block; padding:9px 0 8px; border-top:1px solid var(--ink); border-bottom:1px solid var(--rule);
+      text-align:center; letter-spacing:.1em}
+    .week-head::before,.week-head::after{content:none}
+  }
+  @media (max-width:480px){
+    .paper{padding:16px 14px 26px}
+    .edition{letter-spacing:.06em}
+  }
+</style>
+<link rel="stylesheet" href="assets/atlas.css">
+
+<div class="wrap">
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="learn.html" aria-current="true">Learn</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
+  </nav>
+</div>
+
+<main>
+<div class="paper">
+  <header class="masthead">
+    <p class="ear"><b>Every Monday</b>New items are added once a week.</p>
+    <div>
+      <p class="section-line">Neuroscope Learn</p>
+      <h1>Neuroscience News</h1>
+    </div>
+    <p class="ear right"><b>Headlines only</b>Each one links to the original.</p>
+  </header>
+  <p class="edition"><!--edition:start--><span>Week 47, 2026</span><span>Updated Thursday 19 November 2026</span><span>40 headlines from 6 sources</span><!--edition:end--></p>
+
+  <div class="caveat" role="note">
+    <p><strong>Read with care.</strong> These are links to outside reporting and new papers.
+      Neuroscope has not checked them, and a headline can overstate what a study found.
+      This page is educational only and is not medical or veterinary advice.</p>
+  </div>
+
+<!--news:start-->
+<div class="front">
+<article class="lead" aria-labelledby="lead-hl">
+  <p class="kind">Newest review article</p>
+  <h2 class="lead-hl" id="lead-hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43050792/" rel="noopener noreferrer">Astrocytes regulate synapse development and plasticity across the lifespan</a></h2>
+  <p class="byline"><span class="src">Current Opinion in Neurobiology via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-18">18 Nov 2026</time></p>
+</article>
+<aside class="index" aria-labelledby="index-head">
+  <h2 id="index-head">In this edition</h2>
+  <ul>
+    <li><span>Reviews</span> <b>21</b></li>
+    <li><span>Research</span> <b>16</b></li>
+    <li><span>University news</span> <b>3</b></li>
+  </ul>
+  <p>40 headlines from the last four weeks, newest first.</p>
+</aside>
+</div>
+<section class="week" aria-labelledby="w2026-47">
+<h2 class="week-head" id="w2026-47"><span>This week, from 16 November 2026</span></h2>
+<div class="cols cols-3">
+  <section class="desk" aria-labelledby="w2026-47-reviews">
+    <h3 id="w2026-47-reviews">Reviews</h3>
+    <ul class="items">
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43045599/" rel="noopener noreferrer">Beyond memory strengthening: noradrenergic control of memory specificity</a></h4><p class="byline"><span class="src">Trends in Neurosciences via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-17">17 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43040089/" rel="noopener noreferrer">Extracellular vesicles and their role in neurodegenerative diseases</a></h4><p class="byline"><span class="src">Nature Reviews Neuroscience via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-16">16 Nov 2026</time></p></li>
+    </ul>
+  </section>
+  <section class="desk" aria-labelledby="w2026-47-research">
+    <h3 id="w2026-47-research">Research</h3>
+    <ul class="items">
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/101719" rel="noopener noreferrer">Decreased astrocytic CCL5 by Mir324 ameliorates ischemic stroke injury via the CCR5/ERK/CREB pathway</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-19">19 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/109811" rel="noopener noreferrer">Rhodopsin 7 is an ancestral non-canonical photoreceptor that shapes light-responsive behavior</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-18">18 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/107980" rel="noopener noreferrer">Perceptual glimpses are locally accumulated and globally maintained at distinct processing levels</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-18">18 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/112181" rel="noopener noreferrer">WNK-SPAK/OSR1 signaling pathway facilitates ictal activity via reduced neuronal chloride extrusion rate</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-17">17 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/110625" rel="noopener noreferrer">Transposons contribute to splice-isoform diversity in the Drosophila brain</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-17">17 Nov 2026</time></p></li>
+    </ul>
+  </section>
+  <section class="desk" aria-labelledby="w2026-47-university">
+    <h3 id="w2026-47-university">University news</h3>
+    <ul class="items">
+      <li><p class="kind">University news office</p><h4 class="hl"><a href="https://news.mit.edu/2026/first-whole-body-single-cell-atlas-adult-vertebrate-1119" rel="noopener noreferrer">Scientists create the first whole-body single-cell atlas of an adult vertebrate</a></h4><p class="byline"><span class="src">MIT News</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-19">19 Nov 2026</time></p></li>
+      <li><p class="kind">University news office</p><h4 class="hl"><a href="https://news.mit.edu/2026/putting-spotlight-ai-society-humanity-1117" rel="noopener noreferrer">Putting a spotlight on AI, society, and humanity</a></h4><p class="byline"><span class="src">MIT News</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-17">17 Nov 2026</time></p></li>
+    </ul>
+  </section>
+</div>
+</section>
+<section class="week" aria-labelledby="w2026-46">
+<h2 class="week-head" id="w2026-46"><span>Week of 9 November 2026</span></h2>
+<div class="cols cols-3">
+  <section class="desk" aria-labelledby="w2026-46-reviews">
+    <h3 id="w2026-46-reviews">Reviews</h3>
+    <ul class="items">
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43026343/" rel="noopener noreferrer">The neuroscience of delirium: a perfect storm for acute brain dysfunction</a></h4><p class="byline"><span class="src">Nature Reviews Neuroscience via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-13">13 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43026342/" rel="noopener noreferrer">The many facets of human brain asymmetry</a></h4><p class="byline"><span class="src">Nature Reviews Neuroscience via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-13">13 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43025014/" rel="noopener noreferrer">Altered ER-mitochondria contact sites in neurons: Mechanisms and functional implications</a></h4><p class="byline"><span class="src">Current Opinion in Neurobiology via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-13">13 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43019692/" rel="noopener noreferrer">Mitochondria on the move: Mitochondrial release and transfer in nervous system health and disease</a></h4><p class="byline"><span class="src">Current Opinion in Neurobiology via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-12">12 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43014281/" rel="noopener noreferrer">Unbundling the ethical and social issues in human neural organoid research</a></h4><p class="byline"><span class="src">Neuron via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-11">11 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43014285/" rel="noopener noreferrer">Neural organoid models of human brain evolution</a></h4><p class="byline"><span class="src">Neuron via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-11">11 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43014282/" rel="noopener noreferrer">Cognitive evaluation of brain organoids and assembloids</a></h4><p class="byline"><span class="src">Neuron via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-11">11 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43014284/" rel="noopener noreferrer">Brain organoids: Experimental access to human-specific brain development</a></h4><p class="byline"><span class="src">Neuron via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-11">11 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43014286/" rel="noopener noreferrer">Advancing brain organoids from disease phenotypes to mechanisms and translation across developmental, infectious, and neurodegenerative diseases</a></h4><p class="byline"><span class="src">Neuron via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-11">11 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43009606/" rel="noopener noreferrer">The cortico-basal ganglia-thalamic network: a connectomic framework</a></h4><p class="byline"><span class="src">Nature Reviews Neuroscience via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-10">10 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43009607/" rel="noopener noreferrer">Network approaches to community detection in nanoscale connectomics</a></h4><p class="byline"><span class="src">Nature Reviews Neuroscience via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-10">10 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/43009411/" rel="noopener noreferrer">Functional brain signatures of successful cognitive aging</a></h4><p class="byline"><span class="src">Trends in Neurosciences via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-10">10 Nov 2026</time></p></li>
+    </ul>
+  </section>
+  <section class="desk" aria-labelledby="w2026-46-research">
+    <h3 id="w2026-46-research">Research</h3>
+    <ul class="items">
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/110559" rel="noopener noreferrer">Synthetic torpor in the rat protects the heart from ischaemia-reperfusion injury</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-12">12 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/108988" rel="noopener noreferrer">Learning-associated flexibility of cortical taste coding is impaired in Shank3 knockout mice</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-12">12 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/108972" rel="noopener noreferrer">Cholinergic blockade reveals a role for human hippocampal theta in memory encoding but not retrieval</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-11">11 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/106826" rel="noopener noreferrer">Midbrain somatostatin-expressing cells control pain-suppression during defensive states</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-10">10 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/109861" rel="noopener noreferrer">Dual-feature selectivity enables bidirectional coding in visual cortical neurons</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-09">9 Nov 2026</time></p></li>
+    </ul>
+  </section>
+</div>
+</section>
+<section class="week" aria-labelledby="w2026-45">
+<h2 class="week-head" id="w2026-45"><span>Week of 2 November 2026</span></h2>
+<div class="cols cols-3">
+  <section class="desk" aria-labelledby="w2026-45-reviews">
+    <h3 id="w2026-45-reviews">Reviews</h3>
+    <ul class="items">
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/42995230/" rel="noopener noreferrer">Single-cell and spatial transcriptomics of cellular heterogeneity in Alzheimer disease</a></h4><p class="byline"><span class="src">Nature Reviews Neuroscience via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-06">6 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/42995135/" rel="noopener noreferrer">Constructing events across perception, action, and thought</a></h4><p class="byline"><span class="src">Trends in Neurosciences via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-06">6 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/42976852/" rel="noopener noreferrer">Hypothalamus-driven brain health through metabolic flexibility</a></h4><p class="byline"><span class="src">Neuron via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-03">3 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/42977603/" rel="noopener noreferrer">Evolving perspectives on cardiac innervation: from relay to a complex regulated network</a></h4><p class="byline"><span class="src">Trends in Neurosciences via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-03">3 Nov 2026</time></p></li>
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/42972121/" rel="noopener noreferrer">The nanotubular network as a new dimension of intercellular communication in the nervous system</a></h4><p class="byline"><span class="src">Nature Reviews Neuroscience via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-02">2 Nov 2026</time></p></li>
+    </ul>
+  </section>
+  <section class="desk" aria-labelledby="w2026-45-research">
+    <h3 id="w2026-45-research">Research</h3>
+    <ul class="items">
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/105507" rel="noopener noreferrer">The resource elasticity of control</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-06">6 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/107651" rel="noopener noreferrer">The hypoxic response extends lifespan through a bioaminergic and peptidergic neural circuit</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-06">6 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/109742" rel="noopener noreferrer">Simple methods to acutely measure multiple timing metrics among the sexual repertoire of male Drosophila</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-06">6 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/110315" rel="noopener noreferrer">Expectation-driven gain modulation of preparatory spatial attention</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-06">6 Nov 2026</time></p></li>
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/108055" rel="noopener noreferrer">Spectraplakin is required for dendritic microtubule organization via a tip-based mechanism in Drosophila</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-05">5 Nov 2026</time></p></li>
+    </ul>
+  </section>
+  <section class="desk" aria-labelledby="w2026-45-university">
+    <h3 id="w2026-45-university">University news</h3>
+    <ul class="items">
+      <li><p class="kind">University news office</p><h4 class="hl"><a href="https://news.mit.edu/2026/sharing-remembrances-susumu-tonegawa-1104" rel="noopener noreferrer">Mentees, colleagues, friends share remembrances of Susumu Tonegawa</a></h4><p class="byline"><span class="src">MIT News</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-11-04">4 Nov 2026</time></p></li>
+    </ul>
+  </section>
+</div>
+</section>
+<section class="week" aria-labelledby="w2026-44">
+<h2 class="week-head" id="w2026-44"><span>Week of 26 October 2026</span></h2>
+<div class="cols cols-2">
+  <section class="desk" aria-labelledby="w2026-44-reviews">
+    <h3 id="w2026-44-reviews">Reviews</h3>
+    <ul class="items">
+      <li><p class="kind">Review article</p><h4 class="hl"><a href="https://pubmed.ncbi.nlm.nih.gov/42962664/" rel="noopener noreferrer">The neurobiology of menopause: Implications for brain aging and Alzheimer&#x27;s risk</a></h4><p class="byline"><span class="src">Neuron via PubMed</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-10-30">30 Oct 2026</time></p></li>
+    </ul>
+  </section>
+  <section class="desk" aria-labelledby="w2026-44-research">
+    <h3 id="w2026-44-research">Research</h3>
+    <ul class="items">
+      <li><p class="kind">Research paper (eLife reviewed preprint)</p><h4 class="hl"><a href="https://elifesciences.org/articles/108212" rel="noopener noreferrer">Oxytocin neurons signal state-dependent transitions from rest to thermogenesis and behavioral arousal</a></h4><p class="byline"><span class="src">eLife</span><span class="sep" aria-hidden="true"> · </span><time datetime="2026-10-30">30 Oct 2026</time></p></li>
+    </ul>
+  </section>
+</div>
+</section>
+<section class="wire" aria-labelledby="wire-head">
+  <h2 id="wire-head">Where these come from</h2>
+  <ul>
+    <li><b>PubMed</b> lists new review articles in five neuroscience review journals. These are Nature Reviews Neuroscience, Annual Review of Neuroscience, Trends in Neurosciences, Neuron and Current Opinion in Neurobiology. Checked 19 November 2026.</li>
+    <li><b>eLife</b> lists new neuroscience papers, published as reviewed preprints. Checked 19 November 2026.</li>
+    <li><b>MIT News</b> lists neuroscience stories from MIT&#x27;s news office. Checked 19 November 2026.</li>
+  </ul>
+</section>
+<!--news:end-->
+
+  <section class="key" aria-labelledby="key-head">
+    <h2 id="key-head">How to read the labels</h2>
+    <dl>
+      <div>
+        <dt>Review article</dt>
+        <dd>Experts sum up many earlier studies on one topic. It is a good place to start.</dd>
+      </div>
+      <div>
+        <dt>Research paper (eLife reviewed preprint)</dt>
+        <dd>This reports one new study. eLife publishes it with its peer reviewers' public comments, which can point out weak spots.</dd>
+      </div>
+      <div>
+        <dt>University news office</dt>
+        <dd>A university writes about its own researchers. These stories are written to promote the work, so read the paper they describe when you can.</dd>
+      </div>
+    </dl>
+  </section>
+</div>
+
+  <footer>
+    <a href="learn.html">Back to Learn</a>
+    <a href="references.html">Sources used on this site</a>
+    <span>Headlines belong to their publishers. No summaries are written here.</span>
+    <span>Educational only. Not medical or veterinary advice.</span>
+    <a href="about.html">About and limits</a>
+  </footer>
+</main>
+</div>
