@@ -1,3 +1,5 @@
+import base64
+import hashlib
 import json
 import re
 import shutil
@@ -149,6 +151,42 @@ class PublicPages(unittest.TestCase):
         self.assertIn("10.1124/pr.109.002451", dois)
         self.assertIn("10.1146/annurev.pharmtox.011008.145533", dois)
 
+    def test_receptor_card_is_sourced_and_loads_only_local_code(self):
+        page = read("pharma")
+        # The caption says what the structure is, where it came from and what it leaves out.
+        for text in ('data-kind="measured"', "PDB 9AS8", "2.54 &Aring;", "cryo-electron microscopy", "mini-Gq",
+                     "is not shown here", "It is drawn as a plain slab", "262 of the receptor&rsquo;s 471 amino acids",
+                     "https://doi.org/10.1038/s41467-025-57956-7"):
+            self.assertIn(text, page)
+        dois = {r.get("doi") for r in json.loads((ROOT / "data" / "references.json").read_text(encoding="utf8"))}
+        self.assertIn("10.1038/s41467-025-57956-7", dois)
+        # three.js r160 is vendored from the npm package, and these are the files' SHA-384 hashes.
+        pinned = {
+            "assets/vendor/three-r160/three.module.min.js": "8/hf5tabFfIo0BPku31TKUvGIKpWGYaMwNtlSNqNyZzXgZCMd4lnOGWbJElML9dv",
+            "assets/vendor/three-r160/loaders/GLTFLoader.js": "oxY9vSeh7Mrt5WmhN8xfWoDRnmoW9krEiRBY7vJKaK90jMUidM0fhbUwcblpBgTu",
+            "assets/vendor/three-r160/utils/BufferGeometryUtils.js": "jHGXS4+FuVOBnZkNme2ury3Ccg5DWDLYK22xX/WGdZCZsjRM4J+3n6Qc4CXx1Hjf",
+            "assets/vendor/three-r160/controls/OrbitControls.js": "qlO/ZugKPxAQUAvTlQoo0QECzxJIJySZmCF/DHdb2Xn/hHndFwX/vfUAC9Hbk6LP",
+        }
+        for path, want in pinned.items():
+            with self.subTest(file=path):
+                got = base64.b64encode(hashlib.sha384((ROOT / path).read_bytes()).digest()).decode()
+                self.assertEqual(got, want)
+        self.assertIn("The MIT License", (ROOT / "assets/vendor/three-r160/LICENSE").read_text(encoding="utf8"))
+        # The viewer imports nothing from outside the repository and respects reduced motion.
+        viewer = (ROOT / "assets" / "receptor-viewer.js").read_text(encoding="utf8")
+        for spec in re.findall(r"from '([^']+)'", viewer):
+            self.assertTrue(spec == "three" or spec.startswith("./vendor/three-r160/"), spec)
+        self.assertNotRegex(viewer, r"https?://")
+        self.assertIn("controls.autoRotate = !reduce", viewer)
+        self.assertIn("IntersectionObserver", viewer)
+        # The page loads the viewer only when asked, and the model stays within its size budget.
+        self.assertIn("import('./assets/receptor-viewer.js')", page)
+        self.assertNotRegex(page, r'<script[^>]+src="[^"]*three')
+        model = (ROOT / "assets" / "models" / "5ht2a-psilocin-9as8.glb").read_bytes()
+        self.assertEqual(model[:4], b"glTF")
+        self.assertLess(len(model), 600_000)
+        self.assertTrue((ROOT / "tools" / "blender" / "receptor_card.py").is_file())
+
     def test_pharmacology_lists_sourced_harms_for_every_class(self):
         page = read("pharma")
         for cid in ["psy", "dis", "stim", "op", "benzo", "cb"]:
@@ -169,8 +207,14 @@ class PublicPages(unittest.TestCase):
     @unittest.skipUnless(shutil.which("node"), "node is not installed")
     def test_inline_scripts_parse(self):
         for name in PUBLIC:
-            scripts = re.findall(r"<script(?![^>]*\bsrc=)[^>]*>(.*?)</script>", read(name), re.S)
-            for i, code in enumerate(scripts):
+            scripts = re.findall(r"<script(?![^>]*\bsrc=)([^>]*)>(.*?)</script>", read(name), re.S)
+            for i, (attrs, code) in enumerate(scripts):
+                if 'type="importmap"' in attrs:
+                    # An import map is JSON, and it may only point at files in this repository.
+                    for url in json.loads(code)["imports"].values():
+                        self.assertTrue(url.startswith("./assets/vendor/"), url)
+                        self.assertTrue((ROOT / url[2:]).is_file(), url)
+                    continue
                 with self.subTest(page=name, script=i), tempfile.NamedTemporaryFile("w", suffix=".js", delete=False) as f:
                     f.write(code)
                 result = subprocess.run(["node", "--check", f.name], capture_output=True, text=True)

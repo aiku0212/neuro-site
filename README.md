@@ -66,3 +66,13 @@ python3 scripts/fetch_news.py      # refresh the News page (about four requests)
 The code is under the [MIT License](LICENSE). The text and original figures are under
 [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Cited papers belong to their
 publishers. The three.js library and the fonts keep their own licenses.
+
+### Third-party material
+
+- **three.js r160** (MIT). The Pharmacology receptor card uses four files copied from the
+  npm package `three@0.160.0` into `assets/vendor/three-r160/`, with its license. The tests
+  pin their hashes. The Spines page still loads three.js r160 from cdnjs.
+- **Protein structure 9AS8** from the Protein Data Bank, which releases its data to the
+  public domain (CC0). The structure is from Gumpper et al., *Nature Communications* 2025.
+- **Blender 5.2.4 and Molecular Nodes 520.2.0** were used to turn the structure into the
+  image and 3D model. `tools/blender/` holds the script and the steps to rebuild them.
