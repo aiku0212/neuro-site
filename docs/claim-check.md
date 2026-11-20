@@ -141,3 +141,19 @@ Several items are still open from this pass. On the Comparative page, gabapentin
 | Seven landmark coordinates | Each checked visually on three-plane crops of the processed file and by the tissue under it. A unit test checks the tissue |
 | The cerebellum holds about four in five of the brain's neurons | Azevedo et al. 2009: about 69 of 86 billion |
 | Template's age range | Not stated on the page because the McGill page read for this does not give it |
+
+## Recordings page (2026-11-20)
+
+| Claim | Basis |
+|---|---|
+| Both datasets are under the Open Data Commons Attribution License v1.0, with the citations shown | PhysioNet dataset pages for eegmmidb 1.0.0 and mitdb 1.0.0, read 2026-11-20 |
+| Run 1 is eyes open and run 2 eyes closed | eegmmidb dataset description |
+| Alpha power 14.3 times higher with eyes closed, peak 10.0 Hz | Computed by `tools/recordings/prep_recordings.py` for this one subject |
+| Berger reported a rhythm of about ten per second in 1929 | Berger 1929 |
+| Eyes-closed alpha is largest over the back of the head | Barry et al. 2007 abstract |
+| EEG reflects summed synaptic currents of aligned pyramidal cells, not single spikes; poor at locating sources | Buzsáki et al. 2012 |
+| Beat labels (N, V) | Cardiologist annotations in the MIT-BIH `.atr` files. The reader's counts match the database's published totals (record 100: 2239 N, 33 A, 1 V; record 119: 1543 N, 444 V) |
+| P = atria depolarise, QRS = ventricles depolarise with atrial repolarisation hidden, T = ventricular repolarisation; AV node delay | Kligfield et al. 2007 |
+| Premature ventricular complexes come early, lack a preceding P wave, are wide, are often followed by a pause, and are common and often benign | Marcus 2020 |
+| Lead II lies roughly along the heart's main axis | Standard: lead II is at +60°, near the normal mean axis. MIT-BIH uses a modified lead II |
+| Wave positions on the average beat (P −175, Q −25, R 0, S 22, T 356 ms) | Peak search in fixed windows on the average of 2,169 normal beats. Checked by eye on the plot |
