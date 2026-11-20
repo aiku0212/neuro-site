@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "references", "about",
-          "learn", "conditioning", "news", "scans", "recordings"]
+          "learn", "conditioning", "news", "scans", "recordings", "sleep"]
 NOT_PUBLISHED = ["explore", "morphometry"]
 
 
@@ -92,9 +92,9 @@ class PublicPages(unittest.TestCase):
 
     def test_learn_hub_links_every_learn_page(self):
         hub = read("learn")
-        for name in ["conditioning", "news", "scans", "recordings"]:
+        for name in ["conditioning", "news", "scans", "recordings", "sleep"]:
             self.assertIn(f'href="{name}.html"', hub)
-        for name in ["learn", "conditioning", "news", "scans", "recordings"]:
+        for name in ["learn", "conditioning", "news", "scans", "recordings", "sleep"]:
             nav = re.search(r'<nav class="tabs".*?</nav>', read(name), re.S).group(0)
             self.assertIn('<a class="tab" href="learn.html" aria-current="true">Learn</a>', nav)
 
@@ -109,7 +109,7 @@ class PublicPages(unittest.TestCase):
         self.assertIn("cp -R assets _site/", workflow)
 
     def test_visuals_say_what_they_are(self):
-        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning", "scans", "recordings"]:
+        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning", "scans", "recordings", "sleep"]:
             with self.subTest(page=name):
                 self.assertRegex(read(name), r'class="fig-kind" data-kind="(schematic|simulation|drawing|measured)"')
 
@@ -204,6 +204,41 @@ class PublicPages(unittest.TestCase):
         self.assertIn('fetch("assets/recordings/recordings.json")', page)
         self.assertNotRegex(page, r'src="https?://')
         self.assertIn("still: reduce", page)
+
+    def test_sleep_page_uses_scored_data_and_cites_every_finding(self):
+        page = read("sleep")
+        data = json.loads((ROOT / "assets" / "recordings" / "sleep.json").read_text(encoding="utf8"))
+        self.assertTrue((ROOT / "assets" / "recordings" / "sleep-spectrogram.png").read_bytes().startswith(b"\x89PNG"))
+        self.assertLess((ROOT / "assets" / "recordings" / "sleep.json").stat().st_size, 250_000)
+        self.assertTrue((ROOT / "tools" / "recordings" / "prep_sleep.py").is_file())
+        # One label per 30 s epoch, with the experts' own R&K codes, and an example of each stage.
+        self.assertEqual(data["epoch_s"], 30)
+        self.assertTrue(set(data["stages"]) <= set("W1234R?M"))
+        for code, ex in data["examples"].items():
+            with self.subTest(stage=code):
+                self.assertEqual(data["stages"][ex["epoch"]], code)
+                for trace in ex["traces"].values():
+                    self.assertEqual(len(trace), 3000)
+        # The night's own numbers quoted on the page match the data.
+        s = data["stages"]; asleep = [i for i, c in enumerate(s) if c in "1234R"]
+        mid = (asleep[0] + asleep[-1]) / 2
+        deep = [i for i in asleep if s[i] in "34"]
+        self.assertIn("%d of the %d deep-sleep epochs" % (sum(i < mid for i in deep), len(deep)), page)
+        # Every citation number points at a listed reference, every reference is cited, and each has a DOI.
+        cited = {int(n) for n in re.findall(r'href=\\?"#r-(\d+)', page)}   # also inside the JSON stage notes
+        listed = re.findall(r'<li id="r-(\d+)">(.*?)</li>', page, re.S)
+        self.assertEqual(cited, {int(n) for n, _ in listed})
+        dois = {r.get("doi", "").lower() for r in json.loads((ROOT / "data" / "references.json").read_text(encoding="utf8"))}
+        for n, body in listed:
+            doi = re.search(r'href="https://doi.org/([^"]+)"', body).group(1)
+            with self.subTest(ref=n):
+                self.assertIn(doi.lower(), dois)
+        # Null and contested results are labelled, and the page is not advice.
+        self.assertIn('data-support="contested"', page)
+        self.assertIn('data-support="weak"', page)
+        self.assertIn("Open Data Commons Attribution License v1.0", page)
+        self.assertIn("is not advice about", page)
+        self.assertNotRegex(page, r'src="https?://')
 
     def test_explore_membrane_shows_basic_glutamate_receptors(self):
         page = read("app")
@@ -347,8 +382,16 @@ class PublicPages(unittest.TestCase):
 
     def test_visuals_have_text_for_screen_readers(self):
         for name in PUBLIC:
-            for tag in re.findall(r"<canvas\b[^>]*>", read(name)):
+            page = read(name)
+            for tag in re.findall(r"<canvas\b[^>]*>", page):
                 with self.subTest(page=name, canvas=tag[:40]):
+                    if 'aria-hidden="true"' in tag:
+                        # Allowed only inside a keyboard slider that is described in words elsewhere.
+                        slider = re.search(r'role="slider"[^>]*aria-describedby="([^"]+)"', page)
+                        self.assertIsNotNone(slider)
+                        desc = re.search(r'id="%s"[^>]*>([^<]{80,})<' % slider.group(1), page)
+                        self.assertIsNotNone(desc)
+                        continue
                     self.assertIn('role="img"', tag)
                     self.assertRegex(tag, r'aria-label="[^"]{20,}"')
 

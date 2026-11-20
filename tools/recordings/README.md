@@ -18,3 +18,20 @@ Run with any Python that has numpy:
 
 The annotation reader's beat counts match the database's published totals, which is the check that it reads
 the format correctly.
+
+## Sleep page
+
+`prep_sleep.py` makes `assets/recordings/sleep.json` and `sleep-spectrogram.png` from one night of the
+Sleep-EDF Database Expanded (PhysioNet, Open Data Commons Attribution License v1.0, doi 10.13026/C2X676),
+recording SC4001, scored by experts with the Rechtschaffen & Kales rules.
+
+| File | SHA-256 |
+|---|---|
+| sleep-edfx/1.0.0/sleep-cassette/SC4001E0-PSG.edf | 2b40a18adf76af69a42d6db1f30f31d26b369f6d27ca0050ef30147ef892b131 |
+| sleep-edfx/1.0.0/sleep-cassette/SC4001EC-Hypnogram.edf | a4cf67694ade1b52a0ddd06d5817fd45d2d3e8bac5302f640f3e9cfbbf12a996 |
+
+It keeps 30 minutes either side of sleep, and picks one clear 30 s example per stage from inside a run of
+that stage, by the feature that defines it: alpha at the back of the head (awake, before sleep), theta (stage 1),
+spindle-band power (stage 2), slow-wave power (stage 4) and eye-movement size (REM).
+
+    python3 tools/recordings/prep_sleep.py <folder with the two files> assets/recordings

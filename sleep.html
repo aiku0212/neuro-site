@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sleep and Memory · Neuroscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="A real night of sleep, stage by stage, from PhysioNet, and what the evidence says about sleep and memory, including the results that did not hold up.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neuroscope">
+<meta property="og:title" content="Sleep and Memory · Neuroscope">
+<meta property="og:description" content="A real night of sleep, stage by stage, from PhysioNet, and what the evidence says about sleep and memory, including the results that did not hold up.">
+<meta property="og:url" content="https://aiku0212.github.io/neuro-site/sleep.html">
+<meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Neuroscope: interactive models of the brain, neurons and synapses, and an evidence review of neuroplasticity.">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root{
+    --ground:#f6f7f9; --ground-2:#ffffff; --ground-3:#eceff3;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --violet:#5a47a0; --amber:#b24e33; --teal:#2d6a8f;
+    --rule:#dde2e8;
+    --shadow:0 18px 40px -22px rgba(31,42,53,.22);
+    --s-w:#d9a441; --s-r:#c0573a; --s-1:#86acd6; --s-2:#4f7fb8; --s-3:#2c4f86;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--ground)}
+  .wrap{background:var(--ground); color:var(--ink); min-height:100vh;
+    font:400 16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; overflow-x:clip}
+  .bar{position:sticky; top:0}
+  @media (max-width:640px){.bar{position:static}}
+  [hidden]{display:none !important}
+
+  main{max-width:1080px; margin:0 auto; padding:0 16px 90px}
+  .mast{padding:52px 0 26px; border-bottom:1px solid var(--rule); margin-bottom:30px}
+  .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--amber); margin:0 0 14px}
+  h1{font-size:clamp(30px,5.2vw,52px); line-height:1.08; margin:0 0 16px; font-weight:400}
+  .lede{font-size:clamp(16px,2vw,18px); color:var(--ink-2); max-width:62ch; margin:0}
+  .mast .fig-note{margin-top:14px; max-width:66ch}
+  h2{font-size:28px; font-weight:400; margin:56px 0 6px}
+  h2.first{margin-top:10px}
+  h3{font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); margin:0 0 10px; font-weight:600}
+  p{max-width:66ch; color:var(--ink-2)}
+
+  .lab{background:var(--ground-2); border:1px solid var(--rule); border-radius:14px; padding:16px;
+    box-shadow:var(--shadow); margin-top:18px}
+  .night{position:relative; touch-action:pan-y; cursor:pointer; user-select:none; -webkit-user-select:none}
+  html{scroll-padding-top:72px}
+  @media (max-width:640px){html{scroll-padding-top:0}}
+  .key i{outline:1px solid rgba(31,42,53,.25)}
+  .night canvas{display:block; width:100%}
+  #hyp{height:150px}
+  #spec{height:120px; margin-top:6px; border-radius:6px}
+  .axis{display:flex; justify-content:space-between; font-size:11.5px; color:var(--muted); margin-top:4px; font-variant-numeric:tabular-nums}
+  .key{display:flex; flex-wrap:wrap; gap:4px 16px; font-size:12.5px; color:var(--ink-2); margin-top:10px}
+  .key i{display:inline-block; width:12px; height:12px; border-radius:3px; margin-right:6px; vertical-align:-2px}
+  .note{font-size:12.5px; color:var(--muted); margin:10px 0 0; max-width:none}
+  .ctls{display:flex; flex-wrap:wrap; gap:6px; align-items:center; margin-top:14px}
+  .ctls .sp{flex:1}
+  .trace{background:#0f1a17; border-radius:10px; margin-top:12px; position:relative}
+  .trace canvas{display:block; width:100%; height:300px}
+  @media (max-width:640px){ .trace canvas{height:260px} }
+  .say{background:var(--ground-3); border-radius:10px; padding:12px 14px; font-size:14.5px; line-height:1.55; color:var(--ink-2); margin-top:12px; min-height:5.2em}
+  .say b{color:var(--ink)}
+  .stats{display:grid; grid-template-columns:repeat(auto-fit,minmax(120px,1fr)); gap:10px; margin-top:14px}
+  .stats div{background:var(--ground); border:1px solid var(--rule); border-radius:10px; padding:10px 12px}
+  .stats b{display:block; font:600 20px/1.2 var(--f-head); color:var(--ink)}
+  .stats span{font-size:12px; color:var(--muted)}
+
+  .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,300px),1fr)); gap:16px; margin-top:16px}
+  .card{background:var(--ground-2); border:1px solid var(--rule); padding:16px 18px}
+  .card p{font-size:14.5px; margin:0}
+  .card p + p{margin-top:10px}
+  .ev-row{display:flex; gap:8px; align-items:center; margin:0 0 8px; flex-wrap:wrap}
+  .ev[data-support="solid"]{background:#e2f0e6; color:#2b6a3f}
+  .ev[data-support="debated"]{background:#e6eef5; color:#235673}
+  .ev[data-support="contested"]{background:#f8e8e1; color:#8a3f24}
+  .ev[data-support="weak"]{background:#eceff3; color:#4d5a67}
+  sup{font-size:.72em; line-height:0}
+  sup a{text-decoration:none}
+  .caveat{background:#fbf1ec; border:1px solid #efd3c6; border-left:3px solid var(--amber); padding:14px 16px; margin-top:18px; font-size:14.5px; color:var(--ink-2)}
+  .refs{padding-left:20px; max-width:80ch}
+  .refs li{font-size:14px; color:var(--ink-2); margin:0 0 8px; overflow-wrap:anywhere}
+  footer{border-top:1px solid var(--rule); margin-top:60px; padding:22px 0;
+    font-size:12px; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
+  footer a{color:var(--ink-2)}
+</style>
+<link rel="stylesheet" href="assets/atlas.css">
+
+<div class="wrap">
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="learn.html" aria-current="true">Learn</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
+  </nav>
+</div>
+<script src="assets/nav.js" defer></script>
+
+<main>
+  <div class="mast">
+    <p class="eyebrow mono">Sleep · Memory</p>
+    <h1 class="serif">One night of sleep, <em>stage by stage</em></h1>
+    <p class="lede">Sleep is not one state. Through the night the brain moves through distinct stages, each
+      with its own electrical signature. Below is a real night, recorded at home and scored by sleep experts
+      thirty seconds at a time. After it comes what the evidence says, and does not say, about sleep and memory.</p>
+    <p class="fig-note"><span class="fig-kind" data-kind="measured">Measured</span>
+      A real overnight recording from PhysioNet's Sleep-EDF database, with the experts' own stage labels.
+      Filtered to remove slow drift and noise.</p>
+  </div>
+
+  <h2 class="serif first">The night</h2>
+  <p>The night comes from the Sleep-EDF Expanded database on PhysioNet. Its home recordings were made in
+    1987 to 1991 by healthy volunteers taking no sleep medication. All were described as white, so the group is
+    not diverse. Technicians scored each night by eye, one 30-second page (an epoch) at a time, using the 1968
+    Rechtschaffen and Kales rules. Those rules have stages 1 to 4 and REM.<sup><a href="#r-1">1</a>,<a href="#r-2">2</a></sup> This is one
+    person's night. Nights differ between people and from night to night.</p>
+
+  <section class="lab" aria-label="One night of sleep">
+    <div class="night" id="night" tabindex="0" role="slider" aria-label="Moment in the night"
+      aria-valuemin="0" aria-valuemax="0" aria-valuenow="0" aria-describedby="night-desc">
+      <canvas id="hyp" aria-hidden="true"></canvas>
+      <canvas id="spec" aria-hidden="true"></canvas>
+    </div>
+    <p id="night-desc" hidden>Hypnogram of one night: the sleep stage of every 30-second stretch, from falling
+      asleep after midnight to waking in the morning. In this night most deep sleep came in the first half. Below it,
+      a spectrogram of the frontal EEG, brightest at low frequencies during deep sleep. Arrow keys move 30 seconds,
+      Page Up and Page Down move 10 minutes.</p>
+    <div class="axis" id="axis" aria-hidden="true"></div>
+    <div class="key" aria-hidden="true">
+      <span><i style="background:var(--s-w)"></i>Awake</span>
+      <span><i style="background:var(--s-r)"></i>REM</span>
+      <span><i style="background:var(--s-1)"></i>Stage 1</span>
+      <span><i style="background:var(--s-2)"></i>Stage 2</span>
+      <span><i style="background:var(--s-3)"></i>Deep sleep (stages 3 and 4)</span>
+    </div>
+    <p class="note">Top: the stage of every 30-second epoch. Bottom: a spectrogram of the frontal EEG, time left to
+      right and frequency from 0.5 Hz at the bottom to 25 Hz at the top. Brighter means more power. Click or drag
+      across the night to see the recording at that moment.</p>
+
+    <div class="ctls" role="group" aria-label="Jump to a stage">
+      <button class="btn" data-stage="W" aria-pressed="false">Awake</button>
+      <button class="btn" data-stage="1" aria-pressed="false">Stage 1</button>
+      <button class="btn" data-stage="2" aria-pressed="false">Stage 2</button>
+      <button class="btn" data-stage="4" aria-pressed="false">Deep sleep</button>
+      <button class="btn" data-stage="R" aria-pressed="false">REM</button>
+    </div>
+    <div class="trace">
+      <canvas id="tr" role="img" aria-label="Thirty seconds of the recording at the chosen moment: two EEG channels and the eye-movement channel."></canvas>
+    </div>
+    <div class="say" id="say" aria-live="polite">Pick a stage to see a clear example of it.</div>
+    <div class="stats" id="stats"></div>
+  </section>
+
+  <div class="cols">
+    <div class="card">
+      <h3>Old rules and new rules</h3>
+      <p>In 2007 the American Academy of Sleep Medicine published new rules with five stages: W, N1, N2, N3 and R.
+        Old stages 3 and 4 were merged into one deep-sleep stage, N3, because the task force found no evidence for
+        splitting deep sleep in two. 'Movement time' was dropped. Four years after the new rules came out, the
+        merger was among the changes critics cited most often.<sup><a href="#r-2">2</a>,<a href="#r-3">3</a></sup></p>
+      <p>The two rule sets give similar but not identical results. When nights from 72 adults were scored both ways,
+        the new rules gave about 9 more minutes of deep sleep, 11 more of N1 and 20 fewer of N2. Total sleep time did
+        not change.<sup><a href="#r-4">4</a></sup></p>
+    </div>
+    <div class="card">
+      <h3>Experts disagree too</h3>
+      <p>In an AASM program, more than 2,500 scorers each staged the same 1,800 epochs. On average a scorer matched
+        the most popular answer about 83% of the time. Agreement was lowest for N1 (63%) and N3 (67%) and highest for
+        REM. Telling N2 from N3 was especially hard.<sup><a href="#r-5">5</a></sup></p>
+      <p>Under the old rules used for this night, scoring was least consistent for stage 1 and only moderately
+        consistent for deep sleep, so the labels above carry some uncertainty.<sup><a href="#r-2">2</a></sup></p>
+    </div>
+    <div class="card">
+      <h3>Cycles through the night</h3>
+      <p>Sleep runs in cycles of non-REM followed by REM. In lab recordings pooled from 369 healthy people, the
+        typical cycle lasted about 96 minutes. It varied a lot from person to person, and the first cycle was usually
+        shorter.<sup><a href="#r-6">6</a></sup></p>
+      <p>In this night, 173 of the 220 deep-sleep epochs (79%) came in the first half of the time asleep. REM was
+        split more evenly: 67 of its 125 epochs (54%) came in the second half.</p>
+    </div>
+    <div class="card">
+      <h3>Electrodes and age</h3>
+      <p>These recordings used a forehead-to-crown lead and a back-of-head lead, not the usual lead from the centre of
+        the scalp to behind the ear. A
+        test in 10 patients found that switching leads changed the scoring about as much as switching between two
+        human scorers, with a slight tendency to score sleep as deeper.<sup><a href="#r-7">7</a></sup></p>
+      <p>Sleep also changes with age. Across 65 studies of 3,577 healthy people, the share of deep sleep and REM
+        tends to fall through adulthood, while light sleep and waking in the night rise. How large the changes were
+        depended a lot on how carefully people were screened for health problems.<sup><a href="#r-8">8</a></sup></p>
+    </div>
+  </div>
+
+  <h2 class="serif">Sleep and memory: what the evidence says</h2>
+  <p>Research on sleep and memory goes back about a century. One of the first studies comparing forgetting during
+    sleep and waking was published in 1924.<sup><a href="#r-9">9</a></sup> Below, each finding is labelled by how well it holds up.
+    Some well-known results have shrunk or failed to repeat, and they are listed here too.</p>
+  <div class="cols">
+    <div class="card">
+      <div class="ev-row"><span class="ev" data-support="solid">Holds up, smaller than first thought</span></div>
+      <h3>Sleep after learning helps, modestly</h3>
+      <p>On average, people remember more after a period of sleep than after the same time awake. A meta-analysis pooled 271 groups from 177 studies published from 1967 to 2019 and found a moderate advantage for sleep. After correcting for studies with weak results going unpublished, the advantage shrank to small, but did not disappear.<sup><a href="#r-10">10</a></sup></p>
+      <p>It was larger when people studied the material more than once, and after a night of sleep than after a daytime nap. These patterns come from comparing different studies, so they are clues, not proof.<sup><a href="#r-10">10</a></sup> Afternoon naps also showed a small-to-medium benefit across 54 studies.<sup><a href="#r-11">11</a></sup></p>
+    </div>
+    <div class="card">
+      <div class="ev-row"><span class="ev" data-support="debated">Theory, partly tested</span></div>
+      <h3>Why it helps is still debated</h3>
+      <p>An older idea is that sleep simply shields new memories from new information. A newer one, 'active systems consolidation', says that during deep sleep the hippocampus replays recent experiences, and sleep rhythms steer that information into networks in the cortex, often keeping the gist rather than every detail.<sup><a href="#r-12">12</a>,<a href="#r-13">13</a></sup></p>
+      <p>In people with epilepsy who had electrodes placed in the hippocampus for their treatment, recordings show the rhythms nested in time: spindles during the 'up' phase of slow waves, and fast ripples in the troughs of spindles. That shows the timing exists. It does not, on its own, show that the timing improves memory.<sup><a href="#r-14">14</a></sup></p>
+    </div>
+    <div class="card">
+      <div class="ev-row"><span class="ev" data-support="solid">Causal, in rats and mice</span></div>
+      <h3>Rodent experiments show cause</h3>
+      <p>In rats, disrupting hippocampal ripples after training made spatial memory worse.<sup><a href="#r-15">15</a></sup> Timed pulses during sleep that strengthened the coupling of ripples with cortical slow waves and spindles improved next-day memory.<sup><a href="#r-16">16</a></sup> In mice, triggering spindles in step with slow waves improved memory, and suppressing them made it worse.<sup><a href="#r-17">17</a></sup></p>
+      <p>These experiments are strong evidence that the rhythms matter, mostly for spatial memory, in rodents.</p>
+    </div>
+    <div class="card">
+      <div class="ev-row"><span class="ev" data-support="contested">Contested</span></div>
+      <h3>Do spindles predict memory in people?</h3>
+      <p>A 2023 meta-analysis of 53 studies found a small-to-moderate link between spindles and memory, stronger for skills than for facts.<sup><a href="#r-18">18</a></sup> A reanalysis argued that once publication bias is corrected for, the link disappears.<sup><a href="#r-19">19</a></sup></p>
+      <p>A 2025 meta-analysis of 23 studies found that tighter timing between slow waves and spindles goes along with better retention.<sup><a href="#r-20">20</a></sup> Spindle activity also tracks general thinking ability across people, so some links may reflect stable traits rather than overnight memory work.<sup><a href="#r-21">21</a></sup> All of these are associations, not proof of cause.</p>
+    </div>
+    <div class="card">
+      <div class="ev-row"><span class="ev" data-support="weak">Did not hold up reliably</span></div>
+      <h3>Boosting slow waves with sound</h3>
+      <p>In 2013, sounds timed to the 'up' phase of sleepers' slow waves strengthened the waves and improved memory for word pairs in a small study.<sup><a href="#r-22">22</a></sup> A double-blind repeat with 19 people boosted the waves but not memory.<sup><a href="#r-23">23</a></sup></p>
+      <p>Across 11 experiments, the memory benefit was small and not statistically significant.<sup><a href="#r-24">24</a></sup> Another meta-analysis found the reported benefit shrank steadily with year of publication.<sup><a href="#r-25">25</a></sup></p>
+    </div>
+    <div class="card">
+      <div class="ev-row"><span class="ev" data-support="solid">Small but reliable on average</span></div>
+      <h3>Cueing memories during sleep</h3>
+      <p>In targeted memory reactivation, a sound or smell present during learning is given again during sleep, gently enough not to wake the sleeper. Odour cues during deep sleep improved memory in 2007,<sup><a href="#r-26">26</a></sup> and sound cues strengthened single memories in 2009.<sup><a href="#r-27">27</a></sup></p>
+      <p>A 2020 meta-analysis of 91 experiments with about 2,000 people found a small average benefit for cueing in non-REM sleep, and no clear benefit for cueing in REM sleep or while awake.<sup><a href="#r-28">28</a></sup> Several studies found no benefit, for example in 11 to 13 year olds learning vocabulary and in adults over 60.<sup><a href="#r-29">29</a>,<a href="#r-30">30</a>,<a href="#r-31">31</a></sup> For now it is a research tool, not a proven way to study.</p>
+    </div>
+    <div class="card">
+      <div class="ev-row"><span class="ev" data-support="contested">Contested</span></div>
+      <h3>Is REM sleep needed for memory?</h3>
+      <p>A 2001 review judged the evidence weak and contradictory. It noted that people whose REM sleep is suppressed by drugs or brain injury do not show memory deficits.<sup><a href="#r-32">32</a></sup> In one lab study, antidepressants that cut REM after learning did not harm memory for skills or word pairs.<sup><a href="#r-33">33</a></sup> Another antidepressant impaired one kind of visual skill learning, so the picture is mixed.<sup><a href="#r-34">34</a></sup></p>
+      <p>On the other side, quieting a REM-sleep brain rhythm in mice after learning impaired their memory, while quieting it outside REM did not.<sup><a href="#r-35">35</a></sup> Meta-analyses found no overall extra benefit of sleep for emotional over neutral memories.<sup><a href="#r-36">36</a>,<a href="#r-37">37</a></sup></p>
+    </div>
+    <div class="card">
+      <div class="ev-row"><span class="ev" data-support="contested">Contested</span></div>
+      <h3>Skills: an open question</h3>
+      <p>A meta-analysis of finger-sequence learning found large gains after sleep at first glance. Once testing artifacts were taken into account, it found no evidence that sleep improves the skill.<sup><a href="#r-38">38</a></sup> Other researchers challenged parts of that analysis, and the authors replied that their result held.<sup><a href="#r-39">39</a>,<a href="#r-40">40</a></sup></p>
+    </div>
+    <div class="card">
+      <div class="ev-row"><span class="ev" data-support="solid">Fairly consistent, likely overstated</span></div>
+      <h3>Losing sleep before learning</h3>
+      <p>People kept awake all night showed less hippocampal activity while learning and remembered less later.<sup><a href="#r-41">41</a></sup> Across studies from 1970 to 2020, a night without sleep before learning was linked to a medium-sized drop in memory, and missing sleep after learning to a smaller one. Signs of publication bias and small studies mean the true effects may be smaller.<sup><a href="#r-42">42</a></sup></p>
+      <p>Partial sleep loss matters too: sleeping 3 to 6.5 hours, compared with 7 to 11, caused a small drop in forming new memories across 39 reports.<sup><a href="#r-43">43</a></sup></p>
+    </div>
+  </div>
+  <div class="caveat"><b>Bottom line.</b> Most evidence suggests sleep helps memory to some degree, but the effects
+    look smaller, more dependent on the task and less tied to deep sleep than early studies suggested. Sleep-memory
+    researchers themselves have called for more repeat studies and higher standards.<sup><a href="#r-44">44</a></sup>
+    Whether REM sleep in particular is needed is still debated. This page is educational and is not advice about
+    sleep problems. If you have trouble sleeping, talk to a doctor.</div>
+
+  <h2 class="serif">Data and sources</h2>
+  <p>Recording: Sleep-EDF Database Expanded, recording SC4001, from PhysioNet under the
+    <a href="https://opendatacommons.org/licenses/by/1-0/">Open Data Commons Attribution License v1.0</a>.
+    Channels: EEG Fpz-Cz and Pz-Oz and horizontal EOG, 100 samples per second, filtered 0.3–35 Hz (zero phase).
+    The view runs from 30 minutes before the first sleep to 30 minutes after the last. Each stage example is one
+    epoch from inside a run of that stage, chosen by the feature that defines it, so they are clear examples rather
+    than typical ones. The spectrogram uses Welch's method with 4-second windows for each 30-second epoch. The script
+    is <code>tools/recordings/prep_sleep.py</code> in this site's repository.<sup><a href="#r-1">1</a>,<a href="#r-47">47</a></sup></p>
+  <ol class="refs">
+    <li id="r-1">Kemp B, Zwinderman A, Tuk B, Kamphuisen H, Oberyé J (2018). Sleep-EDF Database Expanded (version 1.0.0). <em>PhysioNet</em>. <a href="https://doi.org/10.13026/C2X676">doi.org/10.13026/C2X676</a></li>
+    <li id="r-2">Silber MH, Ancoli-Israel S, Bonnet MH, et al (2007). The Visual Scoring of Sleep in Adults. <em>Journal of Clinical Sleep Medicine</em> 3:121-131. <a href="https://doi.org/10.5664/jcsm.26814">doi.org/10.5664/jcsm.26814</a></li>
+    <li id="r-3">Grigg-Damberger MM (2012). The AASM Scoring Manual Four Years Later. <em>Journal of Clinical Sleep Medicine</em> 8:323-332. <a href="https://doi.org/10.5664/jcsm.1928">doi.org/10.5664/jcsm.1928</a></li>
+    <li id="r-4">Moser D, Anderer P, Gruber G, et al (2009). Sleep classification according to AASM and Rechtschaffen &amp; Kales: effects on sleep scoring parameters. <em>Sleep</em> 32:139-149. <a href="https://doi.org/10.1093/sleep/32.2.139">doi.org/10.1093/sleep/32.2.139</a></li>
+    <li id="r-5">Rosenberg RS, Van Hout S (2013). The American Academy of Sleep Medicine Inter-scorer Reliability Program: Sleep Stage Scoring. <em>Journal of Clinical Sleep Medicine</em> 9:81-87. <a href="https://doi.org/10.5664/jcsm.2350">doi.org/10.5664/jcsm.2350</a></li>
+    <li id="r-6">Cajochen C, Reichert CF, Münch M, Gabel V, Stefani O, Chellappa SL, Schmidt C (2024). Ultradian sleep cycles: Frequency, duration, and associations with individual and environmental factors-A retrospective study. <em>Sleep Health</em> 10:S52-S62. <a href="https://doi.org/10.1016/j.sleh.2023.09.002">doi.org/10.1016/j.sleh.2023.09.002</a></li>
+    <li id="r-7">van Sweden B, Kemp B, Kamphuisen HA, Van der Velde EA (1990). Alternative electrode placement in (automatic) sleep scoring (Fpz-Cz/Pz-Oz versus C4-A1). <em>Sleep</em> 13:279-283. <a href="https://doi.org/10.1093/sleep/13.3.279">doi.org/10.1093/sleep/13.3.279</a></li>
+    <li id="r-8">Ohayon MM, Carskadon MA, Guilleminault C, Vitiello MV (2004). Meta-analysis of quantitative sleep parameters from childhood to old age in healthy individuals: developing normative sleep values across the human lifespan. <em>Sleep</em> 27:1255-1273. <a href="https://doi.org/10.1093/sleep/27.7.1255">doi.org/10.1093/sleep/27.7.1255</a></li>
+    <li id="r-9">Jenkins JG, Dallenbach KM (1924). Obliviscence during Sleep and Waking. <em>The American Journal of Psychology</em> 35:605 (first page only; issue 4). <a href="https://doi.org/10.2307/1414040">doi.org/10.2307/1414040</a></li>
+    <li id="r-10">Berres S, Erdfelder E (2021). The sleep benefit in episodic memory: An integrative review and a meta-analysis. <em>Psychological Bulletin</em> 147:1309-1353. <a href="https://doi.org/10.1037/bul0000350">doi.org/10.1037/bul0000350</a></li>
+    <li id="r-11">Leong RLF, Lo JC, Chee MWL (2022). Systematic review and meta-analyses on the effects of afternoon napping on cognition. <em>Sleep Medicine Reviews</em> 65:101666. <a href="https://doi.org/10.1016/j.smrv.2022.101666">doi.org/10.1016/j.smrv.2022.101666</a></li>
+    <li id="r-12">Rasch B, Born J (2013). About sleep&#x27;s role in memory. <em>Physiological Reviews</em> 93:681-766. <a href="https://doi.org/10.1152/physrev.00032.2012">doi.org/10.1152/physrev.00032.2012</a></li>
+    <li id="r-13">Klinzing JG, Niethard N, Born J (2019). Mechanisms of systems memory consolidation during sleep. <em>Nature Neuroscience</em> 22:1598-1610. <a href="https://doi.org/10.1038/s41593-019-0467-3">doi.org/10.1038/s41593-019-0467-3</a></li>
+    <li id="r-14">Staresina BP, Bergmann TO, Bonnefond M, et al (2015). Hierarchical nesting of slow oscillations, spindles and ripples in the human hippocampus during sleep. <em>Nature Neuroscience</em> 18:1679-1686. <a href="https://doi.org/10.1038/nn.4119">doi.org/10.1038/nn.4119</a></li>
+    <li id="r-15">Girardeau G, Benchenane K, Wiener SI, Buzsáki G, Zugaro MB (2009). Selective suppression of hippocampal ripples impairs spatial memory. <em>Nature Neuroscience</em> 12:1222-1223. <a href="https://doi.org/10.1038/nn.2384">doi.org/10.1038/nn.2384</a></li>
+    <li id="r-16">Maingret N, Girardeau G, Todorova R, Goutierre M, Zugaro M (2016). Hippocampo-cortical coupling mediates memory consolidation during sleep. <em>Nature Neuroscience</em> 19:959-964. <a href="https://doi.org/10.1038/nn.4304">doi.org/10.1038/nn.4304</a></li>
+    <li id="r-17">Latchoumane CV, Ngo HV, Born J, Shin HS (2017). Thalamic Spindles Promote Memory Formation during Sleep through Triple Phase-Locking of Cortical, Thalamic, and Hippocampal Rhythms. <em>Neuron</em> 95:424-435.e6. <a href="https://doi.org/10.1016/j.neuron.2017.06.025">doi.org/10.1016/j.neuron.2017.06.025</a></li>
+    <li id="r-18">Kumral D, Matzerath A, Leonhart R, Schönauer M (2023). Spindle-dependent memory consolidation in healthy adults: A meta-analysis. <em>Neuropsychologia</em> 189:108661. <a href="https://doi.org/10.1016/j.neuropsychologia.2023.108661">doi.org/10.1016/j.neuropsychologia.2023.108661</a></li>
+    <li id="r-19">Ujma PP (2024). Meta-analytic evidence suggests no correlation between sleep spindles and memory. <em>Neuropsychologia</em> 198:108886. <a href="https://doi.org/10.1016/j.neuropsychologia.2024.108886">doi.org/10.1016/j.neuropsychologia.2024.108886</a></li>
+    <li id="r-20">Ng T, Noh E, Spencer RMC (2025). Bayesian meta-analysis reveals the mechanistic role of slow oscillation-spindle coupling in sleep-dependent memory consolidation. <em>eLife</em> 13:RP101992. <a href="https://doi.org/10.7554/eLife.101992">doi.org/10.7554/eLife.101992</a></li>
+    <li id="r-21">Ujma PP, Bódizs R, Dresler M, et al (2023). Multivariate prediction of cognitive performance from the sleep electroencephalogram. <em>NeuroImage</em> 279:120319. <a href="https://doi.org/10.1016/j.neuroimage.2023.120319">doi.org/10.1016/j.neuroimage.2023.120319</a></li>
+    <li id="r-22">Ngo HV, Martinetz T, Born J, Mölle M (2013). Auditory Closed-Loop Stimulation of the Sleep Slow Oscillation Enhances Memory. <em>Neuron</em> 78:545-553. <a href="https://doi.org/10.1016/j.neuron.2013.03.006">doi.org/10.1016/j.neuron.2013.03.006</a></li>
+    <li id="r-23">Henin S, Borges H, Shankar A, et al (2019). Closed-Loop Acoustic Stimulation Enhances Sleep Oscillations But Not Memory Performance. <em>eNeuro</em> 6:ENEURO.0306-19.2019. <a href="https://doi.org/10.1523/ENEURO.0306-19.2019">doi.org/10.1523/ENEURO.0306-19.2019</a></li>
+    <li id="r-24">Wunderlin M, Züst MA, Hertenstein E, et al (2021). Modulating overnight memory consolidation by acoustic stimulation during slow-wave sleep: a systematic review and meta-analysis. <em>Sleep</em> 44:zsaa296. <a href="https://doi.org/10.1093/sleep/zsaa296">doi.org/10.1093/sleep/zsaa296</a></li>
+    <li id="r-25">Harlow TJ, Jané MB, Read HL, Chrobak JJ (2023). Memory retention following acoustic stimulation in slow-wave sleep: a meta-analytic review of replicability and measurement quality. <em>Frontiers in Sleep</em> 2:1082253. <a href="https://doi.org/10.3389/frsle.2023.1082253">doi.org/10.3389/frsle.2023.1082253</a></li>
+    <li id="r-26">Rasch B, Büchel C, Gais S, Born J (2007). Odor cues during slow-wave sleep prompt declarative memory consolidation. <em>Science</em> 315:1426-1429. <a href="https://doi.org/10.1126/science.1138581">doi.org/10.1126/science.1138581</a></li>
+    <li id="r-27">Rudoy JD, Voss JL, Westerberg CE, Paller KA (2009). Strengthening individual memories by reactivating them during sleep. <em>Science</em> 326:1079. <a href="https://doi.org/10.1126/science.1179013">doi.org/10.1126/science.1179013</a></li>
+    <li id="r-28">Hu X, Cheng LY, Chiu MH, Paller KA (2020). Promoting memory consolidation during sleep: A meta-analysis of targeted memory reactivation. <em>Psychological Bulletin</em> 146:218-244. <a href="https://doi.org/10.1037/bul0000223">doi.org/10.1037/bul0000223</a></li>
+    <li id="r-29">Wilhelm I, Schreiner T, Beck J, Rasch B (2020). No effect of targeted memory reactivation during sleep on retention of vocabulary in adolescents. <em>Scientific Reports</em> 10:4255. <a href="https://doi.org/10.1038/s41598-020-61183-z">doi.org/10.1038/s41598-020-61183-z</a></li>
+    <li id="r-30">Cordi MJ, Schreiner T, Rasch B (2018). No effect of vocabulary reactivation in older adults. <em>Neuropsychologia</em> 119:253-261. <a href="https://doi.org/10.1016/j.neuropsychologia.2018.08.021">doi.org/10.1016/j.neuropsychologia.2018.08.021</a></li>
+    <li id="r-31">Wick A, Rasch B (2023). Targeted memory reactivation during slow-wave sleep vs. sleep stage N2: no significant differences in a vocabulary task. <em>Learning &amp; Memory</em> 30:192-200. <a href="https://doi.org/10.1101/lm.053683.122">doi.org/10.1101/lm.053683.122</a></li>
+    <li id="r-32">Siegel JM (2001). The REM sleep-memory consolidation hypothesis. <em>Science</em> 294:1058-1063. <a href="https://doi.org/10.1126/science.1063049">doi.org/10.1126/science.1063049</a></li>
+    <li id="r-33">Rasch B, Pommer J, Diekelmann S, Born J (2009). Pharmacological REM sleep suppression paradoxically improves rather than impairs skill memory. <em>Nature Neuroscience</em> 12:396-397. <a href="https://doi.org/10.1038/nn.2206">doi.org/10.1038/nn.2206</a></li>
+    <li id="r-34">Goerke M, Cohrs S, Rodenbeck A, Kunz D (2014). Differential effect of an anticholinergic antidepressant on sleep-dependent memory consolidation. <em>Sleep</em> 37:977-985. <a href="https://doi.org/10.5665/sleep.3674">doi.org/10.5665/sleep.3674</a></li>
+    <li id="r-35">Boyce R, Glasgow SD, Williams S, Adamantidis A (2016). Causal evidence for the role of REM sleep theta rhythm in contextual memory consolidation. <em>Science</em> 352:812-816. <a href="https://doi.org/10.1126/science.aad5252">doi.org/10.1126/science.aad5252</a></li>
+    <li id="r-36">Schäfer SK, Wirth BE, Staginnus M, Becker N, Michael T, Sopp MR (2020). Sleep&#x27;s impact on emotional recognition memory: A meta-analysis of whole-night, nap, and REM sleep effects. <em>Sleep Medicine Reviews</em> 51:101280. <a href="https://doi.org/10.1016/j.smrv.2020.101280">doi.org/10.1016/j.smrv.2020.101280</a></li>
+    <li id="r-37">Lipinska G, Stuart B, Thomas KGF, Baldwin DS, Bolinger E (2019). Preferential Consolidation of Emotional Memory During Sleep: A Meta-Analysis. <em>Frontiers in Psychology</em> 10:1014. <a href="https://doi.org/10.3389/fpsyg.2019.01014">doi.org/10.3389/fpsyg.2019.01014</a></li>
+    <li id="r-38">Pan SC, Rickard TC (2015). Sleep and motor learning: Is there room for consolidation?. <em>Psychological Bulletin</em> 141:812-834. <a href="https://doi.org/10.1037/bul0000009">doi.org/10.1037/bul0000009</a></li>
+    <li id="r-39">Adi-Japha E, Karni A (2016). Time for considering constraints on procedural memory consolidation processes: Comment on Pan and Rickard (2015) with specific reference to developmental changes. <em>Psychological Bulletin</em> 142:568-571. <a href="https://doi.org/10.1037/bul0000048">doi.org/10.1037/bul0000048</a></li>
+    <li id="r-40">Rickard TC, Pan SC (2017). Time for considering the possibility that sleep plays no unique role in motor memory consolidation: Reply to Adi-Japha and Karni (2016). <em>Psychological Bulletin</em> 143:454-458. <a href="https://doi.org/10.1037/bul0000094">doi.org/10.1037/bul0000094</a></li>
+    <li id="r-41">Yoo SS, Hu PT, Gujar N, Jolesz FA, Walker MP (2007). A deficit in the ability to form new human memories without sleep. <em>Nature Neuroscience</em> 10:385-392. <a href="https://doi.org/10.1038/nn1851">doi.org/10.1038/nn1851</a></li>
+    <li id="r-42">Newbury CR, Crowley R, Rastle K, Tamminen J (2021). Sleep deprivation and memory: Meta-analytic reviews of studies on sleep deprivation before and after learning. <em>Psychological Bulletin</em> 147:1215-1240. <a href="https://doi.org/10.1037/bul0000348">doi.org/10.1037/bul0000348</a></li>
+    <li id="r-43">Crowley R, Alderman E, Javadi AH, Tamminen J (2024). A systematic and meta-analytic review of the impact of sleep restriction on memory formation. <em>Neuroscience &amp; Biobehavioral Reviews</em> 167:105929. <a href="https://doi.org/10.1016/j.neubiorev.2024.105929">doi.org/10.1016/j.neubiorev.2024.105929</a></li>
+    <li id="r-44">Cordi MJ, Rasch B (2021). How robust are sleep-mediated memory benefits?. <em>Current Opinion in Neurobiology</em> 67:1-7. <a href="https://doi.org/10.1016/j.conb.2020.06.002">doi.org/10.1016/j.conb.2020.06.002</a></li>
+    <li id="r-45">Durka PJ, Malinowska U, Zieleniewska M, O&#x27;Reilly C, Różański PT, Żygierewicz J (2015). Spindles in Svarog: framework and software for parametrization of EEG transients. <em>Frontiers in Human Neuroscience</em> 9:258 (article number; Crossref lists no page range). <a href="https://doi.org/10.3389/fnhum.2015.00258">doi.org/10.3389/fnhum.2015.00258</a></li>
+    <li id="r-46">Berry RB, et al (2017). AASM Scoring Manual Updates for 2017 (Version 2.4). <em>Journal of Clinical Sleep Medicine</em> 13:665-666. <a href="https://doi.org/10.5664/jcsm.6576">doi.org/10.5664/jcsm.6576</a></li>
+    <li id="r-47">Goldberger AL and 10 others (2000). PhysioBank, PhysioToolkit, and PhysioNet: components of a new research resource for complex physiologic signals. <em>Circulation</em> 101:e215-e220. <a href="https://doi.org/10.1161/01.CIR.101.23.e215">doi.org/10.1161/01.CIR.101.23.e215</a></li>
+  </ol>
+
+  <footer>
+    <a href="learn.html">More to learn</a>
+    <a href="recordings.html">EEG and ECG</a>
+    <a href="timecells.html">Time</a>
+    <a href="references.html">All sources</a>
+    <span>Educational only. Not medical or veterinary advice.</span>
+    <a href="about.html">About and limits</a>
+  </footer>
+</main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var el = function(id){ return document.getElementById(id); };
+  var D = null, cur = -1, chosen = null, specImg = null;
+  var COL = { W: "#d9a441", R: "#c0573a", "1": "#86acd6", "2": "#4f7fb8", "3": "#2c4f86", "4": "#2c4f86" };
+  var ROW = { W: 0, R: 1, "1": 2, "2": 3, "3": 4, "4": 4 };
+  var ROWNAME = ["Awake", "REM", "Stage 1", "Stage 2", "Deep"];
+  var NAME = { W: "Awake", R: "REM sleep", "1": "Stage 1", "2": "Stage 2", "3": "Deep sleep (stage 3)", "4": "Deep sleep (stage 4)", "?": "Not scored", M: "Movement" };
+  var SAY = /*say:start*/{"W": "<b>Awake.</b> While relaxed, many people show an alpha rhythm, strongest over the back of the head (the middle trace). Sleep experts judged the fading of this rhythm to be the best electrical sign that sleep has begun. Some people make little alpha, so scorers use other signs for them.<sup><a href=\"#r-2\">2</a></sup>", "1": "<b>Stage 1.</b> The lightest sleep, right after the alpha rhythm fades. It is the stage scorers agree on least.<sup><a href=\"#r-5\">5</a></sup>", "2": "<b>Stage 2.</b> Marked by sleep spindles, short bursts of faster waves (commonly defined as about 11 to 16 per second, lasting more than half a second), and by K-complexes. In this night it was the largest share of sleep.<sup><a href=\"#r-45\">45</a>,<a href=\"#r-2\">2</a></sup>", "4": "<b>Deep sleep.</b> Large, slow waves fill much of the screen. The old rules split deep sleep into stages 3 and 4. Today's rules merge them into one stage, N3, and score an epoch as deep sleep when slow waves (0.5 to 2 per second, more than 75 microvolts high, measured over the front of the head) take up 20% or more of it.<sup><a href=\"#r-2\">2</a>,<a href=\"#r-46\">46</a></sup>", "R": "<b>REM sleep.</b> Named for its rapid eye movements, visible on the eye channel (bottom). Scorers look at the brain waves together with eye-movement and chin-muscle recordings to score it.<sup><a href=\"#r-2\">2</a></sup>"}/*say:end*/;
+
+  function fit(cv){
+    var r = cv.getBoundingClientRect(), dpr = Math.min(2, window.devicePixelRatio || 1);
+    var w = Math.max(1, Math.round(r.width * dpr)), h = Math.max(1, Math.round(r.height * dpr));
+    if (cv.width !== w || cv.height !== h){ cv.width = w; cv.height = h; }
+    var x = cv.getContext("2d"); x.setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { x: x, w: r.width, h: r.height };
+  }
+  var LEFT = 58;
+  function clock(sec){ sec = ((sec % 86400) + 86400) % 86400; var h = Math.floor(sec / 3600), m = Math.floor(sec % 3600 / 60); return (h < 10 ? "0" : "") + h + ":" + (m < 10 ? "0" : "") + m; }
+
+  function drawHyp(){
+    var c = fit(el("hyp")), x = c.x, W = c.w, H = c.h, s = D.stages, n = s.length;
+    var pw = W - LEFT, rh = (H - 8) / 5;
+    x.clearRect(0, 0, W, H);
+    x.font = "11.5px Figtree, system-ui, sans-serif"; x.fillStyle = "#5f6d7b"; x.textAlign = "right";
+    for (var r = 0; r < 5; r++){
+      x.fillText(ROWNAME[r], LEFT - 8, 4 + rh * r + rh / 2 + 4);
+      x.strokeStyle = "#eceff3"; x.beginPath(); x.moveTo(LEFT, Math.round(4 + rh * r + rh / 2) + .5); x.lineTo(W, Math.round(4 + rh * r + rh / 2) + .5); x.stroke();
+    }
+    // stage steps
+    x.lineWidth = 1.5; x.strokeStyle = "#9aa5b1"; x.beginPath();
+    for (var i = 0; i < n; i++){
+      if (!(s[i] in ROW)) continue;
+      var y = 4 + rh * ROW[s[i]] + rh / 2, x0 = LEFT + i / n * pw, x1 = LEFT + (i + 1) / n * pw;
+      if (i && s[i - 1] in ROW) x.lineTo(x0, y); else x.moveTo(x0, y);
+      x.lineTo(x1, y);
+    }
+    x.stroke();
+    for (var j = 0; j < n; j++){
+      if (!(s[j] in ROW)) continue;
+      var yy = 4 + rh * ROW[s[j]] + rh / 2;
+      x.fillStyle = COL[s[j]]; x.fillRect(LEFT + j / n * pw, yy - 3.5, pw / n + 0.6, 7);
+    }
+    if (cur >= 0){
+      var cx = LEFT + (cur + 0.5) / n * pw;
+      x.strokeStyle = "#1f2a35"; x.lineWidth = 1.5; x.beginPath(); x.moveTo(cx, 0); x.lineTo(cx, H); x.stroke();
+    }
+  }
+  function drawSpec(){
+    var c = fit(el("spec")), x = c.x, W = c.w, H = c.h, n = D.stages.length;
+    x.clearRect(0, 0, W, H);
+    x.font = "11.5px Figtree, system-ui, sans-serif"; x.fillStyle = "#5f6d7b"; x.textAlign = "right";
+    x.fillText("25 Hz", LEFT - 8, 12); x.fillText("0.5 Hz", LEFT - 8, H - 4);
+    if (specImg){ x.imageSmoothingEnabled = true; x.drawImage(specImg, LEFT, 0, W - LEFT, H); }
+    if (cur >= 0){
+      var cx = LEFT + (cur + 0.5) / n * (W - LEFT);
+      x.strokeStyle = "rgba(255,255,255,.9)"; x.lineWidth = 1.5; x.beginPath(); x.moveTo(cx, 0); x.lineTo(cx, H); x.stroke();
+    }
+  }
+  function drawAxis(){
+    var n = D.stages.length, start = D.start_clock_s, ax = el("axis"), parts = [];
+    var w = el("hyp").getBoundingClientRect().width, step = w < 520 ? 2 : 1;
+    for (var hr = Math.ceil(start / 3600); hr * 3600 <= start + n * 30; hr += step){
+      parts.push('<span style="position:absolute; left:calc(' + LEFT + 'px + (100% - ' + LEFT + 'px) * ' + ((hr * 3600 - start) / (n * 30)).toFixed(4) + '); transform:translateX(-50%)">' + clock(hr * 3600) + '</span>');
+    }
+    ax.style.position = "relative"; ax.style.height = "16px"; ax.innerHTML = parts.join("");
+  }
+
+  // 30 s of three channels. Each example comes from the stored clear examples.
+  function drawTrace(){
+    var c = fit(el("tr")), x = c.x, W = c.w, H = c.h;
+    x.fillStyle = "#0f1a17"; x.fillRect(0, 0, W, H);
+    if (!chosen) return;
+    var tr = D.examples[chosen].traces, names = ["Fpz-Cz", "Pz-Oz", "EOG"], labels = ["Front of head", "Back of head", "Eye movements"];
+    var secs = W < 520 ? 15 : 30;
+    el("tr").setAttribute("aria-label", secs + " seconds of a clear example of " + (NAME[chosen] || chosen) + ", recorded at " + D.examples[chosen].clock + ": two EEG channels and the eye-movement channel.");
+    var fs = D.fs, n = secs * fs, lane = (H - 30) / 3, k = lane / 2 / 100;   // 100 µV fills half a lane
+    x.strokeStyle = "rgba(159,211,191,.10)"; x.lineWidth = 1;
+    for (var s = 0; s <= secs; s++){ var gx = Math.round(s / secs * W) + .5; x.beginPath(); x.moveTo(gx, 0); x.lineTo(gx, H - 22); x.stroke(); }
+    names.forEach(function(nm, li){
+      var d = tr[nm], mid = 8 + lane * li + lane / 2;
+      x.fillStyle = "rgba(159,211,191,.75)"; x.font = "11px Figtree, system-ui, sans-serif"; x.textAlign = "left";
+      x.fillText(labels[li] + " · " + nm, 8, 8 + lane * li + 12);
+      x.save(); x.beginPath(); x.rect(0, 8 + lane * li, W, lane); x.clip();
+      x.strokeStyle = li === 2 ? "#f0c27f" : "#7fe0bd"; x.lineWidth = 1.2; x.lineJoin = "round"; x.beginPath();
+      var step = Math.max(1, Math.floor(n / (W * 2)));
+      for (var i = 0; i < n; i += step){ var X = i / n * W, Y = mid - d[i] * k; if (i) x.lineTo(X, Y); else x.moveTo(X, Y); }
+      x.stroke(); x.restore();
+    });
+    // scale bars
+    var bx = W - 14, by = H - 8, bh = 100 * k, bw = W / secs;
+    x.strokeStyle = "rgba(159,211,191,.8)"; x.lineWidth = 1.5; x.beginPath(); x.moveTo(bx - bw, by); x.lineTo(bx, by); x.lineTo(bx, by - bh); x.stroke();
+    x.fillStyle = "rgba(159,211,191,.9)"; x.textAlign = "right"; x.fillText("100 µV", bx - 5, by - bh + 4);
+    x.textAlign = "center"; x.fillText("1 s", bx - bw / 2, by - 4);
+    x.textAlign = "left"; x.fillText(secs + " s shown", 8, H - 6);
+  }
+
+  function choose(code){
+    chosen = code; cur = D.examples[code].epoch; sync();
+    document.querySelectorAll("[data-stage]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.stage === code)); });
+    var e = D.examples[code];
+    el("say").innerHTML = (SAY[code] || "<b>" + NAME[code] + ".</b>") + ' <span style="color:#5f6d7b">Example from ' + e.clock + '.</span>';
+    drawHyp(); drawSpec(); drawTrace();
+  }
+  // Click, drag or arrow keys on the night: show the stage at that moment, then its clear example below.
+  function sync(){
+    var nt = el("night"), st = D.stages[cur];
+    nt.setAttribute("aria-valuenow", String(cur));
+    nt.setAttribute("aria-valuetext", clock(D.start_clock_s + cur * 30) + ", " + (NAME[st] || st));
+  }
+  function show(i){
+    var n = D.stages.length; i = Math.max(0, Math.min(n - 1, i));
+    if (i === cur) return;                        // only a new epoch rewrites the live region and redraws
+    cur = i;
+    var st = D.stages[cur], code = st === "3" ? "4" : st, has = !!D.examples[code];
+    if (has) document.querySelectorAll("[data-stage]").forEach(function(b){ b.setAttribute("aria-pressed", String(b.dataset.stage === code)); });
+    el("say").innerHTML = "<b>" + clock(D.start_clock_s + cur * 30) + ": " + (NAME[st] || st) + ".</b> " +
+      (has ? "The trace below is a clear example of this stage from elsewhere in the night." : "");
+    if (has && chosen !== code){ chosen = code; drawTrace(); }
+    sync(); drawHyp(); drawSpec();
+  }
+  function pick(ev, drag){
+    var r = el("hyp").getBoundingClientRect(), n = D.stages.length;
+    var f = (ev.clientX - r.left - LEFT) / (r.width - LEFT);
+    if (!drag && (f < 0 || f > 1)) return;         // a click on the row labels does nothing
+    show(Math.floor(Math.max(0, Math.min(0.9999, f)) * n));
+  }
+  var night = el("night"), dragId = null;
+  night.addEventListener("pointerdown", function(e){
+    if (!D || (e.pointerType === "mouse" && e.button !== 0)) return;
+    dragId = e.pointerId;
+    if (e.pointerType !== "touch"){ try { night.setPointerCapture(e.pointerId); } catch (err) {} pick(e, false); }
+    // touch: wait for a horizontal move or a tap, so a vertical page scroll (pan-y) changes nothing
+  });
+  night.addEventListener("pointermove", function(e){ if (e.pointerId === dragId) pick(e, true); });
+  night.addEventListener("pointerup", function(e){ if (e.pointerId === dragId){ if (e.pointerType === "touch") pick(e, false); dragId = null; } });
+  night.addEventListener("pointercancel", function(e){ if (e.pointerId === dragId) dragId = null; });
+  night.addEventListener("keydown", function(e){
+    if (!D) return;
+    var n = D.stages.length, i = cur < 0 ? 0 : cur, k = e.key;
+    if (k === "ArrowRight" || k === "ArrowUp") i += 1;
+    else if (k === "ArrowLeft" || k === "ArrowDown") i -= 1;
+    else if (k === "PageUp") i += 20;              // 10 minutes
+    else if (k === "PageDown") i -= 20;
+    else if (k === "Home") i = 0;
+    else if (k === "End") i = n - 1;
+    else return;
+    e.preventDefault(); show(i);
+  });
+  document.querySelectorAll("[data-stage]").forEach(function(b){ b.addEventListener("click", function(){ if (D) choose(b.dataset.stage); }); });
+
+  function stats(){
+    var c = D.counts, sleep = c["1"] + c["2"] + c["3"] + c["4"] + c.R, hm = function(ep){ var m = Math.round(ep / 2); return Math.floor(m / 60) + " h " + (m % 60) + " min"; };
+    var pct = function(v){ return Math.round(v / sleep * 100) + "%"; };
+    el("stats").innerHTML = [["Asleep", hm(sleep)], ["Stage 1", pct(c["1"])], ["Stage 2", pct(c["2"])], ["Deep sleep", pct(c["3"] + c["4"])], ["REM", pct(c.R)]]
+      .map(function(a){ return "<div><b>" + a[1] + "</b><span>" + a[0] + (a[0] === "Asleep" ? "" : " of sleep") + "</span></div>"; }).join("");
+  }
+  var rt = null;
+  window.addEventListener("resize", function(){ clearTimeout(rt); rt = setTimeout(function(){ if (D){ drawHyp(); drawSpec(); drawAxis(); drawTrace(); } }, 120); });
+
+  fetch("assets/recordings/sleep.json").then(function(r){ return r.json(); }).then(function(d){
+    D = d; specImg = new Image();
+    specImg.onload = function(){ drawSpec(); };
+    specImg.onerror = function(){ var c = fit(el("spec")); c.x.fillStyle = "#5f6d7b"; c.x.textAlign = "left"; c.x.fillText("Spectrogram could not be loaded.", LEFT + 8, c.h / 2); };
+    specImg.src = "assets/recordings/sleep-spectrogram.png";
+    el("night").setAttribute("aria-valuemax", String(d.stages.length - 1));
+    el("say").removeAttribute("aria-live");
+    drawHyp(); drawAxis(); stats(); choose("2");
+    el("say").setAttribute("aria-live", "polite");
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(function(){ drawHyp(); drawSpec(); drawTrace(); });
+    window.__sleep = { data: d, choose: choose, reduce: reduce };   // exposed for checks
+  }).catch(function(){ el("say").textContent = "The recording could not be loaded."; });
+})();
+</script>

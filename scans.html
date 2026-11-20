@@ -57,6 +57,8 @@
   .stage .msg{position:absolute; inset:0; display:flex; align-items:center; justify-content:center;
     padding:24px; text-align:center; color:#c9d2dc; font-size:14px; line-height:1.5; pointer-events:none}
   [hidden]{display:none !important}
+  html{scroll-padding-top:72px}
+  @media (max-width:640px){html{scroll-padding-top:0}}
   .views{display:flex; flex-wrap:wrap; gap:6px; margin:12px 0 0}
   .hint{font-size:12.5px; color:var(--muted); margin:8px 0 0}
 
