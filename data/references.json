@@ -2876,5 +2876,89 @@
     },
     "citations": 477,
     "citations_checked": "2026-11-19"
+  },
+  {
+    "group": "learn",
+    "title": "Unbiased average age-appropriate atlases for pediatric studies",
+    "authors": "Fonov et al.",
+    "year": 2011,
+    "journal": "NeuroImage",
+    "doi": "10.1016/j.neuroimage.2010.07.033",
+    "meta_analysis": false,
+    "site_title": "Unbiased average age-appropriate atlases for pediatric studies",
+    "site_year": 2011,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for brain scans page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 2409,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Unbiased nonlinear average age-appropriate brain templates from birth to adulthood",
+    "authors": "Fonov et al.",
+    "year": 2009,
+    "journal": "NeuroImage",
+    "doi": "10.1016/S1053-8119(09)70884-5",
+    "meta_analysis": false,
+    "site_title": "Unbiased nonlinear average age-appropriate brain templates from birth to adulthood",
+    "site_year": 2009,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for brain scans page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 2275,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "A probabilistic atlas and reference system for the human brain: International Consortium for Brain Mapping (ICBM)",
+    "authors": "Mazziotta et al.",
+    "year": 2001,
+    "journal": "Philosophical Transactions of the Royal Society B",
+    "doi": "10.1098/rstb.2001.0915",
+    "meta_analysis": false,
+    "site_title": "A probabilistic atlas and reference system for the human brain: International Consortium for Brain Mapping (ICBM)",
+    "site_year": 2001,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for brain scans page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 2127,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "learn",
+    "title": "Physics of MRI: a primer",
+    "authors": "Plewes and Kucharczyk",
+    "year": 2012,
+    "journal": "Journal of Magnetic Resonance Imaging",
+    "doi": "10.1002/jmri.23642",
+    "meta_analysis": false,
+    "site_title": "Physics of MRI: a primer",
+    "site_year": 2012,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for brain scans page; Crossref resolved, no update notices"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 207,
+    "citations_checked": "2026-11-20"
   }
 ]

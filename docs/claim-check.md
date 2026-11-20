@@ -128,3 +128,16 @@ Also in this pass, after a second read of the whole branch:
 | Evidence | The exercise title now says BDNF was already up right after exercise and peaked at fifteen minutes | Birinci et al. 2026 |
 
 Several items are still open from this pass. On the Comparative page, gabapentin is listed alongside another drug in almost every dog report, so the comparison may need a different cohort (for example reports where gabapentin is the first drug listed). On the Spike page, the TTX and TEA notes were not checked. On the Spines page, "that neck is a resistor" overstates Harris & Stevens 1989. On the Evidence page, the directions the hand-set bench values imply (for example perineuronal nets under psilocybin and ketamine) have not been checked against sources. Hodgkin & Katz 1949 was read from the scanned pages on PubMed Central. Its summary states the 35 to 40 C heat block.
+
+## Brain scans page (2026-11-20)
+
+| Claim | Basis |
+|---|---|
+| The template averages the T1 scans of 152 adults, fitted in repeated rounds to the previous round's average | McGill BIC page for ICBM 2009 nonlinear atlases; Fonov et al. 2011 |
+| Licence: use, copy, modify and distribute for any purpose, with the notice in all copies | `COPYING` inside `mni_icbm152_nlin_asym_09c_nifti.zip` (SHA-256 804382e5d68a42ff8096ee845a7600b6658434da762fa67840a149eb25d48bd4), copied to `assets/scans/COPYING-ICBM152` |
+| White matter bright, grey matter mid-grey, fluid dark on T1 | Plewes & Kucharczyk 2012; measured on this file: median 234, 181 and 88 on the page's 0-255 scale |
+| MRI magnet tens of thousands of times Earth's field; hydrogen nuclei align; radio pulse; relaxation differs by tissue; gradients encode position; no X-rays | Plewes & Kucharczyk 2012. A 1.5 to 3 tesla scanner against Earth's field of about 50 microtesla is a ratio of 30,000 to 60,000 |
+| MNI zero is near the anterior commissure | Standard description of MNI space. Not checked on this file |
+| Seven landmark coordinates | Each checked visually on three-plane crops of the processed file and by the tissue under it. A unit test checks the tissue |
+| The cerebellum holds about four in five of the brain's neurons | Azevedo et al. 2009: about 69 of 86 billion |
+| Template's age range | Not stated on the page because the McGill page read for this does not give it |
