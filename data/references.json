@@ -274,7 +274,7 @@
     "authors": "Vargas et al.",
     "year": 2023,
     "journal": "Science",
-    "citations": 531,
+    "citations": 532,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -292,7 +292,7 @@
     "site_title": "Psychedelics promote neuroplasticity through activation of intracellular 5-HT2A receptors",
     "site_year": 2023,
     "citations_at_compile": 402,
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2023
   },
@@ -1581,7 +1581,7 @@
     "authors": "Homayoun & Moghaddam",
     "year": 2007,
     "journal": "The Journal of Neuroscience",
-    "citations": 1157,
+    "citations": 1158,
     "tag": null,
     "meta_analysis": false,
     "note": "Awake rats: NMDA block lowers putative interneuron firing, then raises pyramidal firing",
@@ -1594,7 +1594,7 @@
     "site_year": 2007,
     "citations_at_compile": 1155,
     "doi": "10.1523/JNEUROSCI.2213-07.2007",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2007
   },
@@ -1604,7 +1604,7 @@
     "authors": "Li et al.",
     "year": 2010,
     "journal": "Science",
-    "citations": 2673,
+    "citations": 2675,
     "tag": null,
     "meta_analysis": false,
     "note": "Rats: ketamine activates mTOR and adds prefrontal spine synapses; blocking mTOR blocks the effect",
@@ -1617,7 +1617,7 @@
     "site_year": 2010,
     "citations_at_compile": 2669,
     "doi": "10.1126/science.1190287",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2010
   },
@@ -1650,7 +1650,7 @@
     "authors": "Zanos et al.",
     "year": 2016,
     "journal": "Nature",
-    "citations": 1527,
+    "citations": 1528,
     "tag": null,
     "meta_analysis": false,
     "note": "Mice: a ketamine metabolite has antidepressant-like effects without NMDA block; a competing mechanism",
@@ -1663,7 +1663,7 @@
     "site_year": 2016,
     "citations_at_compile": 1523,
     "doi": "10.1038/nature17998",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2016
   },
@@ -2309,8 +2309,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 30,
-    "citations_checked": "2026-11-19"
+    "citations": 31,
+    "citations_checked": "2026-11-20"
   },
   {
     "group": "found",
@@ -2937,7 +2937,7 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2127,
+    "citations": 2128,
     "citations_checked": "2026-11-20"
   },
   {
@@ -2979,7 +2979,7 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2643,
+    "citations": 2646,
     "citations_checked": "2026-11-20"
   },
   {
