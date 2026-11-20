@@ -67,15 +67,28 @@
     font-family:ui-monospace,Menlo,monospace;margin-top:2px}
 
   /* stage */
-  .stage{position:relative;background:
-    radial-gradient(circle at 50% 42%,#12162400 0%,#eceff3 76%),var(--bg)}
-  #syn{display:block;width:100%;height:100%}
-  .legend{position:absolute;left:16px;bottom:14px;display:flex;flex-wrap:wrap;gap:9px;
-    font-size:10px;letter-spacing:.08em;color:var(--muted);max-width:70%;
-    background:rgba(246,247,249,.92);padding:4px 9px;border-radius:999px}
-  .legend i{width:8px;height:8px;border-radius:50%;display:inline-block;margin-right:5px;
-    vertical-align:middle}
-  .sched{position:absolute;right:16px;top:14px;font-size:10px;letter-spacing:.16em;
+  .stage{position:relative;display:flex;flex-direction:column;min-height:0;background:var(--panel-2)}
+  .syn-box{position:relative;flex:1 1 auto;min-height:0}
+  #syn{position:absolute;inset:0;display:block;width:100%;height:100%}
+  /* step controls, caption and key under the drawing */
+  .syn-ui{flex:none;padding:10px 16px 12px;background:var(--panel);border-top:1px solid var(--rule)}
+  .syn-row{display:flex;flex-wrap:wrap;align-items:center;gap:6px}
+  .syn-row .tool{min-height:32px;min-width:56px;padding:6px 12px}
+  .syn-row .tool[disabled]{opacity:.45;cursor:default}
+  .syn-row .tool[hidden]{display:none}
+  .syn-dots{display:flex;list-style:none;margin:0 0 0 auto;padding:0}
+  .syn-dot{display:grid;place-items:center;width:24px;height:28px;padding:0;border:0;background:none;cursor:pointer}
+  .syn-dot::before{content:"";width:8px;height:8px;border-radius:50%;background:#c3cbd3}
+  .syn-dot:hover::before{background:var(--muted)}
+  .syn-dot[aria-current="step"]::before{width:18px;border-radius:4px;background:var(--accent)}
+  .syn-cap{margin:9px 0 8px;font-size:13.5px;line-height:1.5;color:var(--ink-2)}
+  .syn-n{display:inline-block;margin-right:6px;padding:1px 8px;border-radius:99px;background:var(--chip);
+    color:var(--accent-ink);font-size:11.5px;font-weight:600;vertical-align:1px}
+  .syn-cap b{font-weight:600;color:var(--ink)}
+  .legend{display:flex;flex-wrap:wrap;gap:3px 14px;margin:0;padding:0;list-style:none;font-size:11.5px;color:var(--muted)}
+  .legend li{display:inline-flex;align-items:center;gap:5px}
+  .legend svg{flex:none}
+  .sched{position:absolute;right:16px;top:14px;z-index:1;font-size:10px;letter-spacing:.16em;
     text-transform:uppercase;padding:6px 11px;border:1px solid var(--rule);
     border-radius:2px;color:var(--amber);background:var(--panel)}
 
@@ -99,6 +112,8 @@
   .steps{list-style:none;padding:0;margin:0;counter-reset:s}
   .steps li{counter-increment:s;position:relative;padding:0 0 12px 26px;
     font-size:13px;color:var(--ink-2)}
+  .steps li.on{color:var(--ink)}
+  .steps li.on:before{background:var(--accent);border-color:var(--accent);color:#fff}
   .steps li:before{content:counter(s);position:absolute;left:0;top:1px;width:17px;
     height:17px;border:1px solid var(--rule);border-radius:50%;font-size:9.5px;
     display:grid;place-items:center;color:var(--amber);
@@ -107,7 +122,10 @@
   .cite em{font-style:italic;color:var(--ink-2)}
 
   @media (max-width:1000px){
-    .wrap{grid-template-columns:1fr;grid-template-rows:auto 46vh 1fr}
+    /* one column that scrolls as a whole: class list, then the drawing with its controls, then the text */
+    .wrap{grid-template-columns:1fr;grid-template-rows:max-content max-content max-content;align-content:start;overflow-y:auto}
+    .syn-box{flex:none;height:clamp(280px,48vh,520px)}
+    .side{overflow:visible}
     .list{border-right:0;border-bottom:1px solid var(--rule);display:flex;
       overflow-x:auto;padding:8px}
     .list h3{display:none}
@@ -115,7 +133,10 @@
     .drug[aria-pressed="true"]{border-left:0;border-bottom-color:var(--amber)}
     .side{border-left:0;border-top:1px solid var(--rule)}
   }
-  @media (max-width:640px){.sched{max-width:62%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
+  @media (max-width:640px){.syn-ui{padding:8px 12px 10px}.syn-cap{font-size:13px}.legend{font-size:11px;gap:2px 10px}
+    .syn-row .tool{min-width:0;padding:6px 10px}}
+  /* on a phone the schedule stays on each class button in the list above, so the drawing keeps its room */
+  @media (max-width:640px){.sched{display:none}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 
   /* receptor card: a teaser in the side panel and a dialog with the still image and the 3D view */
@@ -192,9 +213,21 @@
   <div class="list" id="list"><h3>Mechanism class</h3></div>
 
   <div class="stage">
-    <canvas id="syn" role="img" aria-label="Diagram of a synapse showing where the selected drug class acts and what it changes. The text beside it describes the same mechanism."></canvas>
-    <span class="sched mono" id="sched"></span>
-    <div class="legend mono" id="legend"></div>
+    <div class="syn-box">
+      <canvas id="syn" role="img" aria-label="Diagram of a synapse showing, step by step, where the selected drug class acts and what it changes. The caption below it describes the same step."></canvas>
+      <span class="sched mono" id="sched"></span>
+    </div>
+    <div class="syn-ui">
+      <div class="syn-row">
+        <button type="button" class="tool" id="syn-prev">Back</button>
+        <button type="button" class="tool" id="syn-play">Play</button>
+        <button type="button" class="tool" id="syn-next">Next</button>
+        <ol class="syn-dots" id="syn-dots" aria-label="Steps"></ol>
+      </div>
+      <p class="syn-cap"><span class="syn-n" id="syn-n"></span><b id="syn-t"></b> <span id="syn-x"></span></p>
+      <ul class="legend" id="legend" aria-label="Key to the drawing"></ul>
+      <p class="sr-only" id="syn-live" aria-live="polite"></p>
+    </div>
   </div>
 
   <aside class="side">
@@ -254,8 +287,11 @@
 (function(){
 var C=document.getElementById('syn'), X=C.getContext('2d'), D=1;
 var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
-var COL={da:'#3d8a4a', glu:'#2f6fa8', gaba:'#a2477e', ser:'#6a54a6',
-         op:'#b24e33', ecb:'#2b8273', ion:'#5f6d7b', block:'#c0414b'};
+// Colours follow the receptor cards on this page: the target protein is violet, a drug is orange,
+// the natural transmitter is green and a G protein is grey-blue. Other proteins are blue.
+var K={ink:'#3f4c59', muted:'#5f6d7b', text:'#1f2a35', cell:'#e4e9ef', edge:'#8693a1', memb:'#cfd8e2',
+       paper:'#f6f7f9', edgeUi:'#dde2e8', accent:'#2d6a8f', target:'#6a54a6', drug:'#c0573a', nt:'#3d8a4a',
+       gp:'#8fa0b3', other:'#2f6fa8', rose:'#a2477e', ecb:'#2b8273', bdnf:'#b98a2a'};
 
 var DRUGS=[
 {id:'psy', name:'Classic psychedelics', ex:'Psilocybin, LSD, DMT, mescaline',
@@ -356,166 +392,607 @@ var DRUGS=[
  hcite:"Harms: <a href=\"https://www.cdc.gov/cannabis/health-effects/cannabis-use-disorder.html\">CDC, Cannabis Use Disorder, Dec 2024</a> &middot; <a href=\"https://doi.org/10.1016/S2215-0366(19)30048-3\">Di Forti et al., Lancet Psychiatry 2019</a> &middot; <a href=\"https://archive.cdc.gov/www_cdc_gov/nceh/hsb/envepi/outbreaks/sc/healthcare.html\">CDC, Synthetic Cannabinoids: An Overview for Healthcare Providers (archived; last reviewed Apr 2022)</a> &middot; <a href=\"https://doi.org/10.1542/peds.2022-057761\">Tweet et al., Pediatrics 2023</a>"}
 ];
 
-var cur=DRUGS[0], t0=performance.now();
+var cur=DRUGS[0];
 
-function size(){
-  D=Math.min(devicePixelRatio||1,2);
-  var r=C.getBoundingClientRect();
-  var w=Math.max(1,(Math.round(r.width)||C.clientWidth||760)*D);
-  var h=Math.max(1,(Math.round(r.height)||C.clientHeight||620)*D);
-  if(C.width!==w||C.height!==h){C.width=w;C.height=h;}
+/* ---------- mechanism scenes ---------- */
+// Each class has one scene. Step 0 shows ordinary signalling without the drug, and steps 1 to N follow
+// the numbered Mechanism list beside the stage, so step k of the drawing shows what list item k says.
+// Everything is drawn in model units (about one nanometre at the membrane, not to scale across the
+// cleft), fitted to the stage by one scale S, so the parts keep their proportions at any screen shape.
+var S=1, OX=0, OY=0, XL=-62, XR=62, YT=0, YB=100, FONT='Figtree, system-ui, sans-serif';
+var PY=40, QY=54, MB=2.6, P2=2.8;   // membrane lines, membrane thickness, release cycle (s)
+var step=0, lt=0, still=reduce, autoplay=!reduce, want=autoplay, playing=false, intro=false;
+var onScreen=true, dlgOpen=false, raf=0, last=0, LB=[], TAG='';
+
+function P(x){return OX+x*S;}
+function Q(y){return OY+y*S;}
+function al(a){X.globalAlpha=a<0?0:a>1?1:a;}
+function ease(p){p=p<0?0:p>1?1:p; return p*p*(3-2*p);}
+function ev(a,b){return still?1:ease((lt-a)/(b-a));}          // progress of one event in this step
+function fp(i,n,sp,k){return still?(i+0.5)/n:((lt*sp+i/n+(k||0))%1+1)%1;}  // phase of particle i of n
+function hsh(i,k){var x=Math.sin(i*127.1+k*311.7)*43758.5453; return x-Math.floor(x);}
+function lw(u,m){return Math.max(m||1,u*S);}
+function rr(x,y,w,h,r){r=Math.max(0,Math.min(r,w/2,h/2)); X.beginPath(); X.moveTo(x+r,y);
+  X.arcTo(x+w,y,x+w,y+h,r); X.arcTo(x+w,y+h,x,y+h,r); X.arcTo(x,y+h,x,y,r); X.arcTo(x,y,x+w,y,r); X.closePath();}
+function ell(x,y,rx,ry){X.beginPath(); X.ellipse(x,y,Math.max(rx,0.1),Math.max(ry,0.1),0,0,6.2832);}
+function mix(a,b,p){return a+(b-a)*p;}
+
+// A membrane protein is drawn in a local frame: u runs along the membrane, v points out of the cell.
+function lx(m,u){return P(m.x+u);}
+function ly(m,v){return Q(m.y+m.o*v);}
+function lcap(m,u,v,w,h,r,c){X.fillStyle=c; rr(lx(m,u)-w*S/2,ly(m,v)-h*S/2,w*S,h*S,r*S); X.fill();}
+function lel(m,u,v,rx,ry,c){X.fillStyle=c; ell(lx(m,u),ly(m,v),rx*S,ry*S); X.fill();}
+
+// Small molecules and ions. A drug is a rounded diamond and a transmitter a dot, so shape as well as
+// colour tells them apart. A bound molecule sits on a paper ring that cuts it out of the protein.
+function gsz(k){return k==='drug'?Math.max(0.95*S,3.6):k==='ion'?Math.max(0.52*S,2.3):
+  k==='ecb'?Math.max(0.5*S,2.1):Math.max(0.6*S,2.4);}
+function gl(k,x,y,o){
+  o=o||{}; var a=o.a==null?1:o.a; if(a<0.02) return; var px=P(x), py=Q(y), r=gsz(k), d;
+  if(o.bound){al(a); X.fillStyle=K.paper; d=r+(k==='ecb'?r*1.4:0)+Math.max(1.3,0.3*S); ell(px,py,d,k==='ecb'?r+Math.max(1.3,0.3*S):d); X.fill();}
+  al(a);
+  if(k==='drug'){d=r*0.78; X.fillStyle=X.strokeStyle=K.drug; X.lineJoin='round'; X.lineWidth=r*0.45;
+    X.beginPath(); X.moveTo(px,py-d); X.lineTo(px+d,py); X.lineTo(px,py+d); X.lineTo(px-d,py); X.closePath(); X.fill(); X.stroke();}
+  else if(k==='ion'){X.fillStyle=K.ink; ell(px,py,r,r); X.fill();
+    if(r>=2.9&&o.sign!=='none'){X.strokeStyle=K.paper; X.lineWidth=Math.max(1,r*0.3); X.lineCap='round'; X.beginPath();
+      X.moveTo(px-r*0.5,py); X.lineTo(px+r*0.5,py); if(o.sign!=='-'){X.moveTo(px,py-r*0.5); X.lineTo(px,py+r*0.5);} X.stroke();}}
+  else if(k==='ecb'){X.fillStyle=K.ecb; rr(px-r*2.2,py-r,r*4.4,r*2,r); X.fill();}
+  else if(k==='bdnf'){X.fillStyle=K.bdnf; ell(px-r*0.85,py,r,r); X.fill(); ell(px+r*0.85,py,r,r); X.fill();}
+  else if(k==='prot'){X.fillStyle=K.bdnf; rr(px-r,py-r,r*2,r*2,r*0.5); X.fill();}
+  else {X.fillStyle=K.nt; ell(px,py,r,r); X.fill();}
 }
-addEventListener('resize',size); size();
-if(window.ResizeObserver) new ResizeObserver(size).observe(C);
 
-function blob(cx,cy,rx,ry,fill,stroke){
-  X.fillStyle=fill; X.beginPath(); X.ellipse(cx,cy,rx,ry,0,0,6.283); X.fill();
-  if(stroke){X.strokeStyle=stroke;X.lineWidth=D;X.stroke();}
+// Cells. Membranes are a pale band between two hairlines, as on the receptor cards.
+function membrane(path,fill){
+  X.lineJoin='round'; X.lineCap='butt'; path(); al(1); X.fillStyle=fill||K.cell; X.fill();
+  X.strokeStyle=K.edge; X.lineWidth=MB*S+2; X.stroke(); X.strokeStyle=K.memb; X.lineWidth=Math.max(1,MB*S); X.stroke();
 }
-function chan(x,y,w,h,c,a){
-  X.globalAlpha=a; X.fillStyle=c;
-  X.beginPath(); X.roundRect(x-w/2,y-h/2,w,h,w*0.32); X.fill();
+function terminal(){membrane(function(){var t=YT-3; X.beginPath(); X.moveTo(P(-5),Q(t)); X.lineTo(P(-5),Q(4));
+  X.quadraticCurveTo(P(-5),Q(10),P(-16),Q(11)); X.lineTo(P(-28),Q(12)); X.quadraticCurveTo(P(-37),Q(13),P(-37),Q(22));
+  X.lineTo(P(-37),Q(32)); X.quadraticCurveTo(P(-37),Q(PY),P(-29),Q(PY)); X.lineTo(P(29),Q(PY));
+  X.quadraticCurveTo(P(37),Q(PY),P(37),Q(32)); X.lineTo(P(37),Q(22)); X.quadraticCurveTo(P(37),Q(13),P(28),Q(12));
+  X.lineTo(P(16),Q(11)); X.quadraticCurveTo(P(5),Q(10),P(5),Q(4)); X.lineTo(P(5),Q(t));});}
+function receiver(){membrane(function(){var l=Math.min(XL,-64)-4, r=Math.max(XR,64)+4, b=Math.max(YB,100)+4;
+  X.beginPath(); X.moveTo(P(l),Q(b)); X.lineTo(P(l),Q(70)); X.lineTo(P(-64),Q(70));
+  X.quadraticCurveTo(P(-55),Q(70),P(-52),Q(62)); X.quadraticCurveTo(P(-49),Q(QY),P(-40),Q(QY)); X.lineTo(P(40),Q(QY));
+  X.quadraticCurveTo(P(49),Q(QY),P(52),Q(62)); X.quadraticCurveTo(P(55),Q(70),P(64),Q(70)); X.lineTo(P(r),Q(70)); X.lineTo(P(r),Q(b));});}
+function synapse(){receiver(); terminal();
+  lab('Sending terminal',-36,Math.max(6,YT+5),{align:'right',c:K.muted}); lab('Receiving cell',-36,78,{align:'right',c:K.muted});
+  lab('Cleft',40,(PY+QY)/2,{c:K.muted,minor:true});}
+
+// Synaptic vesicles: paper spheres holding transmitter, docked in rows at the release site.
+var VES=[[-9,36.3],[-3,36.5],[3,36.5],[9,36.3],[-12,31],[-6,30.8],[0,30.6],[6,30.8],[12,31],[-9,25.6],[-3,25.4],[3,25.4],[9,25.6]];
+function vesicle(x,y,r,a,fill,pump){
+  al(a); X.fillStyle=K.paper; X.strokeStyle=K.edge; X.lineWidth=1; ell(P(x),Q(y),r*S,r*S); X.fill(); X.stroke();
+  if(pump){al(a); X.fillStyle=K.other; rr(P(x+r*0.62)-0.45*S,Q(y-r*0.62)-0.7*S,0.9*S,1.4*S,0.45*S); X.fill();}
+  var dr=Math.max(0.4*S,1.4); if(fill>0.02){al(a*fill); X.fillStyle=K.nt;
+    [[-0.38,0.1],[0.32,-0.25],[0.08,0.42]].forEach(function(q){ell(P(x+q[0]*r),Q(y+q[1]*r),dr,dr); X.fill();});}
 }
 
-function paint(){
-  size();
-  var w=C.width,h=C.height; if(w<2||h<2) return false;
-  var S=Math.min(w,h)/620*D, tt=(performance.now()-t0)/1000;
-  X.clearRect(0,0,w,h);
+// A seven-helix receptor (GPCR) with its G protein on the inner face. act 0..1 is how active it is.
+function gpcr(x,y,o,c,s){
+  s=s||{}; var m={x:x,y:y,o:o}, a=s.a==null?1:s.a, act=s.act||0, k, u0, u1, sd, dep=[0.7,1.05,0.8,1.2,0.6,0.95];
+  al(a*(0.32+0.68*act)); lel(m,-0.6,-3.95,2.3,1.45,K.gp); lel(m,-3.0-act*0.5,-4.7,1.25,1.05,K.gp); lel(m,-2.3-act*0.6,-5.75,0.8,0.7,K.gp);
+  al(a); for(k=0;k<7;k++) lcap(m,-3.45+k*1.15,0,0.88,4.6,0.44,c);
+  X.strokeStyle=c; X.lineWidth=lw(0.3); X.lineCap='round'; X.beginPath();
+  for(k=0;k<6;k++){sd=k%2?1:-1; u0=-3.45+k*1.15; u1=u0+1.15;
+    X.moveTo(lx(m,u0),ly(m,sd*2.2)); X.quadraticCurveTo(lx(m,(u0+u1)/2),ly(m,sd*(2.2+dep[k])),lx(m,u1),ly(m,sd*2.2));}
+  X.moveTo(lx(m,-3.45),ly(m,2.2)); X.quadraticCurveTo(lx(m,-4.3),ly(m,3.4),lx(m,-3.7),ly(m,4.3));
+  X.moveTo(lx(m,3.45),ly(m,-2.2)); X.quadraticCurveTo(lx(m,4.2),ly(m,-3.2),lx(m,4.9),ly(m,-3.4)); X.stroke();
+  if(s.lig) gl(s.lig,x+0.35,y+o*0.95,{bound:true,a:a*(s.la==null?1:s.la)});
+  if(s.lig2) gl(s.lig2,x+0.35,y+o*0.95,{bound:true,a:a*(s.la2==null?1:s.la2)});
+  return {gx:x-0.6,gy:y-o*3.95};
+}
+// An ion channel seen from the side: two subunits in front of the pore, one behind it.
+function chan(x,y,o,c,s){
+  s=s||{}; var m={x:x,y:y,o:o}, a=s.a==null?1:s.a, sc=s.sc||1, g=(0.16+0.44*(s.open||0))*sc, off=g+1.0*sc, sg;
+  al(a*0.38); lcap(m,0,0.6*sc,2.6*sc,5.4*sc,0.85*sc,c); lel(m,0,4.1*sc,1.3*sc,1.0*sc,c);
+  al(a); for(sg=-1;sg<=1;sg+=2){lcap(m,sg*off,0.6*sc,2.0*sc,5.6*sc,0.8*sc,c); lel(m,sg*(off+0.15*sc),4.3*sc,1.15*sc,1.0*sc,c);}
+  al(a*0.92); lcap(m,0,0.6*sc,2*g,4.5*sc,g,K.paper);
+  for(sg=0;sg<(s.lig||0);sg++) gl('nt',x+(sg?1:-1)*(off+0.15*sc),y+o*5.55*sc,{bound:true,a:a});
+  if(s.plug) gl(s.plug,x,y+o*0.7*sc,{a:a*(s.pa==null?1:s.pa)});
+}
+// A transporter lies almost wholly inside the membrane, with a central site about halfway across.
+// face +1 is open to the outside, -1 open to the inside, 0 closed.
+function transp(x,y,o,c,s){
+  s=s||{}; var m={x:x,y:y,o:o}, a=s.a==null?1:s.a, f=s.face==null?1:s.face;
+  al(a); lcap(m,0,0,6.6,5.3,1.7,c);
+  X.strokeStyle='rgba(255,255,255,.22)'; X.lineWidth=lw(0.25); X.beginPath();
+  [-2.1,-1.2,1.2,2.1].forEach(function(u){X.moveTo(lx(m,u),ly(m,-2)); X.lineTo(lx(m,u*1.05),ly(m,2));}); X.stroke();
+  al(a*0.94); X.fillStyle=K.paper; X.beginPath(); X.moveTo(lx(m,-1.25*Math.abs(f)),ly(m,f*2.8));
+  X.lineTo(lx(m,1.25*Math.abs(f)),ly(m,f*2.8)); X.lineTo(lx(m,0.35),ly(m,-f*0.3)); X.lineTo(lx(m,-0.35),ly(m,-f*0.3)); X.closePath(); X.fill();
+  if(s.site) gl(s.site,x,y+o*0.3,{bound:true,a:a*(s.sa==null?1:s.sa)});
+}
+// TrkB, a receptor tyrosine kinase, drawn as a pair: outer domains, one thin helix each, inner kinase parts.
+function trkb(x,y,o,s){
+  s=s||{}; var m={x:x,y:y,o:o}, a=s.a==null?1:s.a, act=s.act||0, sp=1.6-0.45*act, sg;
+  for(sg=-1;sg<=1;sg+=2){al(a); lcap(m,sg*sp,0,0.72,4.6,0.36,K.rose); lel(m,sg*sp,3.55,1.2,1.05,K.rose);
+    lel(m,sg*(sp+0.25),5.75,1.35,1.15,K.rose); al(a*(0.45+0.55*act)); lel(m,sg*(sp+0.55-0.5*act),-3.9,1.5,1.25,K.rose);}
+  if(s.drug) gl('drug',x+sp,y,{bound:true,a:a*s.drug});
+  if(s.bdnf) gl('bdnf',x,y+o*7.6,{bound:true,a:a*s.bdnf});
+}
+// GABA-A receptor: a ring of five subunits. From the side we see gamma and alpha on the left of the pore,
+// beta and alpha on the right, and the fifth subunit behind. GABA binds between beta and alpha, and the
+// classical benzodiazepine site lies between alpha and gamma, both on the outer part.
+function pentGeo(open){var sc=2, g=(0.16+0.44*open)*sc, off=g+1.0*sc; return {sc:sc,g:g,off:off,
+  ds:[-(off+1.15*sc),4.35*sc], gs:[off+1.15*sc,4.35*sc]};}
+function pent(x,y,o,s){
+  var G=pentGeo(s.open||0), m={x:x,y:y,o:o}, sc=G.sc, U=[[-(G.off+2.3*sc),K.rose,0.8],[-G.off,K.target,1],[G.off,K.other,1],[G.off+2.3*sc,K.target,0.8]];
+  al(0.38); lcap(m,0,0.6*sc,2.6*sc,5.6*sc,0.85*sc,K.other); lel(m,0,4.4*sc,1.3*sc,1.1*sc,K.other);
+  U.forEach(function(q){al(q[2]); lcap(m,q[0],0.6*sc,2.0*sc,5.8*sc,0.8*sc,q[1]); lel(m,q[0],4.4*sc,1.15*sc,1.15*sc,q[1]);});
+  al(0.92); lcap(m,0,0.6*sc,2*G.g,4.7*sc,G.g,K.paper);
+  if(s.gaba) gl('nt',x+G.gs[0],y+o*G.gs[1],{bound:true,a:s.gaba});
+  if(s.drug) gl('drug',x+G.ds[0],y+o*G.ds[1],{bound:true,a:s.drug});
+  return G;
+}
 
-  var preY=h*0.22, cleftY=h*0.46, postY=h*0.58, cx=w/2;
-  var LAB=[]; function lab(t,x,y,c,al,sz){LAB.push([t,x,y,c,al||'center',sz||11]);}
-  var nt=COL[cur.nt];
+// Arrows. A dashed grey arrow is a signal passed on inside a cell, not a moving particle.
+function arrow(pts,c,a,dash,wid){
+  if(a<0.02) return; var n=pts.length, w=Math.max(1.2,(wid||0.28)*S), x1=P(pts[n-1][0]), y1=Q(pts[n-1][1]),
+    x0=P(pts[n-2][0]), y0=Q(pts[n-2][1]), an=Math.atan2(y1-y0,x1-x0), hl=Math.max(6,w*4);
+  al(a); X.strokeStyle=X.fillStyle=c; X.lineWidth=w; X.lineCap='round'; X.lineJoin='round';
+  X.setLineDash(dash?[Math.max(3,w*2.4),Math.max(3,w*2.2)]:[]); X.beginPath(); X.moveTo(P(pts[0][0]),Q(pts[0][1]));
+  if(n===3) X.quadraticCurveTo(P(pts[1][0]),Q(pts[1][1]),x1-Math.cos(an)*hl*0.6,y1-Math.sin(an)*hl*0.6);
+  else X.lineTo(x1-Math.cos(an)*hl*0.6,y1-Math.sin(an)*hl*0.6);
+  X.stroke(); X.setLineDash([]); X.beginPath(); X.moveTo(x1,y1);
+  X.lineTo(x1-Math.cos(an-0.45)*hl,y1-Math.sin(an-0.45)*hl); X.lineTo(x1-Math.cos(an+0.45)*hl,y1-Math.sin(an+0.45)*hl); X.closePath(); X.fill();
+}
+function signal(x0,y0,x1,y1,a,bend){arrow([[x0,y0],[(x0+x1)/2,(y0+y1)/2+(bend||0)],[x1,y1]],'#6f7f92',a*0.9,true,0.24);}
 
-  /* presynaptic terminal */
-  X.globalAlpha=1;
-  blob(cx,preY,w*0.30,h*0.16,'#e4e9ef','#33395199');
-  // Names sit inside their shapes, clear of the legend and the schedule tag.
-  lab('PRESYNAPTIC', cx, preY-h*0.105, '#8693a1', 'center', 11);
+// Particles that flow through a channel or transporter: n of them along a line, fading at both ends.
+function stream(k,x0,y0,x1,y1,n,sp,a,sign,seed){
+  for(var i=0;i<n;i++){var p=fp(i,n,sp,seed), j=(hsh(i,seed||3)-0.5)*0.5;
+    gl(k,mix(x0,x1,p)+j,mix(y0,y1,p),{a:a*Math.min(1,p*5,(1-p)*5),sign:sign});}
+}
+// Molecules of a drug that are present around the synapse, drifting slowly along the cleft.
+function drift(k,n,y0,y1,a,seed,xs){
+  var span=(xs||1)*Math.max(56,Math.min(-XL,XR));
+  for(var i=0;i<n;i++){var p=fp(i,n,0.035,seed), x=-span+p*2*span, y=mix(y0,y1,hsh(i,seed+1))+(still?0:Math.sin(lt*0.9+i*2.3)*0.6);
+    gl(k,x,y,{a:a*Math.min(1,p*6,(1-p)*6)*0.85});}
+}
+// Move a molecule from one point to another as p goes 0..1, along a gentle curve.
+function travel(k,x0,y0,x1,y1,p,o){if(p<=0) return; var q=ease(p);
+  gl(k,mix(x0,x1,q),mix(y0,y1,q)+Math.sin(q*3.1416)*((o&&o.bend)||0),{a:(o&&o.a!=null?o.a:1)*Math.min(1,p*4),bound:p>=1&&!(o&&o.free)});}
 
-  /* postsynaptic */
-  blob(cx,postY+h*0.20,w*0.34,h*0.17,'#e4e9ef','#33395199');
-  lab('POSTSYNAPTIC', cx, postY+h*0.27, '#8693a1', 'center', 11);
-
-  /* vesicles */
-  var vesN = cur.mode==='op' ? 4 : 9;
-  for(var v=0;v<vesN;v++){
-    var vp=reduce?0.5:((v*0.31+tt*0.13)%1);
-    X.globalAlpha=.55;
-    blob(cx+Math.sin(v*2.3)*w*0.17, preY-h*0.05+vp*h*0.14, 5*S, 5*S, nt);
+// One release cycle every P2 seconds: an impulse comes down the axon, calcium enters through the
+// channels at the release site, docked vesicles fuse and transmitter crosses to the receptor sites.
+function relQ(){return still?0.62:(lt%P2)/P2;}
+function release(o){
+  var q=relQ(), i, p;
+  if(o.imp){ lab('Impulse',7,Math.max(4,YT+5),{c:K.muted,minor:true});
+    if(still) arrow([[0,YT+2],[0,9]],K.ink,0.6,false,0.3);
+    else if(q<0.3){var yy=mix(YT,10,q/0.3); al(0.75*Math.min(1,(0.3-q)*12)); X.fillStyle=K.ink;
+      rr(P(-5)-1.5,Q(yy)-1.6*S,3,3.2*S,1.5); X.fill(); rr(P(5)-1.5,Q(yy)-1.6*S,3,3.2*S,1.5); X.fill();}}
+  var caOpen=o.imp?(still?1:ease((q-0.18)/0.05)*(1-ease((q-0.46)/0.06))):0;
+  (o.ca||[]).forEach(function(cx){chan(cx,PY,1,K.other,{open:caOpen*(o.caOpen==null?1:o.caOpen),sc:0.9});
+    for(i=0;i<(o.caN==null?2:o.caN);i++){p=still?0.3+i*0.35:(q-0.21-i*0.05)/0.2;
+      if(p>0&&p<1.15) gl('ion',cx+(i%2?0.35:-0.35),mix(PY+5.5,PY-5,Math.min(p,1)),{a:Math.min(1,(1.15-p)*5)});}});
+  VES.forEach(function(v,j){
+    var f=0, a=1, fi=(o.fuse||[]).indexOf(j);
+    if(fi>=0&&o.imp){f=still?0.5:ease((q-0.3-fi*0.03)/0.12); a=still?0.8:(q>0.8?ease((q-0.8)/0.18):1-f);}
+    var bob=(!still&&j>3)?Math.sin(lt*0.9+j*1.7)*0.2:0;
+    vesicle(v[0],v[1]+f*2.2+bob,2.3*(1-0.45*f),a,o.vfill==null?1:o.vfill,o.pump);});
+  var n=o.imp?(o.nt==null?9:o.nt):0, to=o.to||[], fs=o.fuse||[1,2];
+  for(i=0;i<n;i++){
+    var sx=VES[fs[i%fs.length]][0]+(hsh(i,2)-0.5)*2.5, t=to.length?to[i%to.length]:[sx,QY-2], tx=t[0]+(i<to.length?0:(hsh(i,5)-0.5)*13),
+      ty=i<to.length?t[1]:QY-2.2-hsh(i,6)*2, s0=0.38+hsh(i,1)*0.07; p=still?0.15+0.7*hsh(i,4):(q-s0)/0.2;
+    if(still&&i<to.length) p=1.2;
+    if(p<=0) continue;
+    if(p<1) gl('nt',mix(sx,tx,p),mix(PY+2.2,ty,ease(p)),{a:Math.min(1,p*6)});
+    else if(i<to.length){}  // the receptor draws the bound molecule itself
+    else if(!still) gl('nt',tx,ty,{a:Math.max(0,1-(p-1)*3)});
   }
+  return {bound:o.imp&&(still||(q>0.6&&q<0.92)),q:q,caOpen:caOpen};
+}
 
-  /* transporters on the presynaptic membrane (stimulants) */
-  if(cur.mode==='stim'){
-    [-1,1].forEach(function(s){
-      var tx=cx+s*w*0.17;
-      chan(tx, preY+h*0.145, 13*S, 26*S, COL.da, 1);
-      // blocked marker
-      X.globalAlpha=.9; X.strokeStyle=COL.block; X.lineWidth=2.4*D;
-      X.beginPath(); X.moveTo(tx-9*S,preY+h*0.145-9*S);
-      X.lineTo(tx+9*S,preY+h*0.145+9*S); X.stroke();
-    });
-    lab('reuptake blocked', cx, preY+h*0.20, COL.block);
+// Firing of a neuron shown as a raster: each tick is one action potential, newest on the right.
+function spikes(rate,seed,tNow,win){
+  var out=[], t=tNow-win-3, ph=hsh(seed,9), k=Math.floor(ph), dt=0.01, th;
+  for(;t<=tNow;t+=dt){ph+=rate(t)*dt; th=k+1+0.6*(hsh(k,seed)-0.5); if(ph>=th){k++; if(t>=tNow-win) out.push(tNow-t);}}
+  return out;
+}
+function rateFn(r0,r1,a,b){return function(t){return r0+(r1-r0)*ease((t-a)/(b-a));};}
+function raster(x0,x1,y,title,rate,seed){
+  var tN=still?4.2:lt, win=6, sp=spikes(rate,seed,tN,win), px0=P(x0), px1=P(x1), h=Math.max(10,3.2*S);
+  al(1); X.strokeStyle=K.memb; X.lineWidth=1; X.beginPath(); X.moveTo(px0,Q(y)); X.lineTo(px1,Q(y)); X.stroke();
+  X.strokeStyle=K.ink; X.lineWidth=Math.max(1.4,0.3*S); X.lineCap='round'; X.beginPath();
+  sp.forEach(function(age){var xx=px1-(age/win)*(px1-px0); X.moveTo(xx,Q(y)); X.lineTo(xx,Q(y)-h);}); X.stroke();
+  labP(title,px0,Q(y)-h-11,{c:K.text,w:600});
+  return sp;
+}
+
+// Two neurons: A inhibits B. Used for the disinhibition steps.
+function circuit(o){
+  var ax=-30, ay=30, bx=24, by=46;
+  X.lineCap='round'; X.lineJoin='round'; al(1);
+  // B's dendrites and axon, then A's axon onto B
+  X.strokeStyle=K.edge; X.lineWidth=lw(1.3,2);
+  X.beginPath(); if(o.bPyr){X.moveTo(P(bx),Q(by-8)); X.lineTo(P(bx),Q(Math.max(YT,0)+4)); X.moveTo(P(bx),Q(14)); X.lineTo(P(bx-9),Q(5));
+    X.moveTo(P(bx),Q(22)); X.lineTo(P(bx+10),Q(13)); X.moveTo(P(bx-6),Q(by+6)); X.lineTo(P(bx-15),Q(by+12)); X.moveTo(P(bx+6),Q(by+6)); X.lineTo(P(bx+15),Q(by+12));}
+  else {X.moveTo(P(bx-6),Q(by-3)); X.lineTo(P(bx-16),Q(by-12)); X.moveTo(P(bx+6),Q(by-3)); X.lineTo(P(bx+17),Q(by-11)); X.moveTo(P(bx+5),Q(by+5)); X.lineTo(P(bx+15),Q(by+12));}
+  X.moveTo(P(bx),Q(by+7)); X.lineTo(P(bx),Q(68)); X.stroke();
+  X.beginPath(); X.moveTo(P(ax-5),Q(ay-4)); X.lineTo(P(ax-14),Q(ay-11)); X.moveTo(P(ax-5),Q(ay+4)); X.lineTo(P(ax-14),Q(ay+11)); X.moveTo(P(ax+4),Q(ay-5)); X.lineTo(P(ax+9),Q(ay-14)); X.stroke();
+  var A0=[ax+6.5,ay], A1=[ax+20,ay+1], A2=[bx-16,by-4], A3=[bx-7.5,by];
+  X.strokeStyle=K.rose; X.lineWidth=lw(0.7,1.5); X.beginPath(); X.moveTo(P(A0[0]),Q(A0[1])); X.bezierCurveTo(P(A1[0]),Q(A1[1]),P(A2[0]),Q(A2[1]),P(A3[0]),Q(A3[1])); X.stroke();
+  // somata
+  al(1); X.fillStyle=K.cell; X.strokeStyle=K.edge; X.lineWidth=lw(0.5,1.5);
+  ell(P(ax),Q(ay),6.5*S,6.5*S); X.fill(); X.stroke();
+  if(o.bPyr){X.beginPath(); X.moveTo(P(bx),Q(by-9)); X.quadraticCurveTo(P(bx+3),Q(by),P(bx+8),Q(by+6)); X.quadraticCurveTo(P(bx),Q(by+8.5),P(bx-8),Q(by+6)); X.quadraticCurveTo(P(bx-3),Q(by),P(bx),Q(by-9)); X.fill(); X.stroke();}
+  else {ell(P(bx),Q(by),7.5*S,6*S); X.fill(); X.stroke();}
+  // A's terminals on B
+  X.fillStyle=K.rose; [[bx-7.6,by-1.8],[bx-7.2,by+2.2]].forEach(function(t){ell(P(t[0]),Q(t[1]),1.2*S,1.2*S); X.fill();});
+  // drug on A's receptors
+  if(o.drug){for(var i=0;i<4;i++){var an=-2.4+i*0.75; gl('drug',ax+Math.cos(an)*6.9,ay+Math.sin(an)*6.9,{a:o.drug,bound:true});}}
+  var sa=raster(-48,-6,80,o.aRast,o.aRate,11), sb=raster(6,48,80,o.bRast,o.bRate,23);
+  // each recent spike also runs along the axon as a dot
+  function pulse(list,f){list.forEach(function(age){if(age<0.5){var p=age/0.5; f(p);}});}
+  pulse(sa,function(p){var u=1-p, x=u*u*u*A0[0]+3*u*u*p*A1[0]+3*u*p*p*A2[0]+p*p*p*A3[0], y=u*u*u*A0[1]+3*u*u*p*A1[1]+3*u*p*p*A2[1]+p*p*p*A3[1];
+    gl('ion',x,y,{a:Math.min(1,(1-p)*4),sign:'none'});});
+  pulse(sb,function(p){gl('ion',bx,mix(by+8,68,p),{a:Math.min(1,(1-p)*4),sign:'none'});});
+  labP(o.aName,P(ax-3),Q(ay-17)-8,{align:'center',c:K.text,w:600}); labP(o.bName,P(bx+10),Q(by-4),{c:K.text,w:600});
+  if(o.aSub) labP(o.aSub,P(ax-3),Q(ay-17)+8,{align:'center',c:K.muted});
+  if(o.gauge!=null) gauge(P(-48),Q(52),P(-24)-P(-48),o.gauge);
+}
+// A small gauge for the membrane voltage: the marker moves toward "More negative".
+function gauge(x,y,w,e){
+  w=Math.max(w,96); var h=6, m=x+w*mix(0.3,0.86,e); al(1); X.fillStyle=K.memb; rr(x,y,w,h,3); X.fill();
+  X.fillStyle=K.ink; ell(x+w*0.3,y+h/2,2,2); X.fill(); X.fillStyle=K.accent; ell(m,y+h/2,5,5); X.fill();
+  labP('Membrane voltage',x,y-10,{c:K.text,w:600}); labP('More negative',x+w,y+h+12,{align:'right',c:K.muted});
+}
+
+// Dendrite with spines. grow 0..1 enlarges the heads by about a tenth and adds one new spine.
+var SPN=[[-50,-1],[-38,1],[-27,-1],[-15,1],[-4,-1],[8,1],[19,-1],[31,1],[42,-1],[53,1]];
+function dendrite(grow,timeline,tpos){
+  var shapes=[], neck=Math.max(1.6,1.5)*S, y0=50;
+  function head(x,sd,len,r,sc){return {x:x,sd:sd,len:len*sc,r:r*sc};}
+  SPN.forEach(function(s,i){shapes.push(head(s[0],s[1],7+hsh(i,3)*2,3+hsh(i,4)*0.8,1+0.1*grow));});
+  if(grow>0.01) shapes.push(head(-38.5,-1,7.5,3.1,grow));
+  function path(sh){X.beginPath(); X.rect(P(Math.min(XL,-64)-4),Q(y0-5),P(Math.max(XR,64)+4)-P(Math.min(XL,-64)-4),10*S);
+    sh.forEach(function(s){var ny=y0+s.sd*5, hy=ny+s.sd*s.len; X.rect(P(s.x)-neck/2,Math.min(Q(ny),Q(hy)),neck,Math.abs(Q(hy)-Q(ny)));
+      X.moveTo(P(s.x)+s.r*S,Q(hy)); X.ellipse(P(s.x),Q(hy),s.r*S,s.r*0.9*S,0,0,6.2832);});}
+  al(1); X.strokeStyle=K.edge; X.lineWidth=2.4; path(shapes); X.stroke(); X.fillStyle=K.cell; path(shapes); X.fill();
+  if(grow>0.3&&!timeline.noGhost){al(0.7*grow); X.strokeStyle=K.muted; X.lineWidth=1; X.setLineDash([3,3]);
+    SPN.forEach(function(s,i){var len=7+hsh(i,3)*2, r=3+hsh(i,4)*0.8, hy=y0+s[1]*5+s[1]*len; ell(P(s[0]),Q(hy),r*S,r*0.9*S); X.stroke();}); X.setLineDash([]);}
+  lab('Dendrite',XL+3,y0,{c:K.muted}); lab('Dendritic spine',-33,y0+16,{c:K.muted,minor:true});
+  if(grow>0.4) lab('New spine',-38.5+4.5,y0-15.5,{c:K.text,w:600,a:grow});
+  // timeline
+  var tx0=-36, tx1=36, ty=80, nm=timeline.length; al(1); X.strokeStyle=K.memb; X.lineWidth=2; X.beginPath(); X.moveTo(P(tx0),Q(ty)); X.lineTo(P(tx1),Q(ty)); X.stroke();
+  timeline.forEach(function(t,i){var xx=mix(tx0,tx1,nm>1?i/(nm-1):0); al(1); X.fillStyle=K.edge; ell(P(xx),Q(ty),3,3); X.fill();
+    lab(t,xx,ty+4.5,{align:'center',c:K.muted});});
+  al(1); X.fillStyle=K.accent; ell(P(mix(tx0,tx1,tpos)),Q(ty),5,5); X.fill();
+}
+
+// Channel openings over time, as a single-channel recording would show them.
+function openings(rate,dur,seed,tNow,win){
+  var out=[], t=tNow-win-1, ph=hsh(seed,7), k=Math.floor(ph), dt=0.005, th;
+  for(;t<=tNow;t+=dt){ph+=rate*dt; th=k+1+0.7*(hsh(k,seed)-0.5); if(ph>=th){k++; out.push([t,t+dur*(0.75+0.5*hsh(k,seed+2))]);}}
+  return out;
+}
+function isOpen(ev,t){for(var i=0;i<ev.length;i++) if(ev[i][0]<=t&&t<ev[i][1]) return true; return false;}
+function card(x0,y0,x1,y1,title){al(1); X.fillStyle='#ffffff'; X.strokeStyle=K.edgeUi; X.lineWidth=1; rr(x0,y0,x1-x0,y1-y0,8); X.fill(); X.stroke();
+  labP(title,x0+10,y0+13,{c:K.text,w:600});}
+function trace(x0,x1,y,h,ev,tNow,win,name){
+  al(1); labP(name,x0,y-h-9,{c:K.muted}); X.strokeStyle=K.ink; X.lineWidth=1.5; X.lineJoin='miter'; X.beginPath(); X.moveTo(x0,y);
+  ev.forEach(function(e){var a=x1-(tNow-e[0])/win*(x1-x0), b=x1-(tNow-e[1])/win*(x1-x0); if(b<x0||a>x1) return;
+    a=Math.max(a,x0); b=Math.min(b,x1); X.lineTo(a,y); X.lineTo(a,y-h); X.lineTo(b,y-h); X.lineTo(b,y);}); X.lineTo(x1,y); X.stroke();
+}
+
+// Labels are queued while drawing and placed last, so they never sit under a shape drawn later.
+function lab(t,x,y,o){o=o||{}; LB.push({t:t,x:P(x),y:Q(y),o:o});}
+function labP(t,x,y,o){o=o||{}; LB.push({t:t,x:x,y:y,o:o,fix:true});}
+function flush(){
+  var fs=W<560?10.5:12, boxes=[];
+  LB.forEach(function(L){var o=L.o, a=o.a==null?1:o.a; if(a<0.05||(o.minor&&W<430)) return;
+    var f=o.px||fs; X.font=(o.w||500)+' '+f+'px '+FONT; var tw=X.measureText(L.t).width,
+      x0=o.align==='right'?L.x-tw:o.align==='center'?L.x-tw/2:L.x, y=L.y, ok=L.fix, i, tr=[0,1,-1,2,-2];
+    x0=Math.max(6,Math.min(W-6-tw,x0));
+    for(i=0;i<tr.length&&!ok;i++){var yy=L.y+tr[i]*f*1.2, b=[x0-3,yy-f*0.62,x0+tw+3,yy+f*0.62];
+      if(!boxes.some(function(c){return b[0]<c[2]&&b[2]>c[0]&&b[1]<c[3]&&b[3]>c[1];})){ok=true; y=yy;}}
+    if(!ok&&o.minor) return;
+    boxes.push([x0-3,y-f*0.62,x0+tw+3,y+f*0.62]);
+    al(a); X.textAlign='left'; X.textBaseline='middle'; X.lineJoin='round'; X.lineWidth=3.5;
+    X.strokeStyle='rgba(246,247,249,.92)'; X.strokeText(L.t,x0,y); X.fillStyle=o.c||K.text; X.fillText(L.t,x0,y);});
+  LB=[];
+}
+// A tag in the corner says when a step shows one model among others, or an animal result.
+function tagDraw(t){X.font='600 11.5px '+FONT; var tw=X.measureText(t).width, x=12, y=H-12-24;
+  al(1); X.fillStyle='#f8e8e1'; rr(x,y,tw+20,24,12); X.fill(); X.fillStyle='#8a3f24'; X.textAlign='left'; X.textBaseline='middle'; X.fillText(t,x+10,y+12.5);}
+
+/* ---------- the six scenes ---------- */
+var SC={
+psy:{key:[['nt','Serotonin'],['drug','Drug'],['prot','5-HT2A receptor',K.target],['prot','TrkB receptor',K.rose],['bdnf','BDNF'],['gp','G protein']],
+ cap:[['Before the drug','The sending terminal releases serotonin, a chemical messenger. It acts on 5-HT2A receptors on the outer surface of the receiving neuron. Other 5-HT2A receptors sit inside the neuron.'],
+  ['One model','A fat-soluble drug such as psilocin crosses the cell membrane and activates the 5-HT2A receptors inside the neuron, which serotonin cannot reach. This model comes from studies of rat neurons and mice.'],
+  ['A competing model','LSD and psilocin bind TrkB, the receptor for BDNF, a protein that supports the growth of neurons and their synapses. In these studies of cells and mice, the effect did not need 5-HT2A.'],
+  ['The drug amplifies BDNF','In that model, the drug does not switch TrkB on by itself. It strengthens the signal from BDNF that active synapses release.'],
+  ['Spines grow in mice','In mice, one dose of psilocybin increased the density and size of dendritic spines, the small bumps where most excitatory synapses sit, by about 10% within 24 hours. The change was still there a month later.']],
+ paint:function(k){
+  if(k===4){TAG='In mice, frontal cortex'; dendrite(ev(0.6,2.8),['Before','Within 24 hours','A month later'],still?1:Math.min(ev(0.6,2.8)*0.5+ev(4.2,5.8)*0.5,1)); return;}
+  synapse(); var model2=k>=2, fade=model2?0.32:1, e1=k===1?ev(0.4,3.2):0;
+  // the inner compartment, a membrane-bound space inside the neuron that holds 5-HT2A receptors
+  var cx=-6, cy=80, cr=8.5; al(1); X.fillStyle='#f4f1f9'; X.strokeStyle=K.target; X.lineWidth=1.2; ell(P(cx),Q(cy),cr*S,cr*S); X.fill(); al(fade); X.stroke();
+  var r=release({imp:true,nt:8,fuse:[1,2],to:[[-12+0.35,QY-0.95]]});
+  gpcr(-12,QY,-1,K.target,{act:r.bound?0.7:0.15,a:fade,lig:r.bound?'nt':null});
+  gpcr(cx,cy-cr,1,K.target,{act:k===1?e1:0.05,a:fade,lig:k===1&&e1>0.98?'drug':null});
+  var tb=k===3?ev(0.8,3):0;
+  trkb(16,QY,-1,{act:k===3?0.25+0.75*tb:k===2?0.15:0.1,drug:model2?(k===2?ev(0.6,2.4):1):0,bdnf:k===3?tb:0});
+  lab('5-HT2A receptor',-17,QY-9,{align:'right',c:K.text,w:600,a:fade}); lab('TrkB',21,QY-9,{c:K.text,w:600});
+  lab('5-HT2A inside the cell',cx+cr+2,cy,{c:K.text,w:600,a:fade});
+  if(k===1){ // the drug crosses the outer membrane between proteins, then the inner compartment's membrane
+    drift('drug',4,PY+4,QY-4,0.8,5);
+    for(var i=0;i<4;i++){var p=fp(i,4,0.16,0.1); gl('drug',mix(-24,-14,p*0.3),mix(QY-5,cy-cr-7,p),{a:Math.min(1,p*5,(1-p)*5)});}
+    travel('drug',-24,QY-5,cx+0.35,cy-cr+0.95,ev(0.4,3)*1,{bend:0});
+    lab('Drug crosses the membrane',-27,QY+9,{align:'right',c:K.muted,minor:true});
+    if(e1>0.5) signal(cx-0.6,cy-cr-3.95,cx-8,cy-cr-8,e1);
   }
+  if(k===2){drift('drug',4,PY+4,QY-4,0.8,5); travel('drug',40,QY-6,17.53,QY,ev(0.6,2.4)); TAG='Competing model, from cells and mice';}
+  if(k===3){drift('drug',3,PY+4,QY-4,0.6,5); travel('bdnf',30,PY+3,16,QY-7.6,tb); TAG='Competing model, from cells and mice';
+    if(tb>0.5) signal(16,QY+5.5,16,QY+14,tb); lab('BDNF',24,PY+5,{c:K.text,w:600,a:Math.max(tb,0)});}
+  if(k===1) TAG='One model, from rat neurons and mice';
+ }},
+dis:{key:[['nt','Glutamate'],['drug','Drug'],['prot','NMDA receptor',K.target],['prot','AMPA receptor',K.other],['ion','Ions']],
+ cap:[['Before the drug','The sending terminal releases glutamate, the main excitatory messenger. It opens NMDA receptors, channels in the receiving cell, and charged particles called ions flow in.'],
+  ['The drug plugs the pore','The drug enters the open pore of the NMDA receptor and plugs it, so ions can no longer flow through it.'],
+  ['Interneurons go quiet','In one leading model, the block mainly reduces the firing of fast-spiking interneurons, local neurons that inhibit nearby cells. The evidence comes from awake rats given another NMDA blocker, MK-801.'],
+  ['Pyramidal cells fire more','With the interneurons quiet, their inhibition of pyramidal cells, the main excitatory neurons of the cortex, is removed.'],
+  ['New spine synapses in rats','In rats, ketamine quickly switched on mTOR, a pathway that controls the making of new proteins. An AMPA receptor blocker prevented this, and a day later there were more spine synapses. A rival mouse study credits a breakdown product, hydroxynorketamine, that does not block NMDA receptors.'],
+  ['DXM blocks it too','Dextromethorphan (DXM) and its breakdown product dextrorphan also block NMDA receptors. DXM also binds other targets called sigma sites.']],
+ paint:function(k){
+  if(k===2||k===3){TAG='Leading model, from rats';
+    circuit({aName:'Fast-spiking interneuron',aSub:'NMDA receptors blocked',bName:'Pyramidal cell',bPyr:true,drug:1,
+      aRast:'Interneuron firing',bRast:'Pyramidal cell firing',
+      aRate:k===2?rateFn(7,1.4,0.6,2.2):rateFn(1.4,1.4,0,1),bRate:k===2?rateFn(1.6,1.6,0,1):rateFn(1.6,5,0.6,2.2)}); return;}
+  if(k===4){TAG='In rats, prefrontal cortex'; var g=ev(2,4.4);
+    dendrite(g,['Ketamine','A day later'],still?1:g);
+    for(var i=0;i<8;i++){var p=fp(i,8,0.22,0.3), sx=mix(-30,30,hsh(i,8)); gl('prot',sx+(hsh(i,9)-0.5)*4,mix(50,44,p*ev(0.3,1.5)),{a:ev(0.3,1.5)*Math.min(1,p*5,(1-p)*5)});}
+    lab('mTOR switched on, new proteins made',-22,50,{c:K.text,w:600,a:ev(0.3,1.5)}); return;}
+  synapse(); var plug=k===1?ev(0.8,2.6):k===5?1:0;
+  var r=release({imp:true,nt:9,fuse:[1,2],to:[[-12.275,QY-7.2],[-7.725,QY-7.2],[9.725,QY-7.2],[14.275,QY-7.2]]});
+  var op=r.bound?1:0;
+  chan(-10,QY,-1,K.target,{open:op,lig:r.bound?2:0,plug:plug>0.98?'drug':null,sc:1.3});
+  chan(12,QY,-1,K.other,{open:op,lig:r.bound?2:0,sc:1.3});
+  if(plug>0&&plug<0.98) travel('drug',-10,PY+3,-10,QY-0.9,plug,{free:true});
+  if(r.bound||still){ if(plug<0.98) stream('ion',-10,QY-6,-10,QY+7,3,0.9,1,'+',1); stream('ion',12,QY-6,12,QY+7,3,0.9,1,'+',2);}
+  if(still&&plug<0.98) arrow([[-13,QY-6],[-13,QY+6]],K.ink,0.5);
+  if(k>=1) drift('drug',3,PY+4,QY-6,0.7,7);
+  lab('NMDA receptor',-15,QY+9,{align:'right',c:K.text,w:600}); lab('AMPA receptor',17,QY+9,{c:K.text,w:600});
+  if(plug>0.98) lab(k===5?'DXM or dextrorphan in the pore':'Drug in the pore',-15,QY-9,{align:'right',c:K.muted});
+ }},
+stim:{key:[['nt','Dopamine'],['drug','Drug'],['prot','Dopamine transporter',K.target],['prot','Other proteins',K.other]],
+ cap:[['Before the drug','An impulse, the electrical signal a neuron sends, makes the terminal release dopamine. The dopamine transporter then pulls the dopamine back into the terminal. This is called reuptake.'],
+  ['Blockers stop reuptake','Cocaine and methylphenidate bind the transporter and block reuptake. Dopamine is still released only when an impulse arrives, but it stays in the synapse longer.'],
+  ['Amphetamine is carried in','Amphetamine goes further. It is a transporter substrate, which means the transporter carries it into the terminal.'],
+  ['Storage fails, transport reverses','Inside the terminal, it acts on VMAT2, the pump that fills vesicles with dopamine, and disrupts how they store it. It also makes the transporter run backwards.'],
+  ['Release without an impulse','Dopamine pours out through the transporter without any impulse. A blocker needs the neuron to fire. A releaser does not.']],
+ paint:function(k){
+  synapse(); var imp=k<=1, i, p, DT=[-23,23], e3=k===3?ev(0.4,3):k>3?1:0, e4=k===4?ev(0.3,2.2):0;
+  var r=release({imp:imp,nt:imp?10:0,fuse:[1,2],to:[[-10.35,QY-0.95],[10.35,QY-0.95]],pump:true,vfill:1-0.75*e3});
+  gpcr(-10,QY,-1,K.other,{act:(r.bound||k>=1)?0.7:0.15}); gpcr(10,QY,-1,K.other,{act:(r.bound||k>=1)?0.7:0.15});
+  var face=1, q=relQ();
+  if(k===0&&!still) face=q>0.68&&q<0.9?mix(1,-1,ease((q-0.68)/0.12)):q>=0.9?mix(-1,1,ease((q-0.9)/0.1)):1;
+  if(k===2) face=still?0:Math.cos(lt*2.2);
+  if(k>=3) face=k===3?mix(1,-1,e3):(still?-1:Math.cos(lt*2.6));
+  DT.forEach(function(x,j){transp(x,PY,1,K.target,{face:face,site:k===1?'drug':null,sa:ev(0.4,2)});});
+  if(k===0){ // reuptake: dopamine goes back through the transporters
+    for(i=0;i<6;i++){var dx=DT[i%2]; p=still?0.2+0.13*i:(q-0.66-hsh(i,3)*0.08)/0.2;
+      if(p>0&&p<1.2) gl('nt',mix(dx*0.5,dx,Math.min(p,1)),mix(QY-3,PY-4,Math.min(p,1)),{a:Math.min(1,(1.2-p)*5)});}
+    if(still) arrow([[-17,QY-4],[-23,PY+4.5]],K.ink,0.5);}
+  if(k===1){ // with reuptake blocked, released dopamine lingers in the cleft
+    var m=Math.round(4+10*ev(0.4,4));
+    for(i=0;i<m;i++) gl('nt',(hsh(i,11)-0.5)*44+(still?0:Math.sin(lt*0.6+i)*1.2),PY+3.5+hsh(i,12)*(QY-PY-7),{a:0.85});
+    drift('drug',3,PY+4,QY-5,0.6,9);}
+  if(k===2){drift('drug',3,PY+4,QY-5,0.6,9);
+    for(i=0;i<4;i++){p=fp(i,4,0.16,0.2); var dx2=DT[i%2], yy=p<0.5?mix(QY-4,PY+3,p*2):mix(PY+3,PY-9,(p-0.5)*2);
+      gl('drug',dx2*(p<0.5?mix(1.3,1,p*2):mix(1,0.7,(p-0.5)*2)),yy,{a:Math.min(1,p*6,(1-p)*6)});}
+    if(still) arrow([[30,QY-4],[23,PY+4],[19,PY-8]],K.drug,0.6);
+    lab('Amphetamine',30,QY-6,{c:K.text,w:600});}
+  if(k>=3){ // amphetamine inside the terminal, near the vesicles; dopamine leaves the vesicles
+    for(i=0;i<5;i++) gl('drug',[-14,-6,4,13,-1][i]+(still?0:Math.sin(lt*0.8+i)*0.8),[34,23,22,34,28][i],{a:0.9});
+    var cyt=Math.round(10*e3);
+    for(i=0;i<cyt;i++) gl('nt',(hsh(i,14)-0.5)*44+(still?0:Math.sin(lt*0.7+i*1.3)*0.8),18+hsh(i,15)*18,{a:0.85});
+    lab('VMAT2 on each vesicle',15,20,{c:K.muted,minor:true});}
+  if(k===4){ // efflux: dopamine moves out through the reversed transporter with no impulse
+    for(i=0;i<8;i++){p=fp(i,8,0.3,0.1); var dx3=DT[i%2];
+      gl('nt',p<0.5?mix(dx3*0.7,dx3,p*2):mix(dx3,dx3*mix(1.1,0.55,hsh(i,4)),(p-0.5)*2),p<0.5?mix(PY-8,PY,p*2):mix(PY,QY-3,(p-0.5)*2),{a:Math.min(1,p*6,(1-p)*3)*e4});}
+    var m2=Math.round(10*e4); for(i=0;i<m2;i++) gl('nt',(hsh(i,16)-0.5)*44+(still?0:Math.sin(lt*0.6+i)),PY+3.5+hsh(i,17)*(QY-PY-7),{a:0.8});
+    if(still){arrow([[-23,PY-7],[-23,PY+5]],K.ink,0.55); arrow([[23,PY-7],[23,PY+5]],K.ink,0.55);}
+    lab('No impulse',7,Math.max(4,YT+5),{c:K.text,w:600});}
+  lab('Dopamine transporter',-28,PY+7.5,{align:'right',c:K.text,w:600}); lab('Dopamine receptor',15,QY+9,{c:K.muted,minor:true});
+ }},
+op:{key:[['nt','Transmitter'],['drug','Drug'],['prot','µ-opioid receptor',K.target],['prot','Channels and receptors',K.other],['gp','G protein'],['ion','Calcium and potassium ions']],
+ cap:[['Before the drug','An impulse lets calcium into the sending terminal, which then releases its transmitter, a chemical messenger, onto the receiving cell.'],
+  ['The drug activates µ-opioid receptors','The drug reaches µ-opioid receptors on both cells and activates them. They pass the signal on through inhibitory G proteins, signalling proteins inside the cell.'],
+  ['Less release','In the sending terminal, less calcium flows in when an impulse arrives, so less transmitter is released.'],
+  ['Potassium flows out','In the receiving cell, GIRK potassium channels open and potassium ions flow out of the cell.'],
+  ['Disinhibition in the VTA','The neuron’s voltage becomes more negative, so it fires less. In the VTA, a midbrain area rich in dopamine neurons, many of these receptors sit on inhibitory GABA neurons. Quieting them removes inhibition from dopamine neurons.']],
+ paint:function(k){
+  if(k===4){circuit({aName:'GABA neuron',aSub:'µ-opioid receptors active',bName:'Dopamine neuron',drug:1,gauge:ev(0.4,2.2),
+      aRast:'GABA neuron firing',bRast:'Dopamine neuron firing',aRate:rateFn(7,1.4,0.6,2.4),bRate:rateFn(1.6,5,1.8,3.6)});
+    lab('VTA',XR-4,6,{align:'right',c:K.muted}); return;}
+  synapse(); var e1=k===1?ev(0.4,2.6):k>1?1:0, e2=k===2?ev(0.6,2.4):k>2?1:0, e3=k===3?ev(0.6,2.4):0;
+  var r=release({imp:true,ca:[-9,13],caN:e2>0.5?1:2,caOpen:mix(1,0.4,e2),fuse:e2>0.5?[2]:[1,2],nt:Math.round(mix(9,3,e2)),to:[[-5.575,QY-5],[-2.425,QY-5]]});
+  chan(-4,QY,-1,K.other,{open:r.bound?0.8:0,lig:r.bound?2:0,sc:0.9});
+  var gPre=gpcr(-21,PY,1,K.target,{act:e1,lig:e1>0.98?'drug':null}), gPost=gpcr(12,QY,-1,K.target,{act:e1,lig:e1>0.98?'drug':null});
+  chan(27,QY,-1,'#2b8273',{open:e3,sc:0.95});
+  if(k===1){travel('drug',-50,PY+5,-21+0.35,PY+0.95,e1); travel('drug',50,QY-5,12.35,QY-0.95,e1);}
+  if(k>=1) drift('drug',3,PY+4,QY-5,0.6,4);
+  if(e2>0) signal(gPre.gx,gPre.gy,-9,PY-5,e2,-2.5);
+  if(e3>0){signal(gPost.gx,gPost.gy,27,QY+5,e3,3); stream('ion',27,QY+8,27,QY-7,3,0.7,e3,'+',5); if(still) arrow([[30,QY+6],[30,QY-6]],K.ink,0.5);}
+  lab('µ-opioid receptor',-26,PY-8,{align:'right',c:K.text,w:600}); lab('Calcium channels',18,PY-7.5,{c:K.text,w:600,minor:true});
+  lab('µ-opioid receptor',8,QY+10,{align:'right',c:K.text,w:600,minor:true}); lab('GIRK channel',31,QY+9,{c:K.text,w:600});
+  if(k>=1) lab('G protein',-21,PY-11,{c:K.muted,minor:true,align:'center'});
+  if(e3>0.5) lab('Potassium out',31,QY-8,{c:K.muted,a:e3});
+ }},
+benzo:{key:[['nt','GABA'],['drug','Drug'],['prot','α subunits',K.target],['prot','β subunits',K.other],['prot','γ subunit',K.rose],['ion','Chloride ions']],
+ cap:[['Before the drug','The sending terminal releases GABA, the brain’s main inhibitory messenger. It opens GABA-A receptors, channels that let chloride ions into the receiving cell.'],
+  ['The drug binds its own site','The drug binds between the α and γ subunits, two of the receptor’s five protein parts. This site is separate from where GABA binds.'],
+  ['Little effect alone','Without GABA, the drug opens the channel little if at all. Its main effect needs GABA to be present.'],
+  ['Openings come more often','With GABA present, the drug makes the channel open more often. Barbiturates, a different drug class, instead make each opening last longer.'],
+  ['Harder to fire','More chloride enters, the membrane voltage becomes more negative, and the neuron becomes harder to fire.']],
+ paint:function(k){
+  synapse(); var gaba=k!==2, drug=k===0?0:k===1?ev(0.6,2.6):1, tN=still?6:lt+6, win=6;
+  var evs=openings(k===2?0.12:k>=3?2.6:1.1,0.16,k>=3?31:30,tN,win), o=still?(k===2?0:1):(isOpen(evs,tN)?1:0);
+  var G=pentGeo(o), r=release({imp:gaba,nt:gaba?7:0,fuse:[1,2],to:[[-14+G.gs[0],QY-G.gs[1]]]});
+  pent(-14,QY,-1,{open:o,gaba:gaba?1:0,drug:drug});
+  if(k===1&&drug<0.98) travel('drug',-44,QY-6,-14+G.ds[0],QY-G.ds[1],drug,{free:true});
+  if(k>=1) drift('drug',3,PY+4,QY-8,0.6,6);
+  if(o>0.5) stream('ion',-14,QY-7,-14,QY+8,k>=4?5:3,0.9,1,'-',3);
+  if(still&&o>0.5) arrow([[-18.5,QY-7],[-18.5,QY+7]],K.ink,0.5);
+  lab('GABA-A receptor',-24,QY+11,{align:'right',c:K.text,w:600});
+  if(k>=1) lab('Drug site',-14+G.ds[0]-2,QY-G.ds[1]-4,{align:'right',c:K.muted,a:drug,minor:true});
+  lab('GABA site',-14+G.gs[0]+2.5,QY-G.gs[1]-3,{c:K.muted,minor:true,a:gaba?1:0.5});
+  if(k===2) lab('No GABA released',16,PY-6,{c:K.text,w:600});
+  // the inset sits in the receiving cell, right of the receptor, and holds rows of openings or the voltage gauge
+  var x0=Math.max(P(2),P(-14)+9.5*S), x1=Math.min(W-12,P(52)), y0=Q(62), wx=x1-x0;
+  if(wx<130) return;
+  if(k===4){card(x0,y0,x1,y0+70,'In the receiving cell'); gauge(x0+12,y0+44,wx-24,ev(0.4,2.4)); return;}
+  var rows=k===3?[['GABA alone',1.1,0.16,30],['GABA with a benzodiazepine',2.6,0.16,31],['GABA with a barbiturate',1.1,0.5,32]]:
+    [[k===2?'The drug without GABA':k===1?'GABA, with the drug bound':'GABA alone',k===2?0.12:1.1,0.16,30]];
+  var rh=Math.max(30,Math.min(44,(H-10-y0-30)/rows.length)), y1=y0+30+rows.length*rh;
+  if(y1>H-8){y0-=y1-(H-8); y1=H-8;}
+  card(x0,y0,x1,y1,'Channel openings over time');
+  rows.forEach(function(rw,i){var e=i===0&&k!==3?evs:openings(rw[1],rw[2],rw[3],tN,win);
+    trace(x0+12,x1-12,y0+30+rh*(i+1)-10,11,e,tN,win,rw[0]);});
+ }},
+cb:{key:[['nt','Transmitter'],['ecb','Endocannabinoid'],['drug','THC or a synthetic drug'],['prot','CB1 receptor',K.target],['prot','Other proteins',K.other],['gp','G protein'],['ion','Calcium ions']],
+ cap:[['Before any cannabinoid','An impulse lets calcium into the sending terminal, which then releases its transmitter onto the receiving cell. CB1 receptors sit on the terminal, unused.'],
+  ['Made on demand','The receiving cell makes endocannabinoids, signalling molecules the brain makes itself, when they are needed. They are not stored in vesicles.'],
+  ['The signal travels backwards','Endocannabinoids cross the cleft backwards, from the receiving cell to the sending terminal.'],
+  ['CB1 switches on','They activate CB1 receptors on the sending terminal.'],
+  ['Release is turned down','Less calcium flows in, so less transmitter is released. THC and synthetic drugs that act on CB1 skip the backward step. They reach CB1 directly and act whenever the drug is present.']],
+ paint:function(k){
+  synapse(); var i, p, e3=k===3?ev(0.4,2.2):k>3?1:0, e4=k===4?ev(0.4,2.2):0, th=k===4?ev(5.4,7.6):0, gone=k===4?ev(4.6,6.2):0;
+  var r=release({imp:true,ca:[-9,13],caN:e4>0.5?1:2,caOpen:mix(1,0.4,e4),fuse:e4>0.5?[2]:[1,2],nt:Math.round(mix(9,3,e4)),
+    to:[[-5.575,QY-5],[-2.425,QY-5],[12.425,QY-5],[15.575,QY-5]]});
+  chan(-4,QY,-1,K.other,{open:r.bound?0.8:0,lig:r.bound?2:0,sc:0.9}); chan(14,QY,-1,K.other,{open:r.bound?0.8:0,lig:r.bound?2:0,sc:0.9});
+  var bnd=k===3?e3:k===4?1:0, g=gpcr(-21,PY,1,K.target,{act:Math.max(bnd*(1-gone),th),lig:bnd>0.98?'ecb':null,la:1-gone,lig2:th>0.98?'drug':null});
+  // endocannabinoids: made at the receiving cell's membrane, then they cross backwards
+  var made=k===1?ev(0.4,3):k>=2?1:0, back=k===2?ev(0.3,4):k>=3?1:0;
+  for(i=0;i<5;i++){var bx=-34+i*3.2, by=QY-1.6, tx=-21+(i-2)*2.2, ty=PY+4.5+hsh(i,3)*2;
+    if(i===2){tx=-20.65; ty=PY+0.95;}
+    var a=Math.min(1,made*2-i*0.25)*(1-(i===2&&bnd>0.98?1:0))*(1-gone);
+    if(a<=0) continue; p=back; var wob=still?0:Math.sin(lt*1.1+i*1.9)*0.4;
+    gl('ecb',mix(bx,tx,ease(p))+wob*(1-p),mix(by-made*1.6,ty,ease(p))+wob*p,{a:a});}
+  if(k===2||(still&&k>=2&&k<4)) arrow([[-38,QY-2],[-38,PY+3]],K.ecb,0.85,true,0.3);
+  if(k===2||k===1) lab(k===1?'Endocannabinoids made at the membrane':'Backward signal',-40,k===1?QY+8:(PY+QY)/2,{align:'right',c:K.text,w:600});
+  if(e3>0||k===4) signal(g.gx,g.gy,-9,PY-5,k===4?1:e3,-2.5);
+  if(k===4){travel('drug',52,QY-5,-20.65,PY+0.95,th); drift('drug',3,PY+4,QY-6,0.6*th,8); if(th>0.5) lab('THC or a synthetic drug',-15,PY+8,{c:K.text,w:600,a:th});}
+  lab('CB1 receptor',-26,PY-8,{align:'right',c:K.text,w:600}); lab('Calcium channels',18,PY-7.5,{c:K.text,w:600,minor:true});
+  lab('Transmitter receptors',19,QY+9,{c:K.muted,minor:true});
+ }}
+};
 
-  /* postsynaptic receptors */
-  var R=[];
-  if(cur.mode==='psy')   R=[['5-HT2A',COL.ser,.34],['TrkB',COL.op,.66]];
-  if(cur.mode==='block') R=[['NMDA',COL.glu,.34],['AMPA',COL.glu,.66]];
-  if(cur.mode==='stim')  R=[['D1',COL.da,.34],['D2',COL.da,.66]];
-  if(cur.mode==='op')    R=[['GIRK K+',COL.op,.34],['\u03bc-opioid',COL.op,.66]];
-  if(cur.mode==='benzo') R=[['GABA-A',COL.gaba,.5]];
-  if(cur.mode==='cb')    R=[['CB1 (presyn.)',COL.ecb,.5]];
-
-  R.forEach(function(r){
-    var rx=w*r[2];
-    var yy = (cur.mode==='cb') ? preY+h*0.145 : postY;
-    chan(rx, yy, 15*S, 34*S, r[1], 1);
-    X.globalAlpha=.15; blob(rx,yy,26*S,26*S,r[1]);
-    // Where ions flow under a channel, its name goes beside it instead of below.
-    if(cur.mode==='benzo' || r[0]==='GIRK K+') lab(r[0], rx+22*S, yy+3*S, '#6b7785', 'left');
-    else lab(r[0], rx, yy+(cur.mode==='cb'? -26*S : 30*S), '#6b7785');
-  });
-
-  /* channel blocked plug for dissociatives */
-  if(cur.mode==='block'){
-    X.globalAlpha=1; X.fillStyle=COL.block;
-    blob(w*0.34, postY-6*S, 6*S, 6*S, COL.block);
-    lab('pore blocked', w*0.34, postY-22*S, COL.block);
-  }
-
-  /* ligand flux */
-  var N=30;
-  for(var m=0;m<N;m++){
-    var ph=reduce?0.5:((m*0.163+tt*0.20)%1);
-    var lx, ly, col=nt, al=.75;
-
-    if(cur.mode==='cb'){
-      // retrograde: postsynaptic -> presynaptic
-      lx=cx+Math.sin(m*3.1)*w*0.20;
-      ly=postY-ph*(postY-preY-h*0.14);
-      col=COL.ecb;
-    } else if(cur.mode==='stim' && m%2===0){
-      // efflux: pouring out of the terminal
-      lx=cx+Math.sin(m*3.1)*w*0.22;
-      ly=preY+h*0.145+ph*(cleftY-preY);
-      col=COL.da;
-    } else {
-      lx=cx+Math.sin(m*3.1)*w*0.20;
-      ly=preY+h*0.13+ph*(postY-preY-h*0.13);
-    }
-    X.globalAlpha=(1-Math.abs(ph-0.5)*1.2)*al;
-    X.fillStyle=col;
-    X.beginPath(); X.arc(lx,ly,3.6*S,0,6.283); X.fill();
-  }
-
-  /* ion flow for benzo / opioid */
-  if(cur.mode==='benzo'||cur.mode==='op'){
-    for(var i2=0;i2<12;i2++){
-      var p2=reduce?0.5:((i2*0.19+tt*0.34)%1);
-      var yy2 = cur.mode==='benzo' ? postY+p2*h*0.11 : postY+ (1-p2)*h*0.11;
-      X.globalAlpha=(1-p2)*.8; X.fillStyle=COL.ion;
-      X.beginPath(); X.arc(w*(cur.mode==='benzo'?0.5:0.34)+Math.sin(i2*2)*9*S,
-        yy2, 2.6*S,0,6.283); X.fill();
-    }
-    lab(cur.mode==='benzo'?'Cl\u207b in':'K\u207a out',
-      w*(cur.mode==='benzo'?0.5:0.34), postY+h*0.15, COL.ion);
-  }
-
-  /* retrograde arrow for cannabinoids */
-  if(cur.mode==='cb'){
-    X.globalAlpha=.75; X.strokeStyle=COL.ecb; X.lineWidth=2*D;
-    X.setLineDash([6*S,5*S]);
-    X.beginPath(); X.moveTo(cx+w*0.26, postY-10*S);
-    X.lineTo(cx+w*0.26, preY+h*0.17); X.stroke();
-    X.setLineDash([]);
-    X.beginPath();
-    X.moveTo(cx+w*0.26, preY+h*0.15);
-    X.lineTo(cx+w*0.26-5*S, preY+h*0.175);
-    X.lineTo(cx+w*0.26+5*S, preY+h*0.175);
-    X.closePath(); X.fillStyle=COL.ecb; X.fill();
-    lab('retrograde', cx+w*0.245, (preY+postY)/2, COL.ecb, 'right');
-  }
-
-  /* cleft hairlines */
-  X.globalAlpha=.35; X.strokeStyle='#9aa6b2'; X.lineWidth=D;
-  [cleftY-h*0.02, cleftY+h*0.06].forEach(function(y){
-    X.beginPath(); X.moveTo(0,y); X.lineTo(w,y); X.stroke();});
-
-  X.globalAlpha=1; X.lineJoin='round'; X.strokeStyle='rgba(240,243,246,.94)'; X.lineWidth=3.5*D;
-  LAB.forEach(function(l){
-    X.font=(l[5]*D)+'px ui-monospace,Menlo,monospace'; X.textAlign=l[4]; X.fillStyle=l[3];
-    X.strokeText(l[0],l[1],l[2]); X.fillText(l[0],l[1],l[2]);
-  });
+/* ---------- playback, controls and caption ---------- */
+var UI={prev:document.getElementById('syn-prev'),play:document.getElementById('syn-play'),next:document.getElementById('syn-next'),
+  dots:document.getElementById('syn-dots'),n:document.getElementById('syn-n'),t:document.getElementById('syn-t'),
+  x:document.getElementById('syn-x'),live:document.getElementById('syn-live')};
+function total(){return cur.steps.length+1;}
+function dur(){return step===total()-1&&cur.id==='cb'?P2*4:P2*3;}
+function atEnd(){return step===total()-1&&lt>=dur()-0.01;}
+function rest(){return dur()-P2*0.35;}
+function fit(){
+  S=Math.min(W/(W<600?90:104),H/90); OX=W/2; OY=(H-100*S)/2;
+  XL=-OX/S; XR=(W-OX)/S; YT=-OY/S; YB=(H-OY)/S;
+}
+function draw(){
+  if(W<2||H<2) return false;
+  X.setTransform(D,0,0,D,0,0); X.clearRect(0,0,W,H); fit(); LB=[]; TAG='';
+  X.setLineDash([]); SC[cur.id].paint(step); flush(); if(TAG) tagDraw(TAG); al(1);
   return true;
 }
-function loop(){paint();requestAnimationFrame(loop);}
-requestAnimationFrame(loop);
-window.__paint=function(id){ if(id){var d=DRUGS.filter(function(x){return x.id===id;})[0];
-  if(d) show(d);} return paint(); };
+function size(){
+  D=Math.min(devicePixelRatio||1,2);
+  var r=C.getBoundingClientRect(); W=Math.round(r.width); H=Math.round(r.height);
+  var bw=Math.max(1,Math.round(W*D)), bh=Math.max(1,Math.round(H*D));
+  if(C.width!==bw||C.height!==bh){C.width=bw; C.height=bh;}
+  if(!raf) draw();
+}
+function frames(){return (playing||intro)&&!still&&onScreen&&!dlgOpen&&!document.hidden;}
+function kick(){if(frames()){if(!raf){last=performance.now(); raf=requestAnimationFrame(tick);}} else if(!raf) draw();}
+function tick(now){
+  raf=0; var dt=Math.min(0.05,Math.max(0,(now-last)/1000)); last=now;
+  if(playing){lt+=dt; if(lt>=dur()){ if(step<total()-1){step++; lt=0; caption(false);} else {lt=dur(); playing=false; caption(false);} }}
+  else if(intro){lt+=dt; if(lt>=rest()){lt=rest(); intro=false;}}
+  draw(); if(frames()) raf=requestAnimationFrame(tick);
+}
+function plain(h){var d=document.createElement('div'); d.innerHTML=h; return d.textContent;}
+var CAP=document.querySelector('.syn-cap');
+function capHeight(){
+  var keep=[UI.n.textContent,UI.t.textContent,UI.x.textContent], N=cur.steps.length, m=0;
+  CAP.style.minHeight='0';
+  SC[cur.id].cap.forEach(function(c,i){UI.n.textContent=i?'Step '+i+' of '+N:'Without the drug'; UI.t.textContent=c[0]+'.'; UI.x.textContent=c[1];
+    m=Math.max(m,CAP.getBoundingClientRect().height);});
+  UI.n.textContent=keep[0]; UI.t.textContent=keep[1]; UI.x.textContent=keep[2]; CAP.style.minHeight=Math.ceil(m)+'px';
+}
+function caption(user){
+  var c=SC[cur.id].cap[step], N=cur.steps.length, lead=step===0?'Without the drug':'Step '+step+' of '+N;
+  UI.n.textContent=lead; UI.t.textContent=c[0]+'.'; UI.x.textContent=c[1];
+  C.setAttribute('aria-label',cur.name+'. '+lead+'. '+c[0]+'. '+c[1]);
+  if(user) UI.live.textContent=lead+'. '+c[0]+'. '+c[1];
+  UI.prev.disabled=step===0; UI.next.disabled=step===total()-1;
+  UI.play.hidden=still; UI.play.textContent=playing?'Pause':atEnd()?'Replay':'Play';
+  UI.play.setAttribute('aria-label',playing?'Pause the animation':atEnd()?'Replay the animation from the start':'Play the animation');
+  [].forEach.call(UI.dots.children,function(li,i){var b=li.firstChild; if(i===step) b.setAttribute('aria-current','step'); else b.removeAttribute('aria-current');});
+  [].forEach.call(document.getElementById('d-steps').children,function(li,i){
+    var on=i+1===step; li.classList.toggle('on',on); if(on) li.setAttribute('aria-current','step'); else li.removeAttribute('aria-current');});
+}
+function go(k,user){
+  step=Math.max(0,Math.min(total()-1,k)); lt=0; intro=!playing&&!still; caption(user);
+  if(user&&W<1000){var li=document.getElementById('d-steps').children[step-1], sd=document.querySelector('.side');
+    if(li&&sd&&sd.scrollHeight>sd.clientHeight) sd.scrollTop=Math.max(0,li.offsetTop-sd.clientHeight/2);}
+  kick();
+}
+function buildDots(){
+  UI.dots.innerHTML='';
+  for(var i=0;i<total();i++){var li=document.createElement('li'), b=document.createElement('button');
+    b.type='button'; b.className='syn-dot'; b.setAttribute('aria-label',i===0?'Without the drug':'Step '+i);
+    (function(i){b.addEventListener('click',function(){go(i,true);});})(i); li.appendChild(b); UI.dots.appendChild(li);}
+}
+UI.prev.addEventListener('click',function(){go(step-1,true);});
+UI.next.addEventListener('click',function(){go(step+1,true);});
+UI.play.addEventListener('click',function(){
+  if(still) return;
+  if(playing){playing=false; want=false; intro=false;}
+  else {want=true; if(atEnd()){playing=true; go(0,true); return;} playing=true; intro=false;}
+  caption(true); kick();
+});
+function setReduce(m){
+  reduce=still=m; autoplay=!m; if(m){playing=false; want=false; intro=false;} caption(false); kick();
+}
+var mq=matchMedia('(prefers-reduced-motion:reduce)');
+if(mq.addEventListener) mq.addEventListener('change',function(e){setReduce(e.matches);});
+// Draw only while the stage is on screen, the tab is visible and the receptor dialog is closed.
+if(window.IntersectionObserver) new IntersectionObserver(function(es){onScreen=es[es.length-1].isIntersecting;
+  if(onScreen&&want&&!playing&&!still&&step===0&&lt===0) playing=true; caption(false); kick();}).observe(C);
+else if(want){playing=true;}
+document.addEventListener('visibilitychange',function(){last=performance.now(); kick();});
+document.getElementById('rc-open').addEventListener('click',function(){dlgOpen=true;});
+document.getElementById('rc').addEventListener('close',function(){dlgOpen=false; last=performance.now(); kick();});
+var capW=0;
+addEventListener('resize',function(){var w=CAP.clientWidth; if(w!==capW){capW=w; capHeight();} size();});
+if(window.ResizeObserver) new ResizeObserver(size).observe(C);
+size();
+// For screenshots and checks: select a class and a step and draw one settled frame.
+window.__paint=function(id,k){
+  if(id){var d=DRUGS.filter(function(x){return x.id===id;})[0]; if(d) show(d);}
+  playing=false; intro=false; if(k!=null){step=Math.max(0,Math.min(total()-1,k)); caption(false);} lt=still?0:rest();
+  if(raf){cancelAnimationFrame(raf); raf=0;} return draw();
+};
+
+function key(k,c){
+  var s='<svg width="14" height="14" viewBox="0 0 14 14" aria-hidden="true">';
+  if(k==='nt') s+='<circle cx="7" cy="7" r="3.8" fill="'+K.nt+'"/>';
+  else if(k==='drug') s+='<path d="M7 2.6 11.4 7 7 11.4 2.6 7Z" fill="'+K.drug+'" stroke="'+K.drug+'" stroke-width="1.8" stroke-linejoin="round"/>';
+  else if(k==='ion') s+='<circle cx="7" cy="7" r="3.8" fill="'+K.ink+'"/>';
+  else if(k==='ecb') s+='<rect x="1.5" y="4.8" width="11" height="4.4" rx="2.2" fill="'+K.ecb+'"/>';
+  else if(k==='bdnf') s+='<circle cx="4.6" cy="7" r="3" fill="'+K.bdnf+'"/><circle cx="9.4" cy="7" r="3" fill="'+K.bdnf+'"/>';
+  else if(k==='gp') s+='<ellipse cx="7" cy="7.5" rx="5.2" ry="3.6" fill="'+K.gp+'"/>';
+  else s+='<rect x="2.5" y="1.5" width="9" height="11" rx="3" fill="'+c+'"/>';
+  return s+'</svg>';
+}
 
 function show(d){
-  cur=d; t0=performance.now();
+  cur=d;
   document.getElementById('d-name').textContent=d.name;
   document.getElementById('d-ex').textContent=d.ex;
   document.getElementById('sched').innerHTML=d.sched;
@@ -536,10 +1013,10 @@ function show(d){
     li.innerHTML=s; ol.appendChild(li);});
   document.querySelectorAll('.drug').forEach(function(b){
     b.setAttribute('aria-pressed', b.dataset.id===d.id?'true':'false');});
-  var lg=document.getElementById('legend'); lg.innerHTML='';
-  [['Transmitter',COL[d.nt]],['Ions',COL.ion],['Blocked',COL.block]]
-    .forEach(function(p){var s=document.createElement('span');
-      s.innerHTML='<i style="background:'+p[1]+'"></i>'+p[0]; lg.appendChild(s);});
+  document.getElementById('legend').innerHTML=SC[d.id].key.map(function(k){
+    return '<li>'+key(k[0],k[2])+k[1]+'</li>';}).join('');
+  // a new class starts again at its first step, and keeps playing if the reader has not paused
+  step=0; lt=0; playing=want&&!still; intro=!playing&&!still; buildDots(); capHeight(); caption(false); kick();
 }
 
 var LW=document.getElementById('list');

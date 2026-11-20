@@ -297,7 +297,7 @@ class PublicPages(unittest.TestCase):
         checks = {"index": "if(!drag && !reduce) ry+=vy;",
                   "app": "if(!drag&&!reduce) ry+=",
                   "synapse": "autoYaw = !reduceMotion",
-                  "pharma": "var vp=reduce?0.5:",
+                  "pharma": "autoplay=!reduce",
                   "timecells": "var zoom = reduce ? 1 : 0"}
         for name, code in checks.items():
             with self.subTest(page=name):
@@ -305,6 +305,20 @@ class PublicPages(unittest.TestCase):
                 self.assertRegex(page, r"= *(window\.matchMedia && )?matchMedia\('\(prefers-reduced-motion: ?reduce\)'\)\.matches;")
                 self.assertIn(code, page)
         self.assertIn("ry=reduce?1.25:0.5", read("index"))
+
+    def test_pharmacology_scenes_follow_the_mechanism_steps(self):
+        page = read("pharma")
+        for ctl in ('id="syn-prev"', 'id="syn-play"', 'id="syn-next"', 'aria-live="polite"'):
+            self.assertIn(ctl, page)
+        for cid in ("psy", "dis", "stim", "op", "benzo", "cb"):
+            with self.subTest(cls=cid):
+                start = page.index("{id:'%s'," % cid)
+                block = page[start:page.index("\n why:", start)]
+                steps = block.count("\n        '") + 1
+                scene = page.index("\n%s:{key:" % cid)
+                caps = page[page.index("cap:[", scene):page.index("paint:function", scene)]
+                # one caption for the step without the drug, then one per numbered Mechanism step
+                self.assertEqual(len(re.findall(r"\['[^']*','", caps)), steps + 1)
 
     def test_app_heading_is_hidden_not_removed(self):
         self.assertIn('<h1 class="sr-only">', read("app"))
