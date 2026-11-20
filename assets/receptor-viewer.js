@@ -4,7 +4,10 @@ import * as THREE from 'three';
 import { GLTFLoader } from './vendor/three-r160/loaders/GLTFLoader.js';
 import { OrbitControls } from './vendor/three-r160/controls/OrbitControls.js';
 
-// host: an element with a set size. opts: {model, alt, labels:[{text, at:[x,y,z]}], reduce}
+// host: an element with a set size.
+// opts: {model, alt, reduce, labels:[{text, at:[x,y,z]}], view:{az, lo, hi, r}, slab, membraneHalf}
+//   view.az is the side to start from in degrees, lo and hi are the model's lowest and highest
+//   points, and r is its widest radius. slab is the width of the membrane slab.
 // Model units are nanometres, +Y points out of the cell, and the origin is mid-membrane.
 // Resolves to {setPaused, dispose} once the model is on screen.
 export function mount(host, opts) {
@@ -19,19 +22,27 @@ export function mount(host, opts) {
   host.appendChild(canvas);
 
   const scene = new THREE.Scene();
-  const target = new THREE.Vector3(0, -2.6, 0);
-  const cam = new THREE.PerspectiveCamera(28, 1, 0.5, 400);
-  // the same side the still image was rendered from
-  cam.position.copy(target).addScaledVector(new THREE.Vector3(37.6, 6, -13.7).normalize(), 31);
+  const view = opts.view, az = view.az * Math.PI / 180;
+  const target = new THREE.Vector3(0, (view.lo + view.hi) / 2, 0);
+  const cam = new THREE.PerspectiveCamera(28, 1, 0.5, 600);
+  // start on the side the still image was rendered from, far enough back to fit the whole model
+  const from = new THREE.Vector3(Math.sin(az), 0.15, Math.cos(az)).normalize();
+  function fitDistance(aspect) {
+    const t = Math.tan(cam.fov * Math.PI / 360);
+    // the near side of the model looks larger than its middle, so stand back by its radius as well
+    return view.r + Math.max((view.hi - view.lo) / 2 / t, view.r / (t * aspect)) * 1.1;
+  }
+  let dist = fitDistance(0.8);
+  cam.position.copy(target).addScaledVector(from, dist);
 
   scene.add(new THREE.HemisphereLight(0xffffff, 0xaab4c0, 2.0));
   const key = new THREE.DirectionalLight(0xffffff, 1.6);
   cam.add(key); key.position.set(-4, 8, 6); scene.add(cam);
 
   // The membrane is a plain slab. Its height is estimated, not measured.
-  const half = opts.membraneHalf || 1.5;
+  const half = opts.membraneHalf || 1.5, wide = opts.slab || 11;
   const slab = new THREE.Mesh(
-    new THREE.BoxGeometry(11, half * 2, 11),
+    new THREE.BoxGeometry(wide, half * 2, wide),
     new THREE.MeshBasicMaterial({ color: 0x93a6ba, transparent: true, opacity: 0.13, depthWrite: false }));
   slab.renderOrder = 2; scene.add(slab);
   const rim = new THREE.LineSegments(
@@ -42,7 +53,7 @@ export function mount(host, opts) {
   const controls = new OrbitControls(cam, canvas);
   controls.target.copy(target);
   controls.enablePan = false;
-  controls.minDistance = 10; controls.maxDistance = 60;
+  controls.minDistance = dist * 0.3; controls.maxDistance = dist * 2;
   controls.enableDamping = !reduce;
   controls.autoRotate = !reduce; controls.autoRotateSpeed = 0.9;
   controls.update();
@@ -74,10 +85,12 @@ export function mount(host, opts) {
     renderer.setSize(W, H, false);
     canvas.style.width = '100%'; canvas.style.height = '100%';
     cam.aspect = W / H;
-    // on a tall narrow figure, step back so the whole complex stays in view
-    cam.fov = W / H < 0.75 ? 34 : 28;
     cam.updateProjectionMatrix();
-    draw();
+    // keep the whole model in view when the figure changes shape, without undoing the reader's zoom
+    const want = fitDistance(cam.aspect), now = cam.position.distanceTo(controls.target);
+    cam.position.sub(controls.target).multiplyScalar(now * want / dist / now).add(controls.target);
+    dist = want; controls.minDistance = dist * 0.3; controls.maxDistance = dist * 2;
+    controls.update(); draw();
   }
   function draw() { renderer.render(scene, cam); placeTags(); }
 

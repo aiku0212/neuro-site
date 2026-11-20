@@ -2362,6 +2362,116 @@
     "citations_checked": "2026-11-20"
   },
   {
+    "group": "found",
+    "title": "Structural basis of ketamine action on human NMDA receptors",
+    "authors": "Zhang et al.",
+    "year": 2021,
+    "journal": "Nature",
+    "doi": "10.1038/s41586-021-03769-9",
+    "pmid": "34321660",
+    "meta_analysis": false,
+    "site_title": "Structural basis of ketamine action on human NMDA receptors",
+    "site_year": 2021,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for the Pharmacology receptor cards"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 223,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "found",
+    "title": "Structure of the human dopamine transporter in complex with cocaine",
+    "authors": "Nielsen et al.",
+    "year": 2024,
+    "journal": "Nature",
+    "doi": "10.1038/s41586-024-07804-3",
+    "pmid": "39112703",
+    "meta_analysis": false,
+    "site_title": "Structure of the human dopamine transporter in complex with cocaine",
+    "site_year": 2024,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for the Pharmacology receptor cards"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 68,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "found",
+    "title": "Molecular recognition of morphine and fentanyl by the human μ-opioid receptor",
+    "authors": "Zhuang et al.",
+    "year": 2022,
+    "journal": "Cell",
+    "doi": "10.1016/j.cell.2022.09.041",
+    "pmid": "36368306",
+    "meta_analysis": false,
+    "site_title": "Molecular recognition of morphine and fentanyl by the human μ-opioid receptor",
+    "site_year": 2022,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for the Pharmacology receptor cards"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 284,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "found",
+    "title": "Shared structural mechanisms of general anaesthetics and benzodiazepines",
+    "authors": "Kim et al.",
+    "year": 2020,
+    "journal": "Nature",
+    "doi": "10.1038/s41586-020-2654-5",
+    "pmid": "32879488",
+    "meta_analysis": false,
+    "site_title": "Shared structural mechanisms of general anaesthetics and benzodiazepines",
+    "site_year": 2020,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for the Pharmacology receptor cards"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 394,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "found",
+    "title": "Structural basis for activation of CB1 by an endocannabinoid analog",
+    "authors": "Krishna Kumar et al.",
+    "year": 2023,
+    "journal": "Nature Communications",
+    "doi": "10.1038/s41467-023-37864-4",
+    "pmid": "37160876",
+    "meta_analysis": false,
+    "site_title": "Structural basis for activation of CB1 by an endocannabinoid analog",
+    "site_year": 2023,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for the Pharmacology receptor cards"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 64,
+    "citations_checked": "2026-11-20"
+  },
+  {
     "group": "psy",
     "title": "Evolutionary neuropharmacology of serotonergic psychedelics: a cross-species perspective on mechanisms, consciousness, and therapeutic potential.",
     "authors": "Zhai et al.",

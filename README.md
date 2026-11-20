@@ -69,10 +69,11 @@ publishers. The three.js library and the fonts keep their own licenses.
 
 ### Third-party material
 
-- **three.js r160** (MIT). The Pharmacology receptor card uses four files copied from the
+- **three.js r160** (MIT). The Pharmacology receptor cards use four files copied from the
   npm package `three@0.160.0` into `assets/vendor/three-r160/`, with its license. The tests
   pin their hashes. The Spines page still loads three.js r160 from cdnjs.
-- **Protein structure 9AS8** from the Protein Data Bank, which releases its data to the
-  public domain (CC0). The structure is from Gumpper et al., *Nature Communications* 2025.
+- **Six protein structures** from the Protein Data Bank, which releases its data to the
+  public domain (CC0). They are entries 9AS8, 7EU7, 9EO4, 8EF6, 6X3X and 8GHV. Each
+  receptor card on the Pharmacology page cites the paper its structure comes from.
 - **Blender 5.2.4 and Molecular Nodes 520.2.0** were used to turn the structure into the
   image and 3D model. `tools/blender/` holds the script and the steps to rebuild them.

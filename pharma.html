@@ -209,8 +209,8 @@
     <div class="rc-teaser" id="d-struct" hidden>
       <h3>Receptor close-up</h3>
       <button class="rc-open" id="rc-open" type="button" aria-haspopup="dialog">
-        <img src="assets/img/5ht2a-psilocin-9as8-thumb.webp" width="152" height="190" alt="">
-        <span><b>Psilocin bound to the serotonin 2A receptor</b>A measured structure that you can turn in 3D.</span>
+        <img id="rc-thumb" src="assets/img/5ht2a-psilocin-9as8-thumb.webp" width="152" height="190" alt="">
+        <span><b id="rc-teaser"></b>A measured structure that you can turn in 3D.</span>
       </button>
     </div>
     <h3>Mechanism</h3>
@@ -228,15 +228,10 @@
   <div class="rc-in">
     <div class="rc-fig">
       <div class="rc-view">
-        <img id="rc-still" src="assets/img/5ht2a-psilocin-9as8.webp" width="960" height="1200" loading="lazy" alt="The human serotonin 2A receptor drawn as seven violet helices standing in a pale band that marks the membrane. A small orange cluster, psilocin, sits among the helices in the upper half. A grey G protein hangs below the membrane, attached to the bottom of the receptor.">
+        <img id="rc-still" src="assets/img/5ht2a-psilocin-9as8.webp" width="960" height="1200" loading="lazy" alt="">
         <div id="rc-3d" hidden></div>
       </div>
-      <ul class="rc-key" aria-label="Colour key">
-        <li><i style="background:var(--violet)"></i>Serotonin 2A receptor</li>
-        <li><i style="background:#c0573a"></i>Psilocin</li>
-        <li><i style="background:#8fa0b3"></i>G protein</li>
-        <li><i style="background:#cfd8e2"></i>Membrane, drawn in</li>
-      </ul>
+      <ul class="rc-key" id="rc-key" aria-label="Colour key"></ul>
       <div class="rc-ctl">
         <button class="b" type="button" id="rc-view">View in 3D</button>
         <button class="b" type="button" id="rc-pause" aria-pressed="false" hidden>Pause</button>
@@ -246,19 +241,11 @@
     <div class="rc-text">
       <form method="dialog" class="rc-x"><button class="b">Close</button></form>
       <p class="fig-note" style="margin:0"><span class="fig-kind" data-kind="measured">Measured structure</span></p>
-      <h2 class="serif" id="rc-h">Psilocin bound to the serotonin 2A receptor</h2>
-      <p>This picture comes from an experiment. It is not a drawing. It shows the human serotonin 2A receptor (5-HT2A, violet) with psilocin (orange) held in its binding pocket. Psilocin is the active compound the body makes from psilocybin.</p>
-      <p>The receptor crosses the membrane seven times. Psilocin sits among those seven helices, in the half of the receptor nearer the outside of the cell. Below the membrane, a G protein (grey) is attached to the receptor&rsquo;s inner face. A receptor with a G protein attached is in its active state, the arrangement in which it passes a signal into the cell.</p>
+      <h2 class="serif" id="rc-h"></h2>
+      <div id="rc-body"></div>
       <h3>What this picture leaves out</h3>
-      <ul class="rc-lim">
-        <li>The structure was solved by cryo-electron microscopy at a resolution of 2.54 &Aring; (Protein Data Bank entry 9AS8). An &aring;ngstr&ouml;m (&Aring;) is a tenth of a nanometre.</li>
-        <li>It is one frozen arrangement of a purified receptor. It does not show the receptor moving, and it does not show where in a neuron the receptor sits.</li>
-        <li>262 of the receptor&rsquo;s 471 amino acids are in the model. Both ends of the chain and most of the long loop inside the cell are missing.</li>
-        <li>The G protein was engineered to keep the complex stable. Its largest part is a shortened, modified form called mini-Gq.</li>
-        <li>An antibody fragment that helped hold the sample together is part of the entry and is not shown here.</li>
-        <li>The membrane was not part of the measurement. It is drawn as a plain slab, and its position is estimated from the receptor&rsquo;s membrane-spanning segments.</li>
-      </ul>
-      <p class="cite">Structure: Gumpper et al., <em>Nat. Commun.</em> 2025, <a href="https://doi.org/10.1038/s41467-025-57956-7">doi:10.1038/s41467-025-57956-7</a>. Coordinates: <a href="https://www.rcsb.org/structure/9AS8">PDB 9AS8</a>, public domain (CC0). Membrane segments: UniProt P28223. Drawn with Blender and Molecular Nodes.</p>
+      <ul class="rc-lim" id="rc-lim"></ul>
+      <p class="cite" id="rc-cite"></p>
     </div>
   </div>
 </dialog>
@@ -537,7 +524,8 @@ function show(d){
   document.getElementById('d-action').textContent=d.action;
   document.getElementById('d-net').textContent=d.net;
   document.getElementById('d-why').textContent=d.why;
-  document.getElementById('d-struct').hidden=d.id!=='psy';
+  var rc=RC[d.id]; document.getElementById('d-struct').hidden=!rc;
+  if(rc){document.getElementById('rc-thumb').src='assets/img/'+rc.file+'-thumb.webp'; document.getElementById('rc-teaser').textContent=rc.title;}
   document.getElementById('d-cite').innerHTML=d.cite;
   var hl=document.getElementById('d-harms'); hl.innerHTML='';
   (d.harms||[]).forEach(function(h){var li=document.createElement('li');
@@ -562,13 +550,38 @@ DRUGS.forEach(function(d){
   b.addEventListener('click',function(){show(d);});
   LW.appendChild(b);
 });
-/* ---------- receptor card ---------- */
+/* ---------- receptor cards ---------- */
+// One card per drug class, each built from a published structure. tools/blender/ holds the build script.
+// view gives the 3D camera its starting side and the model's size, and labels are points on the model in nanometres.
+var RC=/*rc:start*/{
+ psy:{"file": "5ht2a-psilocin-9as8", "title": "Psilocin bound to the serotonin 2A receptor", "alt": "The human serotonin 2A receptor drawn as seven violet helices standing in a pale band that marks the membrane. A small orange cluster, psilocin, sits among the helices in the upper half. A grey G protein hangs below the membrane, attached to the bottom of the receptor.", "key": [["Serotonin 2A receptor", "#6a54a6"], ["Psilocin", "#c0573a"], ["G protein", "#8fa0b3"]], "body": ["This picture comes from an experiment. It is not a drawing. It shows the human serotonin 2A receptor (5-HT2A, violet) with psilocin (orange) held in its binding pocket. Psilocin is the active compound the body makes from psilocybin.", "The receptor crosses the membrane seven times. Psilocin sits among those seven helices, in the half of the receptor nearer the outside of the cell. Below the membrane, a G protein (grey) is attached to the receptor&rsquo;s inner face. A receptor with a G protein attached is in its active state, the arrangement in which it passes a signal into the cell."], "limits": ["The structure was solved by cryo-electron microscopy at a resolution of 2.54 &Aring; (Protein Data Bank entry 9AS8). An &aring;ngstr&ouml;m (&Aring;) is a tenth of a nanometre.", "It is one frozen arrangement of a purified receptor. It does not show the receptor moving, and it does not show where in a neuron the receptor sits.", "262 of the receptor&rsquo;s 471 amino acids are in the model. Both ends of the chain and most of the long loop inside the cell are missing.", "The G protein was engineered to keep the complex stable. Its largest part is a shortened, modified form called mini-Gq.", "An antibody fragment that helped hold the sample together is part of the entry and is not shown here.", "The membrane was not part of the measurement. It is drawn as a plain slab, and its position is estimated from the receptor&rsquo;s membrane-spanning segments."], "cite": "Structure: Gumpper et al., <em>Nat. Commun.</em> 2025, <a href=\"https://doi.org/10.1038/s41467-025-57956-7\">doi:10.1038/s41467-025-57956-7</a>. Coordinates: <a href=\"https://www.rcsb.org/structure/9AS8\">PDB 9AS8</a>, public domain (CC0). Membrane segments: UniProt P28223. Drawn with Blender and Molecular Nodes.", "view": {"az": 110, "lo": -8.57, "hi": 2.64, "r": 5.59}, "slab": 11, "labels": [{"text": "Psilocin", "at": [0.37, 0.676, -0.169]}, {"text": "Serotonin 2A receptor", "at": [0, 2.5, 0]}, {"text": "G protein", "at": [-0.057, -4.873, 1.894]}, {"text": "Membrane, drawn in", "at": [1.88, -1.5, 5.17]}]},
+ dis:{"file": "nmda-ketamine-7eu7", "title": "Ketamine inside the NMDA receptor channel", "alt": "A human NMDA receptor drawn as ribbons, with two violet GluN1 subunits and two blue GluN2A subunits. Most of the receptor stands above a pale band that marks the membrane. A small orange cluster, ketamine, sits in the middle of the part that crosses the membrane. Small green clusters, glycine and glutamate, sit on the outer domains.", "key": [["GluN1 subunits", "#6a54a6"], ["GluN2A subunits", "#2f6fa8"], ["Ketamine", "#c0573a"], ["Glycine and glutamate", "#3d8a4a"]], "body": ["This picture comes from an experiment. It is not a drawing. It shows a human NMDA receptor made of two GluN1 subunits (violet) and two GluN2A subunits (blue). S-ketamine (orange), the form of ketamine used in the sample, sits inside the channel.", "Most of the receptor stands outside the cell. Glycine and glutamate (green), the two natural signals that open the channel, are bound to those outer domains. Glycine is on GluN1 and glutamate is on GluN2A. The channel crosses the membrane at the bottom. Ketamine sits in the wide middle of the channel, between its gate and the narrow filter that selects ions. From there it blocks the flow of ions."], "limits": ["The structure was solved by cryo-electron microscopy at a resolution of 3.5 &Aring; (Protein Data Bank entry 7EU7). An &aring;ngstr&ouml;m (&Aring;) is a tenth of a nanometre. At this resolution, the exact pose of a small molecule is less certain than the overall shape of the receptor.", "It is one frozen arrangement of a purified receptor. The authors&rsquo; computer simulations suggest that ketamine moves between two positions inside this pocket, and the picture shows one.", "The sample used shortened subunits. The model holds 784 of the 938 amino acids of GluN1 and 781 of the 1,464 of GluN2A, and the long tails that sit inside the cell are absent.", "Sugar groups attached to the receptor are part of the entry and are not shown here.", "The membrane was not part of the measurement. It is drawn as a plain slab, and its position is estimated from which parts of the protein avoid water."], "cite": "Structure: Zhang et al., <em>Nature</em> 2021, <a href=\"https://doi.org/10.1038/s41586-021-03769-9\">doi:10.1038/s41586-021-03769-9</a>. Coordinates: <a href=\"https://www.rcsb.org/structure/7EU7\">PDB 7EU7</a>, public domain (CC0). Protein lengths: UniProt Q05586 and Q12879. Drawn with Blender and Molecular Nodes.", "view": {"az": 110, "lo": -2.63, "hi": 14.04, "r": 6.86}, "slab": 9.8, "labels": [{"text": "Ketamine", "at": [-0.0, 0.6, -0.05]}, {"text": "Glutamate", "at": [-2.98, 5.85, -1.01]}, {"text": "Glycine", "at": [0.22, 5.73, 2.76]}, {"text": "NMDA receptor", "at": [0.7, 14.0, -2.7]}, {"text": "Membrane, drawn in", "at": [1.68, -1.5, 4.61]}]},
+ stim:{"file": "dat-cocaine-9eo4", "title": "Cocaine bound to the dopamine transporter", "alt": "The human dopamine transporter drawn as a bundle of violet helices lying almost entirely within a pale band that marks the membrane. A small orange cluster, cocaine, sits in the middle of the bundle.", "key": [["Dopamine transporter", "#6a54a6"], ["Cocaine", "#c0573a"]], "body": ["This picture comes from an experiment. It is not a drawing. It shows the human dopamine transporter (violet) with cocaine (orange) bound. The transporter is not a receptor. It is a pump that carries released dopamine back into the neuron.", "The transporter lies almost entirely within the membrane. Cocaine sits in its central site, about halfway across the membrane. In this structure the transporter is open toward the outside of the cell, with cocaine lodged in the site that dopamine would use. With that site taken, the transporter cannot carry dopamine back in."], "limits": ["The structure was solved by cryo-electron microscopy at a resolution of 2.66 &Aring; (Protein Data Bank entry 9EO4). An &aring;ngstr&ouml;m (&Aring;) is a tenth of a nanometre.", "It is one frozen arrangement of a purified transporter. It does not show the transporter moving, and it does not show dopamine.", "It shows cocaine only. Amphetamine and methylphenidate act on the same transporter, and neither is in this structure.", "546 of the transporter&rsquo;s 620 amino acids are in the model. The first 56 and part of one outer loop are missing.", "A sodium ion, a chloride ion and cholesterol molecules are part of the entry and are not shown here.", "The membrane was not part of the measurement. It is drawn as a plain slab, and its position is estimated from which parts of the protein avoid water."], "cite": "Structure: Nielsen et al., <em>Nature</em> 2024, <a href=\"https://doi.org/10.1038/s41586-024-07804-3\">doi:10.1038/s41586-024-07804-3</a>. Coordinates: <a href=\"https://www.rcsb.org/structure/9EO4\">PDB 9EO4</a>, public domain (CC0). Protein lengths: UniProt Q01959. Drawn with Blender and Molecular Nodes.", "view": {"az": 110, "lo": -3.15, "hi": 3.1, "r": 5.31}, "slab": 10.6, "labels": [{"text": "Cocaine", "at": [-0.19, -0.14, 0.1]}, {"text": "Dopamine transporter", "at": [-2.27, 3.0, 0.04]}, {"text": "Membrane, drawn in", "at": [1.82, -1.5, 4.99]}]},
+ op:{"file": "mor-morphine-8ef6", "title": "Morphine bound to the mu-opioid receptor", "alt": "The human mu-opioid receptor drawn as seven violet helices standing in a pale band that marks the membrane. A small orange cluster, morphine, sits among the helices in the upper half. A grey G protein hangs below the membrane, attached to the bottom of the receptor.", "key": [["Mu-opioid receptor", "#6a54a6"], ["Morphine", "#c0573a"], ["G protein", "#8fa0b3"]], "body": ["This picture comes from an experiment. It is not a drawing. It shows the human mu-opioid receptor (violet) with morphine (orange) held in its binding pocket.", "The receptor crosses the membrane seven times. Morphine sits among those seven helices, in the half of the receptor nearer the outside of the cell. Below the membrane, a G protein (grey) is attached to the receptor&rsquo;s inner face, so this is the receptor&rsquo;s active state. The same research group also solved the structure with fentanyl in this pocket (entry 8EF5)."], "limits": ["The structure was solved by cryo-electron microscopy at a resolution of 3.2 &Aring; (Protein Data Bank entry 8EF6). An &aring;ngstr&ouml;m (&Aring;) is a tenth of a nanometre.", "It is one frozen arrangement of a purified receptor. It does not show the receptor moving, and it does not show what happens inside the cell afterwards.", "287 of the receptor&rsquo;s 400 amino acids are in the model. Both ends of the chain are missing.", "The G protein is assembled from parts of three species. One part is human, one is from rat and one is from cattle. Part of it is missing from the model.", "The entry holds two copies of the receptor. The picture shows the copy that was modelled with the whole G protein.", "An antibody fragment that helped hold the sample together and several cholesterol molecules are part of the entry and are not shown here.", "The membrane was not part of the measurement. It is drawn as a plain slab, and its position is estimated from which parts of the protein avoid water."], "cite": "Structure: Zhuang et al., <em>Cell</em> 2022, <a href=\"https://doi.org/10.1016/j.cell.2022.09.041\">doi:10.1016/j.cell.2022.09.041</a>. Coordinates: <a href=\"https://www.rcsb.org/structure/8EF6\">PDB 8EF6</a>, public domain (CC0). Protein lengths: UniProt P35372. Drawn with Blender and Molecular Nodes.", "view": {"az": 20, "lo": -8.54, "hi": 2.77, "r": 5.22}, "slab": 7.9, "labels": [{"text": "Morphine", "at": [-0.31, 0.85, -0.25]}, {"text": "Mu-opioid receptor", "at": [0.26, 2.73, 0.1]}, {"text": "G protein", "at": [0.3, -5.37, 0.25]}, {"text": "Membrane, drawn in", "at": [-3.72, -1.5, 1.35]}]},
+ benzo:{"file": "gabaa-diazepam-6x3x", "title": "Diazepam and GABA on the GABA-A receptor", "alt": "A human GABA-A receptor drawn as ribbons, a ring of five subunits coloured violet, blue and pink. Its lower third stands in a pale band that marks the membrane, and the rest rises above it. Orange clusters, diazepam, sit at one place on the outer part and three places within the membrane. Two small green clusters, GABA, sit on the outer part.", "key": [["&alpha;1 subunits", "#6a54a6"], ["&beta;2 subunits", "#2f6fa8"], ["&gamma;2 subunit", "#a2477e"], ["Diazepam", "#c0573a"], ["GABA", "#3d8a4a"]], "body": ["This picture comes from an experiment. It is not a drawing. It shows a human GABA-A receptor, a ring of five subunits around a central channel. Two are &alpha;1 subunits (violet), two are &beta;2 (blue) and one is &gamma;2 (pink). GABA (green), the brain&rsquo;s main inhibitory transmitter, is bound at two places on the outer part, each between a &beta;2 and an &alpha;1 subunit.", "Diazepam (orange) appears at four places. One is the classical benzodiazepine site, outside the membrane between an &alpha;1 subunit and the &gamma;2 subunit. The other three lie within the part that crosses the membrane, at sites that diazepam partly shares with some anaesthetics. Diazepam does not open the channel by itself. It makes the receptor respond more strongly to GABA."], "limits": ["The structure was solved by cryo-electron microscopy at a resolution of 2.92 &Aring; (Protein Data Bank entry 6X3X). An &aring;ngstr&ouml;m (&Aring;) is a tenth of a nanometre.", "A structure shows where a drug can bind. It does not show which of these sites matter at the doses people take.", "About 335 amino acids of each subunit are in the model. Most of the large loop that each subunit carries inside the cell is not in it.", "Two antibody fragments that helped hold the sample together and the sugar groups attached to the receptor are part of the entry and are not shown here.", "The membrane was not part of the measurement. It is drawn as a plain slab, and its position is estimated from which parts of the protein avoid water."], "cite": "Structure: Kim et al., <em>Nature</em> 2020, <a href=\"https://doi.org/10.1038/s41586-020-2654-5\">doi:10.1038/s41586-020-2654-5</a>. Coordinates: <a href=\"https://www.rcsb.org/structure/6X3X\">PDB 6X3X</a>, public domain (CC0). Protein lengths: UniProt P14867, P47870 and P18507. Drawn with Blender and Molecular Nodes.", "view": {"az": 290, "lo": -2.92, "hi": 8.35, "r": 5.24}, "slab": 10.5, "labels": [{"text": "Diazepam, classical site", "at": [-2.27, 5.06, -1.31]}, {"text": "Diazepam, in the membrane", "at": [-0.06, 0.63, -1.38]}, {"text": "GABA", "at": [1.42, 5.29, 2.15]}, {"text": "GABA-A receptor", "at": [-2.36, 8.3, 1.27]}, {"text": "Membrane, drawn in", "at": [-1.79, -1.5, -4.92]}]},
+ cb:{"file": "cb1-amg315-8ghv", "title": "A cannabinoid bound to the CB1 receptor", "alt": "The human CB1 receptor drawn as seven violet helices standing in a pale band that marks the membrane. An orange cluster, the compound AMG315, sits among the helices in the upper half. A grey G protein hangs below the membrane, attached to the bottom of the receptor.", "key": [["CB1 receptor", "#6a54a6"], ["AMG315", "#c0573a"], ["G protein", "#8fa0b3"]], "body": ["This picture comes from an experiment. It is not a drawing. It shows the human CB1 receptor (violet) with a compound called AMG315 (orange) in its binding pocket. AMG315 is a laboratory-made relative of anandamide, one of the cannabinoids the body makes for itself. It is not THC.", "The receptor crosses the membrane seven times, and the compound lies among those helices in the half nearer the outside of the cell. Below the membrane, a G protein (grey) is attached to the receptor&rsquo;s inner face, so this is the receptor&rsquo;s active state."], "limits": ["The structure was solved by cryo-electron microscopy at a resolution of 2.8 &Aring; (Protein Data Bank entry 8GHV). An &aring;ngstr&ouml;m (&Aring;) is a tenth of a nanometre.", "This card does not show THC. No peer-reviewed structure of THC bound to CB1 was found when the card was made in November 2026.", "It is one frozen arrangement of a purified receptor. It does not show the receptor moving, and it does not show what happens inside the cell afterwards.", "280 of the receptor&rsquo;s 472 amino acids are in the model. Both ends of the chain and most of one loop inside the cell are missing.", "Part of the G protein is missing from the model. An antibody fragment that helped hold the sample together is part of the entry and is not shown here.", "The membrane was not part of the measurement. It is drawn as a plain slab, and its position is estimated from which parts of the protein avoid water."], "cite": "Structure: Krishna Kumar et al., <em>Nat. Commun.</em> 2023, <a href=\"https://doi.org/10.1038/s41467-023-37864-4\">doi:10.1038/s41467-023-37864-4</a>. Coordinates: <a href=\"https://www.rcsb.org/structure/8GHV\">PDB 8GHV</a>, public domain (CC0). Protein lengths: UniProt P21554. Drawn with Blender and Molecular Nodes.", "view": {"az": 110, "lo": -9.15, "hi": 2.77, "r": 5.04}, "slab": 7.8, "labels": [{"text": "AMG315", "at": [-0.48, 1.17, -0.19]}, {"text": "CB1 receptor", "at": [0.07, 2.73, 1.3]}, {"text": "G protein", "at": [-0.04, -5.11, 1.57]}, {"text": "Membrane, drawn in", "at": [1.33, -1.5, 3.66]}]}
+}/*rc:end*/;
 (function(){
   var dlg=document.getElementById('rc'),open=document.getElementById('rc-open'),view=document.getElementById('rc-view'),
       pause=document.getElementById('rc-pause'),host=document.getElementById('rc-3d'),still=document.getElementById('rc-still'),
-      msg=document.getElementById('rc-msg'),api=null,paused=reduce,loading=false;
+      msg=document.getElementById('rc-msg'),card=null,api=null,paused=reduce,loading=false;
   function label(){pause.textContent=paused?'Play':'Pause'; pause.setAttribute('aria-pressed',String(paused));}
+  // Put one card's words and picture into the dialog, and clear any 3D view left from another card.
+  function fill(c){
+    if(api){api.dispose(); api=null;}
+    card=c; loading=false; host.hidden=true; still.hidden=false; pause.hidden=true; msg.textContent='';
+    view.hidden=false; view.disabled=false; view.textContent='View in 3D';
+    still.src='assets/img/'+c.file+'.webp'; still.alt=c.alt;
+    document.getElementById('rc-h').textContent=c.title;
+    document.getElementById('rc-body').innerHTML=c.body.map(function(p){return '<p>'+p+'</p>';}).join('');
+    document.getElementById('rc-lim').innerHTML=c.limits.map(function(p){return '<li>'+p+'</li>';}).join('');
+    document.getElementById('rc-cite').innerHTML=c.cite;
+    document.getElementById('rc-key').innerHTML=c.key.map(function(k){
+      return '<li><i style="background:'+k[1]+'"></i>'+k[0]+'</li>';}).join('')+'<li><i style="background:#cfd8e2"></i>Membrane, drawn in</li>';
+  }
   open.addEventListener('click',function(){
+    var c=RC[cur.id]; if(!c) return;
+    if(c!==card) fill(c);
     if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
     if(api&&!host.hidden) api.setPaused(paused);
   });
@@ -579,19 +592,19 @@ DRUGS.forEach(function(d){
       view.textContent=to3d?'Show the image':'View in 3D'; api.setPaused(!to3d||paused); return;
     }
     if(loading) return;
-    loading=true; view.disabled=true; view.textContent='Loading 3D'; host.hidden=false;
+    var c=card; loading=true; view.disabled=true; view.textContent='Loading 3D'; host.hidden=false;
     // three.js and the model load only now, so the page itself stays light
     import('./assets/receptor-viewer.js').then(function(m){
-      return m.mount(host,{model:'assets/models/5ht2a-psilocin-9as8.glb',reduce:reduce,membraneHalf:1.5,alt:still.alt+
-        ' This is a 3D view. Drag or use the arrow keys to turn it.',
-        labels:[{text:'Psilocin',at:[0.37,0.676,-0.169]},{text:'Serotonin 2A receptor',at:[0,2.5,0]},
-                {text:'G protein',at:[-0.057,-4.873,1.894]},{text:'Membrane, drawn in',at:[-5.5,1.5,0]}]});
+      return m.mount(host,{model:'assets/models/'+c.file+'.glb',reduce:reduce,membraneHalf:1.5,view:c.view,slab:c.slab,
+        labels:c.labels,alt:c.alt+' This is a 3D view. Drag or use the arrow keys to turn it.'});
     }).then(function(a){
-      api=a; api.setPaused(paused); still.hidden=true; view.disabled=false; view.textContent='Show the image';
+      if(c!==card){a.dispose(); return;}      // the reader moved to another card while this one loaded
+      api=a; loading=false; api.setPaused(paused); still.hidden=true; view.disabled=false; view.textContent='Show the image';
       pause.hidden=reduce; label();
       msg.textContent='Drag to turn the model. The arrow keys also turn it, and plus and minus zoom.';
     }).catch(function(){
-      host.hidden=true; still.hidden=false; view.hidden=true;
+      if(c!==card) return;
+      loading=false; host.hidden=true; still.hidden=false; view.hidden=true;
       msg.textContent='The 3D view could not load in this browser. The image shows the same structure.';
     });
   });
