@@ -1006,7 +1006,7 @@
     "authors": "Cahn et al.",
     "year": 2017,
     "journal": "Frontiers in Human Neuroscience",
-    "citations": 210,
+    "citations": 211,
     "tag": "mixed",
     "note": "No control group; authors note exercise confound; later corrections disclose funding by a co-author and Chopra Foundation ties",
     "meta_analysis": false,
@@ -1019,7 +1019,7 @@
     "site_year": 2017,
     "citations_at_compile": 261,
     "doi": "10.3389/fnhum.2017.00315",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [
       {
         "type": "erratum",
