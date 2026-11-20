@@ -2,7 +2,7 @@
 <html lang="en">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Pharmacology Bench · Neuroscope</title>
+<title>Drug Mechanisms at the Synapse · Neuroscope</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
@@ -11,7 +11,7 @@
 <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Neuroscope">
-<meta property="og:title" content="Pharmacology Bench · Neuroscope">
+<meta property="og:title" content="Drug Mechanisms at the Synapse · Neuroscope">
 <meta property="og:description" content="How major drug classes act at the synapse, shown as interactive mechanism models.">
 <meta property="og:url" content="https://aiku0212.github.io/neuro-site/pharma.html">
 <meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
@@ -111,10 +111,11 @@
     .list{border-right:0;border-bottom:1px solid var(--rule);display:flex;
       overflow-x:auto;padding:8px}
     .list h3{display:none}
-    .drug{white-space:nowrap;border-left:0;border-bottom:2px solid transparent}
+    .drug{white-space:nowrap;width:auto;flex:none;border-left:0;border-bottom:2px solid transparent}
     .drug[aria-pressed="true"]{border-left:0;border-bottom-color:var(--amber)}
     .side{border-left:0;border-top:1px solid var(--rule)}
   }
+  @media (max-width:640px){.sched{max-width:62%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 <link rel="stylesheet" href="assets/atlas.css">
@@ -146,7 +147,7 @@
 
   <aside class="side">
     <p class="fig-note" style="margin:0 0 10px"><span class="fig-kind" data-kind="schematic">Schematic</span></p>
-    <p class="cite" style="margin:0 0 16px;padding:10px 12px;border:1px solid var(--rule);border-left:2px solid var(--rose)">Explains mechanisms only. Not medical advice, not dosing guidance, and not a suggestion that any drug is safe or legal to use. <a href="about.html" style="color:inherit">About and limits</a></p>
+    <p class="cite" style="margin:0 0 16px;padding:10px 12px;border:1px solid var(--rule);border-left:2px solid var(--rose)">This page explains mechanisms only. It is not medical advice, not dosing guidance, and not a suggestion that any drug is safe or legal to use. <a href="about.html" style="color:inherit">About and limits</a></p>
     <h1 class="serif" id="d-name"></h1>
     <p class="sub" id="d-ex"></p>
     <div class="kv"><span>Primary target</span><b id="d-target"></b></div>
@@ -176,97 +177,97 @@ var DRUGS=[
  sched:'Schedule I', target:'5-HT2A + TrkB', type:'GPCR + receptor tyrosine kinase',
  action:'Agonist / allosteric', net:'Structural plasticity',
  nt:'ser', mode:'psy',
- steps:['One model (rat neurons and mice): fat-soluble psychedelics such as DMT and psilocin cross the cell membrane and activate 5-HT2A receptors inside cortical neurons, which serotonin cannot reach on its own.',
-        'A competing model (cells and mice): LSD and psilocin bind the BDNF receptor TrkB directly, about 1,000 times more tightly than standard antidepressants do, and the plasticity effect did not need 5-HT2A.',
-        'In that model they do not switch TrkB on themselves; they amplify signalling by the BDNF that active synapses release.',
-        'In mice, one dose of psilocybin raised dendritic spine density and size in the frontal cortex by about 10% within 24 hours, and the change was still present a month later.'],
- why:'Where a receptor sits may matter, not just what it is: in rat neurons and mice, psychedelics reached 5-HT2A receptors inside the cell that serotonin could not, one proposed reason serotonin does not trigger the same growth. A rival model credits the BDNF receptor TrkB instead, and both come from cell and animal studies.',
+ steps:['One model, based on studies of rat neurons and mice, holds that fat-soluble psychedelics such as DMT and psilocin cross the cell membrane and activate 5-HT2A serotonin receptors inside cortical neurons. Serotonin cannot reach those receptors on its own.',
+        'A competing model, based on studies of cells and mice, holds that LSD and psilocin bind the BDNF receptor TrkB directly, about 1,000 times more tightly than standard antidepressants do. In these studies, the plasticity effect did not need 5-HT2A. BDNF (brain-derived neurotrophic factor) is a protein that supports the growth of neurons and their synapses.',
+        'In that model, the drugs do not activate TrkB by themselves. Instead, they amplify signalling by the BDNF that active synapses release.',
+        'In mice, one dose of psilocybin increased the density and size of dendritic spines in the frontal cortex by about 10% within 24 hours, and the change was still present a month later. Dendritic spines are small protrusions on dendrites where most excitatory synapses are located.'],
+ why:'A receptor\'s location, inside or outside the cell, may matter as well as its type. In rat neurons and mice, psychedelics reached 5-HT2A receptors inside the cell that serotonin could not reach, which is one proposed reason serotonin does not trigger the same growth. A rival model attributes the effect to the BDNF receptor TrkB instead. Both models come from cell and animal studies.',
  cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023 &middot; Shao et al., <em>Neuron</em> 2021',
- harms:["Impaired awareness can lead to risky acts like driving dangerously or walking in traffic; psilocybin also raises heart rate and blood pressure, which may endanger people with heart conditions.",
+ harms:["Impaired awareness can lead to risky acts like driving dangerously or walking in traffic. Psilocybin also raises heart rate and blood pressure, which may endanger people with heart conditions.",
         "Psychedelics may trigger a schizophrenia-like illness in people at risk, and the low psychosis rates seen in research come from trials that exclude people with psychosis or bipolar disorder.",
-        "Some drugs sold as LSD are actually NBOMes, which are more potent and linked to a small number of deaths, typically involving very high doses or mixed drugs, especially alcohol.",
+        "Some drugs sold as LSD are actually NBOMes, synthetic hallucinogens that are more potent. NBOMes have been linked to a small number of deaths, typically involving very high doses or combinations with other drugs, especially alcohol.",
         "In 62 online reports of psychedelics taken with lithium, a bipolar disorder medication, 47% described seizures, so researchers provisionally warn of a significant seizure risk."],
  hcite:"Harms: <a href=\"https://nida.nih.gov/research-topics/psilocybin-magic-mushrooms\">NIDA, Psilocybin (Magic Mushrooms), Jan 2024</a> &middot; <a href=\"https://nida.nih.gov/research-topics/psychedelic-dissociative-drugs\">NIDA, Psychedelic and Dissociative Drugs, Apr 2023</a> &middot; <a href=\"https://pubmed.ncbi.nlm.nih.gov/34348413/\">Nayak et al., Pharmacopsychiatry 2021</a>"},
 
 {id:'dis', name:'Dissociatives', ex:'Ketamine, PCP, dextromethorphan',
- sched:'Schedule III (ketamine), II (PCP); DXM not controlled', target:'NMDA receptor', type:'Ionotropic glutamate',
- action:'Open-channel blocker', net:'Disinhibition, then synaptogenesis',
+ sched:'Schedule III (ketamine), II (PCP), not controlled (DXM)', target:'NMDA receptor', type:'Ionotropic glutamate',
+ action:'Open-channel blocker', net:'Disinhibition, then new synapse formation',
  nt:'glu', mode:'block',
- steps:['Enters the open NMDA channel pore and physically plugs it.',
-        'In one leading model, based on recordings in awake rats given a different NMDA blocker (MK-801), NMDA blockade mainly quiets fast-spiking inhibitory interneurons.',
-        'Those interneurons stop firing, releasing the brake on pyramidal cells.',
-        'In rats, ketamine rapidly switched on mTOR signalling (an AMPA-receptor blocker prevented this), and prefrontal neurons had more spine synapses a day later. A rival mouse study credits a ketamine breakdown product (hydroxynorketamine) that works without blocking NMDA receptors.',
-        'Dextromethorphan and its breakdown product dextrorphan both block NMDA receptors, and DXM also binds sigma sites; at high doses its effects resemble PCP and ketamine.'],
- why:'In the leading model, a drug that blocks excitation produces net excitation because it silences the inhibitors first. In a small trial of 18 people, mood improved within about two hours of one infusion, but only about a third still met response criteria a week later; the related FDA-approved drug, esketamine, is given only in certified settings with at least two hours of monitoring.',
+ steps:['The drug enters the open pore of the NMDA receptor, a glutamate-gated ion channel, and physically plugs it.',
+        'In one leading model, based on recordings in awake rats given a different NMDA blocker (MK-801), NMDA blockade mainly reduces the firing of fast-spiking inhibitory interneurons, local neurons that inhibit nearby cells.',
+        'Those interneurons stop firing, which removes their inhibition of pyramidal cells, the main excitatory neurons of the cortex.',
+        'In rats, ketamine rapidly activated mTOR signalling, a pathway that controls the making of new proteins, including synaptic proteins. A drug that blocks AMPA receptors, another type of glutamate receptor, prevented this activation. Prefrontal neurons had more spine synapses a day later. A rival mouse study attributes the effect to a ketamine breakdown product (hydroxynorketamine) that works without blocking NMDA receptors.',
+        'Dextromethorphan (DXM) and its breakdown product dextrorphan both block NMDA receptors, and DXM also binds sigma sites. At high doses, its effects resemble those of PCP and ketamine.'],
+ why:'In the leading model, a drug that blocks an excitatory receptor produces net excitation because it silences the inhibitory neurons first. In a small trial of 18 people, mood improved within about two hours of one infusion, but only about a third still met response criteria a week later. The related FDA-approved drug, esketamine, is given only in certified settings with at least two hours of monitoring.',
  cite:'Homayoun &amp; Moghaddam, <em>J. Neurosci.</em> 2007 &middot; Li et al., <em>Science</em> 2010 &middot; Zanos et al., <em>Nature</em> 2016 &middot; Zarate et al., <em>Arch. Gen. Psychiatry</em> 2006 &middot; <a href="https://www.deadiversion.usdoj.gov/drug_chem_info/dextro_m.pdf">DEA, Dextromethorphan profile, 2026</a>',
- harms:["Unsupervised ketamine use may dangerously slow breathing; in poison-centre reports, combining it with opioids or GHB led to the most problems, some life-threatening, and severe symptoms need emergency care.",
-        "PCP and ketamine can cause brief psychosis, PCP's sometimes lasting days to weeks; ketamine outside medical care may cause cravings and withdrawal, and long-term use may damage the urinary tract.",
-        "Misusing combination cold medicines adds harms from other ingredients, like liver damage from acetaminophen; DXM with alcohol has been linked to deaths, and with antidepressants risks life-threatening serotonin syndrome.",
-        "Esketamine is FDA-approved for certain kinds of depression but given only in certified, supervised settings; FDA says ketamine itself is not approved for any psychiatric disorder, with unknown benefit-risk."],
+ harms:["Unsupervised ketamine use may dangerously slow breathing. In poison-centre reports, combining it with opioids or GHB led to the most problems, some of them life-threatening. Severe symptoms need emergency care.",
+        "PCP and ketamine can cause brief psychosis, though with PCP it sometimes lasts days to weeks. Ketamine used outside medical care may cause cravings and withdrawal, and long-term use may damage the urinary tract.",
+        "Misusing combination cold medicines adds harms from their other ingredients, like liver damage from acetaminophen. Combining DXM with alcohol has been linked to deaths, and combining it with antidepressants risks life-threatening serotonin syndrome (an excess of serotonin activity).",
+        "Esketamine is FDA-approved for certain kinds of depression but is given only in certified, supervised settings. The FDA says ketamine itself is not approved for any psychiatric disorder and that its balance of benefits and risks is unknown."],
  hcite:"Harms: <a href=\"https://nida.nih.gov/research-topics/ketamine\">NIDA, Ketamine, Apr 2024</a> &middot; <a href=\"https://nida.nih.gov/research-topics/psychedelic-dissociative-drugs\">NIDA, Psychedelic and Dissociative Drugs, Apr 2023</a> &middot; <a href=\"https://www.deadiversion.usdoj.gov/drug_chem_info/dextro_m.pdf\">DEA Diversion Control, Dextromethorphan drug profile, Oct 2026</a> &middot; <a href=\"https://web.archive.org/web/20260530025451/https://www.fda.gov/drugs/human-drug-compounding/fda-warns-patients-and-health-care-providers-about-potential-risks-associated-compounded-ketamine\">FDA risk alert on compounded ketamine, Oct 2023 (archived)</a>"},
 
 {id:'stim', name:'Stimulants', ex:'Cocaine, amphetamine, methylphenidate',
  sched:'Schedule II', target:'DAT, NET, VMAT2', type:'Monoamine transporters',
  action:'Reuptake block / reverse transport', net:'Dopamine and noradrenaline accumulate in the cleft',
  nt:'da', mode:'stim',
- steps:['Cocaine and methylphenidate bind the dopamine transporter and block reuptake, so released dopamine lingers.',
-        'Amphetamine goes further: it is a transporter substrate and enters the terminal.',
-        'Inside, it disrupts vesicular storage via VMAT2 and drives the transporter to run backwards.',
-        'Dopamine pours out of the terminal without any action potential, which is why releasers differ from blockers.'],
- why:'Blocker versus releaser is the distinction students most often miss. One needs the neuron to fire, the other does not.',
+ steps:['Cocaine and methylphenidate bind the dopamine transporter, which normally pulls released dopamine back into the nerve terminal (reuptake). By blocking reuptake, they leave dopamine in the synapse longer.',
+        'Amphetamine goes further. It is a transporter substrate, meaning the transporter carries it into the nerve terminal.',
+        'Inside the terminal, it disrupts how vesicles store dopamine by acting on VMAT2, the pump that fills them, and makes the transporter run backwards.',
+        'Dopamine pours out of the terminal without any action potential (the electrical impulse that normally triggers release). This is why releasers differ from blockers.'],
+ why:'The difference between blockers and releasers is the one students most often miss. A blocker needs the neuron to fire and release dopamine. A releaser does not.',
  cite:'Ritz et al., <em>Science</em> 1987 &middot; Sulzer et al., <em>Prog. Neurobiol.</em> 2005 &middot; Faraone, <em>Neurosci. Biobehav. Rev.</em> 2018',
- harms:["FDA requires a boxed warning on prescription stimulants for misuse, addiction and overdose; overdose can cause seizures, heart attack or stroke and needs emergency care (911 in the U.S.).",
-        "Cocaine can trigger heart attacks, strokes or seizures that can cause sudden death, rarely even on first use; with alcohol it produces cocaethylene, which may increase heart toxicity.",
-        "Most U.S. stimulant overdose deaths (2021 to mid-2024) also involved opioids (73%); naloxone can reverse opioid but not stimulant effects, and no stimulant reversal drug or approved addiction medication exists.",
-        "Psychosis is a recognised risk: in insurance-claims data on 13-to-25-year-olds with ADHD starting prescribed stimulants, about 1 in 660 developed new psychosis, more often on amphetamine than methylphenidate."],
+ harms:["The FDA requires prescription stimulants to carry a boxed warning (its strongest label warning) about misuse, addiction and overdose. Overdose can cause seizures, heart attack or stroke and needs emergency care (911 in the U.S.).",
+        "Cocaine can trigger heart attacks, strokes or seizures that can cause sudden death, in rare cases even on first use. Cocaine taken with alcohol forms a compound called cocaethylene, which may increase heart toxicity.",
+        "From 2021 to mid-2024, most U.S. stimulant overdose deaths (73%) also involved opioids. Naloxone can reverse opioid effects but not stimulant effects. No drug exists to reverse stimulant effects, and no medication is approved for stimulant addiction.",
+        "Psychosis is a recognised risk. In insurance-claims data on 13-to-25-year-olds with ADHD who started prescribed stimulants, about 1 in 660 developed new psychosis, more often on amphetamine than on methylphenidate."],
  hcite:"Harms: <a href=\"https://www.fda.gov/drugs/drug-safety-communications/fda-updating-warnings-improve-safe-use-prescription-stimulants-used-treat-adhd-and-other-conditions\">FDA Drug Safety Communication, May 11, 2023 (content current as of Apr 2026)</a> &middot; <a href=\"https://nida.nih.gov/research-topics/cocaine\">NIDA, Cocaine, Mar 2024</a> &middot; <a href=\"https://www.cdc.gov/mmwr/volumes/74/wr/mm7432a1.htm\">Tanz et al., CDC MMWR 2025</a> &middot; <a href=\"https://doi.org/10.1056/NEJMoa1813751\">Moran et al., NEJM 2019</a>"},
 
 {id:'op', name:'Opioids', ex:'Morphine, heroin, fentanyl, oxycodone',
  sched:'Schedule I&ndash;II', target:'&micro;-opioid receptor', type:'G<sub>i/o</sub>-coupled GPCR',
  action:'Agonist', net:'Hyperpolarisation + disinhibition',
  nt:'op', mode:'op',
- steps:['Activates &micro;-opioid receptors, which couple to inhibitory G proteins.',
-        'Presynaptically, calcium influx falls and neurotransmitter release drops.',
-        'Postsynaptically, GIRK potassium channels open and potassium leaves the cell.',
-        'The neuron hyperpolarises. In the VTA many of these receptors sit on GABA neurons and on GABA inputs from the nearby rostromedial tegmental nucleus, so inhibiting them disinhibits dopamine neurons.'],
- why:'The reward effect is indirect. Opioids excite dopamine neurons by inhibiting the GABA neurons that normally hold them in check, the same disinhibition logic as ketamine on a different receptor. The same receptor type in brainstem breathing centres slows breathing, the main cause of opioid overdose death.',
+ steps:['The drug activates &micro;-opioid receptors, which act through inhibitory G proteins (signalling proteins inside the cell that pass the receptor\'s signal on).',
+        'In the presynaptic terminal, less calcium flows in and less neurotransmitter is released.',
+        'In the postsynaptic cell, GIRK potassium channels open and potassium flows out.',
+        'The neuron hyperpolarises (its membrane voltage becomes more negative), which makes it harder to fire. In the VTA, a midbrain area rich in dopamine neurons, many of these receptors sit on inhibitory GABA neurons and on GABA inputs from the nearby rostromedial tegmental nucleus, so inhibiting them removes inhibition from dopamine neurons.'],
+ why:'The reward effect is indirect. Opioids excite dopamine neurons by inhibiting the GABA neurons that normally inhibit them. This is the same kind of disinhibition as in the ketamine model, but through a different receptor. Activating the same receptor type in the brainstem centres that control breathing slows breathing, and slowed breathing is the main cause of opioid overdose death.',
  cite:'Johnson &amp; North, <em>J. Neurosci.</em> 1992 (rat midbrain slices) &middot; Jalabert et al., <em>PNAS</em> 2011 (rats, in vivo) &middot; Baldo &amp; Rose, <em>Arch. Toxicol.</em> 2022',
- harms:["Opioids can fatally slow breathing, especially with benzodiazepines, alcohol or other sedatives; naloxone can reverse an overdose but may wear off before the opioid, so emergency help is still needed.",
-        "Illegally made fentanyl is often added to other drugs or made into pills that look like prescription opioids; synthetic opioids like fentanyl contribute to nearly 70% of U.S. overdose deaths.",
+ harms:["Opioids can fatally slow breathing, especially when combined with benzodiazepines, alcohol or other sedatives. Naloxone can reverse an overdose but may wear off before the opioid does, so emergency help is still needed.",
+        "Illegally made fentanyl is often added to other drugs or made into pills that look like prescription opioids. Synthetic opioids like fentanyl contribute to nearly 70% of U.S. overdose deaths.",
         "People who are physically dependent can have serious withdrawal if opioids are stopped suddenly, and long-term use in pregnancy can cause newborn withdrawal that may be life-threatening if untreated.",
-        "In an FDA-required study of patients starting long-term prescription opioids for pain, about 1–6% developed opioid addiction within a year, varying by group and how addiction was measured."],
+        "In an FDA-required study of patients starting long-term prescription opioids for pain, about 1–6% developed opioid addiction within a year. The rate varied by patient group and by how addiction was measured."],
  hcite:"Harms: <a href=\"https://www.accessdata.fda.gov/drugsatfda_docs/label/2025/022272s052lbl.pdf\">FDA OxyContin label, rev. 12/2025</a> &middot; <a href=\"https://www.cdc.gov/stop-overdose/caring/fentanyl-facts.html\">CDC, Fentanyl Facts, Apr 2024</a> &middot; <a href=\"https://www.fda.gov/drugs/drug-safety-communications/fda-requiring-opioid-pain-medicine-manufacturers-update-prescribing-information-regarding-long-term\">FDA Drug Safety Communication, July 31, 2025</a>"},
 
 {id:'benzo', name:'Benzodiazepines', ex:'Diazepam, alprazolam, lorazepam',
  sched:'Schedule IV', target:'GABA-A receptor', type:'Ionotropic chloride channel',
  action:'Positive allosteric modulator', net:'Amplified inhibition',
  nt:'gaba', mode:'benzo',
- steps:['Binds a site between the &alpha; and &gamma; subunits, distinct from where GABA binds.',
+ steps:['The drug binds a site between the &alpha; and &gamma; subunits of the receptor, separate from where GABA binds.',
         'On its own it opens the channel little if at all. Its main effect needs GABA to be present.',
-        'Increases the frequency of channel opening. Barbiturates instead increase how long each opening lasts.',
+        'It increases how often the channel opens (frequency). Barbiturates instead increase how long each opening lasts (duration).',
         'More chloride enters, the membrane hyperpolarises, and the neuron becomes harder to fire.'],
  why:'Frequency versus duration points to a deeper difference: benzodiazepines amplify the brain\'s own GABA signal, while barbiturates at higher concentrations can also open the channel directly. This does not make benzodiazepines safe: combined with opioids, alcohol or other sedatives, they can cause profound sedation, dangerously slowed breathing, coma and death.',
  cite:'Study &amp; Barker, <em>PNAS</em> 1981 &middot; Campo-Soria et al., <em>Br. J. Pharmacol.</em> 2006 &middot; L&ouml;scher &amp; Rogawski, <em>Epilepsia</em> 2012',
- harms:["Combined with opioids, benzodiazepines can cause profound sedation, dangerously slowed breathing, coma and death; misuse often involves alcohol or other drugs, which is linked to more serious harm and deaths.",
-        "Even as prescribed, steady use for days to weeks can cause dependence, abrupt stopping can trigger life-threatening withdrawal including seizures, and addiction can occur, though its exact risk is uncertain.",
-        "In early 2020, 93% of benzodiazepine-involved overdose deaths in 23 states also involved opioids, often illegally made fentanyl, and deaths involving illicit benzodiazepines rose about sixfold in a year.",
+ harms:["Combined with opioids, benzodiazepines can cause profound sedation, dangerously slowed breathing, coma and death. Misuse often involves alcohol or other drugs, which is linked to more serious harm and deaths.",
+        "Even as prescribed, steady use for days to weeks can cause dependence. Stopping abruptly can trigger life-threatening withdrawal, including seizures. Addiction can also occur, though its exact risk is uncertain.",
+        "In early 2020, 93% of benzodiazepine-involved overdose deaths in 23 states also involved opioids, often illegally made fentanyl. Deaths involving illicit benzodiazepines rose about sixfold in a year.",
         "In older adults, benzodiazepine use is linked to about 40% higher odds of falling, though results varied widely between studies and could partly reflect who gets prescribed them."],
  hcite:"Harms: <a href=\"https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=388e249d-b9b6-44c3-9f8f-880eced0239f\">FDA Xanax label, rev. 1/2023</a> &middot; <a href=\"https://www.fda.gov/drugs/drug-safety-and-availability/fda-requiring-boxed-warning-updated-improve-safe-use-benzodiazepine-drug-class\">FDA Drug Safety Communication, Sept 23, 2020</a> &middot; <a href=\"https://www.cdc.gov/mmwr/volumes/70/wr/mm7034a2.htm\">Liu et al., CDC MMWR 2021</a> &middot; <a href=\"https://pubmed.ncbi.nlm.nih.gov/29402652/\">Seppala et al., J Am Med Dir Assoc 2018 (meta-analysis)</a>"},
 
 {id:'cb', name:'Cannabinoids', ex:'THC, synthetic CB1 agonists',
- sched:'Schedule I; III for approved or licensed medical use', target:'CB1 receptor', type:'G<sub>i/o</sub>-coupled GPCR',
- action:'Partial agonist (THC); many synthetics are full agonists', net:'Suppressed transmitter release',
+ sched:'Schedule I (III for approved or licensed medical use)', target:'CB1 receptor', type:'G<sub>i/o</sub>-coupled GPCR',
+ action:'Partial agonist (THC), full agonist (many synthetics)', net:'Suppressed transmitter release',
  nt:'ecb', mode:'cb',
- steps:['Endocannabinoids are made on demand in the postsynaptic cell, not stored in vesicles.',
-        'They travel backwards across the cleft, from postsynaptic to presynaptic.',
+ steps:['Endocannabinoids are signalling molecules that the brain makes itself and that act on the same receptors as THC. They are made on demand in the postsynaptic cell, not stored in vesicles.',
+        'They travel backwards across the synaptic cleft, from the postsynaptic (receiving) cell to the presynaptic (sending) terminal.',
         'They activate CB1 receptors on the presynaptic terminal.',
-        'Calcium influx drops and transmitter release is suppressed. THC and synthetic agonists skip the retrograde step: they reach presynaptic CB1 directly and activate it whenever present, not only on demand.'],
- why:'This is a textbook case of retrograde signalling in the brain. The direction of the arrow is the whole lesson, and it is the part students draw backwards on exams.',
+        'Less calcium flows into the terminal, and transmitter release is suppressed. THC and synthetic agonists skip this backward (retrograde) step. They reach presynaptic CB1 receptors directly and activate them whenever the drug is present, not only on demand.'],
+ why:'This is a textbook case of retrograde signalling in the brain. Here the signal travels from the receiving cell back to the sending cell. The key point is the direction of the signal, and it is the part students draw backwards on exams.',
  cite:'Wilson &amp; Nicoll, <em>Nature</em> 2001 &middot; Tai &amp; Fantegrossi, <em>Curr. Top. Behav. Neurosci.</em> 2017',
- harms:["About 3 in 10 people who use cannabis have cannabis use disorder, meaning they cannot stop despite harm; risk is higher with frequent use or starting young.",
-        "Daily use of high-potency cannabis was linked to nearly five times the odds of psychotic disorder, compared with never-users, in a multi-country study; this shows association, not proven cause.",
-        "Synthetic CB1 agonists can cause seizures, heart attack, kidney failure, psychosis and death; makers keep altering the chemistry, and there is no specific antidote.",
-        "Young children who eat cannabis edibles can become seriously ill; U.S. poison-centre reports in under-6s rose nearly fifteenfold from 2017 to 2021, and over one in five were hospitalised."],
+ harms:["About 3 in 10 people who use cannabis have cannabis use disorder, meaning they cannot stop using it despite harm. The risk is higher for people who use it often or start young.",
+        "In a multi-country study, daily use of high-potency cannabis was linked to nearly five times the odds of psychotic disorder, compared with never using cannabis. This shows an association, not proven cause.",
+        "Synthetic CB1 agonists can cause seizures, heart attack, kidney failure, psychosis and death. Makers keep changing their chemical structures, and there is no specific antidote.",
+        "Young children who eat cannabis edibles can become seriously ill. U.S. poison-centre reports of these cases in children under age 6 rose nearly fifteenfold from 2017 to 2021, and over one in five of the children were hospitalised."],
  hcite:"Harms: <a href=\"https://www.cdc.gov/cannabis/health-effects/cannabis-use-disorder.html\">CDC, Cannabis Use Disorder, Dec 2024</a> &middot; <a href=\"https://doi.org/10.1016/S2215-0366(19)30048-3\">Di Forti et al., Lancet Psychiatry 2019</a> &middot; <a href=\"https://archive.cdc.gov/www_cdc_gov/nceh/hsb/envepi/outbreaks/sc/healthcare.html\">CDC, Synthetic Cannabinoids: An Overview for Healthcare Providers (archived; last reviewed Apr 2022)</a> &middot; <a href=\"https://doi.org/10.1542/peds.2022-057761\">Tweet et al., Pediatrics 2023</a>"}
 ];
 
@@ -298,19 +299,18 @@ function paint(){
   X.clearRect(0,0,w,h);
 
   var preY=h*0.22, cleftY=h*0.46, postY=h*0.58, cx=w/2;
+  var LAB=[]; function lab(t,x,y,c,al,sz){LAB.push([t,x,y,c,al||'center',sz||11]);}
   var nt=COL[cur.nt];
 
   /* presynaptic terminal */
   X.globalAlpha=1;
   blob(cx,preY,w*0.30,h*0.16,'#e4e9ef','#33395199');
-  X.fillStyle='#9aa6b2'; X.font=(10*D)+'px ui-monospace,Menlo,monospace';
   // Names sit inside their shapes, clear of the legend and the schedule tag.
-  X.textAlign='center'; X.fillText('PRESYNAPTIC', cx, preY-h*0.105);
+  lab('PRESYNAPTIC', cx, preY-h*0.105, '#8693a1', 'center', 11);
 
   /* postsynaptic */
   blob(cx,postY+h*0.20,w*0.34,h*0.17,'#e4e9ef','#33395199');
-  X.fillStyle='#9aa6b2'; X.textAlign='center';
-  X.fillText('POSTSYNAPTIC', cx, postY+h*0.27);
+  lab('POSTSYNAPTIC', cx, postY+h*0.27, '#8693a1', 'center', 11);
 
   /* vesicles */
   var vesN = cur.mode==='op' ? 4 : 9;
@@ -330,9 +330,7 @@ function paint(){
       X.beginPath(); X.moveTo(tx-9*S,preY+h*0.145-9*S);
       X.lineTo(tx+9*S,preY+h*0.145+9*S); X.stroke();
     });
-    X.globalAlpha=.75; X.fillStyle=COL.block; X.textAlign='center';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText('reuptake blocked', cx, preY+h*0.20);
+    lab('reuptake blocked', cx, preY+h*0.20, COL.block);
   }
 
   /* postsynaptic receptors */
@@ -340,7 +338,7 @@ function paint(){
   if(cur.mode==='psy')   R=[['5-HT2A',COL.ser,.34],['TrkB',COL.op,.66]];
   if(cur.mode==='block') R=[['NMDA',COL.glu,.34],['AMPA',COL.glu,.66]];
   if(cur.mode==='stim')  R=[['D1',COL.da,.34],['D2',COL.da,.66]];
-  if(cur.mode==='op')    R=[['GIRK K+',COL.op,.34],['&micro;-opioid',COL.op,.66]];
+  if(cur.mode==='op')    R=[['GIRK K+',COL.op,.34],['\u03bc-opioid',COL.op,.66]];
   if(cur.mode==='benzo') R=[['GABA-A',COL.gaba,.5]];
   if(cur.mode==='cb')    R=[['CB1 (presyn.)',COL.ecb,.5]];
 
@@ -349,18 +347,16 @@ function paint(){
     var yy = (cur.mode==='cb') ? preY+h*0.145 : postY;
     chan(rx, yy, 15*S, 34*S, r[1], 1);
     X.globalAlpha=.15; blob(rx,yy,26*S,26*S,r[1]);
-    X.globalAlpha=.85; X.fillStyle='#7b8794'; X.textAlign='center';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText(r[0], rx, yy+(cur.mode==='cb'? -26*S : 30*S));
+    // Where ions flow under a channel, its name goes beside it instead of below.
+    if(cur.mode==='benzo' || r[0]==='GIRK K+') lab(r[0], rx+22*S, yy+3*S, '#6b7785', 'left');
+    else lab(r[0], rx, yy+(cur.mode==='cb'? -26*S : 30*S), '#6b7785');
   });
 
   /* channel blocked plug for dissociatives */
   if(cur.mode==='block'){
     X.globalAlpha=1; X.fillStyle=COL.block;
     blob(w*0.34, postY-6*S, 6*S, 6*S, COL.block);
-    X.globalAlpha=.8; X.fillStyle=COL.block; X.textAlign='center';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText('pore blocked', w*0.34, postY-22*S);
+    lab('pore blocked', w*0.34, postY-22*S, COL.block);
   }
 
   /* ligand flux */
@@ -390,7 +386,6 @@ function paint(){
 
   /* ion flow for benzo / opioid */
   if(cur.mode==='benzo'||cur.mode==='op'){
-    var lbl = cur.mode==='benzo' ? 'Cl&#8315; in' : 'K&#8314; out';
     for(var i2=0;i2<12;i2++){
       var p2=reduce?0.5:((i2*0.19+tt*0.34)%1);
       var yy2 = cur.mode==='benzo' ? postY+p2*h*0.11 : postY+ (1-p2)*h*0.11;
@@ -398,10 +393,8 @@ function paint(){
       X.beginPath(); X.arc(w*(cur.mode==='benzo'?0.5:0.34)+Math.sin(i2*2)*9*S,
         yy2, 2.6*S,0,6.283); X.fill();
     }
-    X.globalAlpha=.7; X.fillStyle=COL.ion; X.textAlign='center';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText(cur.mode==='benzo'?'Cl- in':'K+ out',
-      w*(cur.mode==='benzo'?0.5:0.34), postY+h*0.15);
+    lab(cur.mode==='benzo'?'Cl\u207b in':'K\u207a out',
+      w*(cur.mode==='benzo'?0.5:0.34), postY+h*0.15, COL.ion);
   }
 
   /* retrograde arrow for cannabinoids */
@@ -416,9 +409,7 @@ function paint(){
     X.lineTo(cx+w*0.26-5*S, preY+h*0.175);
     X.lineTo(cx+w*0.26+5*S, preY+h*0.175);
     X.closePath(); X.fillStyle=COL.ecb; X.fill();
-    X.globalAlpha=.8; X.textAlign='right';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText('retrograde', cx+w*0.245, (preY+postY)/2);
+    lab('retrograde', cx+w*0.245, (preY+postY)/2, COL.ecb, 'right');
   }
 
   /* cleft hairlines */
@@ -426,7 +417,11 @@ function paint(){
   [cleftY-h*0.02, cleftY+h*0.06].forEach(function(y){
     X.beginPath(); X.moveTo(0,y); X.lineTo(w,y); X.stroke();});
 
-  X.globalAlpha=1;
+  X.globalAlpha=1; X.lineJoin='round'; X.strokeStyle='rgba(240,243,246,.94)'; X.lineWidth=3.5*D;
+  LAB.forEach(function(l){
+    X.font=(l[5]*D)+'px ui-monospace,Menlo,monospace'; X.textAlign=l[4]; X.fillStyle=l[3];
+    X.strokeText(l[0],l[1],l[2]); X.fillText(l[0],l[1],l[2]);
+  });
   return true;
 }
 function loop(){paint();requestAnimationFrame(loop);}

@@ -45,6 +45,12 @@ a:hover{color:var(--accent-ink)}
 .bar .tabs{display:flex; flex-wrap:nowrap; gap:2px; margin-left:auto; min-width:0;
   overflow-x:auto; scrollbar-width:none}
 .bar .tabs::-webkit-scrollbar{display:none}
+/* When the tabs do not all fit, the row scrolls sideways. A soft fade on the right
+   edge shows that more tabs follow. */
+@media (max-width:1080px){
+  .bar .tabs{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);
+    mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent); padding-right:22px}
+}
 .bar .tab{flex:none; font:500 13.5px/1 var(--f-body); letter-spacing:0; text-transform:none;
   padding:8px 11px; border:0; border-radius:var(--radius-sm); background:none;
   color:var(--atlas-muted); text-decoration:none; white-space:nowrap; cursor:pointer}
