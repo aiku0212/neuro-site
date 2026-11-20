@@ -182,10 +182,47 @@ class PublicPages(unittest.TestCase):
         # The page loads the viewer only when asked, and the model stays within its size budget.
         self.assertIn("import('./assets/receptor-viewer.js')", page)
         self.assertNotRegex(page, r'<script[^>]+src="[^"]*three')
-        model = (ROOT / "assets" / "models" / "5ht2a-psilocin-9as8.glb").read_bytes()
-        self.assertEqual(model[:4], b"glTF")
-        self.assertLess(len(model), 600_000)
         self.assertTrue((ROOT / "tools" / "blender" / "receptor_card.py").is_file())
+        self.assertTrue((ROOT / "tools" / "blender" / "membrane_plane.py").is_file())
+
+    def test_every_drug_class_has_a_sourced_receptor_card(self):
+        page = read("pharma")
+        dois = {r.get("doi") for r in json.loads((ROOT / "data" / "references.json").read_text(encoding="utf8"))}
+        cards = {"psy": ("5ht2a-psilocin-9as8", "9AS8", "10.1038/s41467-025-57956-7"),
+                 "dis": ("nmda-ketamine-7eu7", "7EU7", "10.1038/s41586-021-03769-9"),
+                 "stim": ("dat-cocaine-9eo4", "9EO4", "10.1038/s41586-024-07804-3"),
+                 "op": ("mor-morphine-8ef6", "8EF6", "10.1016/j.cell.2022.09.041"),
+                 "benzo": ("gabaa-diazepam-6x3x", "6X3X", "10.1038/s41586-020-2654-5"),
+                 "cb": ("cb1-amg315-8ghv", "8GHV", "10.1038/s41467-023-37864-4")}
+        data = json.loads(re.search(r"/\*rc:start\*/(.*?)/\*rc:end\*/", page, re.S).group(1).replace("\n psy:", '\n "psy":')
+                          .replace("\n dis:", '\n "dis":').replace("\n stim:", '\n "stim":').replace("\n op:", '\n "op":')
+                          .replace("\n benzo:", '\n "benzo":').replace("\n cb:", '\n "cb":'))
+        self.assertEqual(set(data), set(cards))
+        for key, (name, pdb, doi) in cards.items():
+            with self.subTest(card=key):
+                card = data[key]
+                self.assertEqual(card["file"], name)
+                # Each caption names its entry, method and resolution, says the membrane is drawn in, and links its paper.
+                limits = " ".join(card["limits"])
+                self.assertIn("Protein Data Bank entry " + pdb, limits)
+                self.assertRegex(limits, r"cryo-electron microscopy at a resolution of [0-9.]+ &Aring;")
+                self.assertIn("It is drawn as a plain slab", limits)
+                self.assertIn("https://doi.org/" + doi, card["cite"])
+                self.assertIn("PDB " + pdb, card["cite"])
+                self.assertIn(doi, dois)
+                self.assertGreater(len(card["alt"]), 80)
+                self.assertGreaterEqual(len(card["labels"]), 3)
+                # The model, the still image and the thumbnail are in the repository, and the model is within budget.
+                model = (ROOT / "assets" / "models" / (name + ".glb")).read_bytes()
+                self.assertEqual(model[:4], b"glTF")
+                self.assertLess(len(model), 600_000)
+                for suffix in (".webp", "-thumb.webp"):
+                    self.assertTrue((ROOT / "assets" / "img" / (name + suffix)).is_file())
+                self.assertIn('"%s"' % name, (ROOT / "tools" / "blender" / "receptor_card.py").read_text(encoding="utf8"))
+        # The cannabinoid card says plainly that it is not THC, and the retracted CB1 entries are never used.
+        self.assertIn("It is not THC", page)
+        for retracted in ("5XRA", "5XR8"):
+            self.assertNotIn(retracted, page)
 
     def test_pharmacology_lists_sourced_harms_for_every_class(self):
         page = read("pharma")
