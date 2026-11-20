@@ -9,6 +9,24 @@
       "id": "9282d59ecb",
       "found": "2026-11-20",
       "announced": "2026-11-20"
+    },
+    {
+      "type": "correction",
+      "doi": "10.1038/s41586-021-03769-9",
+      "title": "Structural basis of ketamine action on human NMDA receptors",
+      "notice_doi": "10.1038/s41586-021-04038-5",
+      "pmid": null,
+      "id": "46cae34d1c",
+      "found": "2026-11-20"
+    },
+    {
+      "type": "correction",
+      "doi": "10.1038/s41586-024-07804-3",
+      "title": "Structure of the human dopamine transporter in complex with cocaine",
+      "notice_doi": "10.1038/s41586-025-08976-2",
+      "pmid": null,
+      "id": "6763bd49aa",
+      "found": "2026-11-20"
     }
   ]
 }
