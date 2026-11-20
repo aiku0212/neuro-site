@@ -7,7 +7,8 @@ import unittest
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
-PUBLIC = ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "references", "about"]
+PUBLIC = ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "references", "about",
+          "learn", "conditioning", "news"]
 NOT_PUBLISHED = ["explore", "morphometry"]
 
 
@@ -39,7 +40,8 @@ class PublicPages(unittest.TestCase):
         for name in PUBLIC:
             nav = re.search(r'<nav class="tabs".*?</nav>', read(name), re.S).group(0)
             with self.subTest(page=name):
-                self.assertEqual(nav.count('class="tab"'), 10)
+                self.assertEqual(nav.count('class="tab"'), 11)
+                self.assertIn('href="learn.html"', nav)
                 self.assertIn('href="about.html"', nav)
 
     def test_links_stay_on_published_pages(self):
@@ -58,17 +60,41 @@ class PublicPages(unittest.TestCase):
                 self.assertNotRegex(page, r"--(bg|ground):#(0|F2EDE3|F4F0E8)")
                 self.assertNotIn("prefers-color-scheme: light", page)
 
-    def test_workflow_is_least_privilege_and_pinned(self):
-        workflow = (ROOT / ".github" / "workflows" / "daily-citations.yml").read_text(encoding="utf8")
-        top = workflow.split("jobs:")[0]
-        self.assertIn("contents: read", top)
-        self.assertNotIn("pages: write", top)
-        for use in re.findall(r"uses: (\S+)", workflow):
-            with self.subTest(action=use):
-                self.assertRegex(use, r"@[0-9a-f]{40}$")
-        self.assertIn("if: failure()", workflow)
-        # Composite wrappers can call unpinned actions internally; GitHub then blocks the run.
-        self.assertNotIn("uses: actions/upload-pages-artifact", workflow)
+    def test_workflows_are_least_privilege_and_pinned(self):
+        files = sorted((ROOT / ".github" / "workflows").glob("*.yml"))
+        self.assertGreaterEqual(len(files), 2)
+        for path in files:
+            workflow = path.read_text(encoding="utf8")
+            top = workflow.split("jobs:")[0]
+            with self.subTest(workflow=path.name):
+                self.assertIn("contents: read", top)
+                granted = re.search(r"^permissions:\n((?:[ \t]+.*\n)+)", top, re.M).group(1)
+                self.assertNotIn("write", granted)
+                for use in re.findall(r"uses: (\S+)", workflow):
+                    self.assertRegex(use, r"@[0-9a-f]{40}$")
+                self.assertIn("if: failure()", workflow)
+                # Composite wrappers can call unpinned actions internally; GitHub then blocks the run.
+                self.assertNotIn("uses: actions/upload-pages-artifact", workflow)
+                # Only the daily workflow may deploy.
+                if path.name != "daily-citations.yml":
+                    self.assertNotIn("pages: write", workflow)
+
+    def test_every_page_loads_the_tab_helper(self):
+        self.assertTrue((ROOT / "assets" / "nav.js").exists())
+        for name in PUBLIC:
+            with self.subTest(page=name):
+                # The news page shows text from outside feeds and carries no script at all.
+                want = 0 if name == "news" else 1
+                self.assertEqual(read(name).count('<script src="assets/nav.js" defer></script>'), want)
+        self.assertNotIn("<script", read("news"))
+
+    def test_learn_hub_links_every_learn_page(self):
+        hub = read("learn")
+        for name in ["conditioning", "news"]:
+            self.assertIn(f'href="{name}.html"', hub)
+        for name in ["learn", "conditioning", "news"]:
+            nav = re.search(r'<nav class="tabs".*?</nav>', read(name), re.S).group(0)
+            self.assertIn('<a class="tab" href="learn.html" aria-current="true">Learn</a>', nav)
 
     def test_external_scripts_have_integrity(self):
         for name in PUBLIC:
@@ -81,7 +107,7 @@ class PublicPages(unittest.TestCase):
         self.assertIn("cp -R assets _site/", workflow)
 
     def test_visuals_say_what_they_are(self):
-        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells"]:
+        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning"]:
             with self.subTest(page=name):
                 self.assertRegex(read(name), r'class="fig-kind" data-kind="(schematic|simulation|illustrative|measured)"')
 

@@ -8,9 +8,10 @@ medical or veterinary advice.
 
 ## Pages
 
-The published site is nine static pages: `index` (Evidence), `app` (Explore and Analyze),
-`spike`, `synapse` (Spines), `pharma`, `comparative`, `timecells`, `references` (Sources)
-and `about`. Shared styles are in `assets/atlas.css`. The favicon (`assets/favicon.svg`) and
+The published site is twelve static pages: `index` (Evidence), `app` (Explore and Analyze),
+`spike`, `synapse` (Spines), `pharma`, `comparative`, `timecells`, `references` (Sources),
+`about`, and the Learn section: `learn` (the hub), `conditioning` and `news`. Shared styles
+are in `assets/atlas.css`, and `assets/nav.js` keeps the current tab in view on narrow screens. The favicon (`assets/favicon.svg`) and
 the link-preview image (`assets/og.png`) are published with them. `explore.html` and `morphometry.html`
 are older versions kept in the repository but not published.
 

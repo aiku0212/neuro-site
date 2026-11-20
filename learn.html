@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Learn · Neuroscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="Short pages on core neuroscience ideas, each with a model you can run and the papers behind it, plus a weekly list of neuroscience headlines.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neuroscope">
+<meta property="og:title" content="Learn · Neuroscope">
+<meta property="og:description" content="Short pages on core neuroscience ideas, each with a model you can run and the papers behind it, plus a weekly list of neuroscience headlines.">
+<meta property="og:url" content="https://aiku0212.github.io/neuro-site/learn.html">
+<meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Neuroscope: interactive models of the brain, neurons and synapses, and an evidence review of neuroplasticity.">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root{
+    --ground:#f6f7f9; --ground-2:#ffffff; --ground-3:#eceff3;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --violet:#6a54a6; --amber:#b24e33; --rule:#dde2e8;
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--ground)}
+  .wrap{background:var(--ground); color:var(--ink); min-height:100vh;
+    font:400 16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; overflow-x:clip}
+  .serif{font-family:Georgia,"Iowan Old Style","Times New Roman",serif}
+  .bar{display:flex; align-items:center; gap:22px; flex-wrap:wrap;
+    padding:14px 20px; border-bottom:1px solid var(--rule);
+    background:var(--ground-2); position:sticky; top:0; z-index:20}
+  .brand{font:600 15px/1 Georgia,serif; letter-spacing:.01em}
+  .tabs{display:flex; gap:16px; flex-wrap:wrap}
+  .tab{font-size:13px; color:var(--ink-2); text-decoration:none; padding:3px 0}
+  @media (max-width:640px){.bar{position:static}}
+
+  main{max-width:1080px; margin:0 auto; padding:0 20px 90px}
+  .mast{padding:52px 0 30px; border-bottom:1px solid var(--rule); margin-bottom:34px}
+  .eyebrow{font-size:12px; letter-spacing:.08em; color:var(--amber); margin:0 0 14px}
+  h1{font-size:clamp(30px,5.2vw,50px); line-height:1.08; margin:0 0 16px; font-weight:400}
+  .lede{font-size:clamp(16px,2vw,18px); color:var(--ink-2); max-width:60ch; margin:0}
+  h2{font-size:22px; font-weight:600; margin:44px 0 6px}
+  .sub{color:var(--muted); margin:0 0 18px; max-width:62ch; font-size:15px}
+  .grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:18px;
+    list-style:none; margin:0; padding:0}
+  .topic{display:flex; flex-direction:column; height:100%; background:var(--ground-2);
+    border:1px solid var(--rule); border-radius:14px; padding:22px 22px 18px;
+    text-decoration:none; color:inherit; transition:border-color .15s ease, box-shadow .15s ease}
+  .topic:hover,.topic:focus-visible{border-color:#b9c6d3; box-shadow:0 14px 30px -22px rgba(31,42,53,.35)}
+  .topic .kind{font-size:12px; font-weight:600; letter-spacing:.04em; color:var(--muted); margin:0 0 10px}
+  .topic h3{font-size:21px; line-height:1.2; font-weight:600; margin:0 0 8px; color:var(--ink)}
+  .topic p{margin:0 0 16px; color:var(--ink-2); font-size:15px; line-height:1.55}
+  .topic .go{margin-top:auto; font-size:14px; font-weight:600; color:#2d6a8f}
+  .grid.small .topic{padding:18px 18px 14px}
+  .grid.small .topic h3{font-size:18px}
+  .more{margin:34px 0 0; color:var(--muted); font-size:15px}
+  footer{border-top:1px solid var(--rule); margin-top:60px; padding:22px 0;
+    display:flex; flex-wrap:wrap; gap:8px 20px; font-size:13px; color:var(--muted)}
+  footer a{color:var(--ink-2)}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+<link rel="stylesheet" href="assets/atlas.css">
+
+<div class="wrap">
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="learn.html" aria-current="true">Learn</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
+  </nav>
+</div>
+<script src="assets/nav.js" defer></script>
+
+<main>
+  <div class="mast">
+    <p class="eyebrow">Learn</p>
+    <h1 class="serif">Core ideas in neuroscience, one page at a time</h1>
+    <p class="lede">Each topic page explains one idea in plain words, gives you a model to run,
+      and lists the papers it rests on. The news page collects recent headlines from the field.</p>
+  </div>
+
+  <h2 class="serif">Topics</h2>
+  <p class="sub">New pages written for this section.</p>
+  <ul class="grid">
+    <li><a class="topic" href="conditioning.html">
+      <p class="kind">Learning and behavior</p>
+      <h3 class="serif">Conditioning</h3>
+      <p>How an animal learns that a cue predicts an event, and that an action has a consequence.
+        A model you can train, extinguish and test shows why extinction does not simply erase
+        what was learned.</p>
+      <span class="go">Open the page</span></a></li>
+    <li><a class="topic" href="news.html">
+      <p class="kind">Updated every Monday</p>
+      <h3 class="serif">Neuroscience news</h3>
+      <p>Headlines from the last four weeks of review articles, eLife papers and MIT News.
+        Each one links to the original. Neuroscope has not checked them.</p>
+      <span class="go">Read the headlines</span></a></li>
+  </ul>
+
+  <h2 class="serif">Models on the rest of the site</h2>
+  <p class="sub">These pages were here before the Learn section and cover related ground.</p>
+  <ul class="grid small">
+    <li><a class="topic" href="spike.html">
+      <h3 class="serif">The action potential</h3>
+      <p>An interactive model of the action potential based on Hodgkin and Huxley.</p>
+      <span class="go">Spike</span></a></li>
+    <li><a class="topic" href="synapse.html">
+      <h3 class="serif">Dendritic spines</h3>
+      <p>An interactive 3D model of dendritic spines and how they change.</p>
+      <span class="go">Spines</span></a></li>
+    <li><a class="topic" href="pharma.html">
+      <h3 class="serif">Drug mechanisms</h3>
+      <p>How major drug classes act at the synapse, with their main harms.</p>
+      <span class="go">Pharmacology</span></a></li>
+    <li><a class="topic" href="timecells.html">
+      <h3 class="serif">Time cells</h3>
+      <p>A model of how the brain could keep a compressed timeline of the recent past.</p>
+      <span class="go">Time</span></a></li>
+    <li><a class="topic" href="app.html">
+      <h3 class="serif">From brain to receptor</h3>
+      <p>Zoom from the whole brain down to a single receptor, and measure a generated neuron.</p>
+      <span class="go">Explore</span></a></li>
+    <li><a class="topic" href="index.html">
+      <h3 class="serif">Neuroplasticity evidence</h3>
+      <p>What the studies of neuroplasticity measured, including the null results.</p>
+      <span class="go">Evidence</span></a></li>
+  </ul>
+
+  <p class="more">More topics are planned for this section.</p>
+
+  <footer>
+    <a href="references.html">All sources</a>
+    <span>Educational only. Not medical or veterinary advice.</span>
+    <a href="about.html">About and limits</a>
+  </footer>
+</main>
+</div>
