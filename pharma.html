@@ -111,10 +111,11 @@
     .list{border-right:0;border-bottom:1px solid var(--rule);display:flex;
       overflow-x:auto;padding:8px}
     .list h3{display:none}
-    .drug{white-space:nowrap;border-left:0;border-bottom:2px solid transparent}
+    .drug{white-space:nowrap;width:auto;flex:none;border-left:0;border-bottom:2px solid transparent}
     .drug[aria-pressed="true"]{border-left:0;border-bottom-color:var(--amber)}
     .side{border-left:0;border-top:1px solid var(--rule)}
   }
+  @media (max-width:640px){.sched{max-width:62%;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}}
   @media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 <link rel="stylesheet" href="assets/atlas.css">
@@ -298,19 +299,18 @@ function paint(){
   X.clearRect(0,0,w,h);
 
   var preY=h*0.22, cleftY=h*0.46, postY=h*0.58, cx=w/2;
+  var LAB=[]; function lab(t,x,y,c,al,sz){LAB.push([t,x,y,c,al||'center',sz||11]);}
   var nt=COL[cur.nt];
 
   /* presynaptic terminal */
   X.globalAlpha=1;
   blob(cx,preY,w*0.30,h*0.16,'#e4e9ef','#33395199');
-  X.fillStyle='#9aa6b2'; X.font=(10*D)+'px ui-monospace,Menlo,monospace';
   // Names sit inside their shapes, clear of the legend and the schedule tag.
-  X.textAlign='center'; X.fillText('PRESYNAPTIC', cx, preY-h*0.105);
+  lab('PRESYNAPTIC', cx, preY-h*0.105, '#8693a1', 'center', 11);
 
   /* postsynaptic */
   blob(cx,postY+h*0.20,w*0.34,h*0.17,'#e4e9ef','#33395199');
-  X.fillStyle='#9aa6b2'; X.textAlign='center';
-  X.fillText('POSTSYNAPTIC', cx, postY+h*0.27);
+  lab('POSTSYNAPTIC', cx, postY+h*0.27, '#8693a1', 'center', 11);
 
   /* vesicles */
   var vesN = cur.mode==='op' ? 4 : 9;
@@ -330,9 +330,7 @@ function paint(){
       X.beginPath(); X.moveTo(tx-9*S,preY+h*0.145-9*S);
       X.lineTo(tx+9*S,preY+h*0.145+9*S); X.stroke();
     });
-    X.globalAlpha=.75; X.fillStyle=COL.block; X.textAlign='center';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText('reuptake blocked', cx, preY+h*0.20);
+    lab('reuptake blocked', cx, preY+h*0.20, COL.block);
   }
 
   /* postsynaptic receptors */
@@ -340,7 +338,7 @@ function paint(){
   if(cur.mode==='psy')   R=[['5-HT2A',COL.ser,.34],['TrkB',COL.op,.66]];
   if(cur.mode==='block') R=[['NMDA',COL.glu,.34],['AMPA',COL.glu,.66]];
   if(cur.mode==='stim')  R=[['D1',COL.da,.34],['D2',COL.da,.66]];
-  if(cur.mode==='op')    R=[['GIRK K+',COL.op,.34],['&micro;-opioid',COL.op,.66]];
+  if(cur.mode==='op')    R=[['GIRK K+',COL.op,.34],['\u03bc-opioid',COL.op,.66]];
   if(cur.mode==='benzo') R=[['GABA-A',COL.gaba,.5]];
   if(cur.mode==='cb')    R=[['CB1 (presyn.)',COL.ecb,.5]];
 
@@ -349,18 +347,16 @@ function paint(){
     var yy = (cur.mode==='cb') ? preY+h*0.145 : postY;
     chan(rx, yy, 15*S, 34*S, r[1], 1);
     X.globalAlpha=.15; blob(rx,yy,26*S,26*S,r[1]);
-    X.globalAlpha=.85; X.fillStyle='#7b8794'; X.textAlign='center';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText(r[0], rx, yy+(cur.mode==='cb'? -26*S : 30*S));
+    // Where ions flow under a channel, its name goes beside it instead of below.
+    if(cur.mode==='benzo' || r[0]==='GIRK K+') lab(r[0], rx+22*S, yy+3*S, '#6b7785', 'left');
+    else lab(r[0], rx, yy+(cur.mode==='cb'? -26*S : 30*S), '#6b7785');
   });
 
   /* channel blocked plug for dissociatives */
   if(cur.mode==='block'){
     X.globalAlpha=1; X.fillStyle=COL.block;
     blob(w*0.34, postY-6*S, 6*S, 6*S, COL.block);
-    X.globalAlpha=.8; X.fillStyle=COL.block; X.textAlign='center';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText('pore blocked', w*0.34, postY-22*S);
+    lab('pore blocked', w*0.34, postY-22*S, COL.block);
   }
 
   /* ligand flux */
@@ -390,7 +386,6 @@ function paint(){
 
   /* ion flow for benzo / opioid */
   if(cur.mode==='benzo'||cur.mode==='op'){
-    var lbl = cur.mode==='benzo' ? 'Cl&#8315; in' : 'K&#8314; out';
     for(var i2=0;i2<12;i2++){
       var p2=reduce?0.5:((i2*0.19+tt*0.34)%1);
       var yy2 = cur.mode==='benzo' ? postY+p2*h*0.11 : postY+ (1-p2)*h*0.11;
@@ -398,10 +393,8 @@ function paint(){
       X.beginPath(); X.arc(w*(cur.mode==='benzo'?0.5:0.34)+Math.sin(i2*2)*9*S,
         yy2, 2.6*S,0,6.283); X.fill();
     }
-    X.globalAlpha=.7; X.fillStyle=COL.ion; X.textAlign='center';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText(cur.mode==='benzo'?'Cl- in':'K+ out',
-      w*(cur.mode==='benzo'?0.5:0.34), postY+h*0.15);
+    lab(cur.mode==='benzo'?'Cl\u207b in':'K\u207a out',
+      w*(cur.mode==='benzo'?0.5:0.34), postY+h*0.15, COL.ion);
   }
 
   /* retrograde arrow for cannabinoids */
@@ -416,9 +409,7 @@ function paint(){
     X.lineTo(cx+w*0.26-5*S, preY+h*0.175);
     X.lineTo(cx+w*0.26+5*S, preY+h*0.175);
     X.closePath(); X.fillStyle=COL.ecb; X.fill();
-    X.globalAlpha=.8; X.textAlign='right';
-    X.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
-    X.fillText('retrograde', cx+w*0.245, (preY+postY)/2);
+    lab('retrograde', cx+w*0.245, (preY+postY)/2, COL.ecb, 'right');
   }
 
   /* cleft hairlines */
@@ -426,7 +417,11 @@ function paint(){
   [cleftY-h*0.02, cleftY+h*0.06].forEach(function(y){
     X.beginPath(); X.moveTo(0,y); X.lineTo(w,y); X.stroke();});
 
-  X.globalAlpha=1;
+  X.globalAlpha=1; X.lineJoin='round'; X.strokeStyle='rgba(240,243,246,.94)'; X.lineWidth=3.5*D;
+  LAB.forEach(function(l){
+    X.font=(l[5]*D)+'px ui-monospace,Menlo,monospace'; X.textAlign=l[4]; X.fillStyle=l[3];
+    X.strokeText(l[0],l[1],l[2]); X.fillText(l[0],l[1],l[2]);
+  });
   return true;
 }
 function loop(){paint();requestAnimationFrame(loop);}

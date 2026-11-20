@@ -87,6 +87,8 @@
   .btn:focus-visible, input:focus-visible{outline:2px solid var(--violet); outline-offset:2px}
 
   .readout{border-top:1px solid var(--rule); padding-top:12px; font-size:12px}
+  div.readout.mono{border-radius:0}
+  .scopelabel .u{text-transform:none; letter-spacing:.04em}
   .readout div{display:flex; justify-content:space-between; padding:3px 0}
   .readout b{font-family:ui-monospace,monospace; font-weight:500; color:var(--ink)}
   .verdict{font-size:13px; padding:9px 11px; border-radius:6px; margin-top:10px;
@@ -157,7 +159,7 @@
   <section class="lab" aria-label="Action potential simulator">
     <div class="scopes">
       <div class="scope">
-        <span class="scopelabel mono">Membrane potential, mV</span>
+        <span class="scopelabel mono">Membrane potential, <span class="u">mV</span></span>
         <canvas id="scopeV" role="img" width="1400" height="560"
           aria-label="Membrane voltage over time. When the membrane fires, the chart marks the threshold and the peak."></canvas>
       </div>
@@ -172,7 +174,7 @@
           aria-label="Gating variables m, h and n over time."></canvas>
       </div>
       <div class="scope">
-        <span class="scopelabel mono">Conductance, mS per cm squared</span>
+        <span class="scopelabel mono">Conductance, <span class="u">mS</span> per <span class="u">cm</span> squared</span>
         <canvas id="scopeC" role="img" width="1400" height="300"
           aria-label="Sodium and potassium conductances over time."></canvas>
       </div>
@@ -473,7 +475,11 @@ forward Euler, dt = 0.01 ms, rates scaled by 3^((T - 6.3)/10)</span></code></div
       ctx.fillStyle = m.color; ctx.globalAlpha = .9;
       ctx.beginPath(); ctx.arc(X(m.t), Y(m.v), 3.5, 0, 6.3); ctx.fill();
       ctx.globalAlpha = 1; ctx.textAlign = m.align || "left";
-      ctx.fillText(m.label, X(m.t) + (m.align === "right" ? -7 : 7), Y(m.v) - 7);
+      // A halo in the chart's ground color keeps the label readable where a trace crosses it.
+      var lx = X(m.t) + (m.align === "right" ? -7 : 7), ly = Y(m.v) - 7;
+      ctx.lineWidth = 3; ctx.lineJoin = "round"; ctx.strokeStyle = css("--ground") || "#f6f7f9";
+      ctx.strokeText(m.label, lx, ly);
+      ctx.fillText(m.label, lx, ly);
     });
 
     if (opts.note){

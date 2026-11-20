@@ -93,6 +93,8 @@
   .scope-tag{font-size:10px;letter-spacing:.18em;text-transform:uppercase;
     color:var(--muted);font-family:ui-monospace,Menlo,monospace;margin:0 0 12px}
   #collapse{display:block;width:100%;height:auto}
+  /* On phones the chart keeps a readable size and scrolls sideways inside its frame. */
+  @media (max-width:640px){.scope{overflow-x:auto} #collapse{width:600px;max-width:none}}
   .axis{font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;fill:var(--muted);
     font-family:ui-monospace,Menlo,monospace}
   .term{font-size:12px;fill:#3f4c59;font-family:-apple-system,BlinkMacSystemFont,sans-serif}
@@ -262,7 +264,8 @@
         <circle cx="530" cy="150" r="34" fill="#b24e33" opacity=".13"/>
         <circle cx="530" cy="150" r="9" fill="#b24e33"/>
         <text class="sink-t" x="574" y="146">Lethargy</text>
-        <text class="sink-p" x="574" y="166">17.82% dog &middot; 3.21% human</text>
+        <text class="sink-p" x="574" y="166">17.82% dog</text>
+        <text class="sink-p" x="574" y="182">3.21% human</text>
 
         <text class="axis" x="8" y="308">21% of human reports list at least one of these six symptoms</text>
       </svg>
