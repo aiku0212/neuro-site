@@ -175,6 +175,7 @@
       width:auto;padding:0 18px;
       background:linear-gradient(transparent,rgba(255,255,255,.94) 26%)}
     .side{width:100%;top:auto;height:46%;border-left:0;border-top:1px solid var(--rule)}
+    .scaleb{bottom:calc(46% + 12px)}
     .ramp{display:none}
     .rail{left:0; right:0; top:10px; transform:none; padding:0 14px; overflow-x:auto;
       scrollbar-width:none}
@@ -1085,19 +1086,19 @@ function drawSholl(){
       h=Math.max(100,Math.round(r.height)||120)*D;
   if(SH.width!==w||SH.height!==h){SH.width=w;SH.height=h;}
   SX.clearRect(0,0,w,h); if(!SHOLL.length) return;
-  var pad=10*D,bw=(w-pad*2)/SHOLL.length,mx=0;
+  var pad=10*D,top=pad+14*D,bw=(w-pad*2)/SHOLL.length,mx=0;
   SHOLL.forEach(function(p){if(p.n>mx)mx=p.n;});
   var peak=SHOLL.reduce(function(a,b){return b.n>a.n?b:a;},SHOLL[0]);
   SX.strokeStyle='#dde2e8';SX.lineWidth=D;
-  for(var g=0;g<=3;g++){var yy=pad+(h-pad*2)*g/3;
+  for(var g=0;g<=3;g++){var yy=top+(h-pad-top)*g/3;
     SX.beginPath();SX.moveTo(pad,yy);SX.lineTo(w-pad,yy);SX.stroke();}
-  SHOLL.forEach(function(p,i){var bh=(h-pad*2)*(p.n/mx);
+  SHOLL.forEach(function(p,i){var bh=(h-pad-top)*(p.n/mx);
     SX.fillStyle=p===peak?'#c0573a':'#b9c3ce';
     SX.fillRect(pad+i*bw+bw*0.16,h-pad-bh,bw*0.68,bh);});
   SX.font=(9.5*D)+'px ui-monospace,Menlo,monospace';
   SX.fillStyle='#5f6d7b';SX.textAlign='left';SX.fillText('0',pad,h-2*D);
   SX.textAlign='right';SX.fillText(Math.round(STATS.ext)+' µm',w-pad,h-2*D);
-  SX.textAlign='center';SX.fillStyle='#D9A05B';
+  SX.textAlign='center';SX.fillStyle='#b24e33';
   SX.fillText('peak '+peak.n+' @ '+peak.r+' µm',w/2,11*D);
   SH.setAttribute('aria-label','Sholl analysis chart showing branch intersections with shells every 10 micrometres from the cell body. The peak is '+peak.n+' intersections at '+peak.r+' micrometres.');
 }
