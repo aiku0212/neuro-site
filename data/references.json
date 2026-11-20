@@ -3158,7 +3158,12 @@
     "meta_analysis": false,
     "site_title": "The Visual Scoring of Sleep in Adults",
     "site_year": 2007,
-    "updates": [],
+    "updates": [
+      {
+        "type": "erratum",
+        "notice_doi": "10.5664/jcsm.26927"
+      }
+    ],
     "verification": {
       "status": "confirmed",
       "reasons": [
@@ -3389,7 +3394,12 @@
     "meta_analysis": false,
     "site_title": "Mechanisms of systems memory consolidation during sleep",
     "site_year": 2019,
-    "updates": [],
+    "updates": [
+      {
+        "type": "correction",
+        "notice_doi": "10.1038/s41593-019-0507-z"
+      }
+    ],
     "verification": {
       "status": "confirmed",
       "reasons": [
@@ -3670,7 +3680,7 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1081,
+    "citations": 1082,
     "citations_checked": "2026-11-20"
   },
   {
@@ -3691,7 +3701,7 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 492,
+    "citations": 493,
     "citations_checked": "2026-11-20"
   },
   {

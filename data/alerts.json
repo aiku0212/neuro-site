@@ -29,6 +29,24 @@
       "id": "6763bd49aa",
       "found": "2026-11-20",
       "announced": "2026-11-20"
+    },
+    {
+      "type": "erratum",
+      "doi": "10.5664/jcsm.26814",
+      "title": "The Visual Scoring of Sleep in Adults",
+      "notice_doi": "10.5664/jcsm.26927",
+      "pmid": null,
+      "id": "2cebd10f8a",
+      "found": "2026-11-20"
+    },
+    {
+      "type": "correction",
+      "doi": "10.1038/s41593-019-0467-3",
+      "title": "Mechanisms of systems memory consolidation during sleep",
+      "notice_doi": "10.1038/s41593-019-0507-z",
+      "pmid": null,
+      "id": "ef830ca5f9",
+      "found": "2026-11-20"
     }
   ]
 }

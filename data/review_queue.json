@@ -65,6 +65,16 @@
       "year": 2026,
       "queued": "2026-11-20",
       "announced": "2026-11-20"
+    },
+    {
+      "pmid": "43060901",
+      "doi": "10.3389/fnhum.2026.1969439",
+      "group": "bdnf",
+      "title": "Epigenetic modification of neurotransmitter pathways during fasting: a systematic review.",
+      "authors": "Jawabreh et al.",
+      "journal": "Frontiers in human neuroscience",
+      "year": 2026,
+      "queued": "2026-11-20"
     }
   ],
   "seen": [
@@ -89,6 +99,7 @@
     "43044894",
     "43045009",
     "43054774",
-    "43056435"
+    "43056435",
+    "43060901"
   ]
 }

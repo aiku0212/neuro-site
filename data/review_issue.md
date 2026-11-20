@@ -1,6 +1,10 @@
 Last run: 2026-11-20
 
-## Correction and retraction notices (3)
+## Lookup problems (1)
+The last good data stayed in place.
+
+- No Crossref record for 10.13026/C2X676
+## Correction and retraction notices (5)
 Review any claims that rely on these papers. Each notice stays here until you tick Dismiss.
 
 **erratum**: Glutamate receptor ion channels: structure, regulation, and function  
@@ -15,7 +19,15 @@ found 2026-11-20 · https://doi.org/10.1038/s41586-021-03769-9 · [notice](https
 found 2026-11-20 · https://doi.org/10.1038/s41586-024-07804-3 · [notice](https://doi.org/10.1038/s41586-025-08976-2)
 - [ ] Dismiss <!-- alert:6763bd49aa:dismiss -->
 
-## New papers to review (6)
+**erratum**: The Visual Scoring of Sleep in Adults  
+found 2026-11-20 · https://doi.org/10.5664/jcsm.26814 · [notice](https://doi.org/10.5664/jcsm.26927)
+- [ ] Dismiss <!-- alert:2cebd10f8a:dismiss -->
+
+**correction**: Mechanisms of systems memory consolidation during sleep  
+found 2026-11-20 · https://doi.org/10.1038/s41593-019-0467-3 · [notice](https://doi.org/10.1038/s41593-019-0507-z)
+- [ ] Dismiss <!-- alert:ef830ca5f9:dismiss -->
+
+## New papers to review (7)
 Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources. Papers not reviewed within 90 days expire.
 
 **Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.**  
@@ -47,4 +59,9 @@ Supit et al., Psychiatry and clinical psychopharmacology, 2026 · group `psy` ·
 Deng et al., Neuropsychobiology, 2026 · group `bdnf` · https://doi.org/10.1159/nps/adyag001
 - [ ] Approve <!-- review:43056435:approve -->
 - [ ] Dismiss <!-- review:43056435:dismiss -->
+
+**Epigenetic modification of neurotransmitter pathways during fasting: a systematic review.**  
+Jawabreh et al., Frontiers in human neuroscience, 2026 · group `bdnf` · https://doi.org/10.3389/fnhum.2026.1969439
+- [ ] Approve <!-- review:43060901:approve -->
+- [ ] Dismiss <!-- review:43060901:dismiss -->
 
