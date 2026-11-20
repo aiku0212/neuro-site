@@ -384,7 +384,7 @@
     "authors": "Nardou et al.",
     "year": 2023,
     "journal": "Nature",
-    "citations": 362,
+    "citations": 363,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -414,7 +414,7 @@
     "authors": "Dölen et al.",
     "year": 2026,
     "journal": "Annual Review of Neuroscience",
-    "citations": 3,
+    "citations": 4,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
@@ -432,7 +432,7 @@
     "site_title": "The emerging neurobiology of psychedelics: critical periods, metaplasticity, and extracellular matrix remodeling",
     "site_year": 2026,
     "citations_at_compile": 1,
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-20",
     "updates": [],
     "crossref_year": 2026
   },
