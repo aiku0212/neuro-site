@@ -607,11 +607,11 @@ var LEVELS=[
   body:'Each bump on the branch is a spine, and most spines hold a single synapse (a connection from another neuron). The drawing shows thin, stubby and mushroom spines, with an axon terminal (bouton) touching the mushroom spine. In mice, a single dose of psilocybin (the psychedelic in magic mushrooms) increased spine size and density by about 10% within 24 hours, and the increase was still present a month later.',
   cite:'Shao et al., <em>Neuron</em> 2021',
   alt:'A stretch of dendrite with thin, stubby and mushroom spines. An axon bouton filled with vesicles touches the mushroom spine across a narrow cleft.'},
- {tag:'Membrane',unit:'~10 nm',title:'Receptors where drugs act',
-  parts:[['TrkB','amber'],['p75NTR','rose'],['5-HT2A','violet'],['NMDA','sky']],
-  body:'TrkB and p75NTR are receptors with opposite effects. TrkB signalling tends to strengthen synapses, and p75NTR signalling tends to weaken and prune them. In cell and mouse studies, LSD and psilocin (the active form of psilocybin) bound TrkB about a thousand times more tightly than the antidepressants tested. Another group found that psychedelics instead act on the 5-HT2A serotonin receptors that sit inside the cell, which serotonin itself cannot reach. The two groups disagree on which route matters.',
-  cite:'Moliner et al., <em>Nat. Neurosci.</em> 2023 &middot; Vargas et al., <em>Science</em> 2023',
-  alt:'A patch of cell membrane drawn as a lipid bilayer. TrkB crosses it once and is shown as a pair, p75NTR crosses it once, 5-HT2A crosses it seven times, and the NMDA receptor is a channel of four subunits around a central pore.'}
+ {tag:'Membrane',unit:'~10 nm',title:'Three receptors for one transmitter',
+  parts:[['AMPA','amber'],['NMDA','sky'],['mGluR','violet'],['G protein','teal'],['Glutamate','#3f4c59']],
+  body:'Glutamate is the brain\'s main excitatory transmitter, and three kinds of receptor in the spine membrane detect it. AMPA and NMDA receptors are ion channels, each made of four subunits around a pore. An AMPA receptor opens within about a millisecond of binding glutamate and lets sodium in, which makes the inside of the spine less negative. An NMDA receptor needs glutamate and that voltage change together, because a magnesium ion plugs its pore until then. Once open, it also lets calcium in, and calcium can trigger lasting changes in the strength of the synapse. A metabotropic glutamate receptor (mGluR) has no pore. It crosses the membrane seven times, works as a pair, and signals through a G protein inside the cell, so its effects are slower and last longer.',
+  cite:'Traynelis et al., <em>Pharmacol. Rev.</em> 2010 &middot; Niswender &amp; Conn, <em>Annu. Rev. Pharmacol. Toxicol.</em> 2010',
+  alt:'A patch of cell membrane drawn as a lipid bilayer with three glutamate receptors and small dots of glutamate outside it. The AMPA receptor and the NMDA receptor are each a channel of four subunits around a central pore, and the NMDA pore holds a magnesium ion. The metabotropic glutamate receptor crosses the membrane seven times, has a large two-lobed domain outside where glutamate binds, is drawn with its partner behind it, and touches a G protein inside the cell.'}
 ];
 
 /* Analyze drawing (unchanged) */
@@ -843,8 +843,10 @@ function drawSpine(a,S,ox,oy,lab){
 /* Level 4 */
 var MEM={hw:150};
 // receptor centres as fractions of the span, and the half-width each one takes
-var REC=[['amber','TrkB','one helix each',0.16,13],['rose','p75NTR','one helix',0.39,8.5],
-         ['violet','5-HT2A','seven helices',0.62,21],['sky','NMDA','four subunits',0.86,20]];
+var REC=[['amber','AMPA','ion channel',0.18,20],['sky','NMDA','channel, magnesium plug',0.5,20],
+         ['violet','mGluR','signals by G protein',0.83,22]];
+// free glutamate outside the cell, in membrane units
+var GLU=[[-59,-27],[-47,-37],[-38,-22],[40,-26],[52,-38],[61,-21]];
 function rr(x,y,w,h,r){X.beginPath();X.roundRect(x,y,w,h,r);X.fill();}
 function ell(x,y,a,b){X.beginPath();X.ellipse(x,y,Math.max(0.3,a),Math.max(0.3,b),0,0,TAU);X.fill();}
 function drawMembrane(a,S,ox,oy,lab){
@@ -865,39 +867,52 @@ function drawMembrane(a,S,ox,oy,lab){
     X.fillStyle='#93a6ba'; ell(L(x),T(-12),2.7*S,2.7*S); ell(L(x),T(12),2.7*S,2.7*S);
   }
   X.lineWidth=Math.max(D,S*1.1);
-  // TrkB: one membrane-spanning helix per receptor, drawn as a pair
-  var cx=RX[0],c=COL.amber; X.fillStyle=c; X.strokeStyle=c;
-  for(var sd=-1;sd<=1;sd+=2){var mx=cx+sd*3.2;
-    X.globalAlpha=a; rr(L(mx-2),T(-14),4*S,28*S,2*S);
-    X.globalAlpha=a*0.8; X.beginPath(); X.moveTo(L(mx),T(-14)); X.lineTo(L(mx+sd*2),T(-19)); X.stroke();
-    ell(L(mx+sd*3),T(-23.5),4.2*S,4.2*S); ell(L(mx+sd*3.6),T(-32.2),4.4*S,4.4*S); ell(L(mx+sd*3.2),T(-42.6),5*S,6*S);
-    X.beginPath(); X.moveTo(L(mx),T(14)); X.lineTo(L(mx+sd*3),T(19)); X.stroke();
-    ell(L(mx+sd*4.6),T(26),5.8*S,6.4*S);}
-  // p75NTR: one helix, four small cysteine-rich domains outside, a death domain inside
-  cx=RX[1]; c=COL.rose; X.fillStyle=c; X.strokeStyle=c;
-  X.globalAlpha=a; rr(L(cx-2),T(-14),4*S,28*S,2*S);
-  X.globalAlpha=a*0.8; X.beginPath(); X.moveTo(L(cx),T(-14)); X.lineTo(L(cx),T(-19)); X.stroke();
-  for(k=0;k<4;k++) ell(L(cx+(k%2?1:-1)*0.8),T(-22.4-k*6.4),3.2*S,3.2*S);
-  X.beginPath(); X.moveTo(L(cx),T(14)); X.lineTo(L(cx+2),T(21)); X.stroke();
-  ell(L(cx+3),T(27.5),6.4*S,5.4*S);
-  // 5-HT2A: seven helices joined by loops, N-terminus outside, C-terminus inside
-  cx=RX[2]; c=COL.violet; X.fillStyle=c; X.strokeStyle=c;
-  var hx=[],dep=[0,7,6,7,11,15,6];
-  for(k=0;k<7;k++){hx[k]=cx-15.6+k*5.2; X.globalAlpha=a; rr(L(hx[k]-2),T(-15),4*S,30*S,2*S);}
-  X.globalAlpha=a*0.85; X.beginPath();
-  for(k=0;k<6;k++){var yS=k%2?-15:15,dd=dep[k+1]*(k%2?-1:1);
-    X.moveTo(L(hx[k]),T(yS)); X.quadraticCurveTo(L((hx[k]+hx[k+1])/2),T(yS+dd*1.6),L(hx[k+1]),T(yS));}
-  X.moveTo(L(hx[0]),T(-15)); X.quadraticCurveTo(L(hx[0]-2),T(-24),L(hx[0]-7),T(-28));
-  X.moveTo(L(hx[6]),T(15)); X.quadraticCurveTo(L(hx[6]+2),T(24),L(hx[6]+8),T(27));
-  X.stroke();
-  // NMDA: four subunits around a central pore (two in front, two behind)
-  cx=RX[3]; c=COL.sky; X.fillStyle=c; X.strokeStyle=c;
-  var SU=[[-13.5,0.4],[13.5,0.4],[-6,1],[6,1]];
-  for(k=0;k<4;k++){var sx=cx+SU[k][0],sg=SU[k][0]<0?-1:1; X.globalAlpha=a*SU[k][1];
-    rr(L(sx-3.5),T(-14),7*S,28*S,2.4*S);
-    ell(L(sx),T(-22.5),5.4*S,5*S); ell(L(sx+sg*0.6),T(-34.5),5.6*S,6.6*S);
-    X.beginPath(); X.moveTo(L(sx),T(14)); X.lineTo(L(sx+sg*1.2),T(25)); X.stroke();}
-  X.globalAlpha=a*0.9; X.fillStyle='#f6f7f9'; rr(L(cx-1.6),T(-15),3.2*S,30*S,1.6*S);
+  var INK='#3f4c59',PAPER='#f6f7f9',cx,c;
+  // glutamate: a small dark dot, ringed where it sits on a receptor
+  function glu(gx,gy,bound){
+    if(bound){X.globalAlpha=a; X.fillStyle=PAPER; ell(L(gx),T(gy),2.7*S,2.7*S);}
+    X.globalAlpha=a*(bound?1:0.8); X.fillStyle=INK; ell(L(gx),T(gy),1.7*S,1.7*S);}
+  // An ion-channel receptor: four subunits around a central pore (two in front, two behind).
+  // Each subunit has a part that spans the membrane, a glutamate-binding domain above it
+  // and an outer domain on top. plug draws the magnesium ion that blocks the NMDA pore.
+  function channel(cx,c,splay,tail,bound,plug){
+    var SU=[[-13.5,0.4],[13.5,0.4],[-6,1],[6,1]];
+    X.fillStyle=c; X.strokeStyle=c;
+    for(k=0;k<4;k++){var sx=cx+SU[k][0],sg=SU[k][0]<0?-1:1; X.globalAlpha=a*SU[k][1];
+      rr(L(sx-3.5),T(-14),7*S,28*S,2.4*S);
+      ell(L(sx),T(-22.5),5.4*S,5*S); ell(L(sx+sg*splay),T(-34.5),5.6*S,6.6*S);
+      X.beginPath(); X.moveTo(L(sx),T(14)); X.lineTo(L(sx+sg*1.2),T(tail)); X.stroke();}
+    X.globalAlpha=a*0.9; X.fillStyle=PAPER; rr(L(cx-1.6),T(-15),3.2*S,30*S,1.6*S);
+    if(plug){X.globalAlpha=a; X.fillStyle=INK; ell(L(cx),T(-3),2.3*S,2.3*S);}
+    for(k=0;k<bound.length;k++) glu(cx+bound[k]*6,-22.5,true);
+  }
+  // AMPA: every subunit binds glutamate, and the pore is open
+  channel(RX[0],COL.amber,2.2,21,[-1,1],false);
+  // NMDA: the same build with longer tails inside the cell and a magnesium ion in the pore
+  channel(RX[1],COL.sky,0.6,27,[1],true);
+  // mGluR: seven helices joined by loops, with a large two-lobed domain outside where glutamate
+  // binds. It works as a pair, so a fainter partner stands behind it.
+  cx=RX[2]; c=COL.violet;
+  var dep=[0,7,6,7,11,15,6];
+  function seven(px,al,front){
+    var hx=[]; X.fillStyle=c; X.strokeStyle=c;
+    for(k=0;k<7;k++){hx[k]=px-13.2+k*4.4; X.globalAlpha=a*al; rr(L(hx[k]-1.8),T(-15),3.6*S,30*S,1.8*S);}
+    X.globalAlpha=a*al*0.85; X.beginPath();
+    for(k=0;k<6;k++){var yS=k%2?-15:15,dd=dep[k+1]*(k%2?-0.7:0.8);
+      X.moveTo(L(hx[k]),T(yS)); X.quadraticCurveTo(L((hx[k]+hx[k+1])/2),T(yS+dd*1.6),L(hx[k+1]),T(yS));}
+    // the stalk from the first helix up to the outer domain, and the tail inside the cell
+    X.moveTo(L(hx[0]),T(-15)); X.quadraticCurveTo(L(hx[0]-1),T(-21),L(px-5),T(-25));
+    X.moveTo(L(hx[6]),T(15)); X.quadraticCurveTo(L(hx[6]+2),T(23),L(hx[6]+7),T(26));
+    X.stroke();
+    X.globalAlpha=a*al; ell(L(px-3),T(-29.5),8.2*S,4.6*S); ell(L(px-3.8),T(-40.3),8.6*S,5*S);
+    X.beginPath(); X.moveTo(L(px-10),T(-30)); X.lineTo(L(px-10.6),T(-40)); X.stroke();
+    if(front) glu(px-1,-34.9,true);
+  }
+  seven(cx+7,0.38,false); seven(cx-6,1,true);
+  // the G protein rests against the loops inside the cell: one large part and two small ones
+  X.fillStyle=COL.teal; X.globalAlpha=a*0.92;
+  ell(L(cx-4.5),T(26.2),7.2*S,5*S); ell(L(cx-14.5),T(28.6),4.4*S,4*S); ell(L(cx-10.5),T(33.4),2.6*S,2.3*S);
+  for(k=0;k<GLU.length;k++) glu(GLU[k][0],GLU[k][1],false);
   X.lineCap='butt';
   if(lab>0.05){
     // On the narrowest screens neighbouring sub-labels would touch, so every other one drops a line.
@@ -906,9 +921,9 @@ function drawMembrane(a,S,ox,oy,lab){
     for(k=0;k<REC.length;k++){
       label(REC[k][1],L(RX[k]),T(46),12,'600','#1f2a35',lab);
       label(REC[k][2],L(RX[k]),T(46)+(stag&&k%2?30:16)*D,11,'400','#5f6d7b',lab);}
-    // On a narrow screen "Outside" would run into TrkB's outer domains, so it moves above them.
+    // On a narrow screen "Outside" would run into the first receptor's outer domains, so it moves above them.
     X.font='600 '+Math.round(11*D)+'px '+FONT;
-    var oy2=X.measureText('Outside').width+6*D>L(RX[0]-15)-L(-hw)?T(-49)-9*D:T(-34);
+    var oy2=X.measureText('Outside').width+6*D>L(RX[0]-23)-L(-hw)?T(-49)-9*D:T(-34);
     label('Outside',L(-hw)+2*D,oy2,11,'600','#5f6d7b',lab,'left');
     label('Inside',L(-hw)+2*D,T(32),11,'600','#5f6d7b',lab,'left');
   }

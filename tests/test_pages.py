@@ -137,6 +137,18 @@ class PublicPages(unittest.TestCase):
         self.assertNotIn("COLS = 240", page)
         self.assertIn("rowTS[r] = TMIN * Math.exp(", page)
 
+    def test_explore_membrane_shows_basic_glutamate_receptors(self):
+        page = read("app")
+        # The membrane level teaches the basic receptors of a spine synapse, not drug targets.
+        for old in ("TrkB", "p75NTR", "5-HT2A", "Receptors where drugs act"):
+            self.assertNotIn(old, page)
+        for name in ("'AMPA'", "'NMDA'", "'mGluR'"):
+            self.assertIn(name, page)
+        # Both sources cited in its caption are on the Sources page.
+        dois = {r.get("doi") for r in json.loads((ROOT / "data" / "references.json").read_text(encoding="utf8"))}
+        self.assertIn("10.1124/pr.109.002451", dois)
+        self.assertIn("10.1146/annurev.pharmtox.011008.145533", dois)
+
     def test_pharmacology_lists_sourced_harms_for_every_class(self):
         page = read("pharma")
         for cid in ["psy", "dis", "stim", "op", "benzo", "cb"]:

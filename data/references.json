@@ -2313,6 +2313,50 @@
     "citations_checked": "2026-11-19"
   },
   {
+    "group": "found",
+    "title": "Glutamate receptor ion channels: structure, regulation, and function",
+    "authors": "Traynelis et al.",
+    "year": 2010,
+    "journal": "Pharmacological Reviews",
+    "doi": "10.1124/pr.109.002451",
+    "pmid": "20716669",
+    "meta_analysis": false,
+    "site_title": "Glutamate receptor ion channels: structure, regulation, and function",
+    "site_year": 2010,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for the Explore membrane level"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 3413,
+    "citations_checked": "2026-11-20"
+  },
+  {
+    "group": "found",
+    "title": "Metabotropic glutamate receptors: physiology, pharmacology, and disease",
+    "authors": "Niswender & Conn",
+    "year": 2010,
+    "journal": "Annual Review of Pharmacology and Toxicology",
+    "doi": "10.1146/annurev.pharmtox.011008.145533",
+    "pmid": "20055706",
+    "meta_analysis": false,
+    "site_title": "Metabotropic glutamate receptors: physiology, pharmacology, and disease",
+    "site_year": 2010,
+    "updates": [],
+    "verification": {
+      "status": "confirmed",
+      "reasons": [
+        "Added for the Explore membrane level"
+      ],
+      "checked": "2026-11-20"
+    },
+    "citations": 1828,
+    "citations_checked": "2026-11-20"
+  },
+  {
     "group": "psy",
     "title": "Evolutionary neuropharmacology of serotonergic psychedelics: a cross-species perspective on mechanisms, consciousness, and therapeutic potential.",
     "authors": "Zhai et al.",
