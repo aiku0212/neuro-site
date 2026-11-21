@@ -45,8 +45,8 @@
     "pmid": "37280397",
     "site_title": "Psychedelics promote plasticity by directly binding to BDNF receptor TrkB",
     "site_year": 2023,
-    "citations": 517,
-    "citations_checked": "2026-11-19",
+    "citations": 518,
+    "citations_checked": "2026-11-21",
     "updates": [],
     "citations_at_compile": 508,
     "crossref_year": 2023
@@ -1271,8 +1271,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 692,
-    "citations_checked": "2026-11-20"
+    "citations": 693,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "found",
@@ -1292,8 +1292,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 18517,
-    "citations_checked": "2026-11-20"
+    "citations": 18519,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "found",
@@ -1360,8 +1360,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 1792,
-    "citations_checked": "2026-11-20"
+    "citations": 1793,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "found",
@@ -1627,7 +1627,7 @@
     "authors": "Zarate et al.",
     "year": 2006,
     "journal": "Archives of General Psychiatry",
-    "citations": 3181,
+    "citations": 3184,
     "tag": null,
     "meta_analysis": false,
     "note": "18 patients, crossover: improvement within 110 minutes, significant for a week",
@@ -1640,7 +1640,7 @@
     "site_year": 2006,
     "citations_at_compile": 3166,
     "doi": "10.1001/archpsyc.63.8.856",
-    "citations_checked": "2026-11-20",
+    "citations_checked": "2026-11-21",
     "updates": [],
     "crossref_year": 2006
   },
@@ -1650,7 +1650,7 @@
     "authors": "Zanos et al.",
     "year": 2016,
     "journal": "Nature",
-    "citations": 1528,
+    "citations": 1529,
     "tag": null,
     "meta_analysis": false,
     "note": "Mice: a ketamine metabolite has antidepressant-like effects without NMDA block; a competing mechanism",
@@ -1663,7 +1663,7 @@
     "site_year": 2016,
     "citations_at_compile": 1523,
     "doi": "10.1038/nature17998",
-    "citations_checked": "2026-11-20",
+    "citations_checked": "2026-11-21",
     "updates": [],
     "crossref_year": 2016
   },
@@ -1903,7 +1903,7 @@
     "authors": "Moran et al.",
     "year": 2019,
     "journal": "New England Journal of Medicine",
-    "citations": 170,
+    "citations": 171,
     "tag": null,
     "meta_analysis": false,
     "note": "Insurance claims, ages 13-25 with ADHD: new psychosis about 1 in 660, more with amphetamine",
@@ -1916,7 +1916,7 @@
     "site_year": 2019,
     "citations_at_compile": 169,
     "doi": "10.1056/NEJMoa1813751",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-21",
     "updates": [],
     "crossref_year": 2019
   },
@@ -1926,7 +1926,7 @@
     "authors": "Di Forti et al.",
     "year": 2019,
     "journal": "The Lancet Psychiatry",
-    "citations": 799,
+    "citations": 800,
     "tag": null,
     "meta_analysis": false,
     "note": "Multi-country case-control: daily high-potency cannabis and psychotic disorder (association)",
@@ -1939,7 +1939,7 @@
     "site_year": 2019,
     "citations_at_compile": 798,
     "doi": "10.1016/S2215-0366(19)30048-3",
-    "citations_checked": "2026-11-20",
+    "citations_checked": "2026-11-21",
     "updates": [],
     "crossref_year": 2019
   },
@@ -1949,7 +1949,7 @@
     "authors": "Tweet et al.",
     "year": 2023,
     "journal": "Pediatrics",
-    "citations": 84,
+    "citations": 85,
     "tag": null,
     "meta_analysis": false,
     "note": "US poison-centre reports of edible cannabis in children under 6, 2017-2021",
@@ -1962,7 +1962,7 @@
     "site_year": 2023,
     "citations_at_compile": 84,
     "doi": "10.1542/peds.2022-057761",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-21",
     "updates": [],
     "crossref_year": 2023
   },
@@ -2018,7 +2018,7 @@
     "authors": "Faraone",
     "year": 2018,
     "journal": "Neuroscience &amp; Biobehavioral Reviews",
-    "citations": 611,
+    "citations": 612,
     "tag": null,
     "meta_analysis": false,
     "note": "Review: amphetamine and methylphenidate raise dopamine and noradrenaline",
@@ -2031,7 +2031,7 @@
     "site_year": 2018,
     "citations_at_compile": 611,
     "doi": "10.1016/j.neubiorev.2018.02.001",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-21",
     "updates": [],
     "crossref_year": 2018
   },
@@ -2336,8 +2336,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 3413,
-    "citations_checked": "2026-11-20"
+    "citations": 3414,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "found",
@@ -2720,8 +2720,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 396,
-    "citations_checked": "2026-11-19"
+    "citations": 397,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -2937,8 +2937,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2128,
-    "citations_checked": "2026-11-20"
+    "citations": 2129,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3000,8 +3000,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 12705,
-    "citations_checked": "2026-11-20"
+    "citations": 12722,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3021,8 +3021,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 4391,
-    "citations_checked": "2026-11-20"
+    "citations": 4402,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3063,8 +3063,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 686,
-    "citations_checked": "2026-11-20"
+    "citations": 690,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3084,8 +3084,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 3229,
-    "citations_checked": "2026-11-20"
+    "citations": 3230,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3105,8 +3105,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 4368,
-    "citations_checked": "2026-11-20"
+    "citations": 4370,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3234,8 +3234,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 447,
-    "citations_checked": "2026-11-20"
+    "citations": 448,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3297,8 +3297,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2925,
-    "citations_checked": "2026-11-20"
+    "citations": 2926,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3381,8 +3381,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2652,
-    "citations_checked": "2026-11-20"
+    "citations": 2654,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3449,8 +3449,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1542,
-    "citations_checked": "2026-11-20"
+    "citations": 1544,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -3596,8 +3596,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 931,
-    "citations_checked": "2026-11-20"
+    "citations": 933,
+    "citations_checked": "2026-11-21"
   },
   {
     "group": "learn",
@@ -4100,7 +4100,7 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1524,
-    "citations_checked": "2026-11-20"
+    "citations": 1525,
+    "citations_checked": "2026-11-21"
   }
 ]
