@@ -45,8 +45,8 @@
     "pmid": "37280397",
     "site_title": "Psychedelics promote plasticity by directly binding to BDNF receptor TrkB",
     "site_year": 2023,
-    "citations": 518,
-    "citations_checked": "2026-11-21",
+    "citations": 519,
+    "citations_checked": "2026-11-22",
     "updates": [],
     "citations_at_compile": 508,
     "crossref_year": 2023
@@ -302,7 +302,7 @@
     "authors": "Siegel et al.",
     "year": 2024,
     "journal": "Nature",
-    "citations": 308,
+    "citations": 309,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -320,7 +320,7 @@
     "site_title": "Psilocybin desynchronizes the human brain",
     "site_year": 2024,
     "citations_at_compile": 213,
-    "citations_checked": "2026-11-20",
+    "citations_checked": "2026-11-22",
     "updates": [],
     "crossref_year": 2024
   },
@@ -493,7 +493,7 @@
     "authors": "Cisneros-Franco et al.",
     "year": 2020,
     "journal": "Handbook of Clinical Neurology",
-    "citations": 61,
+    "citations": 62,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
@@ -504,7 +504,7 @@
     "site_year": 2020,
     "citations_at_compile": 23,
     "doi": "10.1016/b978-0-444-64150-2.00009-5",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-22",
     "updates": [],
     "crossref_year": 2020
   },
@@ -1292,8 +1292,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 18519,
-    "citations_checked": "2026-11-21"
+    "citations": 18521,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "found",
@@ -1381,8 +1381,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 133,
-    "citations_checked": "2026-11-19"
+    "citations": 134,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "found",
@@ -1413,7 +1413,7 @@
     "authors": "MacDonald et al.",
     "year": 2011,
     "journal": "Neuron",
-    "citations": 1128,
+    "citations": 1129,
     "tag": null,
     "meta_analysis": false,
     "note": "Rats: hippocampal time cells fire at successive moments of an empty gap between two events",
@@ -1427,7 +1427,7 @@
     "citations_at_compile": 1127,
     "doi": "10.1016/j.neuron.2011.07.012",
     "pmid": "21867888",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-22",
     "updates": [],
     "crossref_year": 2011
   },
@@ -1557,7 +1557,7 @@
     "authors": "Cao et al.",
     "year": 2022,
     "journal": "eLife",
-    "citations": 31,
+    "citations": 32,
     "tag": null,
     "meta_analysis": false,
     "note": "Rats: time-field width grows linearly with delay, and time cells are spread evenly on a log time axis",
@@ -1571,7 +1571,7 @@
     "citations_at_compile": 31,
     "doi": "10.7554/elife.75353",
     "pmid": "36250631",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-22",
     "updates": [],
     "crossref_year": 2022
   },
@@ -1719,7 +1719,7 @@
     "authors": "Johnson & North",
     "year": 1992,
     "journal": "The Journal of Neuroscience",
-    "citations": 1386,
+    "citations": 1388,
     "tag": null,
     "meta_analysis": false,
     "note": "Rat midbrain slices: mu-opioid agonists inhibit GABA interneurons, disinhibiting dopamine neurons",
@@ -1732,7 +1732,7 @@
     "site_year": 1992,
     "citations_at_compile": 1383,
     "doi": "10.1523/JNEUROSCI.12-02-00483.1992",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-22",
     "updates": [],
     "crossref_year": 1992
   },
@@ -2412,8 +2412,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 68,
-    "citations_checked": "2026-11-20"
+    "citations": 69,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "found",
@@ -2852,8 +2852,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 1562,
-    "citations_checked": "2026-11-19"
+    "citations": 1563,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -2895,8 +2895,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2409,
-    "citations_checked": "2026-11-20"
+    "citations": 2410,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -2916,8 +2916,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2275,
-    "citations_checked": "2026-11-20"
+    "citations": 2276,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -3000,8 +3000,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 12722,
-    "citations_checked": "2026-11-21"
+    "citations": 12725,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -3021,8 +3021,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 4402,
-    "citations_checked": "2026-11-21"
+    "citations": 4404,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -3360,8 +3360,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 49,
-    "citations_checked": "2026-11-20"
+    "citations": 50,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -3381,8 +3381,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2654,
-    "citations_checked": "2026-11-21"
+    "citations": 2655,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -3407,8 +3407,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1178,
-    "citations_checked": "2026-11-20"
+    "citations": 1180,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -3428,8 +3428,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 916,
-    "citations_checked": "2026-11-20"
+    "citations": 918,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -3449,8 +3449,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1544,
-    "citations_checked": "2026-11-21"
+    "citations": 1545,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -3869,8 +3869,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 701,
-    "citations_checked": "2026-11-20"
+    "citations": 702,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -4016,8 +4016,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 109,
-    "citations_checked": "2026-11-20"
+    "citations": 110,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
@@ -4058,8 +4058,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 82,
-    "citations_checked": "2026-11-20"
+    "citations": 83,
+    "citations_checked": "2026-11-22"
   },
   {
     "group": "learn",
