@@ -1,57 +1,93 @@
 {
-  "updated": "2026-11-19",
+  "updated": "2026-11-23",
   "sources": [
     {
       "id": "nat-rev-neurosci",
       "name": "Nature Reviews Neuroscience",
       "kind": "Review article",
-      "last_ok": "2026-11-19",
+      "last_ok": "2026-11-23",
       "status": "ok"
     },
     {
       "id": "annu-rev-neurosci",
       "name": "Annual Review of Neuroscience",
       "kind": "Review article",
-      "last_ok": "2026-11-19",
+      "last_ok": "2026-11-23",
       "status": "ok"
     },
     {
       "id": "trends-neurosci",
       "name": "Trends in Neurosciences",
       "kind": "Review article",
-      "last_ok": "2026-11-19",
+      "last_ok": "2026-11-23",
       "status": "ok"
     },
     {
       "id": "neuron",
       "name": "Neuron",
       "kind": "Review article",
-      "last_ok": "2026-11-19",
+      "last_ok": "2026-11-23",
       "status": "ok"
     },
     {
       "id": "curr-opin-neurobiol",
       "name": "Current Opinion in Neurobiology",
       "kind": "Review article",
-      "last_ok": "2026-11-19",
+      "last_ok": "2026-11-23",
       "status": "ok"
     },
     {
       "id": "elife",
       "name": "eLife",
       "kind": "Research paper (eLife reviewed preprint)",
-      "last_ok": "2026-11-19",
+      "last_ok": "2026-11-23",
       "status": "ok"
     },
     {
       "id": "mit-news",
       "name": "MIT News",
       "kind": "University news office",
-      "last_ok": "2026-11-19",
+      "last_ok": "2026-11-23",
       "status": "ok"
     }
   ],
   "items": [
+    {
+      "source": "elife",
+      "title": "ATP8B1–TMEM30B flippase activity maintains stereocilia lipid asymmetry required for hearing",
+      "url": "https://elifesciences.org/articles/110466",
+      "date": "2026-11-23"
+    },
+    {
+      "source": "elife",
+      "title": "A step towards modelling amyotrophic lateral sclerosis in primates",
+      "url": "https://elifesciences.org/articles/113568",
+      "date": "2026-11-23"
+    },
+    {
+      "source": "elife",
+      "title": "Ramping-up hippocampal ripples and their neocortical coupling support human visual short-term memory",
+      "url": "https://elifesciences.org/articles/111304",
+      "date": "2026-11-20"
+    },
+    {
+      "source": "elife",
+      "title": "Cognitive control networks in human and macaque",
+      "url": "https://elifesciences.org/articles/111502",
+      "date": "2026-11-20"
+    },
+    {
+      "source": "elife",
+      "title": "Blood-derived dietary protein promotes sleep in the mosquito Aedes aegypti",
+      "url": "https://elifesciences.org/articles/110245",
+      "date": "2026-11-20"
+    },
+    {
+      "source": "trends-neurosci",
+      "title": "The dark and light sides of dynorphin and enkephalin: from reward to aversion",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43057930/",
+      "date": "2026-11-19"
+    },
     {
       "source": "mit-news",
       "title": "Scientists create the first whole-body single-cell atlas of an adult vertebrate",
@@ -65,15 +101,15 @@
       "date": "2026-11-19"
     },
     {
-      "source": "elife",
-      "title": "Rhodopsin 7 is an ancestral non-canonical photoreceptor that shapes light-responsive behavior",
-      "url": "https://elifesciences.org/articles/109811",
-      "date": "2026-11-18"
+      "source": "nat-rev-neurosci",
+      "title": "Brain extracellular matrix remodelling in health and neuropsychiatric disorders",
+      "url": "https://pubmed.ncbi.nlm.nih.gov/43058254/",
+      "date": "2026-11-19"
     },
     {
       "source": "elife",
-      "title": "Perceptual glimpses are locally accumulated and globally maintained at distinct processing levels",
-      "url": "https://elifesciences.org/articles/107980",
+      "title": "Rhodopsin 7 is an ancestral non-canonical photoreceptor that shapes light-responsive behavior",
+      "url": "https://elifesciences.org/articles/109811",
       "date": "2026-11-18"
     },
     {
@@ -81,18 +117,6 @@
       "title": "Astrocytes regulate synapse development and plasticity across the lifespan",
       "url": "https://pubmed.ncbi.nlm.nih.gov/43050792/",
       "date": "2026-11-18"
-    },
-    {
-      "source": "elife",
-      "title": "WNK-SPAK/OSR1 signaling pathway facilitates ictal activity via reduced neuronal chloride extrusion rate",
-      "url": "https://elifesciences.org/articles/112181",
-      "date": "2026-11-17"
-    },
-    {
-      "source": "elife",
-      "title": "Transposons contribute to splice-isoform diversity in the Drosophila brain",
-      "url": "https://elifesciences.org/articles/110625",
-      "date": "2026-11-17"
     },
     {
       "source": "mit-news",
@@ -267,30 +291,6 @@
       "title": "Hypothalamus-driven brain health through metabolic flexibility",
       "url": "https://pubmed.ncbi.nlm.nih.gov/42976852/",
       "date": "2026-11-03"
-    },
-    {
-      "source": "trends-neurosci",
-      "title": "Evolving perspectives on cardiac innervation: from relay to a complex regulated network",
-      "url": "https://pubmed.ncbi.nlm.nih.gov/42977603/",
-      "date": "2026-11-03"
-    },
-    {
-      "source": "nat-rev-neurosci",
-      "title": "The nanotubular network as a new dimension of intercellular communication in the nervous system",
-      "url": "https://pubmed.ncbi.nlm.nih.gov/42972121/",
-      "date": "2026-11-02"
-    },
-    {
-      "source": "neuron",
-      "title": "The neurobiology of menopause: Implications for brain aging and Alzheimer's risk",
-      "url": "https://pubmed.ncbi.nlm.nih.gov/42962664/",
-      "date": "2026-10-30"
-    },
-    {
-      "source": "elife",
-      "title": "Oxytocin neurons signal state-dependent transitions from rest to thermogenesis and behavioral arousal",
-      "url": "https://elifesciences.org/articles/108212",
-      "date": "2026-10-30"
     }
   ]
 }
