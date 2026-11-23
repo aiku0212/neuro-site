@@ -195,7 +195,7 @@
     "authors": "Thakkar et al.",
     "year": 2023,
     "journal": "Brain and Behavior",
-    "citations": 71,
+    "citations": 72,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
@@ -206,7 +206,7 @@
     "site_year": 2023,
     "citations_at_compile": 59,
     "doi": "10.1002/brb3.2903",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-23",
     "updates": [],
     "crossref_year": 2023
   },
@@ -274,7 +274,7 @@
     "authors": "Vargas et al.",
     "year": 2023,
     "journal": "Science",
-    "citations": 532,
+    "citations": 533,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -292,7 +292,7 @@
     "site_title": "Psychedelics promote neuroplasticity through activation of intracellular 5-HT2A receptors",
     "site_year": 2023,
     "citations_at_compile": 402,
-    "citations_checked": "2026-11-20",
+    "citations_checked": "2026-11-23",
     "updates": [],
     "crossref_year": 2023
   },
@@ -776,7 +776,7 @@
     "authors": "Gholami et al.",
     "year": 2024,
     "journal": "Experimental Gerontology",
-    "citations": 34,
+    "citations": 35,
     "meta_analysis": true,
     "tag": "key",
     "note": "35 RCTs in older adults, all exercise types, SMD 0.56",
@@ -789,7 +789,7 @@
     "site_year": 2024,
     "citations_at_compile": 28,
     "doi": "10.1016/j.exger.2024.112658",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-23",
     "updates": [],
     "crossref_year": 2025
   },
@@ -1360,8 +1360,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 1793,
-    "citations_checked": "2026-11-21"
+    "citations": 1794,
+    "citations_checked": "2026-11-23"
   },
   {
     "group": "found",
@@ -1390,7 +1390,7 @@
     "authors": "Howard & Kahana",
     "year": 2002,
     "journal": "Journal of Mathematical Psychology",
-    "citations": 910,
+    "citations": 911,
     "tag": null,
     "meta_analysis": false,
     "note": "Temporal context model: context changes as earlier contexts are retrieved, which can explain recency and contiguity effects in free recall",
@@ -1403,7 +1403,7 @@
     "site_year": 2002,
     "citations_at_compile": 908,
     "doi": "10.1006/jmps.2001.1388",
-    "citations_checked": "2026-11-20",
+    "citations_checked": "2026-11-23",
     "updates": [],
     "crossref_year": 2002
   },
@@ -1604,7 +1604,7 @@
     "authors": "Li et al.",
     "year": 2010,
     "journal": "Science",
-    "citations": 2675,
+    "citations": 2676,
     "tag": null,
     "meta_analysis": false,
     "note": "Rats: ketamine activates mTOR and adds prefrontal spine synapses; blocking mTOR blocks the effect",
@@ -1617,7 +1617,7 @@
     "site_year": 2010,
     "citations_at_compile": 2669,
     "doi": "10.1126/science.1190287",
-    "citations_checked": "2026-11-20",
+    "citations_checked": "2026-11-23",
     "updates": [],
     "crossref_year": 2010
   },
@@ -1627,7 +1627,7 @@
     "authors": "Zarate et al.",
     "year": 2006,
     "journal": "Archives of General Psychiatry",
-    "citations": 3184,
+    "citations": 3185,
     "tag": null,
     "meta_analysis": false,
     "note": "18 patients, crossover: improvement within 110 minutes, significant for a week",
@@ -1640,7 +1640,7 @@
     "site_year": 2006,
     "citations_at_compile": 3166,
     "doi": "10.1001/archpsyc.63.8.856",
-    "citations_checked": "2026-11-21",
+    "citations_checked": "2026-11-23",
     "updates": [],
     "crossref_year": 2006
   },
@@ -1926,7 +1926,7 @@
     "authors": "Di Forti et al.",
     "year": 2019,
     "journal": "The Lancet Psychiatry",
-    "citations": 800,
+    "citations": 801,
     "tag": null,
     "meta_analysis": false,
     "note": "Multi-country case-control: daily high-potency cannabis and psychotic disorder (association)",
@@ -1939,7 +1939,7 @@
     "site_year": 2019,
     "citations_at_compile": 798,
     "doi": "10.1016/S2215-0366(19)30048-3",
-    "citations_checked": "2026-11-21",
+    "citations_checked": "2026-11-23",
     "updates": [],
     "crossref_year": 2019
   },
@@ -3000,8 +3000,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 12725,
-    "citations_checked": "2026-11-22"
+    "citations": 12727,
+    "citations_checked": "2026-11-23"
   },
   {
     "group": "learn",
@@ -3063,8 +3063,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 690,
-    "citations_checked": "2026-11-21"
+    "citations": 691,
+    "citations_checked": "2026-11-23"
   },
   {
     "group": "learn",
@@ -3084,8 +3084,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 3230,
-    "citations_checked": "2026-11-21"
+    "citations": 3231,
+    "citations_checked": "2026-11-23"
   },
   {
     "group": "learn",
@@ -3407,8 +3407,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1180,
-    "citations_checked": "2026-11-22"
+    "citations": 1181,
+    "citations_checked": "2026-11-23"
   },
   {
     "group": "learn",
@@ -3995,8 +3995,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 502,
-    "citations_checked": "2026-11-20"
+    "citations": 503,
+    "citations_checked": "2026-11-23"
   },
   {
     "group": "learn",
