@@ -76,6 +76,16 @@
       "year": 2026,
       "queued": "2026-11-20",
       "announced": "2026-11-20"
+    },
+    {
+      "pmid": "43075809",
+      "doi": "10.1111/acer.70463",
+      "group": "psy",
+      "title": "Perineuronal Nets in Alcohol Use Disorder: Integrating Neuroimmune Activation, Maladaptive Plasticity, and Peripheral Biomarkers. A Critical Review.",
+      "authors": "Herradón",
+      "journal": "Alcohol, clinical & experimental research",
+      "year": 2026,
+      "queued": "2026-11-24"
     }
   ],
   "seen": [
@@ -101,6 +111,7 @@
     "43045009",
     "43054774",
     "43056435",
-    "43060901"
+    "43060901",
+    "43075809"
   ]
 }

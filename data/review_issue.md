@@ -1,4 +1,4 @@
-Last run: 2026-11-23
+Last run: 2026-11-24
 
 ## Lookup problems (1)
 The last good data stayed in place.
@@ -27,7 +27,7 @@ found 2026-11-20 · https://doi.org/10.5664/jcsm.26814 · [notice](https://doi.o
 found 2026-11-20 · https://doi.org/10.1038/s41593-019-0467-3 · [notice](https://doi.org/10.1038/s41593-019-0507-z)
 - [ ] Dismiss <!-- alert:ef830ca5f9:dismiss -->
 
-## New papers to review (7)
+## New papers to review (8)
 Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources. Papers not reviewed within 90 days expire.
 
 **Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.**  
@@ -64,4 +64,9 @@ Deng et al., Neuropsychobiology, 2026 · group `bdnf` · https://doi.org/10.1159
 Jawabreh et al., Frontiers in human neuroscience, 2026 · group `bdnf` · https://doi.org/10.3389/fnhum.2026.1969439
 - [ ] Approve <!-- review:43060901:approve -->
 - [ ] Dismiss <!-- review:43060901:dismiss -->
+
+**Perineuronal Nets in Alcohol Use Disorder: Integrating Neuroimmune Activation, Maladaptive Plasticity, and Peripheral Biomarkers. A Critical Review.**  
+Herradón, Alcohol, clinical & experimental research, 2026 · group `psy` · https://doi.org/10.1111/acer.70463
+- [ ] Approve <!-- review:43075809:approve -->
+- [ ] Dismiss <!-- review:43075809:dismiss -->
 
