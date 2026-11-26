@@ -87,6 +87,46 @@
       "year": 2026,
       "queued": "2026-11-24",
       "announced": "2026-11-24"
+    },
+    {
+      "pmid": "43093284",
+      "doi": "10.3390/ph19111699",
+      "group": "psy",
+      "title": "Current Pharmaceutical Strategies for the Long-Term Management of Addiction.",
+      "authors": "Zayed et al.",
+      "journal": "Pharmaceuticals (Basel, Switzerland)",
+      "year": 2026,
+      "queued": "2026-11-26"
+    },
+    {
+      "pmid": "43088300",
+      "doi": "10.3390/brainsci16111184",
+      "group": "psy",
+      "title": "Psychedelics and Psychedelic-Inspired Compounds for Substance Use Disorders: Are We Treating the Disease or Opening a Learning Window?",
+      "authors": "Buciuc et al.",
+      "journal": "Brain sciences",
+      "year": 2026,
+      "queued": "2026-11-26"
+    },
+    {
+      "pmid": "43088282",
+      "doi": "10.3390/brainsci16111166",
+      "group": "psy",
+      "title": "Ketamine-Augmented Hypnotherapy.",
+      "authors": "Revenstorf et al.",
+      "journal": "Brain sciences",
+      "year": 2026,
+      "queued": "2026-11-26"
+    },
+    {
+      "pmid": "43086261",
+      "doi": "10.1038/s41467-026-79300-3",
+      "group": "cp",
+      "title": "Ventral CA1 perineuronal nets modulate morphine-associated contextual memory via vCA1-NAcC synaptic remodeling in male mice.",
+      "authors": "Wang et al.",
+      "journal": "Nature communications",
+      "year": 2026,
+      "queued": "2026-11-26"
     }
   ],
   "seen": [
@@ -113,6 +153,10 @@
     "43054774",
     "43056435",
     "43060901",
-    "43075809"
+    "43075809",
+    "43093284",
+    "43088300",
+    "43088282",
+    "43086261"
   ]
 }

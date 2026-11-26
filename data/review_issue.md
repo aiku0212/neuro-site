@@ -1,4 +1,4 @@
-Last run: 2026-11-25
+Last run: 2026-11-26
 
 ## Lookup problems (1)
 The last good data stayed in place.
@@ -27,7 +27,7 @@ found 2026-11-20 · https://doi.org/10.5664/jcsm.26814 · [notice](https://doi.o
 found 2026-11-20 · https://doi.org/10.1038/s41593-019-0467-3 · [notice](https://doi.org/10.1038/s41593-019-0507-z)
 - [ ] Dismiss <!-- alert:ef830ca5f9:dismiss -->
 
-## New papers to review (8)
+## New papers to review (12)
 Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources. Papers not reviewed within 90 days expire.
 
 **Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.**  
@@ -69,4 +69,24 @@ Jawabreh et al., Frontiers in human neuroscience, 2026 · group `bdnf` · https:
 Herradón, Alcohol, clinical & experimental research, 2026 · group `psy` · https://doi.org/10.1111/acer.70463
 - [ ] Approve <!-- review:43075809:approve -->
 - [ ] Dismiss <!-- review:43075809:dismiss -->
+
+**Current Pharmaceutical Strategies for the Long-Term Management of Addiction.**  
+Zayed et al., Pharmaceuticals (Basel, Switzerland), 2026 · group `psy` · https://doi.org/10.3390/ph19111699
+- [ ] Approve <!-- review:43093284:approve -->
+- [ ] Dismiss <!-- review:43093284:dismiss -->
+
+**Psychedelics and Psychedelic-Inspired Compounds for Substance Use Disorders: Are We Treating the Disease or Opening a Learning Window?**  
+Buciuc et al., Brain sciences, 2026 · group `psy` · https://doi.org/10.3390/brainsci16111184
+- [ ] Approve <!-- review:43088300:approve -->
+- [ ] Dismiss <!-- review:43088300:dismiss -->
+
+**Ketamine-Augmented Hypnotherapy.**  
+Revenstorf et al., Brain sciences, 2026 · group `psy` · https://doi.org/10.3390/brainsci16111166
+- [ ] Approve <!-- review:43088282:approve -->
+- [ ] Dismiss <!-- review:43088282:dismiss -->
+
+**Ventral CA1 perineuronal nets modulate morphine-associated contextual memory via vCA1-NAcC synaptic remodeling in male mice.**  
+Wang et al., Nature communications, 2026 · group `cp` · https://doi.org/10.1038/s41467-026-79300-3
+- [ ] Approve <!-- review:43086261:approve -->
+- [ ] Dismiss <!-- review:43086261:dismiss -->
 
