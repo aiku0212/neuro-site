@@ -96,7 +96,8 @@
       "authors": "Zayed et al.",
       "journal": "Pharmaceuticals (Basel, Switzerland)",
       "year": 2026,
-      "queued": "2026-11-26"
+      "queued": "2026-11-26",
+      "announced": "2026-11-26"
     },
     {
       "pmid": "43088300",
@@ -106,7 +107,8 @@
       "authors": "Buciuc et al.",
       "journal": "Brain sciences",
       "year": 2026,
-      "queued": "2026-11-26"
+      "queued": "2026-11-26",
+      "announced": "2026-11-26"
     },
     {
       "pmid": "43088282",
@@ -116,7 +118,8 @@
       "authors": "Revenstorf et al.",
       "journal": "Brain sciences",
       "year": 2026,
-      "queued": "2026-11-26"
+      "queued": "2026-11-26",
+      "announced": "2026-11-26"
     },
     {
       "pmid": "43086261",
@@ -126,7 +129,8 @@
       "authors": "Wang et al.",
       "journal": "Nature communications",
       "year": 2026,
-      "queued": "2026-11-26"
+      "queued": "2026-11-26",
+      "announced": "2026-11-26"
     }
   ],
   "seen": [
