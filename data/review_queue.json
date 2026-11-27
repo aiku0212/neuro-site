@@ -131,6 +131,36 @@
       "year": 2026,
       "queued": "2026-11-26",
       "announced": "2026-11-26"
+    },
+    {
+      "pmid": "43100090",
+      "doi": "10.5114/fn.2026.165797",
+      "group": "bdnf",
+      "title": "Docosahexaenoic acid and Alzheimer's disease: a systematic review.",
+      "authors": "Rahmat et al.",
+      "journal": "Folia neuropathologica",
+      "year": 2026,
+      "queued": "2026-11-27"
+    },
+    {
+      "pmid": "43098249",
+      "doi": "10.1016/j.pnpbp.2026.112026",
+      "group": "psy",
+      "title": "Efficacy, location and kinetics at the 5-HT₂A receptor: A narrative review and testable framework for psychoplastogen design.",
+      "authors": "Biswal et al.",
+      "journal": "Progress in neuro-psychopharmacology & biological psychiatry",
+      "year": 2026,
+      "queued": "2026-11-27"
+    },
+    {
+      "pmid": "43101475",
+      "doi": "10.3389/fncir.2026.1832894",
+      "group": "gen",
+      "title": "ccPAS as a platform for biomarker-informed precision motor neurorehabilitation: a mini review.",
+      "authors": "Saracini et al.",
+      "journal": "Frontiers in neural circuits",
+      "year": 2026,
+      "queued": "2026-11-27"
     }
   ],
   "seen": [
@@ -161,6 +191,9 @@
     "43093284",
     "43088300",
     "43088282",
-    "43086261"
+    "43086261",
+    "43100090",
+    "43098249",
+    "43101475"
   ]
 }

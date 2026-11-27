@@ -1,4 +1,4 @@
-Last run: 2026-11-26
+Last run: 2026-11-27
 
 ## Lookup problems (1)
 The last good data stayed in place.
@@ -27,7 +27,7 @@ found 2026-11-20 · https://doi.org/10.5664/jcsm.26814 · [notice](https://doi.o
 found 2026-11-20 · https://doi.org/10.1038/s41593-019-0467-3 · [notice](https://doi.org/10.1038/s41593-019-0507-z)
 - [ ] Dismiss <!-- alert:ef830ca5f9:dismiss -->
 
-## New papers to review (12)
+## New papers to review (15)
 Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources. Papers not reviewed within 90 days expire.
 
 **Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.**  
@@ -89,4 +89,19 @@ Revenstorf et al., Brain sciences, 2026 · group `psy` · https://doi.org/10.339
 Wang et al., Nature communications, 2026 · group `cp` · https://doi.org/10.1038/s41467-026-79300-3
 - [ ] Approve <!-- review:43086261:approve -->
 - [ ] Dismiss <!-- review:43086261:dismiss -->
+
+**Docosahexaenoic acid and Alzheimer's disease: a systematic review.**  
+Rahmat et al., Folia neuropathologica, 2026 · group `bdnf` · https://doi.org/10.5114/fn.2026.165797
+- [ ] Approve <!-- review:43100090:approve -->
+- [ ] Dismiss <!-- review:43100090:dismiss -->
+
+**Efficacy, location and kinetics at the 5-HT₂A receptor: A narrative review and testable framework for psychoplastogen design.**  
+Biswal et al., Progress in neuro-psychopharmacology & biological psychiatry, 2026 · group `psy` · https://doi.org/10.1016/j.pnpbp.2026.112026
+- [ ] Approve <!-- review:43098249:approve -->
+- [ ] Dismiss <!-- review:43098249:dismiss -->
+
+**ccPAS as a platform for biomarker-informed precision motor neurorehabilitation: a mini review.**  
+Saracini et al., Frontiers in neural circuits, 2026 · group `gen` · https://doi.org/10.3389/fncir.2026.1832894
+- [ ] Approve <!-- review:43101475:approve -->
+- [ ] Dismiss <!-- review:43101475:dismiss -->
 
