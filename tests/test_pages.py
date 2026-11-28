@@ -260,7 +260,8 @@ class PublicPages(unittest.TestCase):
                 self.assertRegex(f, r'alt="[^"]{40,}"')
                 self.assertRegex(f, r'Image: [^<]')
                 self.assertRegex(f, r'creativecommons\.org|Public domain')
-                self.assertRegex(f, r'<a href="https://[^"]+">Source</a>')
+                self.assertRegex(f, r'<a href="https://[^"]+" aria-label="Source: [^"]+">(Source|File on Wikimedia Commons)</a>')
+                self.assertRegex(f, r'(Resized and converted|Converted) to WebP for this page\.')
         # The two rejected Brainbow files are not used, and the page gives no recipes.
         self.assertNotIn("Brainbow_(", page)
         self.assertIn("Concepts, not protocols.", page)
