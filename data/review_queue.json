@@ -164,6 +164,26 @@
       "year": 2026,
       "queued": "2026-11-27",
       "announced": "2026-11-27"
+    },
+    {
+      "pmid": "43104797",
+      "doi": "10.1111/joa.70281",
+      "group": "psy",
+      "title": "Subcortical zone: A transient structure with lasting impact on evolution, circuit assembly and cognitive functions.",
+      "authors": "Molnár et al.",
+      "journal": "Journal of anatomy",
+      "year": 2026,
+      "queued": "2026-11-28"
+    },
+    {
+      "pmid": "43104571",
+      "doi": "10.1186/s13293-026-00961-2",
+      "group": "cp",
+      "title": "Sex and age impact the developmental trajectory of perineuronal net number in the rat dorsal hippocampus.",
+      "authors": "Hamilton et al.",
+      "journal": "Biology of sex differences",
+      "year": 2026,
+      "queued": "2026-11-28"
     }
   ],
   "seen": [
@@ -197,6 +217,8 @@
     "43086261",
     "43100090",
     "43098249",
-    "43101475"
+    "43101475",
+    "43104797",
+    "43104571"
   ]
 }

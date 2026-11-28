@@ -1,4 +1,4 @@
-Last run: 2026-11-27
+Last run: 2026-11-28
 
 ## Lookup problems (1)
 The last good data stayed in place.
@@ -27,7 +27,7 @@ found 2026-11-20 · https://doi.org/10.5664/jcsm.26814 · [notice](https://doi.o
 found 2026-11-20 · https://doi.org/10.1038/s41593-019-0467-3 · [notice](https://doi.org/10.1038/s41593-019-0507-z)
 - [ ] Dismiss <!-- alert:ef830ca5f9:dismiss -->
 
-## New papers to review (15)
+## New papers to review (17)
 Tick one box per paper. The next daily run applies it. Approving puts a paper on the reading list and asks for a page check; it does not add it to Sources. Papers not reviewed within 90 days expire.
 
 **Task-evoked flexibility of intrinsic neural timescales is hierarchically organized, behaviorally relevant, and refined across two developmental stages.**  
@@ -104,4 +104,14 @@ Biswal et al., Progress in neuro-psychopharmacology & biological psychiatry, 202
 Saracini et al., Frontiers in neural circuits, 2026 · group `gen` · https://doi.org/10.3389/fncir.2026.1832894
 - [ ] Approve <!-- review:43101475:approve -->
 - [ ] Dismiss <!-- review:43101475:dismiss -->
+
+**Subcortical zone: A transient structure with lasting impact on evolution, circuit assembly and cognitive functions.**  
+Molnár et al., Journal of anatomy, 2026 · group `psy` · https://doi.org/10.1111/joa.70281
+- [ ] Approve <!-- review:43104797:approve -->
+- [ ] Dismiss <!-- review:43104797:dismiss -->
+
+**Sex and age impact the developmental trajectory of perineuronal net number in the rat dorsal hippocampus.**  
+Hamilton et al., Biology of sex differences, 2026 · group `cp` · https://doi.org/10.1186/s13293-026-00961-2
+- [ ] Approve <!-- review:43104571:approve -->
+- [ ] Dismiss <!-- review:43104571:dismiss -->
 

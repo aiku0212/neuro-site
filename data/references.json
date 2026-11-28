@@ -302,7 +302,7 @@
     "authors": "Siegel et al.",
     "year": 2024,
     "journal": "Nature",
-    "citations": 311,
+    "citations": 312,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -320,7 +320,7 @@
     "site_title": "Psilocybin desynchronizes the human brain",
     "site_year": 2024,
     "citations_at_compile": 213,
-    "citations_checked": "2026-11-25",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2024
   },
@@ -543,7 +543,7 @@
     "authors": "Lensjø et al.",
     "year": 2017,
     "journal": "Journal of Neuroscience",
-    "citations": 292,
+    "citations": 293,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
@@ -561,7 +561,7 @@
     "site_title": "Removal of perineuronal nets unlocks juvenile plasticity through decreased inhibition and increased gamma activity",
     "site_year": 2017,
     "citations_at_compile": 257,
-    "citations_checked": "2026-11-26",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2016
   },
@@ -1178,7 +1178,7 @@
     "authors": "Jannati et al.",
     "year": 2022,
     "journal": "Neuropsychopharmacology",
-    "citations": 296,
+    "citations": 297,
     "meta_analysis": false,
     "verification": {
       "status": "confirmed",
@@ -1191,7 +1191,7 @@
     "site_title": "Assessing the mechanisms of brain plasticity by transcranial magnetic stimulation",
     "site_year": 2022,
     "citations_at_compile": 233,
-    "citations_checked": "2026-11-27",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2022
   },
@@ -1201,7 +1201,7 @@
     "authors": "Zrenner et al.",
     "year": 2017,
     "journal": "Brain Stimulation",
-    "citations": 513,
+    "citations": 514,
     "tag": "key",
     "meta_analysis": false,
     "verification": {
@@ -1220,7 +1220,7 @@
     "site_title": "Real-time EEG-defined excitability states determine efficacy of TMS-induced plasticity in human motor cortex",
     "site_year": 2017,
     "citations_at_compile": 411,
-    "citations_checked": "2026-11-24",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2018
   },
@@ -1292,8 +1292,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 18536,
-    "citations_checked": "2026-11-27"
+    "citations": 18539,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "found",
@@ -1313,8 +1313,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 440,
-    "citations_checked": "2026-11-19"
+    "citations": 441,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "found",
@@ -1334,8 +1334,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 949,
-    "citations_checked": "2026-11-24"
+    "citations": 950,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "found",
@@ -1360,8 +1360,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 1798,
-    "citations_checked": "2026-11-25"
+    "citations": 1799,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "found",
@@ -1485,7 +1485,7 @@
     "authors": "Tsao et al.",
     "year": 2018,
     "journal": "Nature",
-    "citations": 486,
+    "citations": 487,
     "tag": null,
     "meta_analysis": false,
     "note": "Freely foraging rats: lateral entorhinal population activity encodes time from seconds to hours",
@@ -1499,7 +1499,7 @@
     "citations_at_compile": 485,
     "doi": "10.1038/s41586-018-0459-6",
     "pmid": "30158699",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2018
   },
@@ -1581,7 +1581,7 @@
     "authors": "Homayoun & Moghaddam",
     "year": 2007,
     "journal": "The Journal of Neuroscience",
-    "citations": 1159,
+    "citations": 1160,
     "tag": null,
     "meta_analysis": false,
     "note": "Awake rats: NMDA block lowers putative interneuron firing, then raises pyramidal firing",
@@ -1594,7 +1594,7 @@
     "site_year": 2007,
     "citations_at_compile": 1155,
     "doi": "10.1523/JNEUROSCI.2213-07.2007",
-    "citations_checked": "2026-11-25",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2007
   },
@@ -1604,7 +1604,7 @@
     "authors": "Li et al.",
     "year": 2010,
     "journal": "Science",
-    "citations": 2681,
+    "citations": 2683,
     "tag": null,
     "meta_analysis": false,
     "note": "Rats: ketamine activates mTOR and adds prefrontal spine synapses; blocking mTOR blocks the effect",
@@ -1617,7 +1617,7 @@
     "site_year": 2010,
     "citations_at_compile": 2669,
     "doi": "10.1126/science.1190287",
-    "citations_checked": "2026-11-26",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2010
   },
@@ -1834,7 +1834,7 @@
     "authors": "Wilson & Nicoll",
     "year": 2001,
     "journal": "Nature",
-    "citations": 1372,
+    "citations": 1373,
     "tag": null,
     "meta_analysis": false,
     "note": "Rat hippocampus: endocannabinoids mediate retrograde suppression of inhibition via CB1",
@@ -1847,7 +1847,7 @@
     "site_year": 2001,
     "citations_at_compile": 1371,
     "doi": "10.1038/35069076",
-    "citations_checked": "2026-11-20",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2001
   },
@@ -1995,7 +1995,7 @@
     "authors": "Seppala et al.",
     "year": 2018,
     "journal": "Journal of the American Medical Directors Association",
-    "citations": 384,
+    "citations": 385,
     "tag": null,
     "meta_analysis": true,
     "note": "Meta-analysis: benzodiazepines and falls in older adults",
@@ -2008,7 +2008,7 @@
     "site_year": 2018,
     "citations_at_compile": 381,
     "doi": "10.1016/j.jamda.2017.12.098",
-    "citations_checked": "2026-11-25",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2018
   },
@@ -2156,7 +2156,7 @@
     "authors": "Azevedo et al.",
     "year": 2009,
     "journal": "Journal of Comparative Neurology",
-    "citations": 2051,
+    "citations": 2052,
     "tag": null,
     "meta_analysis": false,
     "note": "Adult male human brains: about 86 billion neurons, 19% of them in the cerebral cortex",
@@ -2170,7 +2170,7 @@
     "citations_at_compile": 2051,
     "doi": "10.1002/cne.21974",
     "pmid": "19226510",
-    "citations_checked": "2026-11-19",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2009
   },
@@ -2180,7 +2180,7 @@
     "authors": "Megías et al.",
     "year": 2001,
     "journal": "Neuroscience",
-    "citations": 869,
+    "citations": 870,
     "tag": null,
     "meta_analysis": false,
     "note": "Rat hippocampal CA1: one pyramidal cell receives about 30,000 excitatory and 1,700 inhibitory inputs",
@@ -2194,7 +2194,7 @@
     "citations_at_compile": 868,
     "doi": "10.1016/s0306-4522(00)00496-6",
     "pmid": "11226691",
-    "citations_checked": "2026-11-25",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2001
   },
@@ -2227,7 +2227,7 @@
     "authors": "Matsuzaki et al.",
     "year": 2001,
     "journal": "Nature Neuroscience",
-    "citations": 1463,
+    "citations": 1465,
     "tag": null,
     "meta_analysis": false,
     "note": "Rat hippocampal slices: functional AMPA receptors per spine correlate with spine-head volume; few in thin spines",
@@ -2240,7 +2240,7 @@
     "site_year": 2001,
     "citations_at_compile": 1461,
     "doi": "10.1038/nn736",
-    "citations_checked": "2026-11-26",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2001
   },
@@ -2250,7 +2250,7 @@
     "authors": "Matsuzaki et al.",
     "year": 2004,
     "journal": "Nature",
-    "citations": 2263,
+    "citations": 2265,
     "tag": null,
     "meta_analysis": false,
     "note": "Rat hippocampal slice cultures: stimulating single spines enlarges them, persistently in small spines, with stronger AMPA currents",
@@ -2263,7 +2263,7 @@
     "site_year": 2004,
     "citations_at_compile": 2259,
     "doi": "10.1038/nature02617",
-    "citations_checked": "2026-11-26",
+    "citations_checked": "2026-11-28",
     "updates": [],
     "crossref_year": 2004
   },
@@ -2336,8 +2336,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 3417,
-    "citations_checked": "2026-11-25"
+    "citations": 3419,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "found",
@@ -2358,8 +2358,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1829,
-    "citations_checked": "2026-11-24"
+    "citations": 1830,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "found",
@@ -2698,8 +2698,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 1593,
-    "citations_checked": "2026-11-27"
+    "citations": 1594,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -2720,8 +2720,8 @@
       ],
       "checked": "2026-11-19"
     },
-    "citations": 398,
-    "citations_checked": "2026-11-27"
+    "citations": 399,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -2916,8 +2916,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2279,
-    "citations_checked": "2026-11-26"
+    "citations": 2281,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -2979,8 +2979,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2655,
-    "citations_checked": "2026-11-27"
+    "citations": 2656,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3000,8 +3000,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 12768,
-    "citations_checked": "2026-11-27"
+    "citations": 12773,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3021,8 +3021,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 4430,
-    "citations_checked": "2026-11-27"
+    "citations": 4432,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3063,8 +3063,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 692,
-    "citations_checked": "2026-11-26"
+    "citations": 691,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3084,8 +3084,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 3236,
-    "citations_checked": "2026-11-27"
+    "citations": 3237,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3105,8 +3105,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 4381,
-    "citations_checked": "2026-11-27"
+    "citations": 4383,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3234,8 +3234,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 453,
-    "citations_checked": "2026-11-26"
+    "citations": 454,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3297,8 +3297,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2931,
-    "citations_checked": "2026-11-27"
+    "citations": 2932,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3381,8 +3381,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 2660,
-    "citations_checked": "2026-11-27"
+    "citations": 2661,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3407,8 +3407,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1187,
-    "citations_checked": "2026-11-27"
+    "citations": 1189,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3428,8 +3428,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 919,
-    "citations_checked": "2026-11-25"
+    "citations": 921,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3449,8 +3449,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1547,
-    "citations_checked": "2026-11-27"
+    "citations": 1548,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3512,8 +3512,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 35,
-    "citations_checked": "2026-11-25"
+    "citations": 36,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3533,8 +3533,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1,
-    "citations_checked": "2026-11-20"
+    "citations": 2,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3596,8 +3596,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 936,
-    "citations_checked": "2026-11-27"
+    "citations": 938,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3617,8 +3617,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 87,
-    "citations_checked": "2026-11-20"
+    "citations": 88,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3659,8 +3659,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 9,
-    "citations_checked": "2026-11-20"
+    "citations": 10,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -3743,8 +3743,8 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 15,
-    "citations_checked": "2026-11-20"
+    "citations": 16,
+    "citations_checked": "2026-11-28"
   },
   {
     "group": "learn",
@@ -4100,7 +4100,7 @@
       ],
       "checked": "2026-11-20"
     },
-    "citations": 1529,
-    "citations_checked": "2026-11-27"
+    "citations": 1531,
+    "citations_checked": "2026-11-28"
   }
 ]
