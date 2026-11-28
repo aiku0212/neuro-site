@@ -1,0 +1,513 @@
+<!doctype html>
+<html lang="en">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Lab Methods · Neuroscope</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Figtree:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap">
+<meta name="theme-color" content="#f6f7f9">
+<meta name="description" content="How brain tissue is fixed, sliced, stained and imaged, with real micrographs: Nissl and Golgi stains, antibody staining, and what each method cannot show.">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Neuroscope">
+<meta property="og:title" content="Lab Methods · Neuroscope">
+<meta property="og:description" content="How brain tissue is fixed, sliced, stained and imaged, with real micrographs: Nissl and Golgi stains, antibody staining, and what each method cannot show.">
+<meta property="og:url" content="https://aiku0212.github.io/neuro-site/methods.html">
+<meta property="og:image" content="https://aiku0212.github.io/neuro-site/assets/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Neuroscope: interactive models of the brain, neurons and synapses, and an evidence review of neuroplasticity.">
+<meta name="twitter:card" content="summary_large_image">
+
+<style>
+  :root{
+    --ground:#f6f7f9; --ground-2:#ffffff; --ground-3:#eceff3;
+    --ink:#1f2a35; --ink-2:#3f4c59; --muted:#5f6d7b;
+    --violet:#5a47a0; --amber:#b24e33; --rule:#dde2e8;
+    --shadow:0 18px 40px -22px rgba(31,42,53,.22);
+  }
+  *{box-sizing:border-box}
+  body{margin:0; background:var(--ground)}
+  html{scroll-padding-top:72px}
+  @media (max-width:640px){html{scroll-padding-top:0}}
+  .wrap{background:var(--ground); color:var(--ink); min-height:100vh;
+    font:400 16px/1.65 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; overflow-x:clip}
+  .bar{position:sticky; top:0}
+  @media (max-width:640px){.bar{position:static}}
+  main{max-width:1080px; margin:0 auto; padding:0 16px 90px}
+  .mast{padding:52px 0 26px; border-bottom:1px solid var(--rule); margin-bottom:24px}
+  .eyebrow{font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--amber); margin:0 0 14px}
+  h1{font-size:clamp(30px,5.2vw,52px); line-height:1.08; margin:0 0 16px; font-weight:400}
+  .lede{font-size:clamp(16px,2vw,18px); color:var(--ink-2); max-width:62ch; margin:0}
+  .mast .fig-note{margin-top:14px; max-width:66ch}
+  h2{font-size:28px; font-weight:400; margin:60px 0 8px}
+  h3{font-size:13px; letter-spacing:.12em; text-transform:uppercase; color:var(--amber); margin:26px 0 10px; font-weight:600}
+  .card h3{margin-top:0}
+  p{max-width:66ch; color:var(--ink-2)}
+  .toc{display:flex; flex-wrap:wrap; gap:8px}
+  .toc a{font-size:13.5px; text-decoration:none; padding:7px 12px; border:1px solid var(--rule); border-radius:99px; background:var(--ground-2); color:var(--ink)}
+  .toc a:hover{border-color:#b9c3ce}
+  .cols{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,290px),1fr)); gap:16px; margin-top:16px}
+  .card{background:var(--ground-2); border:1px solid var(--rule); padding:16px 18px}
+  .card p{font-size:14.5px; margin:0}
+  .card p + p{margin-top:10px}
+  .pair{display:grid; grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr)); gap:16px; align-items:start}
+  .shot{margin:20px 0 0; background:var(--ground-2); border:1px solid var(--rule); border-radius:14px; padding:12px; box-shadow:var(--shadow)}
+  .shot.narrow{max-width:560px}
+  .shot.wide{max-width:900px}
+  .shot img{display:block; width:100%; height:auto; border-radius:8px; background:#0f141a}
+  .shot figcaption{font-size:13.5px; color:var(--ink-2); margin-top:10px; line-height:1.5}
+  .shot .credit{display:block; font-size:12px; color:var(--muted); margin-top:5px}
+  .figure{max-width:760px}
+  ul.plain{padding-left:20px; max-width:70ch}
+  ul.plain li{color:var(--ink-2); margin:0 0 10px}
+  ul.plain b{color:var(--ink)}
+  sup{font-size:.72em; line-height:0}
+  sup a{text-decoration:none}
+  .caveat{background:#fbf1ec; border:1px solid #efd3c6; border-left:3px solid var(--amber); padding:14px 16px; margin-top:28px; font-size:14.5px; color:var(--ink-2)}
+  .refs{padding-left:20px; max-width:80ch}
+  .refs li{font-size:14px; color:var(--ink-2); margin:0 0 8px; overflow-wrap:anywhere}
+  footer{border-top:1px solid var(--rule); margin-top:60px; padding:22px 0;
+    font-size:12px; color:var(--muted); display:flex; gap:18px; flex-wrap:wrap}
+  footer a{color:var(--ink-2)}
+</style>
+<link rel="stylesheet" href="assets/atlas.css">
+
+<div class="wrap">
+<div class="bar">
+  <span class="brand">Neuro<b>scope</b></span>
+  <nav class="tabs" aria-label="Site">
+    <a class="tab" href="app.html">Explore</a>
+    <a class="tab" href="app.html#analyze">Analyze</a>
+    <a class="tab" href="spike.html">Spike</a>
+    <a class="tab" href="synapse.html">Spines</a>
+    <a class="tab" href="pharma.html">Pharmacology</a>
+    <a class="tab" href="index.html">Evidence</a>
+    <a class="tab" href="comparative.html">Comparative</a>
+    <a class="tab" href="timecells.html">Time</a>
+    <a class="tab" href="learn.html" aria-current="true">Learn</a>
+    <a class="tab" href="references.html">Sources</a>
+    <a class="tab" href="about.html">About</a>
+  </nav>
+</div>
+<script src="assets/nav.js" defer></script>
+
+<main>
+  <div class="mast">
+    <p class="eyebrow mono">Research methods · Histology</p>
+    <h1 class="serif">From brain tissue to <em>a picture you can read</em></h1>
+    <p class="lede">Most pictures of neurons in a textbook started as a slice of tissue on a glass slide. This page
+      follows that slice: how tissue is preserved and cut, how two classic stains and antibody staining make cells
+      visible, and how the result is imaged. For each method it says what the method shows, how it works in
+      principle, and what it cannot show.</p>
+    <p class="fig-note"><span class="fig-kind" data-kind="measured">Real images</span>
+      The photographs and micrographs come from openly licensed sources, each credited under its picture. The two
+      diagrams are drawings and are labelled as such.</p>
+  </div>
+
+  <nav class="toc" aria-label="On this page">
+    <a href="#fix">1. Fixing and slicing</a>
+    <a href="#nissl">2. Nissl stain</a>
+    <a href="#golgi">3. Golgi stain</a>
+    <a href="#ihc">4. Antibody staining</a>
+    <a href="#image">5. Mounting and imaging</a>
+  </nav>
+
+  <h2 class="serif" id="fix">1. Fixing and slicing</h2>
+  <p>Brain tissue starts to change as soon as its blood supply stops. So the first step is to fix it: a chemical
+    step that hardens the tissue, stops it from breaking itself down, and holds its molecules in
+    place.<sup><a href="#r-1">1</a>,<a href="#r-2">2</a></sup> Aldehyde fixatives such as formaldehyde work by cross-linking.
+    The small molecule reacts with proteins and builds tiny chemical bridges between them, and more bridges form the
+    longer the tissue stays in fixative.<sup><a href="#r-1">1</a></sup></p>
+  <p>Fixative can reach the brain in two ways. In immersion, the tissue sits in fixative that soaks in from the
+    outside, so deep regions are reached later than the surface. In perfusion, fixative is sent through the blood
+    vessels and reaches the whole brain quickly. Perfusion is the standard in animal research. Donated human brains
+    are usually fixed by immersion.<sup><a href="#r-2">2</a>,<a href="#r-3">3</a></sup></p>
+
+  <div class="cols">
+    <div class="card"><h3>Vibratome</h3>
+      <p>Cuts with a vibrating blade. The tissue does not need to be frozen or embedded in wax, so it can cut fixed
+        brains and also living brain slices, often around 300 micrometres thick, that are kept alive for electrical
+        recordings from neurons.<sup><a href="#r-4">4</a>,<a href="#r-5">5</a>,<a href="#r-6">6</a></sup></p></div>
+    <div class="card"><h3>Cryostat</h3>
+      <p>A microtome inside a freezing chamber, for frozen tissue. Fixed brains cut on a cryostat or a vibratome are
+        commonly cut 20 to 50 micrometres thick and stained while floating free in
+        liquid.<sup><a href="#r-7">7</a>,<a href="#r-8">8</a></sup></p></div>
+    <div class="card"><h3>Rotary microtome</h3>
+      <p>For thin sections, tissue is embedded in paraffin wax and cut at roughly 5 to 10 micrometres. Paraffin
+        preserves the shape of cells and tissue well, and the blocks keep for
+        decades.<sup><a href="#r-7">7</a>,<a href="#r-9">9</a></sup></p></div>
+  </div>
+
+  <div class="pair">
+  <figure class="shot">
+    <a href="assets/img/methods/cryostat.webp"><img src="assets/img/methods/cryostat.webp" width="1400" height="1050" loading="lazy" alt="A cryostat: a cabinet-sized instrument with a glass window over a cold chamber that holds the cutting mechanism."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Real photo</span> A cryostat. The cutting mechanism sits inside the cold chamber under the window.
+      <span class="credit">Image: Karbohut. <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. <a href="https://commons.wikimedia.org/wiki/File:Kryostat_f%C3%BCr_histologische_Schnitte.jpg">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+  <figure class="shot">
+    <a href="assets/img/methods/microtome.webp"><img src="assets/img/methods/microtome.webp" width="576" height="436" loading="lazy" alt="A rotary microtome cutting a wax block. A hand holds a thin ribbon of sections coming off the blade."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Real photo</span> A rotary microtome cutting a wax block. The sections come off the blade as a ribbon. The specimen is not identified as brain.
+      <span class="credit">Image: Yvan Lindekens. <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>. <a href="https://commons.wikimedia.org/wiki/File:Rotary_microtome_in_action.jpg">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+  </div>
+
+  <figure class="figure" aria-labelledby="thick-h">
+    <div class="fig-head"><span class="fig-kind" data-kind="drawing">Drawing</span><h4 id="thick-h">How thick is a section?</h4></div>
+    <svg viewBox="0 0 720 190" role="img" aria-label="Three bars on a scale from 1 to 1000 micrometres. Paraffin sections: 5 to 10 micrometres. Free-floating sections: 20 to 50 micrometres. Living slices: about 300 micrometres.">
+      <g font-size="12" fill="#5f6d7b">
+        <line x1="170" y1="150" x2="700" y2="150" stroke="#dde2e8"/>
+        <g text-anchor="middle"><text x="170" y="170">1</text><text x="346.7" y="170">10</text><text x="523.3" y="170">100</text><text x="700" y="170">1000 µm</text></g>
+        <g stroke="#eceff3"><line x1="346.7" y1="20" x2="346.7" y2="150"/><line x1="523.3" y1="20" x2="523.3" y2="150"/></g>
+      </g>
+      <g font-size="13" fill="#1f2a35">
+        <text x="160" y="47" text-anchor="end">Paraffin sections</text><rect x="293.5" y="34" width="53.2" height="18" rx="4" fill="#6a54a6"/><text x="356" y="47" fill="#5f6d7b">5–10 µm</text>
+        <text x="160" y="87" text-anchor="end">Free-floating sections</text><rect x="399.9" y="74" width="70.3" height="18" rx="4" fill="#2d6a8f"/><text x="480" y="87" fill="#5f6d7b">20–50 µm</text>
+        <text x="160" y="127" text-anchor="end">Living slices</text><rect x="603.6" y="114" width="8" height="18" rx="4" fill="#c0573a"/><text x="620" y="127" fill="#5f6d7b">about 300 µm</text>
+      </g>
+    </svg>
+    <figcaption>The scale is logarithmic: each step is ten times thicker. These are the ranges the sources above give,
+      not fixed rules.</figcaption>
+  </figure>
+
+  <p>Thickness is a trade-off. Thicker sections keep more of each neuron's dendrites and axons together for 3D
+    reconstruction, but they are harder for antibodies and light to get through, so thinner sections are easier to
+    stain and image evenly.<sup><a href="#r-8">8</a>,<a href="#r-10">10</a></sup></p>
+
+  <h3>What goes wrong</h3>
+  <ul class="plain">
+    <li><b>Freezing artifact.</b> Ice crystals that grow during slow freezing push tissue aside and leave holes. To
+      limit this, a fixed brain is usually soaked in a cryoprotectant, classically a sugar solution, before it is
+      frozen.<sup><a href="#r-11">11</a>,<a href="#r-12">12</a></sup></li>
+    <li><b>Shrinkage.</b> Processing can distort tissue. Too much time in alcohol shrinks it, and sections can shrink
+      or be squeezed in thickness, strongly so in vibratome sections in one comparison. Cell counts and sizes measured
+      on slides need to be checked and corrected.<sup><a href="#r-13">13</a>,<a href="#r-14">14</a>,<a href="#r-12">12</a></sup></li>
+    <li><b>Cutting marks.</b> Chatter is a pattern of alternating thick and thin bands parallel to the blade, caused
+      by vibration. A nick in the blade scores or tears the section. Thin sections that stretch unevenly end up with
+      wrinkles and folds.<sup><a href="#r-12">12</a></sup></li>
+  </ul>
+
+  <h2 class="serif" id="nissl">2. Nissl stain: every cell body</h2>
+  <p>The Nissl stain is named after Franz Nissl (1860–1919), a German psychiatrist and neuropathologist who developed
+    it in 1884 while he was still a medical student.<sup><a href="#r-15">15</a></sup> It uses basic dyes such as
+    cresyl violet, thionin or toluidine blue. These dyes colour the cell nucleus and clumps in the neuron's cytoplasm
+    called Nissl bodies. Electron microscopy later showed that Nissl bodies are stacks of rough endoplasmic reticulum
+    studded with ribosomes, the cell's protein-making machinery. The staining disappears if the RNA is first destroyed
+    with an enzyme, which shows that the dye marks RNA-rich material.<sup><a href="#r-16">16</a>,<a href="#r-17">17</a></sup></p>
+  <figure class="shot wide">
+    <a href="assets/img/methods/nissl-v1.webp"><img src="assets/img/methods/nissl-v1.webp" width="1400" height="1050" loading="lazy" alt="Micrograph of cortex stained so that every cell body is a dark dot. The dots form bands of different density, labelled as layers 1, 2, 3, 4A, 4B, 4C, 5 and 6."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Real micrograph</span> Nissl-stained primary visual cortex of a macaque, with the layers numbered. Each dot is a cell body. The species, stain and scale are as described by the person who uploaded the image.
+      <span class="credit">Image: Tulemo. <a href="https://creativecommons.org/publicdomain/zero/1.0/">CC0</a>. <a href="https://commons.wikimedia.org/wiki/File:Visual_(striate)_cortex.jpg">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+  <div class="cols">
+    <div class="card"><h3>What it shows</h3>
+      <p>A Nissl stain labels all the cells in a section, not only neurons. Neurons show a stained nucleus with a rim
+        of stained cytoplasm around it. Glial cells often show little more than their
+        nucleus.<sup><a href="#r-16">16</a></sup></p>
+      <p>Because it shows every cell body, it is the standard way to see the layers of the cerebral cortex and its
+        cytoarchitecture: the pattern of cell sizes, shapes and packing density from place to
+        place.<sup><a href="#r-18">18</a>,<a href="#r-16">16</a></sup></p></div>
+    <div class="card"><h3>What it cannot show</h3>
+      <p>It does not fill a neuron's branches. Nissl substance is absent from axons, and at most the first stretch of
+        the dendrites is visible. So the stain tells you where cell bodies are and how tightly they are packed, but
+        very little about a neuron's full shape or its
+        connections.<sup><a href="#r-15">15</a>,<a href="#r-19">19</a>,<a href="#r-20">20</a></sup></p>
+      <p>Very small neurons can be hard to tell apart from glial cells.<sup><a href="#r-21">21</a></sup></p></div>
+    <div class="card"><h3>Brodmann's map</h3>
+      <p>In 1909 Korbinian Brodmann published a map that divides the human cerebral cortex into 43 areas, based on
+        what he saw in cell-body-stained sections. A century later, many neuroscientists still use his numbered areas
+        to say where brain-imaging results are located.<sup><a href="#r-22">22</a>,<a href="#r-23">23</a></sup></p>
+      <p>Modern mapping work argues that the cortex is more varied than his map suggests, so his areas are best
+        treated as a starting point.<sup><a href="#r-24">24</a></sup></p></div>
+  </div>
+
+  <h2 class="serif" id="golgi">3. Golgi stain: a few whole neurons</h2>
+  <p>The Golgi stain, first called the "black reaction", was invented by the Italian physician Camillo Golgi in 1873.
+    It was the first technique to show neurons whole, with all their
+    branches.<sup><a href="#r-25">25</a>,<a href="#r-26">26</a></sup> In principle the method is simple. The tissue
+    is treated with a chromium salt and with a silver salt, and a dark deposit of silver chromate forms inside some
+    cells and fills them, so they look black under the microscope.<sup><a href="#r-27">27</a>,<a href="#r-28">28</a></sup></p>
+  <div class="pair">
+  <figure class="shot">
+    <a href="assets/img/methods/golgi-cells.webp"><img src="assets/img/methods/golgi-cells.webp" width="833" height="414" loading="lazy" alt="Two micrographs of single neurons stained solid black against a pale background, with branching dendrites. One is a pyramidal cell and one is a spiny stellate cell."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Real micrograph</span> Golgi-stained neurons in the somatosensory cortex of a squirrel monkey: (a) a pyramidal cell and (b) a spiny stellate cell.
+      <span class="credit">Image: Churchill JD and others (2004), <em>BMC Neuroscience</em> 5:43, Figure 1. <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>. <a href="https://commons.wikimedia.org/wiki/File:Pyramsdal-and-Spiny-stellate-cell.JPG">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+  <figure class="shot">
+    <a href="assets/img/methods/golgi-spines.webp"><img src="assets/img/methods/golgi-spines.webp" width="1400" height="716" loading="lazy" alt="Top: a diagram of spine shapes named filopodia, long thin, thin, stubby, mushroom and branched. Bottom: a micrograph of a stretch of dendrite, black on white, covered in small spines marked by arrowheads."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Micrograph and diagram</span> Bottom panel: a Golgi-stained dendrite from mouse visual cortex, with its spines marked. Top panel: the spine classes this research group used, with their own size cut-offs.
+      <span class="credit">Image: Risher WC and others (2014), <em>PLoS ONE</em> 9:e107591, Figure 1. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="https://commons.wikimedia.org/wiki/File:Geometric_characteristics_of_dendritic_spines.png">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+  </div>
+  <p>The stain fills only a tiny share of the neurons in a piece of tissue. One study that counted them in mouse
+    cortex found that between about 0.7 and 2.3 percent of neurons were stained, and that the stained ones were a
+    random sample. That is the method's strength. Each stained neuron stands out black against a pale background, so
+    its whole dendritic tree and even its tiny dendritic spines can be
+    seen.<sup><a href="#r-29">29</a>,<a href="#r-27">27</a>,<a href="#r-26">26</a></sup> The
+    <a href="synapse.html">Spines</a> page models those spines.</p>
+  <figure class="shot narrow">
+    <a href="assets/img/methods/cajal.webp"><img src="assets/img/methods/cajal.webp" width="672" height="777" loading="lazy" alt="Three ink drawings of columns of human cortex side by side. The left and middle show only cell bodies arranged in layers. The right shows neurons with long branching processes."></a>
+    <figcaption><span class="fig-kind" data-kind="drawing">Historical drawing</span> Drawings by Santiago Ramón y Cajal (1899) of human cortex. Left and middle: cell bodies only, as a Nissl stain shows them. Right: whole neurons, as a Golgi stain shows them. These are drawings, not micrographs, and the stain labels come from the file description.
+      <span class="credit">Image: Santiago Ramón y Cajal; composite by Looie496. Public domain. <a href="https://commons.wikimedia.org/wiki/File:Cajal_cortex_drawings.png">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+  <div class="cols">
+    <div class="card"><h3>Cajal and the neuron theory</h3>
+      <p>Santiago Ramón y Cajal was shown Golgi-stained brain tissue in 1887 and published his first study using the
+        method in 1888. In that study he gave the first description of dendritic spines and proposed that axons, like
+        dendrites, end freely. This supported the neuron theory: the idea that the nervous system is made of separate
+        cells that communicate at points of contact.<sup><a href="#r-26">26</a></sup></p>
+      <p>Golgi and Cajal shared the 1906 Nobel Prize in Physiology or Medicine for their work on the structure of the
+        nervous system.<sup><a href="#r-30">30</a>,<a href="#r-26">26</a></sup></p></div>
+    <div class="card"><h3>Why only some cells?</h3>
+      <p>Why the stain fills some neurons and skips their neighbours has puzzled researchers for decades. One
+        time-lapse study saw the deposit begin at scattered seed points in the tissue and enter only those cells that
+        had a part lying inside a seed point, which may explain part of the
+        puzzle.<sup><a href="#r-31">31</a>,<a href="#r-28">28</a></sup></p></div>
+    <div class="card"><h3>Limits</h3>
+      <p>You cannot choose which cells stain. The results are famously unreliable, and some tissue blocks do not stain
+        at all. The share of neurons that stain is usually unknown, so the method cannot tell you how many neurons
+        there are. Thick sections are needed to follow branches in three
+        dimensions.<sup><a href="#r-32">32</a></sup></p>
+      <p>The two stains answer different questions, and they can be combined on the same section: Nissl shows all the
+        cell bodies and the layers, and Golgi shows the full shape of a few
+        neurons.<sup><a href="#r-19">19</a>,<a href="#r-26">26</a></sup></p></div>
+  </div>
+
+  <h2 class="serif" id="ihc">4. Antibody staining: one protein at a time</h2>
+  <p>Antibodies are proteins made by the immune system. Each one sticks to a small patch, called an epitope, on a
+    target molecule, the antigen. Immunohistochemistry uses that grip to show where a chosen protein sits in a thin
+    slice of tissue.<sup><a href="#r-33">33</a>,<a href="#r-34">34</a></sup> The idea dates to 1941, when Albert Coons and
+    colleagues described an antibody carrying a fluorescent chemical group. In 1942 they used a fluorescent antibody
+    to show a bacterial antigen inside animal tissue.<sup><a href="#r-35">35</a>,<a href="#r-36">36</a></sup></p>
+
+  <figure class="figure" aria-labelledby="ab-h">
+    <div class="fig-head"><span class="fig-kind" data-kind="drawing">Drawing</span><h4 id="ab-h">The indirect method</h4></div>
+    <svg viewBox="0 0 720 230" role="img" aria-label="Three steps. One: a target protein in the tissue. Two: a primary antibody binds the target. Three: several labelled secondary antibodies bind the primary antibody, so the signal is stronger.">
+      <defs>
+        <g id="ab"><path d="M0 0V-34M0-34L-16-58M0-34L16-58" fill="none" stroke-width="7" stroke-linecap="round"/></g>
+      </defs>
+      <rect x="20" y="186" width="680" height="24" rx="6" fill="#eceff3"/>
+      <text x="360" y="203" text-anchor="middle" font-size="12" fill="#5f6d7b">tissue section</text>
+      <g font-size="13" fill="#1f2a35" text-anchor="middle">
+        <text x="130" y="24" font-weight="600">1. Target protein</text>
+        <text x="360" y="24" font-weight="600">2. Primary antibody binds</text>
+        <text x="590" y="24" font-weight="600">3. Labelled secondaries bind</text>
+      </g>
+      <g fill="#c0573a"><circle cx="130" cy="176" r="11"/><circle cx="360" cy="176" r="11"/><circle cx="590" cy="176" r="11"/></g>
+      <use href="#ab" x="360" y="166" stroke="#2d6a8f"/>
+      <use href="#ab" x="590" y="166" stroke="#2d6a8f"/>
+      <g stroke="#6a54a6">
+        <use href="#ab" transform="translate(560 96) rotate(-35) scale(.7)"/>
+        <use href="#ab" transform="translate(620 96) rotate(35) scale(.7)"/>
+        <use href="#ab" transform="translate(590 84) scale(.7)"/>
+      </g>
+      <g fill="#d9a441"><circle cx="533" cy="52" r="7"/><circle cx="647" cy="52" r="7"/><circle cx="590" cy="38" r="7"/></g>
+      <g font-size="12" fill="#5f6d7b">
+        <text x="150" y="180">epitope</text>
+        <text x="384" y="130">primary</text>
+        <text x="655" y="100">secondary</text>
+        <text x="659" y="56">label</text>
+      </g>
+    </svg>
+    <figcaption>Most labs use the indirect method. An unlabelled primary antibody binds the target, then a labelled
+      secondary antibody binds the primary. More than one secondary can attach to each primary, so the signal gets
+      stronger.<sup><a href="#r-37">37</a></sup> Shapes are not to scale.</figcaption>
+  </figure>
+
+  <div class="cols">
+    <div class="card"><h3>An enzyme label</h3>
+      <p>The label can be an enzyme. A common choice is horseradish peroxidase (HRP), which turns a chemical called
+        DAB into a brown deposit that can be seen with an ordinary light
+        microscope.<sup><a href="#r-38">38</a>,<a href="#r-39">39</a></sup></p></div>
+    <div class="card"><h3>A fluorescent label</h3>
+      <p>The label can instead be a fluorophore, a molecule that gives off light of one colour when lit with another.
+        Using a different colour for each antibody lets one section show several proteins at once. This is called
+        immunofluorescence.<sup><a href="#r-37">37</a></sup></p></div>
+    <div class="card"><h3>Markers</h3>
+      <p>Neuroscientists use marker proteins to tell cell types apart. NeuN labels the nuclei of most neurons, GFAP
+        labels astrocytes, and Iba1 labels
+        microglia.<sup><a href="#r-40">40</a>,<a href="#r-41">41</a>,<a href="#r-42">42</a></sup> Parvalbumin,
+        a calcium-binding protein, marks one group of interneurons in the cortex and hippocampus, although some other
+        neurons contain it too.<sup><a href="#r-43">43</a></sup></p>
+      <p>DAPI is often added to show every cell nucleus, usually in blue. DAPI is not an antibody. It is a dye that
+        binds DNA directly.<sup><a href="#r-44">44</a></sup></p></div>
+  </div>
+
+  <div class="pair">
+  <figure class="shot">
+    <a href="assets/img/methods/if-hippocampus.webp"><img src="assets/img/methods/if-hippocampus.webp" width="1400" height="934" loading="lazy" alt="Fluorescence micrograph of a rat hippocampus. Curved bands of green cell bodies, red fibres between them, and blue dots for nuclei."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Real micrograph</span> Three labels in one section of rat hippocampus: NeuN antibody in green (neurons), myelin basic protein antibody in red (myelinated fibres) and a DNA dye in blue (all nuclei).
+      <span class="credit">Image: GerryShaw, EnCor Biotechnology Inc.. <a href="https://creativecommons.org/licenses/by-sa/3.0/">CC BY-SA 3.0</a>. <a href="https://commons.wikimedia.org/wiki/File:Rat_hippocampus_stained_with_antibody_to_NeuN_(green),_myelin_basic_protein_(red)_and_DNA_(blue).jpg">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+  <figure class="shot">
+    <a href="assets/img/methods/if-microglia.webp"><img src="assets/img/methods/if-microglia.webp" width="919" height="919" loading="lazy" alt="Fluorescence micrograph with branched red cells, long green fibres and blue nuclei."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Real micrograph</span> Rat cerebellum: Iba1 antibody in red (microglia), GFAP antibody in green (Bergmann glia, a type of astrocyte) and a DNA dye in blue.
+      <span class="credit">Image: GerryShaw, EnCor Biotechnology Inc.. <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. <a href="https://commons.wikimedia.org/wiki/File:Microglial_cells_(red)_in_rat_cerebellar_molecular_layer.jpg">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+  </div>
+  <figure class="shot narrow">
+    <a href="assets/img/methods/dab-pv.webp"><img src="assets/img/methods/dab-pv.webp" width="1400" height="1985" loading="lazy" alt="Panels of brain sections seen in ordinary light. Stained neurons appear as dark cells on a pale background, at low and high magnification."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Real micrograph</span> The enzyme method: calbindin (A panels) and parvalbumin (B panels) staining in gerbil forebrain. The figure was published in greyscale, so the deposit looks dark grey here, not brown.
+      <span class="credit">Image: Brummelte S and others (2006), <em>Behavioral and Brain Functions</em> 2:12, Figure 2. <a href="https://creativecommons.org/licenses/by/2.0/">CC BY 2.0</a>. <a href="https://commons.wikimedia.org/wiki/File:Photomicrographs_of_calbindin_and_parvalbumin_immunoreactive_neurons_in_the_nucleus_accumbens.JPEG">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+
+  <h3>How it misleads</h3>
+  <ul class="plain">
+    <li><b>The antibody.</b> A stain is only as good as its antibody. Some antibodies also bind the wrong protein, and
+      what is in the tube does not always match the label. Poorly checked antibodies have been named as one cause of
+      results that other labs cannot repeat.<sup><a href="#r-45">45</a>,<a href="#r-46">46</a>,<a href="#r-47">47</a>,<a href="#r-48">48</a></sup></li>
+    <li><b>Controls.</b> Good experiments include tissue known to contain the protein (a positive control) and tissue
+      where no signal should appear (a negative control). The strongest test is tissue from an animal in which the
+      gene for that protein has been deleted.<sup><a href="#r-33">33</a>,<a href="#r-48">48</a></sup></li>
+    <li><b>The tissue.</b> Preparation can hide a real signal or add a false one. Fixing with formaldehyde can mask
+      epitopes so the antibody no longer fits. Brain tissue also has its own background glow, called autofluorescence,
+      for example from lipofuscin, a pigment that builds up with
+      age.<sup><a href="#r-34">34</a>,<a href="#r-49">49</a>,<a href="#r-50">50</a></sup></li>
+    <li><b>Depth and time.</b> Antibodies are large molecules, so getting them deep into thick tissue is hard. This is
+      one reason tissue is usually cut into thin sections. The result is also a still picture of fixed tissue: it
+      shows where a protein is, not what the cell was
+      doing.<sup><a href="#r-37">37</a>,<a href="#r-51">51</a>,<a href="#r-52">52</a></sup></li>
+    <li><b>Activity markers.</b> c-Fos is a protein that many neurons make after strong activation, so staining for it
+      marks cells that were recently active. It is a record of the recent past, not a live recording, and some active
+      neurons never make it.<sup><a href="#r-53">53</a>,<a href="#r-54">54</a></sup></li>
+  </ul>
+
+  <h3>Two related tools</h3>
+  <p>In situ hybridization uses a labelled nucleic acid probe to show where a particular RNA is, rather than the
+    protein. Genetically encoded reporters such as green fluorescent protein (GFP) make the cell produce its own
+    glowing label. In Brainbow mice, each neuron makes a random mix of several fluorescent proteins, so neighbouring
+    neurons appear in different
+    colours.<sup><a href="#r-55">55</a>,<a href="#r-56">56</a>,<a href="#r-57">57</a>,<a href="#r-58">58</a></sup></p>
+  <figure class="shot narrow">
+    <a href="assets/img/methods/tetbow.webp"><img src="assets/img/methods/tetbow.webp" width="1400" height="1333" loading="lazy" alt="Fluorescence images of a mouse olfactory bulb in which individual neurons and their branches each glow a different colour."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Real micrograph</span> Multicolour labelling with Tetbow, a later method of the same kind: mitral cells in a young mouse olfactory bulb, each a different colour. These are fluorescent proteins made by the cells, not antibody stains.
+      <span class="credit">Image: Sakaguchi R, Leiwe MN, Imai T (2018), <em>eLife</em> 7:e40350, Figure 5<sup><a href="#r-59">59</a></sup>. <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>. <a href="https://elifesciences.org/articles/40350">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+
+  <h2 class="serif" id="image">5. Mounting and imaging</h2>
+  <p>Stained floating sections are guided onto a glass slide with a fine brush and flattened so there are no wrinkles
+    or folds. They are left to dry onto the slide, then covered with mounting medium and a thin glass
+    coverslip.<sup><a href="#r-8">8</a></sup></p>
+  <figure class="shot narrow">
+    <a href="assets/img/methods/floating.webp"><img src="assets/img/methods/floating.webp" width="1400" height="2489" loading="lazy" alt="A plate of small wells holding pale brain sections floating in liquid, above a row of labelled glass slides with sections laid out on them."></a>
+    <figcaption><span class="fig-kind" data-kind="measured">Real photo</span> Free-floating mouse brain sections (top) being mounted onto glass slides (below) after staining.
+      <span class="credit">Image: AdamasPudim. <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a>. <a href="https://commons.wikimedia.org/wiki/File:Free_floating_mouse_brain_sections.jpg">Source</a>. Resized for this page.</span></figcaption>
+  </figure>
+
+  <div class="cols">
+    <div class="card"><h3>Widefield and confocal</h3>
+      <p>A widefield fluorescence microscope lights up the whole thickness of the section at once, so out-of-focus
+        glow blurs the picture. A confocal microscope scans the tissue point by point and uses a pinhole in front of
+        the detector to reject out-of-focus light, giving a sharp "optical
+        section".<sup><a href="#r-60">60</a>,<a href="#r-61">61</a></sup></p></div>
+    <div class="card"><h3>Deeper and bigger</h3>
+      <p>Two-photon microscopy excites fluorescence only near the focus and can image cells several hundred
+        micrometres deep in living tissue that scatters light. For whole brains, tissue clearing makes the fixed brain
+        transparent, and a light-sheet microscope then images it one thin plane at a
+        time.<sup><a href="#r-62">62</a>,<a href="#r-63">63</a>,<a href="#r-64">64</a>,<a href="#r-65">65</a>,<a href="#r-10">10</a></sup></p></div>
+    <div class="card"><h3>The limit of light</h3>
+      <p>Ordinary light microscopes cannot separate two objects closer than roughly 200 to 350 nanometres, about half
+        the wavelength of the light. But the gap between two neurons at a synapse is only about 20 nanometres, and
+        synaptic vesicles are about 35 nanometres across. So the synaptic cleft was first seen directly with the
+        electron microscope.<sup><a href="#r-66">66</a>,<a href="#r-67">67</a></sup></p></div>
+  </div>
+
+  <div class="caveat"><b>Concepts, not protocols.</b> This page explains ideas. It leaves out recipes, amounts and
+    safety procedures on purpose. Fixatives and several stains are hazardous, and this work is done in a laboratory
+    with training and supervision.</div>
+
+  <h2 class="serif">Sources and image licences</h2>
+  <p>Each image keeps its own licence, named under the picture. Images marked CC BY-SA may be reused only under the
+    same licence. All were resized for this page and not otherwise changed. The text of this page is under the
+    site's own licence.</p>
+  <ol class="refs">
+    <li id="r-1">Thavarajah R, Mudimbaimannar VK, Elizabeth J, Rao UK, Ranganathan K (2012). Chemical and physical basics of routine formaldehyde fixation. <em>Journal of Oral and Maxillofacial Pathology</em> 16(3):400-405. <a href="https://doi.org/10.4103/0973-029X.102496">doi.org/10.4103/0973-029X.102496</a></li>
+    <li id="r-2">Gage GJ, Kipke DR, Shain W (2012). Whole animal perfusion fixation for rodents. <em>Journal of Visualized Experiments</em> (65):e3564. <a href="https://doi.org/10.3791/3564">doi.org/10.3791/3564</a></li>
+    <li id="r-3">McFadden WC, Walsh H, Richter F, Soudant C, Bryce CH, Hof PR, Fowkes M, Crary JF, McKenzie AT (2019). Perfusion fixation in brain banking: a systematic review. <em>Acta Neuropathologica Communications</em> 7(1):146. <a href="https://doi.org/10.1186/s40478-019-0799-y">doi.org/10.1186/s40478-019-0799-y</a></li>
+    <li id="r-4">Mattei G, Cristiani I, Magliaro C, Ahluwalia A (2015). Profile analysis of hepatic porcine and murine brain tissue slices obtained with a vibratome. <em>PeerJ</em> 3:e932. <a href="https://doi.org/10.7717/peerj.932">doi.org/10.7717/peerj.932</a></li>
+    <li id="r-5">Edwards FA, Konnerth A, Sakmann B, Takahashi T (1989). A thin slice preparation for patch clamp recordings from neurones of the mammalian central nervous system. <em>Pflügers Archiv European Journal of Physiology</em> 414(5):600-612. <a href="https://doi.org/10.1007/BF00580998">doi.org/10.1007/BF00580998</a></li>
+    <li id="r-6">Ting JT, Daigle TL, Chen Q, Feng G (2014). Acute brain slice methods for adult and aging animals: application of targeted patch clamp analysis and optogenetics. <em>Methods in Molecular Biology</em> 1183:221-242. <a href="https://doi.org/10.1007/978-1-4939-1096-0_14">doi.org/10.1007/978-1-4939-1096-0_14</a></li>
+    <li id="r-7">Muniz Partida C, Walters E (2023). A novel immunohistochemical protocol for paraffin embedded tissue sections using free-floating techniques. <em>Frontiers in Neuroanatomy</em> 17:1154568. <a href="https://doi.org/10.3389/fnana.2023.1154568">doi.org/10.3389/fnana.2023.1154568</a></li>
+    <li id="r-8">Potts EM, Coppotelli G, Ross JM (2020). Histological-based stainings using free-floating tissue sections. <em>Journal of Visualized Experiments</em> (162):e61622. <a href="https://doi.org/10.3791/61622">doi.org/10.3791/61622</a></li>
+    <li id="r-9">Sy J, Ang LC (2019). Microtomy: Cutting Formalin-Fixed, Paraffin-Embedded Sections. <em>Methods in Molecular Biology</em> 1897:269-278. <a href="https://doi.org/10.1007/978-1-4939-8935-5_23">doi.org/10.1007/978-1-4939-8935-5_23</a></li>
+    <li id="r-10">Richardson DS, Lichtman JW (2015). Clarifying Tissue Clearing. <em>Cell</em> 162(2):246-257. <a href="https://doi.org/10.1016/j.cell.2015.06.067">doi.org/10.1016/j.cell.2015.06.067</a></li>
+    <li id="r-11">Rosene DL, Roy NJ, Davis BJ (1986). A cryoprotection method that facilitates cutting frozen sections of whole monkey brains for histological and histochemical processing without freezing artifact. <em>Journal of Histochemistry &amp; Cytochemistry</em> 34(10):1301-1315. <a href="https://doi.org/10.1177/34.10.3745909">doi.org/10.1177/34.10.3745909</a></li>
+    <li id="r-12">Taqi SA, Sami SA, Sami LB, Zaki SA (2018). A review of artifacts in histopathology. <em>Journal of Oral and Maxillofacial Pathology</em> 22(2):279. <a href="https://doi.org/10.4103/jomfp.JOMFP_125_15">doi.org/10.4103/jomfp.JOMFP_125_15</a></li>
+    <li id="r-13">Dorph-Petersen KA, Nyengaard JR, Gundersen HJG (2001). Tissue shrinkage and unbiased stereological estimation of particle number and size. <em>Journal of Microscopy</em> 204(3):232-246. <a href="https://doi.org/10.1046/j.1365-2818.2001.00958.x">doi.org/10.1046/j.1365-2818.2001.00958.x</a></li>
+    <li id="r-14">Gardella D, Hatton WJ, Rind HB, Rosen GD, von Bartheld CS (2003). Differential tissue shrinkage and compression in the z-axis: implications for optical disector counting in vibratome-, plastic- and cryosections. <em>Journal of Neuroscience Methods</em> 124(1):45-59. <a href="https://doi.org/10.1016/s0165-0270(02)00363-1">doi.org/10.1016/s0165-0270(02)00363-1</a></li>
+    <li id="r-15">Gomes MdM (2019). Franz Nissl (1860-1919), noted neuropsychiatrist and neuropathologist, staining the neuron, but not limiting it. <em>Dementia &amp; Neuropsychologia</em> 13(3):352-355. <a href="https://doi.org/10.1590/1980-57642018dn13-030014">doi.org/10.1590/1980-57642018dn13-030014</a></li>
+    <li id="r-16">Garcia-Cabezas MA, John YJ, Barbas H, Zikopoulos B (2016). Distinction of Neurons, Glia and Endothelial Cells in the Cerebral Cortex: An Algorithm Based on Cytological Features. <em>Frontiers in Neuroanatomy</em> 10:107. <a href="https://doi.org/10.3389/fnana.2016.00107">doi.org/10.3389/fnana.2016.00107</a></li>
+    <li id="r-17">Moon LDF (2018). Chromatolysis: Do injured axons regenerate poorly when ribonucleases attack rough endoplasmic reticulum, ribosomes and RNA?. <em>Developmental Neurobiology</em> 78(10):1011-1024. <a href="https://doi.org/10.1002/dneu.22625">doi.org/10.1002/dneu.22625</a></li>
+    <li id="r-18">Magnain C, Augustinack JC, Reuter M, Wachinger C, Frosch MP, Ragan T, Akkin T, Wedeen VJ, Boas DA, Fischl B (2014). Blockface histology with optical coherence tomography: a comparison with Nissl staining. <em>NeuroImage</em> 84:524-533. <a href="https://doi.org/10.1016/j.neuroimage.2013.08.072">doi.org/10.1016/j.neuroimage.2013.08.072</a></li>
+    <li id="r-19">Pilati N, Barker M, Panteleimonitis S, Donga R, Hamann M (2008). A Rapid Method Combining Golgi and Nissl Staining to Study Neuronal Morphology and Cytoarchitecture. <em>Journal of Histochemistry &amp; Cytochemistry</em> 56(6):539-550. <a href="https://doi.org/10.1369/jhc.2008.950246">doi.org/10.1369/jhc.2008.950246</a></li>
+    <li id="r-20">DeFelipe J (2013). Cajal and the discovery of a new artistic world: the neuronal forest. <em>Progress in Brain Research</em> 203:201-220. <a href="https://doi.org/10.1016/B978-0-444-62730-8.00008-6">doi.org/10.1016/B978-0-444-62730-8.00008-6</a></li>
+    <li id="r-21">Gittins R, Harrison PJ (2004). Neuronal density, size and shape in the human anterior cingulate cortex: a comparison of Nissl and NeuN staining. <em>Brain Research Bulletin</em> 63(2):155-160. <a href="https://doi.org/10.1016/j.brainresbull.2004.02.005">doi.org/10.1016/j.brainresbull.2004.02.005</a></li>
+    <li id="r-22">Zilles K, Amunts K (2010). Centenary of Brodmann&#x27;s map - conception and fate. <em>Nature Reviews Neuroscience</em> 11(2):139-145. <a href="https://doi.org/10.1038/nrn2776">doi.org/10.1038/nrn2776</a></li>
+    <li id="r-23">Zilles K (2018). Brodmann: a pioneer of human brain mapping - his impact on concepts of cortical organization. <em>Brain</em> 141(11):3262-3278. <a href="https://doi.org/10.1093/brain/awy273">doi.org/10.1093/brain/awy273</a></li>
+    <li id="r-24">Amunts K, Zilles K (2015). Architectonic Mapping of the Human Brain beyond Brodmann. <em>Neuron</em> 88(6):1086-1107. <a href="https://doi.org/10.1016/j.neuron.2015.12.001">doi.org/10.1016/j.neuron.2015.12.001</a></li>
+    <li id="r-25">Pannese E (1999). The Golgi Stain: invention, diffusion and impact on neurosciences. <em>Journal of the History of the Neurosciences</em> 8(2):132-140. <a href="https://doi.org/10.1076/jhin.8.2.132.1847">doi.org/10.1076/jhin.8.2.132.1847</a></li>
+    <li id="r-26">DeFelipe J (2025). Cajal and the discovery of the Golgi method: a neuroanatomist&#x27;s dream. <em>Anatomical Science International</em> 100(4):384-399. <a href="https://doi.org/10.1007/s12565-025-00840-7">doi.org/10.1007/s12565-025-00840-7</a></li>
+    <li id="r-27">Vints K, Vandael D, Baatsen P, Pavie B, Vernaillen F, Corthout N, Rybakin V, Munck S, et al (2019). Modernization of Golgi staining techniques for high-resolution, 3-dimensional imaging of individual neurons. <em>Scientific Reports</em> 9:130. <a href="https://doi.org/10.1038/s41598-018-37377-x">doi.org/10.1038/s41598-018-37377-x</a></li>
+    <li id="r-28">Spacek J (1989). Dynamics of the Golgi method: a time-lapse study of the early stages of impregnation in single sections. <em>Journal of Neurocytology</em> 18(1):27-38. <a href="https://doi.org/10.1007/bf01188421">doi.org/10.1007/bf01188421</a></li>
+    <li id="r-29">Pasternak JF, Woolsey TA (1975). On the &quot;selectivity&quot; of the Golgi-Cox method. <em>Journal of Comparative Neurology</em> 160(3):307-312. <a href="https://doi.org/10.1002/cne.901600304">doi.org/10.1002/cne.901600304</a></li>
+    <li id="r-30">DeFelipe J (2006). Brain plasticity and mental processes: Cajal again. <em>Nature Reviews Neuroscience</em> 7(10):811-817. <a href="https://doi.org/10.1038/nrn2005">doi.org/10.1038/nrn2005</a></li>
+    <li id="r-31">Stefanovic BD, Ristanovic D, Trpinac D, Dordevic-Camba V, Lackovic V, Bumbasirevic V, Obradovic M, Basic R, Cetkovic M (1998). The acidophilic nature of neuronal Golgi impregnation. <em>Acta Histochemica</em> 100(2):217-227. <a href="https://doi.org/10.1016/S0065-1281(98)80029-9">doi.org/10.1016/S0065-1281(98)80029-9</a></li>
+    <li id="r-32">Rosoklija GB, Petrushevski VM, Stankov A, Dika A, Jakovski Z, Pavlovski G, Davcheva N, Lipkin R, et al., Dwork AJ (2014). Reliable and durable Golgi staining of brain tissue from human autopsies and experimental animals. <em>Journal of Neuroscience Methods</em> 230:20-29. <a href="https://doi.org/10.1016/j.jneumeth.2014.04.006">doi.org/10.1016/j.jneumeth.2014.04.006</a></li>
+    <li id="r-33">Hewitt SM, Baskin DG, Frevert CW, Stahl WL, Rosa-Molinar E (2014). Controls for immunohistochemistry: the Histochemical Society&#x27;s standards of practice for validation of immunohistochemical assays. <em>Journal of Histochemistry &amp; Cytochemistry</em> 62(10):693-697. <a href="https://doi.org/10.1369/0022155414545224">doi.org/10.1369/0022155414545224</a></li>
+    <li id="r-34">Ramos-Vara JA (2005). Technical aspects of immunohistochemistry. <em>Veterinary Pathology</em> 42(4):405-426. <a href="https://doi.org/10.1354/vp.42-4-405">doi.org/10.1354/vp.42-4-405</a></li>
+    <li id="r-35">Coons AH, Creech HJ, Jones RN (1941). Immunological Properties of an Antibody Containing a Fluorescent Group. <em>Proceedings of the Society for Experimental Biology and Medicine (Crossref container: Experimental Biology and Medicine)</em> 47(2):200-202. <a href="https://doi.org/10.3181/00379727-47-13084P">doi.org/10.3181/00379727-47-13084P</a></li>
+    <li id="r-36">Coons AH, Creech HJ, Jones RN, Berliner E (1942). The Demonstration of Pneumococcal Antigen in Tissues by the Use of Fluorescent Antibody. <em>The Journal of Immunology</em> 45(3):159-170. <a href="https://doi.org/10.4049/jimmunol.45.3.159">doi.org/10.4049/jimmunol.45.3.159</a></li>
+    <li id="r-37">Im K, Mareninov S, Diaz MFP, Yong WH (2019). An Introduction to Performing Immunofluorescence Staining. <em>Methods in Molecular Biology (book: Biobanking)</em> 1897:299-311. <a href="https://doi.org/10.1007/978-1-4939-8935-5_26">doi.org/10.1007/978-1-4939-8935-5_26</a></li>
+    <li id="r-38">Hsu SM, Soban E (1982). Color modification of diaminobenzidine (DAB) precipitation by metallic ions and its application for double immunohistochemistry. <em>Journal of Histochemistry &amp; Cytochemistry</em> 30(10):1079-1082. <a href="https://doi.org/10.1177/30.10.6182185">doi.org/10.1177/30.10.6182185</a></li>
+    <li id="r-39">Hsu SM, Raine L, Fanger H (1981). Use of avidin-biotin-peroxidase complex (ABC) in immunoperoxidase techniques: a comparison between ABC and unlabeled antibody (PAP) procedures. <em>Journal of Histochemistry &amp; Cytochemistry</em> 29(4):577-580. <a href="https://doi.org/10.1177/29.4.6166661">doi.org/10.1177/29.4.6166661</a></li>
+    <li id="r-40">Mullen RJ, Buck CR, Smith AM (1992). NeuN, a neuronal specific nuclear protein in vertebrates. <em>Development</em> 116(1):201-211. <a href="https://doi.org/10.1242/dev.116.1.201">doi.org/10.1242/dev.116.1.201</a></li>
+    <li id="r-41">Bignami A, Eng LF, Dahl D, Uyeda CT (1972). Localization of the glial fibrillary acidic protein in astrocytes by immunofluorescence. <em>Brain Research</em> 43(2):429-435. <a href="https://doi.org/10.1016/0006-8993(72)90398-8">doi.org/10.1016/0006-8993(72)90398-8</a></li>
+    <li id="r-42">Ito D, Imai Y, Ohsawa K, Nakajima K, Fukuuchi Y, Kohsaka S (1998). Microglia-specific localisation of a novel calcium binding protein, Iba1. <em>Molecular Brain Research</em> 57(1):1-9. <a href="https://doi.org/10.1016/s0169-328x(98)00040-0">doi.org/10.1016/s0169-328x(98)00040-0</a></li>
+    <li id="r-43">Celio MR (1990). Calbindin D-28k and parvalbumin in the rat nervous system. <em>Neuroscience</em> 35(2):375-475. <a href="https://doi.org/10.1016/0306-4522(90)90091-h">doi.org/10.1016/0306-4522(90)90091-h</a></li>
+    <li id="r-44">Kapuscinski J (1995). DAPI: a DNA-specific fluorescent probe. <em>Biotechnic &amp; Histochemistry</em> 70(5):220-233. <a href="https://doi.org/10.3109/10520299509108199">doi.org/10.3109/10520299509108199</a></li>
+    <li id="r-45">Bordeaux J, Welsh A, Agarwal S, Killiam E, Baquero M, Hanna J, Anagnostou V, Rimm D (2010). Antibody validation. <em>BioTechniques</em> 48(3):197-209. <a href="https://doi.org/10.2144/000113382">doi.org/10.2144/000113382</a></li>
+    <li id="r-46">Baker M (2015). Reproducibility crisis: Blame it on the antibodies. <em>Nature</em> 521(7552):274-276. <a href="https://doi.org/10.1038/521274a">doi.org/10.1038/521274a</a></li>
+    <li id="r-47">Uhlen M, Bandrowski A, Carr S, Edwards A, Ellenberg J, Lundberg E, Rimm DL, Rodriguez H, Hiltke T, Snyder M, Yamamoto T (2016). A proposal for validation of antibodies. <em>Nature Methods</em> 13(10):823-827. <a href="https://doi.org/10.1038/nmeth.3995">doi.org/10.1038/nmeth.3995</a></li>
+    <li id="r-48">Rhodes KJ, Trimmer JS (2006). Antibodies as valuable neuroscience research tools versus reagents of mass distraction. <em>The Journal of Neuroscience</em> 26(31):8017-8020. <a href="https://doi.org/10.1523/JNEUROSCI.2728-06.2006">doi.org/10.1523/JNEUROSCI.2728-06.2006</a></li>
+    <li id="r-49">Shi SR, Key ME, Kalra KL (1991). Antigen retrieval in formalin-fixed, paraffin-embedded tissues: an enhancement method for immunohistochemical staining based on microwave oven heating of tissue sections. <em>Journal of Histochemistry &amp; Cytochemistry</em> 39(6):741-748. <a href="https://doi.org/10.1177/39.6.1709656">doi.org/10.1177/39.6.1709656</a></li>
+    <li id="r-50">Schnell SA, Staines WA, Wessendorf MW (1999). Reduction of lipofuscin-like autofluorescence in fluorescently labeled tissue. <em>Journal of Histochemistry &amp; Cytochemistry</em> 47(6):719-730. <a href="https://doi.org/10.1177/002215549904700601">doi.org/10.1177/002215549904700601</a></li>
+    <li id="r-51">Lai HM, Tang Y, Lau ZYH, et al. (20 authors; last author Ko H) (2022). Antibody stabilization for thermally accelerated deep immunostaining. <em>Nature Methods</em> 19(9):1137-1146. <a href="https://doi.org/10.1038/s41592-022-01569-1">doi.org/10.1038/s41592-022-01569-1</a></li>
+    <li id="r-52">Renier N, Wu Z, Simon DJ, Yang J, Ariel P, Tessier-Lavigne M (2014). iDISCO: a simple, rapid method to immunolabel large tissue samples for volume imaging. <em>Cell</em> 159(4):896-910. <a href="https://doi.org/10.1016/j.cell.2014.10.010">doi.org/10.1016/j.cell.2014.10.010</a></li>
+    <li id="r-53">Sagar SM, Sharp FR, Curran T (1988). Expression of c-fos protein in brain: metabolic mapping at the cellular level. <em>Science</em> 240(4857):1328-1331. <a href="https://doi.org/10.1126/science.3131879">doi.org/10.1126/science.3131879</a></li>
+    <li id="r-54">Kovacs KJ (2008). Measurement of immediate-early gene activation - c-fos and beyond. <em>Journal of Neuroendocrinology</em> 20(6):665-672. <a href="https://doi.org/10.1111/j.1365-2826.2008.01734.x">doi.org/10.1111/j.1365-2826.2008.01734.x</a></li>
+    <li id="r-55">Gall JG, Pardue ML (1969). Formation and detection of RNA-DNA hybrid molecules in cytological preparations. <em>Proceedings of the National Academy of Sciences</em> 63(2):378-383. <a href="https://doi.org/10.1073/pnas.63.2.378">doi.org/10.1073/pnas.63.2.378</a></li>
+    <li id="r-56">Wang F, Flanagan J, Su N, Wang LC, Bui S, Nielson A, Wu X, Vo HT, Ma XJ, Luo Y (2012). RNAscope: a novel in situ RNA analysis platform for formalin-fixed, paraffin-embedded tissues. <em>The Journal of Molecular Diagnostics</em> 14(1):22-29. <a href="https://doi.org/10.1016/j.jmoldx.2011.08.002">doi.org/10.1016/j.jmoldx.2011.08.002</a></li>
+    <li id="r-57">Chalfie M, Tu Y, Euskirchen G, Ward WW, Prasher DC (1994). Green fluorescent protein as a marker for gene expression. <em>Science</em> 263(5148):802-805. <a href="https://doi.org/10.1126/science.8303295">doi.org/10.1126/science.8303295</a></li>
+    <li id="r-58">Livet J, Weissman TA, Kang H, Draft RW, Lu J, Bennis RA, Sanes JR, Lichtman JW (2007). Transgenic strategies for combinatorial expression of fluorescent proteins in the nervous system. <em>Nature</em> 450(7166):56-62. <a href="https://doi.org/10.1038/nature06293">doi.org/10.1038/nature06293</a></li>
+    <li id="r-59">Sakaguchi R, Leiwe MN, Imai T (2018). Bright multicolor labeling of neuronal circuits with fluorescent proteins and chemical tags. <em>eLife</em> 7:e40350. <a href="https://doi.org/10.7554/eLife.40350">doi.org/10.7554/eLife.40350</a></li>
+    <li id="r-60">Conchello JA, Lichtman JW (2005). Optical sectioning microscopy. <em>Nature Methods</em> 2(12):920-931. <a href="https://doi.org/10.1038/nmeth815">doi.org/10.1038/nmeth815</a></li>
+    <li id="r-61">Minsky M (1988). Memoir on inventing the confocal scanning microscope. <em>Scanning</em> 10(4):128-138. <a href="https://doi.org/10.1002/sca.4950100403">doi.org/10.1002/sca.4950100403</a></li>
+    <li id="r-62">Denk W, Strickler JH, Webb WW (1990). Two-photon laser scanning fluorescence microscopy. <em>Science</em> 248(4951):73-76. <a href="https://doi.org/10.1126/science.2321027">doi.org/10.1126/science.2321027</a></li>
+    <li id="r-63">Helmchen F, Denk W (2005). Deep tissue two-photon microscopy. <em>Nature Methods</em> 2(12):932-940. <a href="https://doi.org/10.1038/nmeth818">doi.org/10.1038/nmeth818</a></li>
+    <li id="r-64">Chung K, Wallace J, Kim SY, Kalyanasundaram S, Andalman AS, Davidson TJ, Mirzabekov JJ, Zalocusky KA, Mattis J, Denisin AK, Pak S, Bernstein H, Ramakrishnan C, Grosenick L, Gradinaru V, Deisseroth K (2013). Structural and molecular interrogation of intact biological systems. <em>Nature</em> 497(7449):332-337. <a href="https://doi.org/10.1038/nature12107">doi.org/10.1038/nature12107</a></li>
+    <li id="r-65">Dodt HU, Leischner U, Schierloh A, Jährling N, Mauch CP, Deininger K, Deussing JM, Eder M, Zieglgänsberger W, Becker K (2007). Ultramicroscopy: three-dimensional visualization of neuronal networks in the whole mouse brain. <em>Nature Methods</em> 4(4):331-336. <a href="https://doi.org/10.1038/nmeth1036">doi.org/10.1038/nmeth1036</a></li>
+    <li id="r-66">Schermelleh L, Heintzmann R, Leonhardt H (2010). A guide to super-resolution fluorescence microscopy. <em>Journal of Cell Biology</em> 190(2):165-175. <a href="https://doi.org/10.1083/jcb.201002018">doi.org/10.1083/jcb.201002018</a></li>
+    <li id="r-67">Harris KM, Weinberg RJ (2012). Ultrastructure of synapses in the mammalian brain. <em>Cold Spring Harbor Perspectives in Biology</em> 4(5):a005587. <a href="https://doi.org/10.1101/cshperspect.a005587">doi.org/10.1101/cshperspect.a005587</a></li>
+  </ol>
+
+  <footer>
+    <a href="learn.html">More to learn</a>
+    <a href="synapse.html">Spines</a>
+    <a href="scans.html">Brain scans</a>
+    <a href="references.html">All sources</a>
+    <span>Educational only. Not medical or veterinary advice.</span>
+    <a href="about.html">About and limits</a>
+  </footer>
+</main>
+</div>

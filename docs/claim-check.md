@@ -176,3 +176,14 @@ Every sentence in the stage notes and the evidence section came from a two-pass 
 | Sleep-EDF volunteers: home recordings 1987-1991, healthy, no sleep medication, all described as white | PhysioNet sleep-edfx page |
 | Age of this volunteer | Not stated, because the subject table could not be downloaded |
 | Final review fixes | Merger criticism dated to Grigg-Damberger 2012, not "still". Fpz-Cz described as forehead-to-crown, compared with the standard C4-A1 lead. Staresina 2015 hippocampal recordings described as coming from people with epilepsy |
+
+## Methods page and CB1 recheck (2026-11-28)
+
+| Claim | Basis |
+|---|---|
+| Every sentence on the Methods page | Two-pass check: a researcher per topic drafted claims from sources they opened, then a second checker re-fetched each source on Crossref and re-read it. 44 claims kept or reworded, none dropped. 67 sources cited; three that could not be opened are not cited |
+| Methods images | 11 used. Each licence was confirmed on the source page by the checker and again from the Wikimedia Commons API (or the eLife API) at download. Two Brainbow files on Commons were rejected: their stated source is a publisher's author manuscript with no open licence |
+| Nissl micrograph of macaque visual cortex | CC0 upload from September 2026 with no linked publication. Species, stain and scale are the uploader's description, and the caption says so |
+| Golgi-stained cells figure | Commons tags it CC BY 2.5; the article (Churchill et al. 2004) grants CC BY 2.0. Credited under the article's licence |
+| No THC-bound CB1 or CB2 structure | Rechecked 2026-11-28 against RCSB: THC is ligand TCI, in 7 entries, none a cannabinoid receptor; none of 35 CB1 entries holds it; preprint and on-hold searches found none. Closest: 9ERX, CB1 with HU-210 (Thorsen et al. 2025), where THC was docked, not observed |
+| 5XRA and 5XR8 | The 2017 paper was retracted on 2025-08-27 and republished after peer review the same day with the same structures (Hua et al. 2025). Not used on the site |
