@@ -325,6 +325,26 @@ class PublicPages(unittest.TestCase):
         for retracted in ("5XRA", "5XR8"):
             self.assertNotIn(retracted, page)
 
+    def test_receptor_tours_point_at_real_labels(self):
+        page = read("pharma")
+        viewer = (ROOT / "assets" / "receptor-viewer.js").read_text(encoding="utf8")
+        self.assertIn("ms: reduce ? 0 : 900", viewer)                      # no glide under reduced motion
+        self.assertIn("controls.addEventListener('start'", viewer)         # a drag ends the glide
+        tour = page[page.index("var TOUR={"):page.index("\n};", page.index("var TOUR={"))]
+        for cid in ("psy", "dis", "stim", "op", "benzo", "cb"):
+            start = page.index('\n %s:{"file"' % cid) if ('\n %s:{"file"' % cid) in page else page.index("\n %s:" % cid, page.index("/*rc:start*/"))
+            card = page[start:page.index("\n", start + 2)]
+            block = tour[tour.index("\n %s:[" % cid):]
+            block = block[:block.index("]]") + 2]
+            stops = re.findall(r"\[(null|'[^']*'),([0-9.]+),'", block)
+            with self.subTest(card=cid):
+                self.assertGreaterEqual(len(stops), 3)
+                self.assertEqual(stops[0][0], "null")                      # first stop is the whole structure
+                for name, zoom in stops[1:]:
+                    self.assertIn('"text":"%s"' % name.strip("'"), card.replace('": "', '":"').replace('", "', '","'))
+                    self.assertTrue(0.3 <= float(zoom) <= 1)
+        self.assertIn("It is not THC.'", tour)
+
     def test_pharmacology_lists_sourced_harms_for_every_class(self):
         page = read("pharma")
         for cid in ["psy", "dis", "stim", "op", "benzo", "cb"]:

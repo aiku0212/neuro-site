@@ -51,6 +51,12 @@ a:hover{color:var(--accent-ink)}
   .bar .tabs{-webkit-mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent);
     mask-image:linear-gradient(90deg,#000 calc(100% - 30px),transparent); padding-right:22px}
 }
+/* nav.js marks which edge has more tabs beyond it, so the fade follows the scroll position. */
+.bar .tabs[data-fade="left"]{-webkit-mask-image:linear-gradient(90deg,transparent,#000 30px);
+  mask-image:linear-gradient(90deg,transparent,#000 30px)}
+.bar .tabs[data-fade="both"]{-webkit-mask-image:linear-gradient(90deg,transparent,#000 30px,#000 calc(100% - 30px),transparent);
+  mask-image:linear-gradient(90deg,transparent,#000 30px,#000 calc(100% - 30px),transparent)}
+.bar .tabs[data-fade="none"]{-webkit-mask-image:none; mask-image:none}
 .bar .tab{flex:none; font:500 13.5px/1 var(--f-body); letter-spacing:0; text-transform:none;
   padding:8px 11px; border:0; border-radius:var(--radius-sm); background:none;
   color:var(--atlas-muted); text-decoration:none; white-space:nowrap; cursor:pointer}
