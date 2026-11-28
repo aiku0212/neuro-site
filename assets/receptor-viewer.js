@@ -9,7 +9,9 @@ import { OrbitControls } from './vendor/three-r160/controls/OrbitControls.js';
 //   view.az is the side to start from in degrees, lo and hi are the model's lowest and highest
 //   points, and r is its widest radius. slab is the width of the membrane slab.
 // Model units are nanometres, +Y points out of the cell, and the origin is mid-membrane.
-// Resolves to {setPaused, dispose} once the model is on screen.
+// Resolves to {setPaused, focus, dispose} once the model is on screen.
+// focus(at, zoom) glides the camera to look at a point ([x,y,z], or null for the whole model) from the
+// current side, at zoom times the whole-model distance. A drag by the reader stops the glide.
 export function mount(host, opts) {
   const reduce = !!opts.reduce;
   const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
@@ -95,10 +97,25 @@ export function mount(host, opts) {
   function draw() { renderer.render(scene, cam); placeTags(); }
 
   // Draw only while the figure is on screen and the tab is showing.
-  let seen = true, raf = 0, gone = false;
-  function frame() {
+  let seen = true, raf = 0, gone = false, glide = null;
+  controls.addEventListener('start', function () { glide = null; });
+  function focus(at, zoom) {
+    const dir = cam.position.clone().sub(controls.target), fromD = dir.length();
+    glide = { fromT: controls.target.clone(), toT: at ? new THREE.Vector3(at[0], at[1], at[2]) : target.clone(),
+      dir: dir.normalize(), fromD: fromD, toD: Math.max(controls.minDistance, dist * (zoom || 1)),
+      t0: performance.now(), ms: reduce ? 0 : 900 };
+    controls.autoRotate = false; wake();
+  }
+  function frame(now) {
     raf = 0;
     if (gone || !seen || document.hidden) return;
+    if (glide) {
+      const k = glide.ms ? Math.min(1, ((now || performance.now()) - glide.t0) / glide.ms) : 1;
+      const e = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;      // ease in and out
+      controls.target.lerpVectors(glide.fromT, glide.toT, e);
+      cam.position.copy(controls.target).addScaledVector(glide.dir, glide.fromD + (glide.toD - glide.fromD) * e);
+      if (k >= 1) glide = null;
+    }
     controls.update(); draw();
     raf = requestAnimationFrame(frame);
   }
@@ -133,6 +150,7 @@ export function mount(host, opts) {
       size(); wake();
       resolve({
         setPaused: function (p) { controls.autoRotate = !p && !reduce; wake(); },
+        focus: focus,
         dispose: function () {
           gone = true; cancelAnimationFrame(raf); io.disconnect(); ro.disconnect();
           document.removeEventListener('visibilitychange', wake);

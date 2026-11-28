@@ -268,6 +268,9 @@
       <div class="rc-ctl">
         <button class="b" type="button" id="rc-view">View in 3D</button>
         <button class="b" type="button" id="rc-pause" aria-pressed="false" hidden>Pause</button>
+        <button class="b" type="button" id="rc-tour" aria-pressed="false" hidden>Take the tour</button>
+        <button class="b" type="button" id="rc-prev" hidden>Back</button>
+        <button class="b" type="button" id="rc-next" hidden>Next</button>
       </div>
       <p class="rc-msg" id="rc-msg" role="status"></p>
     </div>
@@ -1038,13 +1041,63 @@ var RC=/*rc:start*/{
  benzo:{"file": "gabaa-diazepam-6x3x", "title": "Diazepam and GABA on the GABA-A receptor", "alt": "A human GABA-A receptor drawn as ribbons, a ring of five subunits coloured violet, blue and pink. Its lower third stands in a pale band that marks the membrane, and the rest rises above it. Orange clusters, diazepam, sit at one place on the outer part and three places within the membrane. Two small green clusters, GABA, sit on the outer part.", "key": [["&alpha;1 subunits", "#6a54a6"], ["&beta;2 subunits", "#2f6fa8"], ["&gamma;2 subunit", "#a2477e"], ["Diazepam", "#c0573a"], ["GABA", "#3d8a4a"]], "body": ["This picture comes from an experiment. It is not a drawing. It shows a human GABA-A receptor, a ring of five subunits around a central channel. Two are &alpha;1 subunits (violet), two are &beta;2 (blue) and one is &gamma;2 (pink). GABA (green), the brain&rsquo;s main inhibitory transmitter, is bound at two places on the outer part, each between a &beta;2 and an &alpha;1 subunit.", "Diazepam (orange) appears at four places. One is the classical benzodiazepine site, outside the membrane between an &alpha;1 subunit and the &gamma;2 subunit. The other three lie within the part that crosses the membrane, at sites that diazepam partly shares with some anaesthetics. Diazepam does not open the channel by itself. It makes the receptor respond more strongly to GABA."], "limits": ["The structure was solved by cryo-electron microscopy at a resolution of 2.92 &Aring; (Protein Data Bank entry 6X3X). An &aring;ngstr&ouml;m (&Aring;) is a tenth of a nanometre.", "A structure shows where a drug can bind. It does not show which of these sites matter at the doses people take.", "About 335 amino acids of each subunit are in the model. Most of the large loop that each subunit carries inside the cell is not in it.", "Two antibody fragments that helped hold the sample together and the sugar groups attached to the receptor are part of the entry and are not shown here.", "The membrane was not part of the measurement. It is drawn as a plain slab, and its position is estimated from which parts of the protein avoid water."], "cite": "Structure: Kim et al., <em>Nature</em> 2020, <a href=\"https://doi.org/10.1038/s41586-020-2654-5\">doi:10.1038/s41586-020-2654-5</a>. Coordinates: <a href=\"https://www.rcsb.org/structure/6X3X\">PDB 6X3X</a>, public domain (CC0). Protein lengths: UniProt P14867, P47870 and P18507. Drawn with Blender and Molecular Nodes.", "view": {"az": 290, "lo": -2.92, "hi": 8.35, "r": 5.24}, "slab": 10.5, "labels": [{"text": "Diazepam, classical site", "at": [-2.27, 5.06, -1.31]}, {"text": "Diazepam, in the membrane", "at": [-0.06, 0.63, -1.38]}, {"text": "GABA", "at": [1.42, 5.29, 2.15]}, {"text": "GABA-A receptor", "at": [-2.36, 8.3, 1.27]}, {"text": "Membrane, drawn in", "at": [-1.79, -1.5, -4.92]}]},
  cb:{"file": "cb1-amg315-8ghv", "title": "A cannabinoid bound to the CB1 receptor", "alt": "The human CB1 receptor drawn as seven violet helices standing in a pale band that marks the membrane. An orange cluster, the compound AMG315, sits among the helices in the upper half. A grey G protein hangs below the membrane, attached to the bottom of the receptor.", "key": [["CB1 receptor", "#6a54a6"], ["AMG315", "#c0573a"], ["G protein", "#8fa0b3"]], "body": ["This picture comes from an experiment. It is not a drawing. It shows the human CB1 receptor (violet) with a compound called AMG315 (orange) in its binding pocket. AMG315 is a laboratory-made relative of anandamide, one of the cannabinoids the body makes for itself. It is not THC.", "The receptor crosses the membrane seven times, and the compound lies among those helices in the half nearer the outside of the cell. Below the membrane, a G protein (grey) is attached to the receptor&rsquo;s inner face, so this is the receptor&rsquo;s active state."], "limits": ["The structure was solved by cryo-electron microscopy at a resolution of 2.8 &Aring; (Protein Data Bank entry 8GHV). An &aring;ngstr&ouml;m (&Aring;) is a tenth of a nanometre.", "This card does not show THC. No peer-reviewed structure of THC bound to CB1 was found when the card was made in November 2026.", "It is one frozen arrangement of a purified receptor. It does not show the receptor moving, and it does not show what happens inside the cell afterwards.", "280 of the receptor&rsquo;s 472 amino acids are in the model. Both ends of the chain and most of one loop inside the cell are missing.", "Part of the G protein is missing from the model. An antibody fragment that helped hold the sample together is part of the entry and is not shown here.", "The membrane was not part of the measurement. It is drawn as a plain slab, and its position is estimated from which parts of the protein avoid water."], "cite": "Structure: Krishna Kumar et al., <em>Nat. Commun.</em> 2023, <a href=\"https://doi.org/10.1038/s41467-023-37864-4\">doi:10.1038/s41467-023-37864-4</a>. Coordinates: <a href=\"https://www.rcsb.org/structure/8GHV\">PDB 8GHV</a>, public domain (CC0). Protein lengths: UniProt P21554. Drawn with Blender and Molecular Nodes.", "view": {"az": 110, "lo": -9.15, "hi": 2.77, "r": 5.04}, "slab": 7.8, "labels": [{"text": "AMG315", "at": [-0.48, 1.17, -0.19]}, {"text": "CB1 receptor", "at": [0.07, 2.73, 1.3]}, {"text": "G protein", "at": [-0.04, -5.11, 1.57]}, {"text": "Membrane, drawn in", "at": [1.33, -1.5, 3.66]}]}
 }/*rc:end*/;
+// Guided stops for each 3D card: [label to look at (null = the whole structure), zoom, caption].
+// Every caption restates the card's own text above; it adds no new claim.
+var TOUR={
+ psy:[[null,1,'The whole complex. The serotonin 2A receptor (violet) sits in the membrane, with a G protein (grey) attached below.'],
+  ['Psilocin',0.4,'Psilocin (orange) sits among the receptor&rsquo;s seven helices, in the half nearer the outside of the cell.'],
+  ['G protein',0.7,'A G protein is attached to the receptor&rsquo;s inner face. That marks the active state, in which the receptor passes a signal into the cell.'],
+  ['Membrane, drawn in',0.8,'The membrane is drawn in as a plain slab. The experiment did not record it.']],
+ dis:[[null,1,'The whole receptor. Most of it stands outside the cell. The channel crosses the membrane at the bottom.'],
+  ['Glutamate',0.4,'Glutamate (green) is bound to a GluN2A subunit. It is one of the two natural signals that open the channel.'],
+  ['Glycine',0.4,'Glycine (green), the other signal, is bound to a GluN1 subunit.'],
+  ['Ketamine',0.4,'Ketamine (orange) sits in the wide middle of the channel, between its gate and the narrow filter that selects ions. From there it blocks the flow of ions.']],
+ stim:[[null,1,'The dopamine transporter (violet) lies almost entirely within the membrane. It is a pump, not a receptor.'],
+  ['Cocaine',0.4,'Cocaine (orange) sits in the central site, about halfway across the membrane, where dopamine would bind. With that site taken, the transporter cannot carry dopamine back in.'],
+  ['Membrane, drawn in',0.8,'The membrane is drawn in as a plain slab. The experiment did not record it.']],
+ op:[[null,1,'The whole complex. The mu-opioid receptor (violet) sits in the membrane, with a G protein (grey) attached below.'],
+  ['Morphine',0.4,'Morphine (orange) sits among the receptor&rsquo;s seven helices, in the half nearer the outside of the cell.'],
+  ['G protein',0.7,'A G protein is attached to the receptor&rsquo;s inner face, so this is the receptor&rsquo;s active state.'],
+  ['Membrane, drawn in',0.8,'The membrane is drawn in as a plain slab. The experiment did not record it.']],
+ benzo:[[null,1,'The whole receptor: a ring of five subunits around a central channel.'],
+  ['GABA',0.4,'GABA (green) is bound on the outer part, between a &beta;2 and an &alpha;1 subunit. A second GABA sits at the other such place.'],
+  ['Diazepam, classical site',0.4,'One diazepam (orange) sits at the classical benzodiazepine site, outside the membrane between an &alpha;1 subunit and the &gamma;2 subunit.'],
+  ['Diazepam, in the membrane',0.5,'Three more lie within the part that crosses the membrane, at sites that diazepam partly shares with some anaesthetics.']],
+ cb:[[null,1,'The whole complex. The CB1 receptor (violet) sits in the membrane, with a G protein (grey) attached below.'],
+  ['AMG315',0.4,'AMG315 (orange) lies among the helices, in the half nearer the outside of the cell. It is a laboratory-made relative of anandamide. It is not THC.'],
+  ['G protein',0.7,'A G protein is attached to the receptor&rsquo;s inner face, so this is the receptor&rsquo;s active state.'],
+  ['Membrane, drawn in',0.8,'The membrane is drawn in as a plain slab. The experiment did not record it.']]
+};
 (function(){
   var dlg=document.getElementById('rc'),open=document.getElementById('rc-open'),view=document.getElementById('rc-view'),
       pause=document.getElementById('rc-pause'),host=document.getElementById('rc-3d'),still=document.getElementById('rc-still'),
-      msg=document.getElementById('rc-msg'),card=null,api=null,paused=reduce,loading=false;
+      msg=document.getElementById('rc-msg'),card=null,api=null,paused=reduce,loading=false,
+      tourB=document.getElementById('rc-tour'),prev=document.getElementById('rc-prev'),next=document.getElementById('rc-next'),
+      stops=null,at=-1,HINT='Drag to turn the model. The arrow keys also turn it, and plus and minus zoom.';
   function label(){pause.textContent=paused?'Play':'Pause'; pause.setAttribute('aria-pressed',String(paused));}
+  // The tour: step the camera through this card's stops, with a caption for each.
+  function step(i){
+    at=i; var s=stops[i],pt=null;
+    if(s[0]) card.labels.forEach(function(l){if(l.text===s[0]) pt=l.at;});
+    api.focus(pt,s[1]);
+    msg.innerHTML='<b>Stop '+(i+1)+' of '+stops.length+'.</b> '+s[2];
+    prev.disabled=i===0; next.disabled=i===stops.length-1;
+  }
+  function endTour(quiet){
+    var was=at>=0; at=-1; prev.hidden=next.hidden=true;
+    tourB.textContent='Take the tour'; tourB.setAttribute('aria-pressed','false');
+    if(was&&api&&!quiet){api.focus(null,1); api.setPaused(paused); msg.textContent=HINT;}
+  }
+  tourB.addEventListener('click',function(){
+    if(!api||!stops) return;
+    if(at>=0){endTour(false); return;}
+    prev.hidden=next.hidden=false; tourB.textContent='End the tour'; tourB.setAttribute('aria-pressed','true'); step(0);
+  });
+  prev.addEventListener('click',function(){if(at>0) step(at-1);});
+  next.addEventListener('click',function(){if(at>=0&&at<stops.length-1) step(at+1);});
   // Put one card's words and picture into the dialog, and clear any 3D view left from another card.
   function fill(c){
+    endTour(true); tourB.hidden=true;
     if(api){api.dispose(); api=null;}
     card=c; loading=false; host.hidden=true; still.hidden=false; pause.hidden=true; msg.textContent='';
     view.hidden=false; view.disabled=false; view.textContent='View in 3D';
@@ -1058,7 +1111,7 @@ var RC=/*rc:start*/{
   }
   open.addEventListener('click',function(){
     var c=RC[cur.id]; if(!c) return;
-    if(c!==card) fill(c);
+    if(c!==card){fill(c); stops=TOUR[cur.id]||null;}
     if(dlg.showModal) dlg.showModal(); else dlg.setAttribute('open','');
     if(api&&!host.hidden) api.setPaused(paused);
   });
@@ -1066,6 +1119,8 @@ var RC=/*rc:start*/{
     if(api){
       // switch between the still image and the 3D view
       var to3d=host.hidden; host.hidden=!to3d; still.hidden=to3d; pause.hidden=!to3d||reduce;
+      if(!to3d) endTour(false);
+      tourB.hidden=!to3d||!stops;
       view.textContent=to3d?'Show the image':'View in 3D'; api.setPaused(!to3d||paused); return;
     }
     if(loading) return;
@@ -1077,16 +1132,16 @@ var RC=/*rc:start*/{
     }).then(function(a){
       if(c!==card){a.dispose(); return;}      // the reader moved to another card while this one loaded
       api=a; loading=false; api.setPaused(paused); still.hidden=true; view.disabled=false; view.textContent='Show the image';
-      pause.hidden=reduce; label();
-      msg.textContent='Drag to turn the model. The arrow keys also turn it, and plus and minus zoom.';
+      pause.hidden=reduce; label(); tourB.hidden=!stops;
+      msg.textContent=HINT;
     }).catch(function(){
       if(c!==card) return;
-      loading=false; host.hidden=true; still.hidden=false; view.hidden=true;
+      loading=false; host.hidden=true; still.hidden=false; view.hidden=true; tourB.hidden=true;
       msg.textContent='The 3D view could not load in this browser. The image shows the same structure.';
     });
   });
   pause.addEventListener('click',function(){paused=!paused; label(); if(api) api.setPaused(paused);});
-  dlg.addEventListener('close',function(){if(api) api.setPaused(true);});
+  dlg.addEventListener('close',function(){endTour(false); if(api) api.setPaused(true);});
 })();
 
 show(DRUGS[0]);
