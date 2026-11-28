@@ -10,7 +10,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parent.parent
 PUBLIC = ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "references", "about",
-          "learn", "conditioning", "news", "scans", "recordings", "sleep"]
+          "learn", "conditioning", "news", "scans", "recordings", "sleep", "methods"]
 NOT_PUBLISHED = ["explore", "morphometry"]
 
 
@@ -92,9 +92,9 @@ class PublicPages(unittest.TestCase):
 
     def test_learn_hub_links_every_learn_page(self):
         hub = read("learn")
-        for name in ["conditioning", "news", "scans", "recordings", "sleep"]:
+        for name in ["conditioning", "news", "scans", "recordings", "sleep", "methods"]:
             self.assertIn(f'href="{name}.html"', hub)
-        for name in ["learn", "conditioning", "news", "scans", "recordings", "sleep"]:
+        for name in ["learn", "conditioning", "news", "scans", "recordings", "sleep", "methods"]:
             nav = re.search(r'<nav class="tabs".*?</nav>', read(name), re.S).group(0)
             self.assertIn('<a class="tab" href="learn.html" aria-current="true">Learn</a>', nav)
 
@@ -109,7 +109,7 @@ class PublicPages(unittest.TestCase):
         self.assertIn("cp -R assets _site/", workflow)
 
     def test_visuals_say_what_they_are(self):
-        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning", "scans", "recordings", "sleep"]:
+        for name in ["index", "app", "spike", "synapse", "pharma", "comparative", "timecells", "conditioning", "scans", "recordings", "sleep", "methods"]:
             with self.subTest(page=name):
                 self.assertRegex(read(name), r'class="fig-kind" data-kind="(schematic|simulation|drawing|measured)"')
 
@@ -238,6 +238,34 @@ class PublicPages(unittest.TestCase):
         self.assertIn('data-support="weak"', page)
         self.assertIn("Open Data Commons Attribution License v1.0", page)
         self.assertIn("is not advice about", page)
+        self.assertNotRegex(page, r'src="https?://')
+
+    def test_methods_page_cites_everything_and_credits_every_image(self):
+        page = read("methods")
+        # Citations: every number resolves, every reference is cited and is in the Sources data.
+        cited = {int(n) for n in re.findall(r'href="#r-(\d+)"', page)}
+        listed = re.findall(r'<li id="r-(\d+)">(.*?)</li>', page, re.S)
+        self.assertEqual(cited, {int(n) for n, _ in listed})
+        dois = {r.get("doi", "").lower() for r in json.loads((ROOT / "data" / "references.json").read_text(encoding="utf8"))}
+        for n, body in listed:
+            with self.subTest(ref=n):
+                self.assertIn(re.search(r'href="https://doi.org/([^"]+)"', body).group(1).lower(), dois)
+        # Images: each is local, small, described, and carries a credit, a licence and a link to its source.
+        figs = re.findall(r'<figure class="shot[^"]*">(.*?)</figure>', page, re.S)
+        self.assertGreaterEqual(len(figs), 10)
+        for f in figs:
+            src = re.search(r'<img src="(assets/img/methods/[a-z0-9-]+\.webp)"', f).group(1)
+            with self.subTest(image=src):
+                self.assertLess((ROOT / src).stat().st_size, 500_000)
+                self.assertRegex(f, r'alt="[^"]{40,}"')
+                self.assertRegex(f, r'Image: [^<]')
+                self.assertRegex(f, r'creativecommons\.org|Public domain')
+                self.assertRegex(f, r'<a href="https://[^"]+" aria-label="Source: [^"]+">(Source|File on Wikimedia Commons)</a>')
+                self.assertRegex(f, r'(Resized and converted|Converted) to WebP for this page\.')
+        # The two rejected Brainbow files are not used, and the page gives no recipes.
+        self.assertNotIn("Brainbow_(", page)
+        self.assertIn("Concepts, not protocols.", page)
+        self.assertNotRegex(re.sub(r"<[^>]+>", " ", page.split("Sources and image licences")[0]), r"\b\d+(\.\d+)?\s?(%|mM|M|mg|ml|mL)\b(?! of neurons)")
         self.assertNotRegex(page, r'src="https?://')
 
     def test_explore_membrane_shows_basic_glutamate_receptors(self):

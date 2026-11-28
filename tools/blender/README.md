@@ -15,7 +15,10 @@ receptor card uses: a 3D model in `assets/models/` and a still image in `assets/
 | `gabaa-diazepam-6x3x` | 6X3X | alpha1 (B, D), beta2 (A, C), gamma2 (E), diazepam, GABA | four antibody chains (I, J, K, L), sugars | 290 |
 | `cb1-amg315-8ghv` | 8GHV | CB1 (D), AMG315, G protein (A, B, C) | antibody fragment (S) | 110 |
 
-The CB1 entries 5XRA and 5XR8 must not be used. Their paper was retracted.
+The CB1 entries 5XRA and 5XR8 are not used. The 2017 Nature paper that first reported them was retracted on
+27 August 2025 over its cell-signalling data, and a revised, peer-reviewed paper with the same structures was
+published the same day (Hua et al. 2025, doi 10.1038/s41586-025-09454-5). Keeping them off the site avoids confusion;
+the page test still refuses both IDs.
 
 ## What the script does
 

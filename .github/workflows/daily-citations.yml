@@ -115,7 +115,7 @@ jobs:
       - name: Assemble the public site
         run: |
           mkdir _site
-          for page in index app spike synapse pharma comparative timecells references about learn conditioning news scans recordings sleep; do
+          for page in index app spike synapse pharma comparative timecells references about learn conditioning news scans recordings sleep methods; do
             cp "$page.html" _site/
           done
           cp -R assets _site/
